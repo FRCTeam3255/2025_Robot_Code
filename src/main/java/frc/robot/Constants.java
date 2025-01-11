@@ -200,6 +200,10 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_SPEED = -0.2;
   }
 
+  public static class constCoralOuttake {
+    public static final double CORAL_OUTTAKE_SPEED = 0.3;
+  }
+
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
 
@@ -239,6 +243,11 @@ public final class Constants {
      * <b>Units:</b> Radians
      */
     public static final double STD_DEVS_HEADING = 9999999;
+
+  }
+
+  public static class consClimber {
+    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
 
   }
 
