@@ -58,10 +58,10 @@ public class RobotContainer {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     controller.btn_Back
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
-    conDriver.btn_Start.whileTrue(com_IntakeHopper);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
+    controller.btn_Back.whileTrue(com_IntakeHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
