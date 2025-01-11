@@ -195,6 +195,11 @@ public final class Constants {
     }
   }
 
+  public static class constAlgaeIntake {
+    public static final double ALGAE_INTAKE_SPEED = 0.2;
+    public static final double ALGAE_OUTTAKE_SPEED = -0.2;
+  }
+
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
 
