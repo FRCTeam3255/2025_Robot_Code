@@ -253,5 +253,11 @@ public final class Constants {
   public static class constAlgaeIntake{
 
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+
+  public static class constHopper {
+    public static final double HOPPER_SPEED = 0.5;
+
+    public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
+
   }
 }
