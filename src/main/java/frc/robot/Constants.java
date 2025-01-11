@@ -42,7 +42,7 @@ public final class Constants {
   }
 
   public static class constDrivetrain {
-    // TODO: Convert all applicable fields to MEASUREs
+    // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
         0.09779 * Math.PI,
@@ -230,8 +230,6 @@ public final class Constants {
       return false;
     };
 
-    // TODO: Write add functionality to getFieldPositions to automatically flip
-    // poses from blue to red instead of defining them twice
     public static class bluePoses {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
