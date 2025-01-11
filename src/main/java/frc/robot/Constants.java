@@ -222,21 +222,23 @@ public final class Constants {
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(20).in(Units.Rotations);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(51).in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(3)
-          .in(Units.Rotations);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
+          .in(Units.Inches);
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+      // Elevator motors will provide feedback in INCHES the carriage has moved
+      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
       ELEVATOR_CONFIG.Slot0.kG = 0.3;
       ELEVATOR_CONFIG.Slot0.kS = 0.4;
       ELEVATOR_CONFIG.Slot0.kP = 1;
     }
 
-    public static final Angle CORAL_L1_HEIGHT = Units.Degrees.of(0);
-    public static final Angle CORAL_L2_HEIGHT = Units.Degrees.of(1);
-    public static final Angle CORAL_L3_HEIGHT = Units.Degrees.of(2);
-    public static final Angle CORAL_L4_HEIGHT = Units.Degrees.of(3);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(10);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(30);
+    public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(50);
   }
 
   public static class constField {
