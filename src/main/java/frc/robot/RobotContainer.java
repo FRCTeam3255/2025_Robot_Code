@@ -19,6 +19,7 @@ import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.*;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.*;
@@ -38,6 +39,8 @@ public class RobotContainer {
   private final Climber subClimber = new Climber();
 
   private final Climb comClimb = new Climb(subClimber);
+
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -76,9 +79,7 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(0)));
-
+        .whileTrue(comPlaceCoral);
     // LB: Climb
     controller.btn_LeftBumper
         .whileTrue(comClimb);
