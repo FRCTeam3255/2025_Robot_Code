@@ -21,6 +21,9 @@ public class Hopper extends SubsystemBase {
   public void runHopper(double speed) {
     hopperMotor.set(speed);
   }
+  public void setHopperNeutralOutput(double speed){
+    hopperMotor.set(speed);
+  }
 
   @Override
   public void periodic() {
