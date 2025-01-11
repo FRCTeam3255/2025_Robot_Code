@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
@@ -117,8 +119,9 @@ public final class Constants {
     public static CANcoderConfiguration CANCODER_CONFIG = new CANcoderConfiguration();
 
     static {
-      // TODO: im sure a lot of this can be cleaned up, but some of them are passed
-      // into the constructor of drive
+      // TODO: Im sure a lot of this can be cleaned up, but some of them are passed
+      // into the super class
+      // Into the constructor of drive
       DRIVE_CONFIG.Slot0.kP = DRIVE_P;
       DRIVE_CONFIG.Slot0.kI = DRIVE_I;
       DRIVE_CONFIG.Slot0.kD = DRIVE_D;
@@ -208,6 +211,34 @@ public final class Constants {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
   }
 
+  public static class consClimber {
+    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+  }
+
+  public static class constElevator {
+    public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
+    static {
+      ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(20).in(Units.Rotations);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(3)
+          .in(Units.Rotations);
+
+      ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
+      ELEVATOR_CONFIG.Slot0.kG = 0.3;
+      ELEVATOR_CONFIG.Slot0.kS = 0.4;
+      ELEVATOR_CONFIG.Slot0.kP = 1;
+    }
+
+    public static final Angle CORAL_L1_HEIGHT = Units.Degrees.of(0);
+    public static final Angle CORAL_L2_HEIGHT = Units.Degrees.of(1);
+    public static final Angle CORAL_L3_HEIGHT = Units.Degrees.of(2);
+    public static final Angle CORAL_L4_HEIGHT = Units.Degrees.of(3);
+  }
+
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
     public static final Distance FIELD_LENGTH = Units.Feet.of(57).plus(Units.Inches.of(6 + 7 / 8));
@@ -278,8 +309,10 @@ public final class Constants {
 
   }
 
-  public static class consClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+  public static class constHopper {
+    public static final double HOPPER_SPEED = 0.5;
+
+    public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
   }
 }

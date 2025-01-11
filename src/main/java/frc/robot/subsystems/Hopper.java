@@ -7,21 +7,23 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants.constHopper;
+import frc.robot.RobotMap.mapHopper;
 
-public class Climber extends SubsystemBase {
-  /** Creates a new Climber. */
-  TalonFX climberMotor;
-  TalonFX climberMotor2;
+public class Hopper extends SubsystemBase {
 
-  public Climber() {
-    climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN);
-    climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN_2);
+  TalonFX hopperMotor;
+
+  /** Creates a new hopper. */
+  public Hopper() {
+    hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
+
+    hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
+
   }
 
-  public void setClimberMotorVelocity(double velocity) {
-    climberMotor.set(velocity);
-    climberMotor2.set(-velocity);
+  public void runHopper(double speed) {
+    hopperMotor.set(speed);
   }
 
   @Override

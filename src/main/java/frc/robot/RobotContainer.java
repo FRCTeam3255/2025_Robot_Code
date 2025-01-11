@@ -13,10 +13,13 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.Climb;
 import frc.robot.commands.DriveManual;
 import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Climber;
+import frc.robot.commands.PlaceCoral;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
 
@@ -24,8 +27,18 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+
+  private final Hopper subHopper = new Hopper();
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
+  private final Climber subClimber = new Climber();
+
+  private final Climb comClimb = new Climb(subClimber);
+
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
+  private final Elevator subElevator = new Elevator();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -45,6 +58,7 @@ public class RobotContainer {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     controller.btn_Back
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
+    conDriver.btn_Start.whileTrue(com_IntakeHopper);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -59,8 +73,20 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(0)));
+        .whileTrue(comPlaceCoral);
+
+    // LB: Climb
+    controller.btn_LeftBumper
+        .whileTrue(comClimb);
+    // btn_A/B/Y/X: Set Elevator to Coral Levels
+    controller.btn_A
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+    controller.btn_B
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+    controller.btn_Y
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+    controller.btn_X
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
 
   public Command getAutonomousCommand() {
