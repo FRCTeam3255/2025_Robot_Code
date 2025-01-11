@@ -21,10 +21,7 @@ public class CoralOuttake extends SubsystemBase {
 
   public void setCoralOuttake(double speed) {
     outtakeMotor.set(speed);
-  }
-
-  public void setCoralOuttake2(double speed) {
-    outtakeMotor2.set(speed);
+    outtakeMotor2.set(-speed);
   }
 
   @Override

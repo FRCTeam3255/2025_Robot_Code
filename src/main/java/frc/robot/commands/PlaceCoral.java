@@ -22,7 +22,6 @@ public class PlaceCoral extends Command {
   @Override
   public void initialize() {
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
-    globalCoralOuttake.setCoralOuttake2(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED_2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
