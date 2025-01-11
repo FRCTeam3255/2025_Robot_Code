@@ -198,6 +198,8 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 0.2;
     public static final double ALGAE_OUTTAKE_SPEED = -0.2;
+    public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+
   }
 
   public static class constCoralOuttake {
@@ -250,9 +252,8 @@ public final class Constants {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
 
   }
-  public static class constAlgaeIntake{
-
-    public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+  
+  
 
   public static class constHopper {
     public static final double HOPPER_SPEED = 0.5;
