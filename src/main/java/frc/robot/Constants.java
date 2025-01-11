@@ -250,4 +250,8 @@ public final class Constants {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
 
   }
+  public static class constAlgaeIntake{
+
+    public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+  }
 }
