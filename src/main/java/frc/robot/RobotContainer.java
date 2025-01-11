@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
@@ -51,13 +52,18 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    // LB: Eat Algae
-    controller.btn_LeftBumper
+    // LT: Eat Algae
+    controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
         .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
-    // RB: Spit Algae
-    controller.btn_RightBumper
+    // RT: Spit Algae
+    controller.btn_RightTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)))
+        .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
+
+    // RB: Score Coral
+    controller.btn_RightBumper
+        .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
         .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
   }
 
