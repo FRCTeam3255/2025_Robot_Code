@@ -21,7 +21,7 @@ REEFSCAPE, presented by Haas, is the 2025 Season of the FIRST Robotics Competiti
 Students have 6 weeks to construct a robot to compete in the season. Once the 6 weeks are up, teams compete at regional or district-level 
 competitions (depending on region) to qualify for the FIRST Championship in Houston, Texas.
 
-Interested in learning more about CRESCENDO? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
+Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
 ## Code Details
 Coming soon!
