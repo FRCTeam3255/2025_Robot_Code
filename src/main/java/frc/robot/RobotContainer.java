@@ -17,6 +17,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Drivetrain;
 
 public class RobotContainer {
@@ -26,6 +27,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
+  private final CoralOuttake subCoralOuttake = new CoralOuttake();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -63,8 +65,8 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
+        .onTrue(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
+        .onFalse(Commands.runOnce(() -> subCoralOuttake.setCoralOuttake(0)));
   }
 
   public Command getAutonomousCommand() {
