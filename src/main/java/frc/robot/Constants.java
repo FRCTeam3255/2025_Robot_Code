@@ -236,4 +236,7 @@ public final class Constants {
     public static final double STD_DEVS_HEADING = 9999999;
 
   }
+    public static class constHopper{
+      public static final double HOPPER_SPEED = 0.5;
+    }
 }

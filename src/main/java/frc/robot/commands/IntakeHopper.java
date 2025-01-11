@@ -5,15 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constHopper;
 import frc.robot.subsystems.Hopper;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeHopper extends Command {
 
-  hopper subHopper;
+  Hopper subHopper;
 
   /** Creates a new Intake_Hopper. */
-  public IntakeHopper(hopper subHopper) {
+  public IntakeHopper(Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subHopper = subHopper;
   }
@@ -22,7 +23,7 @@ public class IntakeHopper extends Command {
   @Override
   public void initialize() {
 
-    subHopper.runHopper(0.5);
+    subHopper.runHopper(constHopper.HOPPER_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
