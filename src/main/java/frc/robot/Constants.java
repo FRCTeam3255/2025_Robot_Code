@@ -195,6 +195,11 @@ public final class Constants {
     }
   }
 
+  public static class constAlgaeIntake {
+    public static final double ALGAE_INTAKE_SPEED = 0.2;
+    public static final double ALGAE_OUTTAKE_SPEED = -0.2;
+  }
+
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
 
@@ -239,5 +244,7 @@ public final class Constants {
 
   public static class consClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+    public static final double CLIMBER_MOTOR_STOP = 0;
+
   }
 }
