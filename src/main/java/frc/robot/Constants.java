@@ -250,11 +250,6 @@ public final class Constants {
 
   }
 
-  public static class consClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
-
-  }
-
   public static class constHopper {
     public static final double HOPPER_SPEED = 0.5;
 
