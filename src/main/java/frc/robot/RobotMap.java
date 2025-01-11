@@ -46,4 +46,9 @@ public class RobotMap {
   public static class mapCoralOuttake {
     public static final int CORAL_OUTTAKE_MOTOR_CAN = 30;
   }
+
+    public static class mapElevator {
+      public static final int LEFT_ELEVATOR_CAN = 10;
+      public static final int RIGHT_ELEVATOR_CAN = 11;
+    }
 }

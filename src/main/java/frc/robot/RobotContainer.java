@@ -19,6 +19,7 @@ import frc.robot.commands.ExampleAuto;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 
 public class RobotContainer {
 
@@ -28,6 +29,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
+  private final Elevator subElevator = new Elevator();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -51,6 +53,12 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+
+    // TODO: Replace with actual elevator values
+    conDriver.btn_A.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
+    conDriver.btn_B.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
+    conDriver.btn_Y.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
+    conDriver.btn_X.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
