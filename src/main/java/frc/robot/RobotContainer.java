@@ -6,17 +6,15 @@ package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.Climb;
 import frc.robot.commands.DriveManual;
-import frc.robot.commands.ExampleAuto;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.commands.PlaceCoral;
@@ -47,7 +45,8 @@ public class RobotContainer {
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
+            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+                conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -58,13 +57,8 @@ public class RobotContainer {
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     controller.btn_Back
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(new Pose2d(0, 0, new Rotation2d()))));
-
-    // Defaults to Field-Relative, is Robot-Relative while held
-    controller.btn_LeftBumper
-        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
-    conDriver.btn_Back.whileTrue(com_IntakeHopper);
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
+    conDriver.btn_Start.whileTrue(com_IntakeHopper);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -96,7 +90,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.WORKSHOP_STARTING_POSE))
-        .andThen(new ExampleAuto(subDrivetrain));
+    return Commands.print("No auto selected :<");
   }
 }
