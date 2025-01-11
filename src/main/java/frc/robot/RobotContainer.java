@@ -18,8 +18,9 @@ import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.commands.*;
 import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
 
@@ -27,6 +28,10 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+
+  private final Hopper subHopper = new Hopper();
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
 
@@ -54,6 +59,7 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+    conDriver.btn_Back.whileTrue(com_IntakeHopper);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
