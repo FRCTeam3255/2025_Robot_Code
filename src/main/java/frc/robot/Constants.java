@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -23,6 +24,8 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,10 +52,10 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.109375;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.066406;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.049316;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.314209;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.390625;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.433594;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.450684;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.814209;
 
     public static final double WHEEL_DIAMETER = 0.09779;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
@@ -142,6 +145,7 @@ public final class Constants {
     public static final double YAW_SNAP_D = 0;
 
     public static final double MIN_STEER_PERCENT = 0.01;
+    public static final double SLOW_MODE_MULTIPLIER = 0.5;
 
     // Rotational speed (degrees per second) while manually driving
     public static final AngularVelocity TURN_SPEED = Units.DegreesPerSecond.of(360);
@@ -206,6 +210,8 @@ public final class Constants {
 
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
+    public static final Distance FIELD_LENGTH = Units.Feet.of(57).plus(Units.Inches.of(6 + 7 / 8));
+    public static final Distance FIELD_WIDTH = Units.Feet.of(26).plus(Units.Inches.of(5));
 
     /**
      * Boolean that controls when the path will be mirrored for the red
@@ -224,7 +230,33 @@ public final class Constants {
       return false;
     };
 
-    public static final Pose2d WORKSHOP_STARTING_POSE = new Pose2d(5.98, 2.60, new Rotation2d(0));
+    // TODO: Write add functionality to getFieldPositions to automatically flip
+    // poses from blue to red instead of defining them twice
+    public static class bluePoses {
+      public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
+
+    }
+
+    public static class redPoses {
+      public static final Pose2d RESET_POSE = new Pose2d(FIELD_LENGTH, FIELD_WIDTH, new Rotation2d().fromDegrees(180));
+    }
+
+    /**
+     * Gets the positions of all of the necessary field elements on the field. All
+     * coordinates are in meters and are relative to the blue alliance.
+     * 
+     * @see <a href=
+     *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
+     *      Robot Coordinate Systems</a>
+     * @return An array of field element positions in this order: ResetPose
+     */
+    public static Supplier<Pose2d[]> getFieldPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> new Pose2d[] { redPoses.RESET_POSE };
+
+      }
+      return () -> new Pose2d[] { bluePoses.RESET_POSE };
+    }
   }
 
   public static class constVision {

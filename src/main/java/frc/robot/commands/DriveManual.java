@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,15 +17,18 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
+  BooleanSupplier slowMode;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
+  double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
+    this.slowMode = slowMode;
 
     isOpenLoop = true;
 
@@ -38,11 +42,18 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
+    if (slowMode.getAsBoolean()) {
+      slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
+    } else {
+      slowMultiplier = 1;
+    }
+
     // Get Joystick inputs
-    double xVelocity = xAxis.getAsDouble() * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
-        * redAllianceMultiplier;
-    double yVelocity = -yAxis.getAsDouble() * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
-        * redAllianceMultiplier;
+    double transMultiplier = slowMultiplier * redAllianceMultiplier
+        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
+
+    double xVelocity = xAxis.getAsDouble() * transMultiplier;
+    double yVelocity = -yAxis.getAsDouble() * transMultiplier;
     double rVelocity = -rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond);
 
     subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
