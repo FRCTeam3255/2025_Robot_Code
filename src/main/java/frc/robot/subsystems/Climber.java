@@ -12,13 +12,16 @@ import frc.robot.RobotMap;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
+  TalonFX climberMotor2;
 
   public Climber() {
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN);
+    climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN_2);
   }
 
   public void setClimberMotorVelocity(double velocity) {
     climberMotor.set(velocity);
+    climberMotor2.set(-velocity);
   }
 
   @Override
