@@ -15,7 +15,7 @@ public class PlaceCoral extends Command {
   /** Creates a new CoralOuttake. */
   public PlaceCoral(CoralOuttake passedCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    passedCoralOuttake = globalCoralOuttake;
+    globalCoralOuttake = passedCoralOuttake;
   }
 
   // Called when the command is initially scheduled.
