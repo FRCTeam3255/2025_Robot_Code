@@ -36,4 +36,9 @@ public class RobotMap {
   public static class mapAlgaeIntake {
     public static final int ALGAE_MOTOR_CAN = 10;
   }
+
+  // Hopper is 40-49
+  public static class mapHopper {
+    public static final int HOPPER_MOTOR_CAN = 40;
+  }
 }

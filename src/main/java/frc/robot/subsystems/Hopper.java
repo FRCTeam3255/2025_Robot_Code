@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constHopper;
+import frc.robot.RobotMap.mapHopper;
 
 public class Hopper extends SubsystemBase {
 
@@ -15,7 +16,7 @@ public class Hopper extends SubsystemBase {
 
   /** Creates a new hopper. */
   public Hopper() {
-    hopperMotor = new TalonFX(0);
+    hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
 
     hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
 
