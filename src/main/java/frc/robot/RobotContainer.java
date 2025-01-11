@@ -14,13 +14,17 @@ import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
+import frc.robot.commands.IntakeHopper;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.hopper;
 
 public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+  private final hopper subHopper = new hopper();
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -43,6 +47,7 @@ public class RobotContainer {
     conDriver.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
+    conDriver.btn_Back.whileTrue(com_IntakeHopper);
   }
 
   public Command getAutonomousCommand() {
