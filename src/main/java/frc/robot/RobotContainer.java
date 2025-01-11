@@ -21,7 +21,6 @@ import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.*;
-import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -41,6 +40,7 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subClimber);
 
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
+  private final Elevator subElevator = new Elevator();
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -80,10 +80,19 @@ public class RobotContainer {
     // RB: Score Coral
     controller.btn_RightBumper
         .whileTrue(comPlaceCoral);
+
     // LB: Climb
     controller.btn_LeftBumper
         .whileTrue(comClimb);
-  }
+    // btn_A/B/Y/X: Set Elevator to Coral Levels
+    controller.btn_A
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+    controller.btn_B
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+    controller.btn_Y
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+    controller.btn_X
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
   public Command getAutonomousCommand() {
     return Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.WORKSHOP_STARTING_POSE))
