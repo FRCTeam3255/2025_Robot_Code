@@ -55,10 +55,10 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
 
     // TODO: Replace with actual elevator values
-    conDriver.btn_A.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
-    conDriver.btn_B.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
-    conDriver.btn_Y.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
-    conDriver.btn_X.onTrue(Commands.runOnce(() -> subElevator.setPosition(20), subElevator));
+    conDriver.btn_A.onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+    conDriver.btn_B.onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+    conDriver.btn_Y.onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+    conDriver.btn_X.onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {

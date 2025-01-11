@@ -221,8 +221,12 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kG = 0.3;
       ELEVATOR_CONFIG.Slot0.kS = 0.4;
       ELEVATOR_CONFIG.Slot0.kP = 1;
-
     }
+
+    public static final double CORAL_L1_HEIGHT = 20;
+    public static final double CORAL_L2_HEIGHT = 20;
+    public static final double CORAL_L3_HEIGHT = 20;
+    public static final double CORAL_L4_HEIGHT = 20;
   }
 
   public static class constField {
