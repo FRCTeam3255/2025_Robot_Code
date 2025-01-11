@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.constHopper;
 
 public class Hopper extends SubsystemBase {
 
@@ -16,12 +17,11 @@ public class Hopper extends SubsystemBase {
   public Hopper() {
     hopperMotor = new TalonFX(0);
 
+    hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
+
   }
 
   public void runHopper(double speed) {
-    hopperMotor.set(speed);
-  }
-  public void setHopperNeutralOutput(double speed){
     hopperMotor.set(speed);
   }
 

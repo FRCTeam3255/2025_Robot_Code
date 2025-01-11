@@ -15,8 +15,8 @@ import frc.robot.Constants.constControllers;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.ExampleAuto;
-import frc.robot.commands.*
-import frc.robot.subsystems.*
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
 
@@ -29,7 +29,6 @@ public class RobotContainer {
   private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
-
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
