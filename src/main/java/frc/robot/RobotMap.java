@@ -5,7 +5,9 @@ package frc.robot;
 public class RobotMap {
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
+
     public static final int OPERATOR_USB = 1;
+
   }
 
   public static class mapDrivetrain {
@@ -31,6 +33,10 @@ public class RobotMap {
     public static final int BACK_RIGHT_DRIVE_CAN = 6;
     public static final int BACK_RIGHT_STEER_CAN = 7;
     public static final int BACK_RIGHT_ABSOLUTE_ENCODER_CAN = 3;
+  }
+
+  public static class mapClimber {
+    public static final int CLIMBER_CAN = 20;
   }
 
   public static class mapAlgaeIntake {
