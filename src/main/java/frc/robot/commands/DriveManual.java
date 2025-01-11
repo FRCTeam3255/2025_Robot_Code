@@ -39,9 +39,9 @@ public class DriveManual extends Command {
   @Override
   public void execute() {
     // Get Joystick inputs
-    double xVelocity = xAxis.getAsDouble() * constDrivetrain.DRIVE_SPEED.in(Units.MetersPerSecond)
+    double xVelocity = xAxis.getAsDouble() * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
         * redAllianceMultiplier;
-    double yVelocity = -yAxis.getAsDouble() * constDrivetrain.DRIVE_SPEED.in(Units.MetersPerSecond)
+    double yVelocity = -yAxis.getAsDouble() * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
         * redAllianceMultiplier;
     double rVelocity = -rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond);
 

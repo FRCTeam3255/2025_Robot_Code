@@ -40,14 +40,19 @@ public final class Constants {
 
   public static class constDrivetrain {
     // TODO: Convert all applicable fields to MEASUREs
+    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+        SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
+        0.09779 * Math.PI,
+        SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
+        SN_SwerveConstants.MK4I.FALCON.L2.maxSpeedMeters);
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.417236;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.254395;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.258789;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.290039;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.109375;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.066406;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.049316;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.314209;
 
     public static final double WHEEL_DIAMETER = 0.09779;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
@@ -64,7 +69,7 @@ public final class Constants {
      * </p>
      * <b>Units:</b> Meters Per Second
      */
-    public static final double THEORETICAL_MAX_DRIVE_SPEED = SN_SwerveConstants.MK4I.FALCON.L3.maxSpeedMeters;
+    public static final double THEORETICAL_MAX_DRIVE_SPEED = SWERVE_CONSTANTS.maxSpeedMeters;
 
     /**
      * <p>
@@ -72,18 +77,13 @@ public final class Constants {
      * Competition Robot.
      * </p>
      */
-    public static final LinearVelocity DRIVE_SPEED = Units.FeetPerSecond.of(15.1);
+    // TODO: Find the actual max speed
+    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(THEORETICAL_MAX_DRIVE_SPEED);
     // Physically measured from center to center of the wheels
     // Distance between Left & Right Wheels
     public static final double TRACK_WIDTH = Units.Meters.convertFrom(23.75, Units.Inches);
     // Distance between Front & Back Wheels
     public static final double WHEELBASE = Units.Meters.convertFrom(23.75, Units.Inches);
-
-    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
-        SN_SwerveConstants.MK4I.FALCON.L3.steerGearRatio,
-        0.09779 * Math.PI,
-        SN_SwerveConstants.MK4I.FALCON.L3.driveGearRatio,
-        SN_SwerveConstants.MK4I.FALCON.L3.maxSpeedMeters);
 
     public static final double AT_ROTATION_TOLERANCE = 0.1;
     public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
@@ -100,7 +100,7 @@ public final class Constants {
 
     public static final double DRIVE_KS = 0;
     public static final double DRIVE_KA = 0;
-    public static final double DRIVE_KV = (1 / DRIVE_SPEED.in(Units.MetersPerSecond));
+    public static final double DRIVE_KV = (1 / OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond));
 
     public static final InvertedValue DRIVE_MOTOR_INVERT = InvertedValue.CounterClockwise_Positive;
     public static final InvertedValue STEER_MOTOR_INVERT = InvertedValue.Clockwise_Positive;
@@ -181,7 +181,7 @@ public final class Constants {
       public static final double MOI = 125;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(0);
-      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, DRIVE_SPEED, WHEEL_COF,
+      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
 
