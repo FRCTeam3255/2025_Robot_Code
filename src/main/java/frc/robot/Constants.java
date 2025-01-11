@@ -202,6 +202,11 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED_2 = 0.3;
+  }
+
+  public static class consClimber {
+    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
   }
 
   public static class constField {
@@ -246,8 +251,4 @@ public final class Constants {
 
   }
 
-  public static class consClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
-
-  }
 }
