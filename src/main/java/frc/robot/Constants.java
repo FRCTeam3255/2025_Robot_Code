@@ -245,4 +245,9 @@ public final class Constants {
     public static final double STD_DEVS_HEADING = 9999999;
 
   }
+
+  public static class consClimber {
+    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+
+  }
 }
