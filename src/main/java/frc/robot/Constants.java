@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
@@ -223,10 +224,10 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kP = 1;
     }
 
-    public static final double CORAL_L1_HEIGHT = 20;
-    public static final double CORAL_L2_HEIGHT = 20;
-    public static final double CORAL_L3_HEIGHT = 20;
-    public static final double CORAL_L4_HEIGHT = 20;
+    public static final Angle CORAL_L1_HEIGHT = Units.Degrees.of(0);
+    public static final Angle CORAL_L2_HEIGHT = Units.Degrees.of(1);
+    public static final Angle CORAL_L3_HEIGHT = Units.Degrees.of(2);
+    public static final Angle CORAL_L4_HEIGHT = Units.Degrees.of(3);
   }
 
   public static class constField {
