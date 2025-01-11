@@ -23,6 +23,10 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+
+  private final Hopper subHopper = new Hopper();
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Elevator subElevator = new Elevator();
@@ -49,16 +53,7 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
         .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
-
-    // TODO: Replace with actual elevator values
-    conDriver.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
-    conDriver.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
-    conDriver.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
-    conDriver.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+    conDriver.btn_Back.whileTrue(com_IntakeHopper);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
