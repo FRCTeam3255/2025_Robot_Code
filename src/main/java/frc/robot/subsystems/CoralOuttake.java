@@ -11,14 +11,17 @@ import frc.robot.RobotMap.mapCoralOuttake;
 
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
+  TalonFX outtakeMotor2;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
     outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN);
+    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN_2);
   }
 
   public void setCoralOuttake(double speed) {
     outtakeMotor.set(speed);
+    outtakeMotor2.set(-speed);
   }
 
   @Override
