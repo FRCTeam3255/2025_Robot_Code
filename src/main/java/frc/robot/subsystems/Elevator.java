@@ -28,8 +28,8 @@ public class Elevator extends SubsystemBase {
 
   }
 
-  public void setPosition(Angle coralL1Height) {
-    rightMotorLeader.setControl(new PositionVoltage(coralL1Height));
+  public void setPosition(Angle height) {
+    rightMotorLeader.setControl(new PositionVoltage(height));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 
