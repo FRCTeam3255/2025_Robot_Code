@@ -45,6 +45,7 @@ public class RobotMap {
 
   public static class mapCoralOuttake {
     public static final int CORAL_OUTTAKE_MOTOR_CAN = 30;
+    public static final int CORAL_OUTTAKE_MOTOR_CAN_2 = 31;
   }
 
   // Hopper is 40-49

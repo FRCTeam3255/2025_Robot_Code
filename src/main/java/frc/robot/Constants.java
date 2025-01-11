@@ -116,7 +116,8 @@ public final class Constants {
     public static CANcoderConfiguration CANCODER_CONFIG = new CANcoderConfiguration();
 
     static {
-      // TODO: Im sure a lot of this can be cleaned up, but some of them are passed into the super class
+      // TODO: Im sure a lot of this can be cleaned up, but some of them are passed
+      // into the super class
       // Into the constructor of drive
       DRIVE_CONFIG.Slot0.kP = DRIVE_P;
       DRIVE_CONFIG.Slot0.kI = DRIVE_I;
@@ -206,6 +207,10 @@ public final class Constants {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
   }
 
+  public static class consClimber {
+    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+  }
+
   public static class constElevator {
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
@@ -269,11 +274,6 @@ public final class Constants {
      * <b>Units:</b> Radians
      */
     public static final double STD_DEVS_HEADING = 9999999;
-
-  }
-
-  public static class consClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
 
   }
 

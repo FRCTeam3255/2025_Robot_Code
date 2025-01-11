@@ -29,6 +29,8 @@ public class RobotContainer {
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
+
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final Elevator subElevator = new Elevator();
 
   public RobotContainer() {
@@ -68,8 +70,7 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightBumper
-        .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constCoralOuttake.CORAL_OUTTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
+        .whileTrue(comPlaceCoral);
 
     controller.btn_A
         .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
