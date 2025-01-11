@@ -21,7 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
-  private final SN_XboxController conOperator = new SN_XboxController(mapControllers.DRIVER_USB);
+  private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
