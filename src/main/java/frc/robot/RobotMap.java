@@ -48,7 +48,7 @@ public class RobotMap {
   }
 
     public static class mapElevator {
-      public static final int LEFT_ELEVATOR_CAN = 10;
-      public static final int RIGHT_ELEVATOR_CAN = 11;
+      public static final int LEFT_ELEVATOR_CAN = 50;
+      public static final int RIGHT_ELEVATOR_CAN = 51;
     }
 }
