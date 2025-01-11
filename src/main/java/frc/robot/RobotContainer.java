@@ -14,6 +14,12 @@ import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.Climb;
+import frc.robot.commands.DriveManual;
+import frc.robot.commands.ExampleAuto;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
+import frc.robot.commands.PlaceCoral;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -29,6 +35,9 @@ public class RobotContainer {
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
+  private final Climber subClimber = new Climber();
+
+  private final Climb comClimb = new Climb(subClimber);
 
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final Elevator subElevator = new Elevator();
@@ -72,6 +81,10 @@ public class RobotContainer {
     controller.btn_RightBumper
         .whileTrue(comPlaceCoral);
 
+    // LB: Climb
+    controller.btn_LeftBumper
+        .whileTrue(comClimb);
+    // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
         .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
     controller.btn_B
