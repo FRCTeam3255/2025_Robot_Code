@@ -244,7 +244,6 @@ public final class Constants {
 
   public static class consClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
-    public static final double CLIMBER_MOTOR_STOP = 0;
 
   }
 }

@@ -32,7 +32,7 @@ public class Climb extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalClimber.setClimberMotorVelocity(Constants.consClimber.CLIMBER_MOTOR_STOP);
+    globalClimber.setClimberMotorVelocity(0);
   }
 
   // Returns true when the command should end.
