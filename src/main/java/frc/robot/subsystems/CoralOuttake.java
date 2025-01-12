@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,11 +13,13 @@ import frc.robot.RobotMap.mapCoralOuttake;
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
+  CANrange coralSensor;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
     outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN);
     outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN_2);
+    coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_DIO);
   }
 
   public void setCoralOuttake(double speed) {
