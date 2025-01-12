@@ -240,6 +240,7 @@ public final class Constants {
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);
+    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
   }
 
   public static class constField {
