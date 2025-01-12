@@ -2,28 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constHopper;
-import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Climber;
+import frc.robot.Constants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeHopper extends Command {
+public class Climb extends Command {
+  Climber globalClimber;
 
-  Hopper subHopper;
-
-  /** Creates a new Intake_Hopper. */
-  public IntakeHopper(Hopper subHopper) {
+  /** Creates a new Climb. */
+  public Climb(Climber passedClimber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.subHopper = subHopper;
+    globalClimber = passedClimber;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    subHopper.runHopper(constHopper.HOPPER_SPEED);
+    globalClimber.setClimberMotorVelocity(Constants.consClimber.CLIMBER_MOTOR_VELOCITY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +32,7 @@ public class IntakeHopper extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subHopper.runHopper(0);
+    globalClimber.setClimberMotorVelocity(0);
   }
 
   // Returns true when the command should end.
