@@ -8,7 +8,9 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
@@ -22,14 +24,23 @@ public class Elevator extends SubsystemBase {
   public Elevator() {
     leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
     rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
-
+    
+    configure();
+  }
+  
+  public void configure(){
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
-
   }
 
-  public void setPosition(Angle height) {
-    rightMotorLeader.setControl(new PositionVoltage(height));
+
+  public Distance getElevatorPosition(){
+    return Units.Inches.of(rightMotorLeader.get());
+  }
+
+
+  public void setPosition(Distance height) {
+    rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 

@@ -6,20 +6,16 @@ package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.Climb;
-import frc.robot.commands.DriveManual;
-import frc.robot.commands.ExampleAuto;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
-import frc.robot.commands.PlaceCoral;
+import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -36,18 +32,19 @@ public class RobotContainer {
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
+  private final Elevator subElevator = new Elevator();
 
   private final Climb comClimb = new Climb(subClimber);
-
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
-  private final Elevator subElevator = new Elevator();
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX));
+            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+                conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -58,16 +55,11 @@ public class RobotContainer {
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
     controller.btn_Back
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(new Pose2d(0, 0, new Rotation2d()))));
-
-    // Defaults to Field-Relative, is Robot-Relative while held
-    controller.btn_LeftBumper
-        .whileTrue(Commands.runOnce(() -> subDrivetrain.setRobotRelative()))
-        .onFalse(Commands.runOnce(() -> subDrivetrain.setFieldRelative()));
-    conDriver.btn_Back.whileTrue(com_IntakeHopper);
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
+    controller.btn_Back.whileTrue(com_IntakeHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
@@ -84,19 +76,22 @@ public class RobotContainer {
     // LB: Climb
     controller.btn_LeftBumper
         .whileTrue(comClimb);
+
+    controller.btn_South
+        .onTrue(comPrepProcessor);
+
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
     controller.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
     controller.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
     controller.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
   }
 
   public Command getAutonomousCommand() {
-    return Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.WORKSHOP_STARTING_POSE))
-        .andThen(new ExampleAuto(subDrivetrain));
+    return Commands.print("No auto selected :<");
   }
 }

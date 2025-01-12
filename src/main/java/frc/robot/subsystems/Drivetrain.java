@@ -13,7 +13,9 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -29,9 +31,6 @@ import frc.robot.RobotMap.mapDrivetrain;
 public class Drivetrain extends SN_SuperSwerve {
   private static PIDController yawSnappingController;
 
-  StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
-      .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
-
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -42,6 +41,13 @@ public class Drivetrain extends SN_SuperSwerve {
       new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
           mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
   };
+
+  StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
+  StructArrayPublisher<SwerveModuleState> desiredStatesPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("/SmartDashboard/Drivetrain/Desired States", SwerveModuleState.struct).publish();
+  StructArrayPublisher<SwerveModuleState> actualStatesPublisher = NetworkTableInstance.getDefault()
+      .getStructArrayTopic("/SmartDashboard/Drivetrain/Actual States", SwerveModuleState.struct).publish();
 
   public Drivetrain() {
     super(
@@ -123,7 +129,7 @@ public class Drivetrain extends SN_SuperSwerve {
   public AngularVelocity getVelocityToRotate(Angle desiredYaw) {
     return getVelocityToRotate(Rotation2d.fromDegrees(desiredYaw.in(Units.Degrees)));
   }
-  
+
   public Angle getRotationMeasure() {
     return Units.Degrees.of(getRotation().getDegrees());
   }
@@ -134,17 +140,16 @@ public class Drivetrain extends SN_SuperSwerve {
 
     for (SN_SwerveModule mod : modules) {
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Speed (FPS)",
-          Units.Meters.convertFrom(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond),
-              Units.Feet));
+          Units.Feet.convertFrom(Math.abs(getDesiredModuleStates()[mod.moduleNumber].speedMetersPerSecond),
+              Units.Meters));
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Speed (FPS)",
-          Units.Meters.convertFrom(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond),
-              Units.Feet));
+          Units.Feet.convertFrom(Math.abs(getActualModuleStates()[mod.moduleNumber].speedMetersPerSecond),
+              Units.Meters));
 
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Desired Angle (Degrees)",
-          Math.abs(
-              Units.Meters.convertFrom(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees(), Units.Feet)));
+          Math.abs(getDesiredModuleStates()[mod.moduleNumber].angle.getDegrees()));
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Actual Angle (Degrees)",
-          Math.abs(Units.Meters.convertFrom(getActualModuleStates()[mod.moduleNumber].angle.getDegrees(), Units.Feet)));
+          Math.abs(getActualModuleStates()[mod.moduleNumber].angle.getDegrees()));
 
       SmartDashboard.putNumber("Drivetrain/Module " + mod.moduleNumber + "/Offset Absolute Encoder Angle (Rotations)",
           mod.getAbsoluteEncoder());
@@ -154,6 +159,8 @@ public class Drivetrain extends SN_SuperSwerve {
 
     field.setRobotPose(getPose());
     robotPosePublisher.set(getPose());
+    desiredStatesPublisher.set(getDesiredModuleStates());
+    actualStatesPublisher.set(getActualModuleStates());
 
     SmartDashboard.putData(field);
     SmartDashboard.putNumber("Drivetrain/Rotation", getRotationMeasure().in(Units.Degrees));
