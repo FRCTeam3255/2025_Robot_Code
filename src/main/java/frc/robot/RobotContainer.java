@@ -108,7 +108,7 @@ public class RobotContainer {
     // btn_East: Set Elevator to Neutral
     controller.btn_East
         .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
-        
+
     // btn_South: Prep Processor
     controller.btn_South
         .onTrue(comPrepProcessor);
@@ -124,6 +124,10 @@ public class RobotContainer {
     // btn_NorthEast: Intake Algae from Ground
     controller.btn_NorthEast
         .whileTrue(comIntakingAlgaeGround);
+
+    // btn_NorthWest: Prep Net
+    controller.btn_NorthWest
+        .onTrue(comPrepNet);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A

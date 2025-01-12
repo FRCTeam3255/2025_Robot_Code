@@ -15,8 +15,10 @@ public class IntakingAlgaeGround extends Command {
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
 
-  public IntakingAlgaeGround() {
+  public IntakingAlgaeGround(Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalElevator = passedElevator;
+    globalAlgaeIntake = passedAlgaeIntake;
   }
 
   // Called when the command is initially scheduled.
