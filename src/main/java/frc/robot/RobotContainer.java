@@ -5,7 +5,10 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -54,8 +57,21 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    NamedCommands.registerCommand("PrepPlace", Commands.print("Prep Place"));
+    NamedCommands.registerCommand("PrepPlace",
+        Commands.sequence(
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
 
+    // spin the scorer to outtake
+    // do that for a specific time (0.3 seconds)
+    // move the elevator down
+    NamedCommands.registerCommand("Place Sequence", Commands.print("Place Sequence"));
+
+    // Move the elevator up to where we get the coral station piece
+    // begin spinning the rollers in the hopper if those exist?
+    NamedCommands.registerCommand("Prep Coral Station", Commands.print("Place Coral Station"));
+
+    // might not actually need to do anything i dont know
+    NamedCommands.registerCommand("Get Coral Station Piece", Commands.print("Get Coral Station Piece"));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -94,6 +110,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No auto selected :<");
+    // return new PathPlannerAuto("4-Piece-Low");
+    return new PathPlannerAuto("L");
   }
 }

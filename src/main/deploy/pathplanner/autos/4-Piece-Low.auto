@@ -23,9 +23,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         },
         {
@@ -35,9 +47,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         },
         {
@@ -47,9 +71,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSBottom-C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         }
       ]

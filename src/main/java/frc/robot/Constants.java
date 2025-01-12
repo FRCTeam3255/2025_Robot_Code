@@ -215,6 +215,8 @@ public final class Constants {
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ELEVATOR_CONFIG.MotorOutput.PeakForwardDutyCycle = 0.5;
+      ELEVATOR_CONFIG.MotorOutput.PeakReverseDutyCycle = -0.5;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(51).in(Units.Inches);
