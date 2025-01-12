@@ -2,7 +2,11 @@
   "robotWidth": 0.876,
   "robotLength": 0.8762995267982555,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "CSBottom-Score",
+    "Tuning",
+    "Score-CSBottom"
+  ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
