@@ -31,7 +31,6 @@ public class CoralOuttake extends SubsystemBase {
 
   public boolean hasCoral() {
     return coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE);
-
   }
 
   @Override

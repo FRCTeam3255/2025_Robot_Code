@@ -27,11 +27,6 @@ public class HasCoral extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalCoralOuttake.hasCoral(true))
-      globalCoralOuttake.setCoralOuttake(0);
-    else
-      return false;
-
   }
 
   // Called once the command ends or is interrupted.
@@ -42,6 +37,6 @@ public class HasCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalCoralOuttake.hasCoral();
   }
 }
