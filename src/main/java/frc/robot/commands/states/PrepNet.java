@@ -5,23 +5,23 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Hopper;
+import frc.robot.Constants;
+import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeCoralHopper extends Command {
+public class PrepNet extends Command {
+  Elevator globalElevator;
 
-  Hopper subCoralIntake;
-
-  /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(Hopper subHopper) {
+  /** Creates a new PrepNet. */
+  public PrepNet(Elevator passedElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.subCoralIntake = subHopper;
+    globalElevator = passedElevator;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +37,6 @@ public class IntakeCoralHopper extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

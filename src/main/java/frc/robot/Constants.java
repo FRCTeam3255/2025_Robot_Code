@@ -171,18 +171,13 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 8;
+      public static final double AUTO_DRIVE_P = 6;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
 
       public static final double AUTO_STEER_P = 2.5;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
-
-      // Feet
-      public static final double AUTO_MAX_SPEED = 8;
-      // Feet per second
-      public static final double AUTO_MAX_ACCEL = 6;
 
       public static final double MASS = 125;
       public static final double MOI = 125;
@@ -211,6 +206,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(1);
   }
 
   public static class consClimber {
@@ -222,6 +218,8 @@ public final class Constants {
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ELEVATOR_CONFIG.MotorOutput.PeakForwardDutyCycle = 0.5;
+      ELEVATOR_CONFIG.MotorOutput.PeakReverseDutyCycle = -0.5;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(51).in(Units.Inches);
@@ -241,7 +239,10 @@ public final class Constants {
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(10);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(30);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(50);
+    public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
+    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);
+    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
   }
 
   public static class constField {

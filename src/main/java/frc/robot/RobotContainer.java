@@ -5,6 +5,10 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -15,6 +19,10 @@ import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.PlaceCoral;
+import frc.robot.commands.states.PrepCoralLv;
+import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -27,7 +35,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
 
   private final Hopper subHopper = new Hopper();
-  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
@@ -37,6 +45,9 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
+  private final PrepNet comPrepNet = new PrepNet(subElevator);
+  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
+  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -50,6 +61,21 @@ public class RobotContainer {
     configureOperatorBindings(conOperator);
 
     subDrivetrain.resetModulesToAbsolute();
+
+    NamedCommands.registerCommand("PrepPlace",
+        Commands.sequence(
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
+
+    NamedCommands.registerCommand("Place Sequence",
+        Commands.sequence(
+            Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
+            Commands.waitSeconds(0.3),
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
+
+    NamedCommands.registerCommand("Prep Coral Station",
+        Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -59,7 +85,7 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_Back.whileTrue(com_IntakeHopper);
+    controller.btn_Back.whileTrue(com_IntakeCoralHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
@@ -77,8 +103,21 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(comClimb);
 
+    // btn_East: Prep Net
+    controller.btn_East
+        .onTrue(comPrepNet);
+    // btn_South: Prep Processor
     controller.btn_South
         .onTrue(comPrepProcessor);
+
+    // btn_West: Clean L3 Reef
+    controller.btn_West
+        .whileTrue(comCleaningL3Reef);
+
+        // btn_North: Clean L2 Reef
+    controller.btn_North
+        .whileTrue(comCleaningL2Reef);
+
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
@@ -92,6 +131,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No auto selected :<");
+    // return new PathPlannerAuto("4-Piece-Low");
+    return new PathPlannerAuto("L");
   }
 }

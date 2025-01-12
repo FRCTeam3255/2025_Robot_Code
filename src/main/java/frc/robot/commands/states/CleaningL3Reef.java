@@ -5,23 +5,28 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Hopper;
+import frc.robot.Constants;
+import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeCoralHopper extends Command {
+public class CleaningL3Reef extends Command {
+  Elevator globalElevator;
+  AlgaeIntake globalAlgaeIntake;
 
-  Hopper subCoralIntake;
-
-  /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(Hopper subHopper) {
+  /** Creates a new CleaningL3Reef. */
+  public CleaningL3Reef(Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.subCoralIntake = subHopper;
+    globalElevator = passedElevator;
+    globalAlgaeIntake = passedAlgaeIntake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    globalElevator.setPosition(Constants.constElevator.ALGAE_L3_CLEANING);
+    globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,11 +37,12 @@ public class IntakeCoralHopper extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    globalAlgaeIntake.setAlgaeIntakeMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
