@@ -5,6 +5,10 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -32,6 +36,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
 
   private final Hopper subHopper = new Hopper();
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
@@ -56,6 +61,21 @@ public class RobotContainer {
     configureOperatorBindings(conOperator);
 
     subDrivetrain.resetModulesToAbsolute();
+
+    NamedCommands.registerCommand("PrepPlace",
+        Commands.sequence(
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
+
+    NamedCommands.registerCommand("Place Sequence",
+        Commands.sequence(
+            Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
+            Commands.waitSeconds(0.3),
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
+
+    NamedCommands.registerCommand("Prep Coral Station",
+        Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -65,7 +85,7 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_Back.whileTrue(com_IntakeHopper);
+    controller.btn_Back.whileTrue(com_IntakeCoralHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
@@ -101,6 +121,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No auto selected :<");
+    // return new PathPlannerAuto("4-Piece-Low");
+    return new PathPlannerAuto("L");
   }
 }

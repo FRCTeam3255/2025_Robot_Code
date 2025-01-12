@@ -5,25 +5,23 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constHopper;
-import frc.robot.subsystems.Hopper;
+import frc.robot.Constants;
+import frc.robot.subsystems.CoralOuttake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeHopper extends Command {
+public class EjectCoral extends Command {
+  CoralOuttake globalCoralOuttake;
 
-  Hopper subHopper;
-
-  /** Creates a new Intake_Hopper. */
-  public IntakeHopper(Hopper subHopper) {
+  /** Creates a new CoralOuttake. */
+  public EjectCoral(CoralOuttake passedCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.subHopper = subHopper;
+    globalCoralOuttake = passedCoralOuttake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    subHopper.runHopper(constHopper.HOPPER_SPEED);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +32,7 @@ public class IntakeHopper extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subHopper.runHopper(0);
+    globalCoralOuttake.setCoralOuttake(0);
   }
 
   // Returns true when the command should end.
