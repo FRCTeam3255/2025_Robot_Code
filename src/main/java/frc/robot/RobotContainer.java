@@ -84,7 +84,7 @@ public class RobotContainer {
 
     // btn_West: Clean L3 Reef
     controller.btn_West
-        .onTrue(comCleaningL3Reef);
+        .whileTrue(comCleaningL3Reef);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
