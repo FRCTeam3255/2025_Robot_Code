@@ -204,6 +204,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(1);
   }
 
   public static class consClimber {
