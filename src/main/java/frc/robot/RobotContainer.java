@@ -20,7 +20,6 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.commands.states.Climb;
-import frc.robot.commands.states.IntakeHopper;
 import frc.robot.commands.states.PlaceCoral;
 import frc.robot.commands.states.PrepCoralLv;
 import frc.robot.commands.states.PrepNet;
@@ -46,7 +45,6 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
-  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
   private final PrepNet comPrepNet = new PrepNet(subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
 
