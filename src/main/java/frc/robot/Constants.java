@@ -171,18 +171,13 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 8;
+      public static final double AUTO_DRIVE_P = 6;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
 
       public static final double AUTO_STEER_P = 2.5;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
-
-      // Feet
-      public static final double AUTO_MAX_SPEED = 8;
-      // Feet per second
-      public static final double AUTO_MAX_ACCEL = 6;
 
       public static final double MASS = 125;
       public static final double MOI = 125;
