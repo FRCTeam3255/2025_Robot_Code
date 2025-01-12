@@ -206,7 +206,12 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
-    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(1);
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
+
+    public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
+    static {
+      CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    }
   }
 
   public static class consClimber {
@@ -218,11 +223,9 @@ public final class Constants {
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ELEVATOR_CONFIG.MotorOutput.PeakForwardDutyCycle = 0.5;
-      ELEVATOR_CONFIG.MotorOutput.PeakReverseDutyCycle = -0.5;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(51).in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(66).in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
           .in(Units.Inches);
@@ -232,13 +235,14 @@ public final class Constants {
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
       ELEVATOR_CONFIG.Slot0.kG = 0.3;
       ELEVATOR_CONFIG.Slot0.kS = 0.4;
-      ELEVATOR_CONFIG.Slot0.kP = 1;
+      // ELEVATOR_CONFIG.Slot0.kP = 1;
+      ELEVATOR_CONFIG.Slot0.kP = 0.3;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(10);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(30);
-    public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(50);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.039062);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(16.946289);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.742188);
+    public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(58.888916);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);

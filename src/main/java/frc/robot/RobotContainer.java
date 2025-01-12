@@ -35,13 +35,13 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
 
   private final Hopper subHopper = new Hopper();
-  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
 
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper, subCoralOuttake);
   private final Climb comClimb = new Climb(subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
@@ -75,7 +75,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Prep Coral Station",
         Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper));
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper, subCoralOuttake));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -85,6 +85,7 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0)).ignoringDisable(true));
     controller.btn_Back.whileTrue(com_IntakeCoralHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
@@ -103,9 +104,8 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(comClimb);
 
-    // btn_East: Prep Net
     controller.btn_East
-        .onTrue(comPrepNet);
+        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
     // btn_South: Prep Processor
     controller.btn_South
         .onTrue(comPrepProcessor);
@@ -114,10 +114,9 @@ public class RobotContainer {
     controller.btn_West
         .whileTrue(comCleaningL3Reef);
 
-        // btn_North: Clean L2 Reef
+    // btn_North: Clean L2 Reef
     controller.btn_North
         .whileTrue(comCleaningL2Reef);
-
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
