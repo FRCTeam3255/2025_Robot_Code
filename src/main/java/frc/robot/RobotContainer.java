@@ -17,11 +17,12 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.Climb;
-import frc.robot.commands.DriveManual;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
-import frc.robot.commands.PlaceCoral;
+import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.IntakeHopper;
+import frc.robot.commands.states.PlaceCoral;
+import frc.robot.commands.states.PrepCoralLv;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -107,13 +108,13 @@ public class RobotContainer {
         .whileTrue(comClimb);
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
     controller.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
     controller.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
     controller.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
   }
 
   public Command getAutonomousCommand() {
