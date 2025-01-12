@@ -31,7 +31,7 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
 
   private final Hopper subHopper = new Hopper();
-  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
@@ -68,7 +68,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Prep Coral Station",
         Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subCoralOuttake));
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -78,7 +78,7 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_Back.whileTrue(com_IntakeHopper);
+    controller.btn_Back.whileTrue(com_IntakeCoralHopper);
     // LT: Eat Algae
     controller.btn_LeftTrigger
         .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))

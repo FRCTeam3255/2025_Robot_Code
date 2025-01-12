@@ -5,17 +5,17 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Hopper;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCoralHopper extends Command {
 
-  CoralOuttake subCoralOuttake;
+  Hopper subCoralIntake;
 
   /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(CoralOuttake subCoralOuttake) {
+  public IntakeCoralHopper(Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.subCoralOuttake = subCoralOuttake;
+    this.subCoralIntake = subHopper;
   }
 
   // Called when the command is initially scheduled.
