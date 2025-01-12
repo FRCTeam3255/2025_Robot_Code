@@ -64,11 +64,18 @@ public class RobotContainer {
     // spin the scorer to outtake
     // do that for a specific time (0.3 seconds)
     // move the elevator down
-    NamedCommands.registerCommand("Place Sequence", Commands.print("Place Sequence"));
+    NamedCommands.registerCommand("Place Sequence",
+        Commands.sequence(
+            Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
+            Commands.waitSeconds(0.3),
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
 
     // Move the elevator up to where we get the coral station piece
     // begin spinning the rollers in the hopper if those exist?
-    NamedCommands.registerCommand("Prep Coral Station", Commands.print("Place Coral Station"));
+    NamedCommands.registerCommand("Prep Coral Station",
+        Commands.sequence(
+            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator),
+            Commands.runOnce(() -> 
 
     // might not actually need to do anything i dont know
     NamedCommands.registerCommand("Get Coral Station Piece", Commands.print("Get Coral Station Piece"));
