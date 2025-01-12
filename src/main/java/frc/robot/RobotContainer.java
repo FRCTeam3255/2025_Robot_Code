@@ -72,7 +72,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Prep Coral Station",
         Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper());
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subCoralOuttake));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
