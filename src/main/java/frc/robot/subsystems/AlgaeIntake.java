@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
+import frc.robot.Constants.constAlgaeIntake;
 
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotor;
@@ -15,6 +16,9 @@ public class AlgaeIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
     intakeMotor = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_CAN);
+
+    intakeMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+
   }
 
   public void setAlgaeIntakeMotor(double speed) {
