@@ -21,12 +21,16 @@ public class HasCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalCoralOuttake.setCoralOuttake(0);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalCoralOuttake.hasCoral(true))
+      globalCoralOuttake.setCoralOuttake(0);
+    else
+      return false;
 
   }
 
