@@ -20,6 +20,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.IntakeCoralHopper;
 import frc.robot.commands.states.IntakeHopper;
 import frc.robot.commands.states.PlaceCoral;
 import frc.robot.commands.states.PrepCoralLv;
@@ -62,24 +63,16 @@ public class RobotContainer {
         Commands.sequence(
             Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
 
-    // spin the scorer to outtake
-    // do that for a specific time (0.3 seconds)
-    // move the elevator down
     NamedCommands.registerCommand("Place Sequence",
         Commands.sequence(
             Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
             Commands.waitSeconds(0.3),
             Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
 
-    // Move the elevator up to where we get the coral station piece
-    // begin spinning the rollers in the hopper if those exist?
     NamedCommands.registerCommand("Prep Coral Station",
-        Commands.sequence(
-            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator),
-            Commands.runOnce(() -> 
+        Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    // might not actually need to do anything i dont know
-    NamedCommands.registerCommand("Get Coral Station Piece", Commands.print("Get Coral Station Piece"));
+    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper());
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
