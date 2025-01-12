@@ -18,6 +18,7 @@ import frc.robot.commands.DriveManual;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.commands.PlaceCoral;
+import frc.robot.commands.states.ScoringAlgae;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -30,15 +31,14 @@ public class RobotContainer {
 
   private final Hopper subHopper = new Hopper();
   private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
-
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
+  private final Elevator subElevator = new Elevator();
 
   private final Climb comClimb = new Climb(subClimber);
-
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
-  private final Elevator subElevator = new Elevator();
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subAlgaeIntake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -78,6 +78,11 @@ public class RobotContainer {
     // LB: Climb
     controller.btn_LeftBumper
         .whileTrue(comClimb);
+
+    // btn_North: Score Algae
+    controller.btn_North
+        .whileTrue(comScoringAlgae);
+
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
         .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
