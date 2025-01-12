@@ -19,6 +19,7 @@ import frc.robot.commands.states.Climb;
 import frc.robot.commands.states.IntakeHopper;
 import frc.robot.commands.states.PlaceCoral;
 import frc.robot.commands.states.PrepCoralLv;
+import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -30,16 +31,16 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
 
   private final Hopper subHopper = new Hopper();
-  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
-
-  private final Climb comClimb = new Climb(subClimber);
-
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final Elevator subElevator = new Elevator();
+
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
+  private final Climb comClimb = new Climb(subClimber);
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
+  private final PrepNet comPrepNet = new PrepNet(subElevator);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -79,6 +80,11 @@ public class RobotContainer {
     // LB: Climb
     controller.btn_LeftBumper
         .whileTrue(comClimb);
+
+    // btn_East: Prep Net
+    controller.btn_East
+        .onTrue(comPrepNet);
+
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
         .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
