@@ -20,6 +20,7 @@ import frc.robot.commands.states.IntakeHopper;
 import frc.robot.commands.states.PlaceCoral;
 import frc.robot.commands.states.PrepCoralLv;
 import frc.robot.commands.states.PrepNet;
+import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -37,9 +38,10 @@ public class RobotContainer {
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
 
-  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
   private final Climb comClimb = new Climb(subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
+  private final IntakeHopper com_IntakeHopper = new IntakeHopper(subHopper);
   private final PrepNet comPrepNet = new PrepNet(subElevator);
 
   public RobotContainer() {
@@ -84,6 +86,8 @@ public class RobotContainer {
     // btn_East: Prep Net
     controller.btn_East
         .onTrue(comPrepNet);
+    controller.btn_South
+        .onTrue(comPrepProcessor);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
