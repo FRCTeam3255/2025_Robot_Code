@@ -19,6 +19,10 @@ import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.PlaceCoral;
+import frc.robot.commands.states.PrepCoralLv;
+import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -41,6 +45,7 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
+  private final PrepNet comPrepNet = new PrepNet(subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
 
   public RobotContainer() {
@@ -97,6 +102,9 @@ public class RobotContainer {
     controller.btn_LeftBumper
         .whileTrue(comClimb);
 
+    // btn_East: Prep Net
+    controller.btn_East
+        .onTrue(comPrepNet);
     // btn_South: Prep Processor
     controller.btn_South
         .onTrue(comPrepProcessor);
