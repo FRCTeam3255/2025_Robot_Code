@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "F-CSBottom"
