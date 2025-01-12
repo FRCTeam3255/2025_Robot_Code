@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -24,24 +25,27 @@ public class Elevator extends SubsystemBase {
   public Elevator() {
     leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
     rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
-    
+
     configure();
   }
-  
-  public void configure(){
+
+  public void configure() {
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
-
-  public Distance getElevatorPosition(){
+  public Distance getElevatorPosition() {
     return Units.Inches.of(rightMotorLeader.get());
   }
-
 
   public void setPosition(Distance height) {
     rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
+  }
+
+  public void setNeutral() {
+    rightMotorLeader.setControl(new NeutralOut());
+    leftMotorFollower.setControl(new NeutralOut());
   }
 
   public void resetSensorPosition(double setpoint) {

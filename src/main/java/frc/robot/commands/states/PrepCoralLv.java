@@ -20,6 +20,8 @@ public class PrepCoralLv extends Command {
     this.globalElevator = subElevator;
 
     this.globalDistance = height;
+
+    addRequirements(subElevator);
   }
 
   // Called when the command is initially scheduled.
