@@ -13,11 +13,11 @@ import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.Climb;
-import frc.robot.commands.DriveManual;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
-import frc.robot.commands.PlaceCoral;
+import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.IntakeHopper;
+import frc.robot.commands.states.PlaceCoral;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
