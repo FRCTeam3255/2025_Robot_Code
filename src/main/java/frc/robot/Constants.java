@@ -239,8 +239,8 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kP = 0.3;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.039062);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(16.946289);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(17.946289);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.742188);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(58.888916);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
