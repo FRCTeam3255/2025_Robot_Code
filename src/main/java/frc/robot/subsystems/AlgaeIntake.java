@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,7 @@ import frc.robot.Constants.constAlgaeIntake;
 
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotor;
+  CANrange algaeSensor;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -19,10 +21,15 @@ public class AlgaeIntake extends SubsystemBase {
 
     intakeMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
 
+    algaeSensor = new CANrange(mapAlgaeIntake.ALGAE_SENSOR_CAN);
   }
 
   public void setAlgaeIntakeMotor(double speed) {
     intakeMotor.set(speed);
+  }
+
+  public boolean hasAlgae() {
+    return algaeSensor.getDistance().getValue().lt(constAlgaeIntake.REQUIRED_ALGAE_DISTANCE);
   }
 
   @Override
