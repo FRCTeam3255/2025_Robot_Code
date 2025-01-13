@@ -49,7 +49,7 @@ public class RobotContainer {
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
   private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subElevator, subAlgaeIntake);
-  private fianl EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
