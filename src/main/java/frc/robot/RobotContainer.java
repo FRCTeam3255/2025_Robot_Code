@@ -129,6 +129,10 @@ public class RobotContainer {
     controller.btn_NorthWest
         .onTrue(comPrepNet);
 
+    // btn_SouthEast: Eject Algae
+    controller.btn_SouthEast
+        .onTrue(new EjectingAlgae(subAlgaeIntake));
+
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
         .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
