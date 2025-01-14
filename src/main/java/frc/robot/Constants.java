@@ -15,12 +15,16 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
-
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -88,7 +92,7 @@ public final class Constants {
     // Distance between Front & Back Wheels
     public static final double WHEELBASE = Units.Meters.convertFrom(23.75, Units.Inches);
 
-    public static final double AT_ROTATION_TOLERANCE = 0.1;
+    public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
     public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
 
     // -- CONFIGS --
@@ -140,11 +144,6 @@ public final class Constants {
       CANCODER_CONFIG.MagnetSensor.SensorDirection = CANCODER_INVERT;
     }
 
-    // Teleop Snapping to Rotation (Yaw)
-    public static final double YAW_SNAP_P = 3;
-    public static final double YAW_SNAP_I = 0;
-    public static final double YAW_SNAP_D = 0;
-
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
 
@@ -172,10 +171,16 @@ public final class Constants {
       public static final double AUTO_DRIVE_P = 6;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
+      public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
+          constDrivetrain.AUTO.AUTO_DRIVE_I,
+          constDrivetrain.AUTO.AUTO_DRIVE_D);
 
       public static final double AUTO_STEER_P = 2.5;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
+      public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
+          constDrivetrain.AUTO.AUTO_STEER_I,
+          constDrivetrain.AUTO.AUTO_STEER_D);
 
       public static final double MASS = 125;
       public static final double MOI = 125;
@@ -192,6 +197,33 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
       public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+
+    }
+
+    public static class TELEOP_AUTO_ALIGN {
+      // Teleop Snapping to Rotation (Yaw)
+      public static final double YAW_SNAP_P = 3;
+      public static final double YAW_SNAP_I = 0;
+      public static final double YAW_SNAP_D = 0;
+
+      public static final PIDController TRANS_CONTROLLER = new PIDController(
+          3,
+          0,
+          0);
+
+      // TODO: These can probably be much higher constraints... im just very scared
+      public static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
+          3, 0, 0, new TrapezoidProfile.Constraints(360, Math.pow(360, 2)));
+
+      static {
+        ROTATION_CONTROLLER.enableContinuousInput(0, 360);
+        ROTATION_CONTROLLER.setTolerance(constDrivetrain.AT_ROTATION_TOLERANCE.in(Units.Degrees));
+      }
+
+      public static HolonomicDriveController TELEOP_AUTO_ALIGN_CONTROLLER = new HolonomicDriveController(
+          TRANS_CONTROLLER,
+          TRANS_CONTROLLER,
+          ROTATION_CONTROLLER);
     }
   }
 
@@ -277,15 +309,21 @@ public final class Constants {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
       // ALGAE POSES
-      public static final Pose2d ALGAE_AB = new Pose2d(0, 0, new Rotation2d());
-      public static final Pose2d ALGAE_CD = new Pose2d(0, 0, new Rotation2d());
-      public static final Pose2d ALGAE_EF = new Pose2d(0, 0, new Rotation2d());
-      public static final Pose2d ALGAE_GH = new Pose2d(0, 0, new Rotation2d());
-      public static final Pose2d ALGAE_IJ = new Pose2d(0, 0, new Rotation2d());
-      public static final Pose2d ALGAE_KL = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
+      public static final Pose2d ALGAE_B = new Pose2d(2.860, 3.857, Rotation2d.fromDegrees(0));
+      public static final Pose2d ALGAE_C = new Pose2d(3.527, 2.694, Rotation2d.fromDegrees(60));
+      public static final Pose2d ALGAE_D = new Pose2d(3.813, 2.535, Rotation2d.fromDegrees(60));
+      public static final Pose2d ALGAE_E = new Pose2d(5.160, 2.529, Rotation2d.fromDegrees(120));
+      public static final Pose2d ALGAE_F = new Pose2d(5.445, 2.694, Rotation2d.fromDegrees(120));
+      public static final Pose2d ALGAE_G = new Pose2d(6.119, 3.857, Rotation2d.fromDegrees(180));
+      public static final Pose2d ALGAE_H = new Pose2d(6.119, 4.187, Rotation2d.fromDegrees(180));
+      public static final Pose2d ALGAE_I = new Pose2d(5.452, 5.343, Rotation2d.fromDegrees(-120));
+      public static final Pose2d ALGAE_J = new Pose2d(5.166, 5.527, Rotation2d.fromDegrees(-120));
+      public static final Pose2d ALGAE_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
+      public static final Pose2d ALGAE_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
 
-      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH,
-          ALGAE_IJ, ALGAE_KL };
+      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, ALGAE_A, ALGAE_B, ALGAE_C, ALGAE_D, ALGAE_E,
+          ALGAE_F, ALGAE_G, ALGAE_H, ALGAE_I, ALGAE_J, ALGAE_K, ALGAE_L };
 
       public static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
@@ -296,7 +334,7 @@ public final class Constants {
       for (int i = 0; i < poses.BLUE_POSES.length; i++) {
         returnedPoses[i] = new Pose2d(FIELD_LENGTH.in(Units.Meters) - (poses.BLUE_POSES[i].getX()),
             FIELD_WIDTH.in(Units.Meters) - poses.BLUE_POSES[i].getY(),
-            poses.BLUE_POSES[i].getRotation().plus(new Rotation2d().fromDegrees(180)));
+            poses.BLUE_POSES[i].getRotation().plus(Rotation2d.fromDegrees(180)));
       }
       return returnedPoses;
     }

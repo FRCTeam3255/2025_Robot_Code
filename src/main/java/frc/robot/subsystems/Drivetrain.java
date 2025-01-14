@@ -13,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
@@ -29,8 +30,6 @@ import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
 
 public class Drivetrain extends SN_SuperSwerve {
-  private static PIDController yawSnappingController;
-
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -48,6 +47,8 @@ public class Drivetrain extends SN_SuperSwerve {
       .getStructArrayTopic("/SmartDashboard/Drivetrain/Desired States", SwerveModuleState.struct).publish();
   StructArrayPublisher<SwerveModuleState> actualStatesPublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("/SmartDashboard/Drivetrain/Actual States", SwerveModuleState.struct).publish();
+
+  Pose2d desiredAlignmentPose = new Pose2d(0, 0, new Rotation2d(0));
 
   public Drivetrain() {
     super(
@@ -71,21 +72,11 @@ public class Drivetrain extends SN_SuperSwerve {
             constVision.STD_DEVS_POS,
             constVision.STD_DEVS_POS,
             constVision.STD_DEVS_HEADING),
-        new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
-            constDrivetrain.AUTO.AUTO_DRIVE_I,
-            constDrivetrain.AUTO.AUTO_DRIVE_D),
-        new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
-            constDrivetrain.AUTO.AUTO_STEER_I,
-            constDrivetrain.AUTO.AUTO_STEER_D),
+        constDrivetrain.AUTO.AUTO_DRIVE_PID,
+        constDrivetrain.AUTO.AUTO_STEER_PID,
         constDrivetrain.AUTO.ROBOT_CONFIG,
         () -> constField.isRedAlliance(),
         Robot.isSimulation());
-
-    yawSnappingController = new PIDController(
-        constDrivetrain.YAW_SNAP_P,
-        constDrivetrain.YAW_SNAP_I,
-        constDrivetrain.YAW_SNAP_D);
-    yawSnappingController.enableContinuousInput(0, 360);
   }
 
   @Override
@@ -109,7 +100,8 @@ public class Drivetrain extends SN_SuperSwerve {
    * @return The desired velocity needed to rotate to that position.
    */
   public AngularVelocity getVelocityToRotate(Rotation2d desiredYaw) {
-    double yawSetpoint = yawSnappingController.calculate(getRotation().getDegrees(), desiredYaw.getDegrees());
+    double yawSetpoint = constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.getThetaController()
+        .calculate(getRotation().getDegrees(), desiredYaw.getDegrees());
 
     // limit the PID output to our maximum rotational speed
     yawSetpoint = MathUtil.clamp(yawSetpoint, -constDrivetrain.TURN_SPEED.in(Units.DegreesPerSecond),
@@ -132,6 +124,19 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public Angle getRotationMeasure() {
     return Units.Degrees.of(getRotation().getDegrees());
+  }
+
+  /**
+   * Calculate the ChassisSpeeds needed to align the robot to the desired pose.
+   * This must be called every loop until you reach the desired pose.
+   * 
+   * @param desiredPose The desired pose to align to
+   * @return The ChassisSpeeds needed to align the robot to the desired pose
+   */
+  public ChassisSpeeds getAlignmentSpeeds(Pose2d desiredPose) {
+    desiredAlignmentPose = desiredPose;
+    return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(getPose(), desiredPose, 0,
+        desiredPose.getRotation());
   }
 
   @Override
