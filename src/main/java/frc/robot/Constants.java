@@ -276,7 +276,16 @@ public final class Constants {
     public static class poses {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
-      public static final Pose2d[] BLUE_POSES = new Pose2d[] { poses.RESET_POSE };
+      // ALGAE POSES
+      public static final Pose2d ALGAE_AB = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_CD = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_EF = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_GH = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_IJ = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose2d ALGAE_KL = new Pose2d(0, 0, new Rotation2d());
+
+      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH,
+          ALGAE_IJ, ALGAE_KL };
 
       public static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
