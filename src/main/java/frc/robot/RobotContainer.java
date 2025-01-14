@@ -49,6 +49,7 @@ public class RobotContainer {
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
   private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subElevator, subAlgaeIntake);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -128,6 +129,10 @@ public class RobotContainer {
     // btn_NorthWest: Prep Net
     controller.btn_NorthWest
         .onTrue(comPrepNet);
+
+    // btn_SouthEast: Eject Algae
+    controller.btn_SouthEast
+        .onTrue(comEjectingAlgae);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
