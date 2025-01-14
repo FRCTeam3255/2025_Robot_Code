@@ -24,7 +24,6 @@ public class AlgaeIntake extends SubsystemBase {
 
     intakeMotor.getConfigurator().apply(intakeConfig);
 
-    algaeSensor = new CANrange(mapAlgaeIntake.ALGAE_SENSOR_CAN);
   }
 
   public boolean hasGamePiece = true;
