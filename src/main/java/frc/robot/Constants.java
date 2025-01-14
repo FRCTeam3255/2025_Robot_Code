@@ -26,9 +26,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.units.DistanceUnit;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -273,13 +270,26 @@ public final class Constants {
       return false;
     };
 
-    public static class bluePoses {
+    /*
+     * All poses on the field, defined by their location on the BLUE Alliance
+     */
+    public static class poses {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
+      public static final Pose2d[] BLUE_POSES = new Pose2d[] { poses.RESET_POSE };
+
+      public static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
 
-    public static class redPoses {
-      public static final Pose2d RESET_POSE = new Pose2d(FIELD_LENGTH, FIELD_WIDTH, new Rotation2d().fromDegrees(180));
+    public static Pose2d[] getRedAlliancePoses() {
+      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
+
+      for (int i = 0; i < poses.BLUE_POSES.length; i++) {
+        returnedPoses[i] = new Pose2d(FIELD_LENGTH.in(Units.Meters) - (poses.BLUE_POSES[i].getX()),
+            FIELD_WIDTH.in(Units.Meters) - poses.BLUE_POSES[i].getY(),
+            poses.BLUE_POSES[i].getRotation().plus(new Rotation2d().fromDegrees(180)));
+      }
+      return returnedPoses;
     }
 
     /**
@@ -293,10 +303,10 @@ public final class Constants {
      */
     public static Supplier<Pose2d[]> getFieldPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> new Pose2d[] { redPoses.RESET_POSE };
+        return () -> poses.RED_POSES;
 
       }
-      return () -> new Pose2d[] { bluePoses.RESET_POSE };
+      return () -> poses.BLUE_POSES;
     }
   }
 
