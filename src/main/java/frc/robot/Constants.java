@@ -202,12 +202,8 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_SPEED = -0.2;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
 
-    public static final boolean ALGAE_INTAKE_CURRENT_LIMIT_ENABLE = true;
-    public static final double ALGAE_INTAKE_CURRENT_LIMIT = 20;
-    public static final double ALGAE_INTAKE_CURRENT_THRESHOLD = 30;
-    public static final double ALGAE_INTAKE_TIME_THRESHOLD = 1;
-    public static final double ALGAE_INTAKE_VEOLOCITY = 10;
-    public static final double ALGAE_INTAKE_CURRENT = 30;
+    public static final double ALGAE_INTAKE_HAS_GP_VEOLOCITY = 10;
+    public static final double ALGAE_INTAKE_HAS_GP_CURRENT = 30;
   }
 
   public static class constCoralOuttake {

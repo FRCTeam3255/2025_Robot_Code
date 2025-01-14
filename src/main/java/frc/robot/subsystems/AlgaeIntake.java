@@ -15,17 +15,12 @@ import frc.robot.Constants.constAlgaeIntake;
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotor;
   TalonFXConfiguration intakeConfig;
-  double intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_VEOLOCITY;
-  double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_CURRENT;
+  double intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+  double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
     intakeMotor = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_CAN);
-
-    intakeConfig.CurrentLimits.SupplyCurrentLimitEnable = constAlgaeIntake.ALGAE_INTAKE_CURRENT_LIMIT_ENABLE;
-    intakeConfig.CurrentLimits.SupplyCurrentLimit = constAlgaeIntake.ALGAE_INTAKE_CURRENT_LIMIT;
-    intakeConfig.CurrentLimits.SupplyCurrentLowerLimit = constAlgaeIntake.ALGAE_INTAKE_CURRENT_THRESHOLD;
-    intakeConfig.CurrentLimits.SupplyCurrentLowerTime = constAlgaeIntake.ALGAE_INTAKE_TIME_THRESHOLD;
 
     intakeMotor.getConfigurator().apply(intakeConfig);
 
@@ -42,8 +37,8 @@ public class AlgaeIntake extends SubsystemBase {
 
     double intakeVelocity = intakeMotor.getVelocity().getValueAsDouble();
 
-    intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_CURRENT;
-    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_VEOLOCITY;
+    intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
         && (intakeVelocity <= intakeHasGamePieceVelocity)) {
