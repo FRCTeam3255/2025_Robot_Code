@@ -26,6 +26,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
@@ -54,10 +55,10 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.390625;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.433594;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.450684;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.814209;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.109375;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.066406;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.049316;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.314209;
 
     public static final double WHEEL_DIAMETER = 0.09779;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
@@ -315,6 +316,28 @@ public final class Constants {
      * <b>Units:</b> Radians
      */
     public static final double STD_DEVS_HEADING = 9999999;
+
+    /**
+     * <p>
+     * Maximum rate of rotation before we begin rejecting pose updates
+     * </p>
+     */
+    public static final AngularVelocity MAX_ANGULAR_VELOCITY = Units.DegreesPerSecond.of(720);
+
+    /**
+     * The area that one tag (if its the only tag in the update) needs to exceed
+     * before being accepted
+     */
+    public static final double AREA_THRESHOLD = 0.1;
+
+    // The below values are accounted for in the limelight interface, NOT in code
+    public static final Distance LL_FORWARD = Units.Meters.of(0.3302);
+    public static final Distance LL_RIGHT = Units.Meters.of(-0.2921);
+    public static final Distance LL_UP = Units.Meters.of(0.2286);
+
+    public static final Angle LL_ROLL = Units.Degrees.of(0);
+    public static final Angle LL_PITCH = Units.Degrees.of(15.92);
+    public static final Angle LL_YAW = Units.Degrees.of(-20);
 
   }
 
