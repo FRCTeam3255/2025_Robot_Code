@@ -1,0 +1,123 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.127,
+        "y": 2.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.165580985915494,
+        "y": 2.338468309859154
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.598679577464789,
+        "y": 4.039172535211267
+      },
+      "prevControl": {
+        "x": 8.208098591549295,
+        "y": 4.265933098591549
+      },
+      "nextControl": {
+        "x": 7.364374114700398,
+        "y": 3.9519891072059123
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.127,
+        "y": 4.039172535211267
+      },
+      "prevControl": {
+        "x": 6.879479805311373,
+        "y": 4.004047711776765
+      },
+      "nextControl": {
+        "x": 7.726232394366198,
+        "y": 4.124207746478873
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.127,
+        "y": 6.009154929577464
+      },
+      "prevControl": {
+        "x": 9.752904929577465,
+        "y": 6.179225352112676
+      },
+      "nextControl": {
+        "x": 5.948784466773577,
+        "y": 5.932846145007106
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.127,
+        "y": 5.413908450704225
+      },
+      "prevControl": {
+        "x": 7.309821762949939,
+        "y": 6.156182813105333
+      },
+      "nextControl": {
+        "x": 6.861707746478873,
+        "y": 4.336795774647887
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.285,
+        "y": 2.995
+      },
+      "prevControl": {
+        "x": 6.039700704225352,
+        "y": 2.9195422535211253
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 4.070048309178747,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": "Tickle Monster",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
