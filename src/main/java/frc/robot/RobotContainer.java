@@ -42,6 +42,7 @@ public class RobotContainer {
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
   private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subElevator, subAlgaeIntake);
+  private final ScoreAlgae comScoreAlgae = new ScoreAlgae(subElevator, subAlgaeIntake);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
 
   public RobotContainer() {
@@ -82,23 +83,11 @@ public class RobotContainer {
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0)).ignoringDisable(true));
     controller.btn_Back.whileTrue(com_IntakeCoralHopper);
-    // LT: Eat Algae
-    // controller.btn_LeftTrigger
-    // .onTrue(Commands.runOnce(() ->
-    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED),
-    // subAlgaeIntake))
-    // .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0),
-    // subAlgaeIntake));
-    // // RT: Spit Algae
-    // controller.btn_RightTrigger
-    // .onTrue(Commands.runOnce(() ->
-    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED),
-    // subAlgaeIntake))
-    // .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0),
-    // subAlgaeIntake));
 
-    controller.btn_LeftTrigger.whileTrue(new IntakingAlgaeGround(subElevator, subAlgaeIntake));
-    controller.btn_RightTrigger.whileTrue(new ScoreAlgae(subElevator, subAlgaeIntake));
+    // LT: Eat Algae
+    controller.btn_LeftTrigger.whileTrue(comIntakingAlgaeGround);
+    // // RT: Spit Algae
+    controller.btn_RightTrigger.whileTrue(comScoreAlgae);
 
     // RB: Score Coral
     controller.btn_RightBumper
