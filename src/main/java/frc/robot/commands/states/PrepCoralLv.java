@@ -8,20 +8,23 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constElevator;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PrepCoralLv extends Command {
+  StateMachine globalStateMachine;
   Elevator globalElevator;
   Distance globalDistance;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(Elevator subElevator, Distance height) {
+  public PrepCoralLv(StateMachine passedStateMachine, Elevator subElevator, Distance height) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalStateMachine = passedStateMachine;
     this.globalElevator = subElevator;
-
     this.globalDistance = height;
 
     addRequirements(subElevator);
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.

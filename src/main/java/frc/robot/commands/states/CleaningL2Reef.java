@@ -8,24 +8,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CleaningL2Reef extends Command {
+  StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
 
   /** Creates a new CleaningL2Reef. */
-  public CleaningL2Reef(Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
-
+  public CleaningL2Reef(StateMachine passedStateMachine, Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    globalStateMachine = passedStateMachine;
     globalElevator = passedElevator;
     globalAlgaeIntake = passedAlgaeIntake;
 
-    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalStateMachine.setRobotState(RobotState.CLEANING_L2);
     globalElevator.setPosition(Constants.constElevator.ALGAE_L2_CLEANING);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
   }

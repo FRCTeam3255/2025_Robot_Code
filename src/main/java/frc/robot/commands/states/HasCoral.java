@@ -6,22 +6,26 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HasCoral extends Command {
   /** Creates a new HasCoral. */
+  StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
 
-  public HasCoral(CoralOuttake subCoralOuttake) {
-    globalCoralOuttake = subCoralOuttake;
-
+  public HasCoral(StateMachine passedStateMachine, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalStateMachine = passedStateMachine;
+    globalCoralOuttake = subCoralOuttake;
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    globalStateMachine.setRobotState(RobotState.HAS_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

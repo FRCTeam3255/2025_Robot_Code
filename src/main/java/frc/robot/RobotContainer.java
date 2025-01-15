@@ -14,12 +14,6 @@ import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Climber;
-import frc.robot.commands.states.Climb;
-import frc.robot.commands.states.PlaceCoral;
-import frc.robot.commands.states.PrepCoralLv;
-import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -40,16 +34,17 @@ public class RobotContainer {
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper);
 
-  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper, subCoralOuttake);
-  private final Climb comClimb = new Climb(subClimber);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
-  private final PrepNet comPrepNet = new PrepNet(subElevator);
-  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
-  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
+      subCoralOuttake);
+  private final Climb comClimb = new Climb(subStateMachine, subClimber);
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine, subCoralOuttake);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
+  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
+  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
+  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -77,7 +72,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Prep Coral Station",
         Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper, subCoralOuttake));
+    NamedCommands.registerCommand("Get Coral Station Piece",
+        new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -136,13 +132,13 @@ public class RobotContainer {
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
+        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
     controller.btn_B
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
+        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
     controller.btn_Y
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
+        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
     controller.btn_X
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
+        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
   }
 
   public Command getAutonomousCommand() {
