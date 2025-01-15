@@ -15,19 +15,21 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
-
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.DistanceUnit;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -54,10 +56,10 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.390625;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.433594;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.450684;
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.814209;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.109375;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.066406;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.049316;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.314209;
 
     public static final double WHEEL_DIAMETER = 0.09779;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
@@ -90,7 +92,7 @@ public final class Constants {
     // Distance between Front & Back Wheels
     public static final double WHEELBASE = Units.Meters.convertFrom(23.75, Units.Inches);
 
-    public static final double AT_ROTATION_TOLERANCE = 0.1;
+    public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
     public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
 
     // -- CONFIGS --
@@ -142,11 +144,6 @@ public final class Constants {
       CANCODER_CONFIG.MagnetSensor.SensorDirection = CANCODER_INVERT;
     }
 
-    // Teleop Snapping to Rotation (Yaw)
-    public static final double YAW_SNAP_P = 3;
-    public static final double YAW_SNAP_I = 0;
-    public static final double YAW_SNAP_D = 0;
-
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
 
@@ -174,10 +171,16 @@ public final class Constants {
       public static final double AUTO_DRIVE_P = 6;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
+      public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
+          constDrivetrain.AUTO.AUTO_DRIVE_I,
+          constDrivetrain.AUTO.AUTO_DRIVE_D);
 
       public static final double AUTO_STEER_P = 2.5;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
+      public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
+          constDrivetrain.AUTO.AUTO_STEER_I,
+          constDrivetrain.AUTO.AUTO_STEER_D);
 
       public static final double MASS = 125;
       public static final double MOI = 125;
@@ -194,6 +197,33 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
       public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+
+    }
+
+    public static class TELEOP_AUTO_ALIGN {
+      // Teleop Snapping to Rotation (Yaw)
+      public static final double YAW_SNAP_P = 3;
+      public static final double YAW_SNAP_I = 0;
+      public static final double YAW_SNAP_D = 0;
+
+      public static final PIDController TRANS_CONTROLLER = new PIDController(
+          3,
+          0,
+          0);
+
+      // TODO: These can probably be much higher constraints... im just very scared
+      public static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
+          3, 0, 0, new TrapezoidProfile.Constraints(360, Math.pow(360, 2)));
+
+      static {
+        ROTATION_CONTROLLER.enableContinuousInput(0, 360);
+        ROTATION_CONTROLLER.setTolerance(constDrivetrain.AT_ROTATION_TOLERANCE.in(Units.Degrees));
+      }
+
+      public static HolonomicDriveController TELEOP_AUTO_ALIGN_CONTROLLER = new HolonomicDriveController(
+          TRANS_CONTROLLER,
+          TRANS_CONTROLLER,
+          ROTATION_CONTROLLER);
     }
   }
 
@@ -240,8 +270,8 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kP = 0.3;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.039062);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(16.946289);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(17.946289);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.742188);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(58.888916);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
@@ -273,13 +303,63 @@ public final class Constants {
       return false;
     };
 
-    public static class bluePoses {
+    /*
+     * All poses on the field, defined by their location on the BLUE Alliance
+     */
+    public static class poses {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
+      // BRANCH POSES
+      public static final Pose2d REEF_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_B = new Pose2d(2.860, 3.857, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_C = new Pose2d(3.527, 2.694, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_D = new Pose2d(3.813, 2.535, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_E = new Pose2d(5.160, 2.529, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_F = new Pose2d(5.445, 2.694, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_G = new Pose2d(6.119, 3.857, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_H = new Pose2d(6.119, 4.187, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_I = new Pose2d(5.452, 5.343, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_J = new Pose2d(5.166, 5.527, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
+      public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
+
+      public static final Pose2d[] REEF_POSES = new Pose2d[] { REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+
+      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F,
+          REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+      public static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
 
-    public static class redPoses {
-      public static final Pose2d RESET_POSE = new Pose2d(FIELD_LENGTH, FIELD_WIDTH, new Rotation2d().fromDegrees(180));
+    public static Pose2d[] getReefMidpoints() {
+      Pose2d[] reefMidpoints = new Pose2d[poses.REEF_POSES.length / 2];
+
+      for (int i = 0; i < poses.REEF_POSES.length; i++) {
+        reefMidpoints[i] = new Pose2d((poses.REEF_POSES[i].getX() + poses.REEF_POSES[i + 1].getX()) / 2,
+            (poses.REEF_POSES[i].getY() + poses.REEF_POSES[i + 1].getY()) / 2,
+            poses.REEF_POSES[i].getRotation().plus(poses.REEF_POSES[i + 1].getRotation()).div(2));
+
+        if (isRedAlliance()) {
+          reefMidpoints[i] = getRedAlliancePose(reefMidpoints[i]);
+        }
+      }
+      return reefMidpoints;
+    }
+
+    public static Pose2d getRedAlliancePose(Pose2d bluePose) {
+      return new Pose2d(FIELD_LENGTH.in(Units.Meters) - (bluePose.getX()),
+          FIELD_WIDTH.in(Units.Meters) - bluePose.getY(),
+          bluePose.getRotation().plus(Rotation2d.fromDegrees(180)));
+    }
+
+    public static Pose2d[] getRedAlliancePoses() {
+      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
+
+      for (int i = 0; i < poses.BLUE_POSES.length; i++) {
+        returnedPoses[i] = getRedAlliancePose(poses.BLUE_POSES[i]);
+      }
+      return returnedPoses;
     }
 
     /**
@@ -293,10 +373,10 @@ public final class Constants {
      */
     public static Supplier<Pose2d[]> getFieldPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> new Pose2d[] { redPoses.RESET_POSE };
+        return () -> poses.RED_POSES;
 
       }
-      return () -> new Pose2d[] { bluePoses.RESET_POSE };
+      return () -> poses.BLUE_POSES;
     }
   }
 
@@ -316,6 +396,28 @@ public final class Constants {
      * <b>Units:</b> Radians
      */
     public static final double STD_DEVS_HEADING = 9999999;
+
+    /**
+     * <p>
+     * Maximum rate of rotation before we begin rejecting pose updates
+     * </p>
+     */
+    public static final AngularVelocity MAX_ANGULAR_VELOCITY = Units.DegreesPerSecond.of(720);
+
+    /**
+     * The area that one tag (if its the only tag in the update) needs to exceed
+     * before being accepted
+     */
+    public static final double AREA_THRESHOLD = 0.1;
+
+    // The below values are accounted for in the limelight interface, NOT in code
+    public static final Distance LL_FORWARD = Units.Meters.of(0.3302);
+    public static final Distance LL_RIGHT = Units.Meters.of(-0.2921);
+    public static final Distance LL_UP = Units.Meters.of(0.2286);
+
+    public static final Angle LL_ROLL = Units.Degrees.of(0);
+    public static final Angle LL_PITCH = Units.Degrees.of(15.92);
+    public static final Angle LL_YAW = Units.Degrees.of(-20);
 
   }
 
