@@ -37,6 +37,8 @@ public class RobotContainer {
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
+  private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
+      subDrivetrain, subElevator, subHopper);
 
   private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper, subCoralOuttake);
   private final Climb comClimb = new Climb(subClimber);
@@ -45,7 +47,8 @@ public class RobotContainer {
   private final PrepNet comPrepNet = new PrepNet(subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
   private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
-  private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subElevator, subAlgaeIntake);
+  private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
+      subAlgaeIntake);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
 
   public RobotContainer() {
