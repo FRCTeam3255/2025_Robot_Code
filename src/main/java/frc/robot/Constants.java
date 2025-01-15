@@ -198,8 +198,8 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.2;
-    public static final double ALGAE_OUTTAKE_SPEED = -0.2;
+    public static final double ALGAE_INTAKE_SPEED = 0.7;
+    public static final double ALGAE_OUTTAKE_SPEED = -0.5;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 

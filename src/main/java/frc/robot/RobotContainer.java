@@ -19,10 +19,6 @@ import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
-import frc.robot.commands.states.Climb;
-import frc.robot.commands.states.PlaceCoral;
-import frc.robot.commands.states.PrepCoralLv;
-import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -90,13 +86,22 @@ public class RobotContainer {
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0)).ignoringDisable(true));
     controller.btn_Back.whileTrue(com_IntakeCoralHopper);
     // LT: Eat Algae
-    controller.btn_LeftTrigger
-        .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
-    // RT: Spit Algae
-    controller.btn_RightTrigger
-        .onTrue(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)))
-        .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0)));
+    // controller.btn_LeftTrigger
+    // .onTrue(Commands.runOnce(() ->
+    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED),
+    // subAlgaeIntake))
+    // .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0),
+    // subAlgaeIntake));
+    // // RT: Spit Algae
+    // controller.btn_RightTrigger
+    // .onTrue(Commands.runOnce(() ->
+    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED),
+    // subAlgaeIntake))
+    // .onFalse(Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(0),
+    // subAlgaeIntake));
+
+    controller.btn_LeftTrigger.whileTrue(new IntakingAlgaeGround(subElevator, subAlgaeIntake));
+    controller.btn_RightTrigger.whileTrue(new ScoreAlgae(subElevator, subAlgaeIntake));
 
     // RB: Score Coral
     controller.btn_RightBumper

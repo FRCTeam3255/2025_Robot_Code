@@ -10,12 +10,13 @@ import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakingAlgaeGround extends Command {
-  /** Creates a new IntakingAlgaeGround. */
+public class ScoreAlgae extends Command {
+
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
 
-  public IntakingAlgaeGround(Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
+  /** Creates a new ScoreAlgae. */
+  public ScoreAlgae(Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalElevator = passedElevator;
     globalAlgaeIntake = passedAlgaeIntake;
@@ -27,7 +28,7 @@ public class IntakingAlgaeGround extends Command {
   @Override
   public void initialize() {
     globalElevator.setPosition(Constants.constElevator.ALGAE_GROUND_INTAKE);
-    globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
+    globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
