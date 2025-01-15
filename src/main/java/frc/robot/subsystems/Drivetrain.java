@@ -139,6 +139,17 @@ public class Drivetrain extends SN_SuperSwerve {
         desiredPose.getRotation());
   }
 
+  public void alignToReef() {
+    // TODO: This in another pr
+    // HERES WHAT WE'RE GONNA DO
+    // 1. Get the closest reef branch; thats the one we wanna snap to
+    // 2. check your distance from it
+    // 2. if thats too high, just provide a rotational velocity. if not, WE'RE GOING
+    // TO DO THE WHOLE SHEBANG
+    // 3.
+
+  }
+
   @Override
   public void periodic() {
     super.periodic();

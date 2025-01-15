@@ -308,33 +308,55 @@ public final class Constants {
     public static class poses {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
-      // ALGAE POSES
-      public static final Pose2d ALGAE_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
-      public static final Pose2d ALGAE_B = new Pose2d(2.860, 3.857, Rotation2d.fromDegrees(0));
-      public static final Pose2d ALGAE_C = new Pose2d(3.527, 2.694, Rotation2d.fromDegrees(60));
-      public static final Pose2d ALGAE_D = new Pose2d(3.813, 2.535, Rotation2d.fromDegrees(60));
-      public static final Pose2d ALGAE_E = new Pose2d(5.160, 2.529, Rotation2d.fromDegrees(120));
-      public static final Pose2d ALGAE_F = new Pose2d(5.445, 2.694, Rotation2d.fromDegrees(120));
-      public static final Pose2d ALGAE_G = new Pose2d(6.119, 3.857, Rotation2d.fromDegrees(180));
-      public static final Pose2d ALGAE_H = new Pose2d(6.119, 4.187, Rotation2d.fromDegrees(180));
-      public static final Pose2d ALGAE_I = new Pose2d(5.452, 5.343, Rotation2d.fromDegrees(-120));
-      public static final Pose2d ALGAE_J = new Pose2d(5.166, 5.527, Rotation2d.fromDegrees(-120));
-      public static final Pose2d ALGAE_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
-      public static final Pose2d ALGAE_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
+      // BRANCH POSES
+      public static final Pose2d REEF_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_B = new Pose2d(2.860, 3.857, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_C = new Pose2d(3.527, 2.694, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_D = new Pose2d(3.813, 2.535, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_E = new Pose2d(5.160, 2.529, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_F = new Pose2d(5.445, 2.694, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_G = new Pose2d(6.119, 3.857, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_H = new Pose2d(6.119, 4.187, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_I = new Pose2d(5.452, 5.343, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_J = new Pose2d(5.166, 5.527, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
+      public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
 
-      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, ALGAE_A, ALGAE_B, ALGAE_C, ALGAE_D, ALGAE_E,
-          ALGAE_F, ALGAE_G, ALGAE_H, ALGAE_I, ALGAE_J, ALGAE_K, ALGAE_L };
+      public static final Pose2d[] REEF_POSES = new Pose2d[] { REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
 
+      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F,
+          REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
       public static final Pose2d[] RED_POSES = getRedAlliancePoses();
+    }
+
+    public static Pose2d[] getReefMidpoints() {
+      Pose2d[] reefMidpoints = new Pose2d[poses.REEF_POSES.length / 2];
+
+      for (int i = 0; i < poses.REEF_POSES.length; i++) {
+        reefMidpoints[i] = new Pose2d((poses.REEF_POSES[i].getX() + poses.REEF_POSES[i + 1].getX()) / 2,
+            (poses.REEF_POSES[i].getY() + poses.REEF_POSES[i + 1].getY()) / 2,
+            poses.REEF_POSES[i].getRotation().plus(poses.REEF_POSES[i + 1].getRotation()).div(2));
+
+        if (isRedAlliance()) {
+          reefMidpoints[i] = getRedAlliancePose(reefMidpoints[i]);
+        }
+      }
+      return reefMidpoints;
+    }
+
+    public static Pose2d getRedAlliancePose(Pose2d bluePose) {
+      return new Pose2d(FIELD_LENGTH.in(Units.Meters) - (bluePose.getX()),
+          FIELD_WIDTH.in(Units.Meters) - bluePose.getY(),
+          bluePose.getRotation().plus(Rotation2d.fromDegrees(180)));
     }
 
     public static Pose2d[] getRedAlliancePoses() {
       Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
 
       for (int i = 0; i < poses.BLUE_POSES.length; i++) {
-        returnedPoses[i] = new Pose2d(FIELD_LENGTH.in(Units.Meters) - (poses.BLUE_POSES[i].getX()),
-            FIELD_WIDTH.in(Units.Meters) - poses.BLUE_POSES[i].getY(),
-            poses.BLUE_POSES[i].getRotation().plus(Rotation2d.fromDegrees(180)));
+        returnedPoses[i] = getRedAlliancePose(poses.BLUE_POSES[i]);
       }
       return returnedPoses;
     }
