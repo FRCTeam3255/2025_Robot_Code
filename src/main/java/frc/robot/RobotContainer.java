@@ -48,7 +48,7 @@ public class RobotContainer {
       subAlgaeIntake);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
 
-  private final Trigger hasCoralTrigger = new Trigger(subHopper::getHopperSensor);
+  private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
@@ -165,13 +165,17 @@ public class RobotContainer {
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1)));
     controller.btn_B
-        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2)));
     controller.btn_Y
-        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3)));
     controller.btn_X
-        .onTrue(new PrepCoralLv(subStateMachine, subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)));
 
     // hasCoralTrigger
     hasCoralTrigger

@@ -30,6 +30,14 @@ public class PrepCoralLv extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1);
+    else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L2);
+    else if (globalDistance.equals(constElevator.CORAL_L3_HEIGHT))
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L3);
+    else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
     globalElevator.setPosition(globalDistance);
 
   }
