@@ -5,16 +5,13 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_XboxController;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.subsystems.AlgaeIntake;
@@ -28,9 +25,9 @@ public class RobotContainer {
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
-  private final Drivetrain subDrivetrain = new Drivetrain();
-
-  private final Hopper subHopper = new Hopper();
+  private static final Drivetrain subDrivetrain = new Drivetrain();
+  private static final Hopper subHopper = new Hopper();
+  private static final Vision subVision = new Vision();
 
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
@@ -153,5 +150,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("4-Piece-Low");
     return new PathPlannerAuto("L");
+  }
+
+  public static Command AddVisionMeasurement() {
+    return new AddVisionMeasurement(subDrivetrain, subVision)
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 }
