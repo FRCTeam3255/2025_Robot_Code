@@ -1,0 +1,115 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "P-I"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "I-CSTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-J"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "J-CSTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-K"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "K-CSTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-L"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L-CSTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-A"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-CSTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-B"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B-CSBottom"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-C"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C-CSBottom"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D-CSBottom"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-E"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
