@@ -28,7 +28,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaeIntakeMotor(double speed) {
-    intakeMotorOne.set(speed);
+    intakeMotorOne.set(-speed);
     intakeMotorTwo.set(-speed);
   }
 
