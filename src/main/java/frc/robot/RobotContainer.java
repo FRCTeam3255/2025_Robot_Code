@@ -49,7 +49,7 @@ public class RobotContainer {
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
-  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
+  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::HasAlgae);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);

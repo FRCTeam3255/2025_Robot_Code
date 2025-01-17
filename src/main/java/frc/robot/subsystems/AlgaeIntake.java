@@ -34,7 +34,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeMotorTwo.set(-speed);
   }
 
-  public void HasAlgae(boolean enabled) {
+  public Boolean HasAlgae(boolean enabled) {
     double intakeCurrent = intakeMotorOne.getStatorCurrent().getValueAsDouble();
 
     double intakeVelocity = intakeMotorOne.getVelocity().getValueAsDouble();
@@ -44,10 +44,11 @@ public class AlgaeIntake extends SubsystemBase {
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
         && (intakeVelocity <= intakeHasGamePieceVelocity)) {
-      hasGamePiece = true; 
+      hasGamePiece = true;
     } else {
       hasGamePiece = false;
     }
+    return hasGamePiece;
   }
 
   @Override
