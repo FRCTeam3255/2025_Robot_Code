@@ -15,8 +15,6 @@ import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constField;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Climber;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
