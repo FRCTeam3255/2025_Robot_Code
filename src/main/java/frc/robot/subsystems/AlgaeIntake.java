@@ -28,7 +28,8 @@ public class AlgaeIntake extends SubsystemBase {
   public boolean hasGamePiece = true;
 
   public void setAlgaeIntakeMotor(double speed) {
-    intakeMotor.set(speed);
+    intakeMotorOne.set(speed);
+    intakeMotorTwo.set(-speed);
   }
 
   public void HasAlgae(boolean enabled) {
