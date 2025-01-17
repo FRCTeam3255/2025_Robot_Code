@@ -10,6 +10,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constField;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 public class RobotContainer {
 
@@ -33,17 +35,23 @@ public class RobotContainer {
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
+  private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
+      subDrivetrain, subElevator, subHopper);
 
-  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subHopper, subCoralOuttake);
-  private final Climb comClimb = new Climb(subClimber);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subCoralOuttake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subElevator);
-  private final PrepNet comPrepNet = new PrepNet(subElevator);
-  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subElevator, subAlgaeIntake);
-  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subElevator, subAlgaeIntake);
-  private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subElevator, subAlgaeIntake);
-  private final ScoreAlgae comScoreAlgae = new ScoreAlgae(subElevator, subAlgaeIntake);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subAlgaeIntake);
+  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
+      subCoralOuttake);
+  private final Climb comClimb = new Climb(subStateMachine, subClimber);
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine, subCoralOuttake);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
+  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
+  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
+  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
+  private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
+      subAlgaeIntake);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
+
+  private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
+  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -71,7 +79,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Prep Coral Station",
         Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece", new IntakeCoralHopper(subHopper, subCoralOuttake));
+    NamedCommands.registerCommand("Get Coral Station Piece",
+        new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -81,21 +90,45 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0)).ignoringDisable(true));
-    controller.btn_Back.whileTrue(com_IntakeCoralHopper);
+
+    // Start: Reset Elevator Sensor Position
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
+        .ignoringDisable(true));
+
+    // Back: Intake Coral
+    controller.btn_Back
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // LT: Eat Algae
-    controller.btn_LeftTrigger.whileTrue(comIntakingAlgaeGround);
-    // // RT: Spit Algae
-    controller.btn_RightTrigger.whileTrue(comScoreAlgae);
+    controller.btn_LeftTrigger
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
+
+    // RT: Spit Algae
+    controller.btn_RightTrigger
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // RB: Score Coral
     controller.btn_RightBumper
-        .whileTrue(comPlaceCoral);
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.SCORING_CORAL)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // LB: Climb
     controller.btn_LeftBumper
-        .whileTrue(comClimb);
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // btn_East: Set Elevator to Neutral
     controller.btn_East
@@ -103,37 +136,58 @@ public class RobotContainer {
 
     // btn_South: Prep Processor
     controller.btn_South
-        .onTrue(comPrepProcessor);
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR)));
 
     // btn_West: Clean L3 Reef
     controller.btn_West
-        .whileTrue(comCleaningL3Reef);
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.CLEANING_L3)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // btn_North: Clean L2 Reef
     controller.btn_North
-        .whileTrue(comCleaningL2Reef);
-
-    // btn_NorthEast: Intake Algae from Ground
-    controller.btn_NorthEast
-        .whileTrue(comIntakingAlgaeGround);
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.CLEANING_L2)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // btn_NorthWest: Prep Net
     controller.btn_NorthWest
-        .onTrue(comPrepNet);
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_NET)));
 
     // btn_SouthEast: Eject Algae
     controller.btn_SouthEast
-        .onTrue(comEjectingAlgae);
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE)))
+        .onFalse(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.NONE)));
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L1_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1)));
     controller.btn_B
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L2_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2)));
     controller.btn_Y
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L3_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3)));
     controller.btn_X
-        .onTrue(new PrepCoralLv(subElevator, Constants.constElevator.CORAL_L4_HEIGHT));
+        .onTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)));
+
+    // hasCoralTrigger
+    hasCoralTrigger
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.HAS_CORAL)));
+
+    // hasAlgaeTrigger
+    hasAlgaeTrigger
+        .whileTrue(Commands.deferredProxy(
+            () -> subStateMachine.tryState(RobotState.HAS_ALGAE)));
   }
 
   public Command getAutonomousCommand() {

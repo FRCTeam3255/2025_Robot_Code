@@ -7,20 +7,26 @@ package frc.robot.commands.states;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PrepProcessor extends Command {
   /** Creates a new PrepProcessor. */
+  StateMachine globalStateMachine;
   Elevator globalElevator;
 
-  public PrepProcessor(Elevator passedElevator) {
+  public PrepProcessor(StateMachine passedStateMachine, Elevator passedElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalStateMachine = passedStateMachine;
     globalElevator = passedElevator;
+
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
   }
 
