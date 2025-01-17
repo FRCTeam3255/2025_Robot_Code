@@ -8,6 +8,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constDrivetrain;
@@ -17,18 +18,20 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode;
+  BooleanSupplier slowMode, leftReef, rightReef;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
     this.slowMode = slowMode;
+    this.leftReef = leftReef;
+    this.rightReef = rightReef;
 
     isOpenLoop = true;
 
@@ -56,7 +59,13 @@ public class DriveManual extends Command {
     double yVelocity = -yAxis.getAsDouble() * transMultiplier;
     double rVelocity = -rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond);
 
-    subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
+    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain.alignToReef(leftReef.getAsBoolean(),
+          Units.MetersPerSecond.of(xVelocity));
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    } else {
+      subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
+    }
   }
 
   @Override

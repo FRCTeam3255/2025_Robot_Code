@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -114,7 +115,7 @@ public final class Constants {
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
     public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Coast;
-    public static final Current DRIVE_CURRENT_LIMIT = Units.Amps.of(90);
+    public static final Current DRIVE_CURRENT_LIMIT = Units.Amps.of(99999);
 
     public static TalonFXConfiguration DRIVE_CONFIG = new TalonFXConfiguration();
     public static TalonFXConfiguration STEER_CONFIG = new TalonFXConfiguration();
@@ -130,7 +131,7 @@ public final class Constants {
       DRIVE_CONFIG.MotorOutput.Inverted = DRIVE_MOTOR_INVERT;
       DRIVE_CONFIG.MotorOutput.NeutralMode = DRIVE_NEUTRAL_MODE;
       DRIVE_CONFIG.Feedback.SensorToMechanismRatio = DRIVE_GEAR_RATIO;
-      DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
       DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimit = DRIVE_CURRENT_LIMIT.in(Units.Amps);
 
       STEER_CONFIG.Slot0.kP = STEER_P;
@@ -182,10 +183,11 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 125;
-      public static final double MOI = 125;
+      public static final double MASS = 115;
+      // TODO: Calcuate the real vaule
+      public static final double MOI = 6.8;
       public static final double WHEEL_COF = 1.0;
-      public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(0);
+      public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
@@ -201,10 +203,11 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
-      // Teleop Snapping to Rotation (Yaw)
-      public static final double YAW_SNAP_P = 3;
-      public static final double YAW_SNAP_I = 0;
-      public static final double YAW_SNAP_D = 0;
+      public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
+          .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
+
+      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Inches.of(6);
+      public static final LinearVelocity MIN_DRIVER_OVERRIDE = Units.MetersPerSecond.of(0.5);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
           3,
@@ -323,28 +326,13 @@ public final class Constants {
       public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
       public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
 
-      public static final Pose2d[] REEF_POSES = new Pose2d[] { REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+      public static final List<Pose2d> REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
 
       public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F,
           REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
       public static final Pose2d[] RED_POSES = getRedAlliancePoses();
-    }
-
-    public static Pose2d[] getReefMidpoints() {
-      Pose2d[] reefMidpoints = new Pose2d[poses.REEF_POSES.length / 2];
-
-      for (int i = 0; i < poses.REEF_POSES.length; i++) {
-        reefMidpoints[i] = new Pose2d((poses.REEF_POSES[i].getX() + poses.REEF_POSES[i + 1].getX()) / 2,
-            (poses.REEF_POSES[i].getY() + poses.REEF_POSES[i + 1].getY()) / 2,
-            poses.REEF_POSES[i].getRotation().plus(poses.REEF_POSES[i + 1].getRotation()).div(2));
-
-        if (isRedAlliance()) {
-          reefMidpoints[i] = getRedAlliancePose(reefMidpoints[i]);
-        }
-      }
-      return reefMidpoints;
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {

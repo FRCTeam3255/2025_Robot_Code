@@ -4,12 +4,12 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Meters;
+
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
-import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +20,8 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -139,15 +141,73 @@ public class Drivetrain extends SN_SuperSwerve {
         desiredPose.getRotation());
   }
 
-  public void alignToReef() {
-    // TODO: This in another pr
-    // HERES WHAT WE'RE GONNA DO
-    // 1. Get the closest reef branch; thats the one we wanna snap to
-    // 2. check your distance from it
-    // 2. if thats too high, just provide a rotational velocity. if not, WE'RE GOING
-    // TO DO THE WHOLE SHEBANG
-    // 3.
+  /**
+   * Returns the ChassisSpeeds needed to align to the nearest REEF. This must be
+   * called every loop until you reach the desired pose.
+   * 
+   * @param leftBranchRequested If we are requesting to align to the left or right
+   *                            branch
+   * @param driverX             The x velocity calculated from the driver
+   *                            controller (to go
+   *                            towards the reef)
+   * @return The ChassisSpeeds needed to align to the nearest reef
+   */
+  public ChassisSpeeds alignToReef(boolean leftBranchRequested, LinearVelocity driverX) {
+    // Get the closest reef branch face using either branch on the face
+    Pose2d currentPose = getPose();
+    Pose2d closestReef = currentPose.nearest(constField.poses.REEF_POSES);
+    int closestReefIndex = constField.poses.REEF_POSES.indexOf(closestReef);
 
+    // Calculate your distance from it
+    Distance reefDistance = Meters.of(currentPose.getTranslation().getDistance(closestReef.getTranslation()));
+
+    // If thats too high, we don't want to initiate auto-align yet
+    if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
+      // Instead, we're just going to align rotationally to it
+      return getAlignmentSpeeds(closestReef);
+    } else {
+      // Otherwise, we're going to calculate auto-align speeds to one of the reef
+      // branches on that face.
+
+      // This switches the branch to the other right on the face if we're closer to
+      // the left one (and vice versa)
+      if (leftBranchRequested && (closestReefIndex % 2 != 1)) {
+        closestReef = constField.poses.REEF_POSES.get(closestReefIndex + 1);
+      }
+
+      if (driverX.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
+        // Calculate the auto-align speeds using the HDC controller
+        // TODO: Hope and pray that this works
+        return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(
+            currentPose, closestReef,
+            constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond),
+            closestReef.getRotation());
+      } else {
+        // Calculate the driver override using the HDC controller
+        return ChassisSpeeds.fromFieldRelativeSpeeds(
+            -driverX.in(Units.MetersPerSecond) * Math.asin(closestReef.getRotation().getDegrees()),
+            -driverX.in(Units.MetersPerSecond) * Math.acos(closestReef.getRotation().getDegrees()),
+            0,
+            currentPose.getRotation());
+      }
+    }
+  }
+
+  /**
+   * Drive the drivetrain with ChassisSpeeds
+   *
+   * @param chassisSpeeds
+   *                      Desired ChassisSpeeds
+   * @param isOpenLoop
+   *                      Are the modules being set based on open loop or closed
+   *                      loop
+   *                      control
+   *
+   */
+  public void drive(ChassisSpeeds chassisSpeeds, boolean isOpenLoop) {
+    SwerveModuleState[] desiredModuleStates = swerveKinematics
+        .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
+    setModuleStates(desiredModuleStates, isOpenLoop);
   }
 
   @Override
