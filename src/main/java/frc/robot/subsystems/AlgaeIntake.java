@@ -13,16 +13,18 @@ import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
 
 public class AlgaeIntake extends SubsystemBase {
-  TalonFX intakeMotor;
+  TalonFX intakeMotorOne;
+  TalonFX intakeMotorTwo;
   TalonFXConfiguration intakeConfig;
   double intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
   double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
-    intakeMotor = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_CAN);
-    intakeMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
-
+    intakeMotorOne = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_ONE_CAN);
+    intakeMotorTwo = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_TWO_CAN);
+    intakeMotorOne.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakeMotorTwo.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
   }
 
   public boolean hasGamePiece = true;
@@ -33,16 +35,16 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void HasAlgae(boolean enabled) {
-    double intakeCurrent = intakeMotor.getStatorCurrent().getValueAsDouble();
+    double intakeCurrent = intakeMotorOne.getStatorCurrent().getValueAsDouble();
 
-    double intakeVelocity = intakeMotor.getVelocity().getValueAsDouble();
+    double intakeVelocity = intakeMotorOne.getVelocity().getValueAsDouble();
 
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
         && (intakeVelocity <= intakeHasGamePieceVelocity)) {
-      hasGamePiece = true;
+      hasGamePiece = true; 
     } else {
       hasGamePiece = false;
     }
