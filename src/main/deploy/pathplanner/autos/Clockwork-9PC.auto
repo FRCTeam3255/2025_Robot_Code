@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "I-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -23,9 +35,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "J-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -35,9 +59,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "K-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -47,9 +83,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -59,9 +107,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "A-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -71,9 +131,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "B-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -83,9 +155,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "C-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
           }
         },
         {
@@ -95,15 +179,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "D-CSBottom"
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Get Coral Station Piece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         }
       ]
