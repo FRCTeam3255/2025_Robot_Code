@@ -5,8 +5,9 @@
   "pathFolders": [
     "CSBottom-Score",
     "CSTop-Score",
-    "Score-CSTop",
     "Score-CSBottom",
+    "Score-CSTop",
+    "Tickle Monster",
     "Tuning"
   ],
   "autoFolders": [],
