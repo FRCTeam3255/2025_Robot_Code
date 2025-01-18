@@ -65,20 +65,31 @@ public class RobotContainer {
     subDrivetrain.resetModulesToAbsolute();
 
     NamedCommands.registerCommand("PrepPlace",
-        Commands.sequence(
-            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
+        Commands.print("PrepPlace"));
+    // Commands.sequence(
+    // Commands.runOnce(() ->
+    // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
+    // subElevator)));
 
     NamedCommands.registerCommand("Place Sequence",
-        Commands.sequence(
-            Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
-            Commands.waitSeconds(0.3),
-            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
+        Commands.print("Place Sequence"));
+    // Commands.sequence(
+    // Commands.runOnce(() ->
+    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
+    // Commands.waitSeconds(0.3),
+    // Commands.runOnce(() ->
+    // subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT),
+    // subElevator)));
 
     NamedCommands.registerCommand("Prep Coral Station",
-        Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        Commands.print("Prep Coral Station"));
+    // Commands.runOnce(() ->
+    // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
+    // subElevator));
 
     NamedCommands.registerCommand("Get Coral Station Piece",
-        new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
+        Commands.print("Get Coral Station Piece"));
+    // new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -190,7 +201,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("4-Piece-Low");
-    return new PathPlannerAuto("1-Piece-Low");
+    return new PathPlannerAuto("4-Piece-Low");
   }
 
   public static Command AddVisionMeasurement() {
