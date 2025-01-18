@@ -36,20 +36,27 @@ public class RobotContainer {
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper);
 
-  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake);
-  private final Climb comClimb = new Climb(subStateMachine, subClimber);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine, subCoralOuttake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
-  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
-  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
-  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
-  private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
-      subAlgaeIntake);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
+  // private final IntakeCoralHopper com_IntakeCoralHopper = new
+  // IntakeCoralHopper(subStateMachine, subHopper,
+  // subCoralOuttake);
+  // private final Climb comClimb = new Climb(subStateMachine, subClimber);
+  // private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
+  // subCoralOuttake);
+  // private final PrepProcessor comPrepProcessor = new
+  // PrepProcessor(subStateMachine, subElevator);
+  // private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
+  // private final CleaningL3Reef comCleaningL3Reef = new
+  // CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
+  // private final CleaningL2Reef comCleaningL2Reef = new
+  // CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
+  // private final IntakingAlgaeGround comIntakingAlgaeGround = new
+  // IntakingAlgaeGround(subStateMachine, subElevator,
+  // subAlgaeIntake);
+  // private final EjectingAlgae comEjectingAlgae = new
+  // EjectingAlgae(subStateMachine, subAlgaeIntake);
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
-  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::HasAlgae);
+  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
