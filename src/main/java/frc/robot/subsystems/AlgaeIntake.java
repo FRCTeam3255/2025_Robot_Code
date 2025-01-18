@@ -7,9 +7,12 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
+
+@Logged
 
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotorOne;
