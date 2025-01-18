@@ -228,10 +228,10 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.15;
+    public static final double ALGAE_INTAKE_SPEED = 0.20;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
     public static final double HAS_ALGAE_INTAKE_SPEED = .05;
-    public static final double HAS_ALGAE_INTAKE_VOLTAGE = -.95;
+    public static final double HAS_ALGAE_INTAKE_VOLTAGE = -1;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
