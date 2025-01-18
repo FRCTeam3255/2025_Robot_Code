@@ -30,6 +30,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -228,14 +229,18 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.15;
+    public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
+
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = -1;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     }
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
   }
 
   public static class constCoralOuttake {
