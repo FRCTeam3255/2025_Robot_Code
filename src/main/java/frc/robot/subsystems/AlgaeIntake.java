@@ -18,7 +18,7 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotorTwo;
   TalonFXConfiguration intakeConfig;
   double intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-  double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
+  double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -41,7 +41,7 @@ public class AlgaeIntake extends SubsystemBase {
     double intakeVelocity = intakeMotorOne.getVelocity().getValueAsDouble();
 
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
+    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
         && (Math.abs(intakeVelocity) <= intakeHasGamePieceVelocity)) {
@@ -52,12 +52,26 @@ public class AlgaeIntake extends SubsystemBase {
     return hasGamePiece;
   }
 
+  public void setHasGamePiece(boolean passedHasGamePiece) {
+    hasGamePiece = passedHasGamePiece;
+  }
+
+  public double getAlgaeIntakeVoltage() {
+    return intakeMotorOne.getMotorVoltage().getValueAsDouble();
+  }
+
+  public void setAlgaeIntakeVoltage(double voltage) {
+    intakeMotorOne.setVoltage(voltage);
+    intakeMotorTwo.setVoltage(voltage);
+  }
+
   @Override
   public void periodic() {
 
     SmartDashboard.putNumber("RightAlgae motor", intakeMotorOne.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("LeftAlgae motor", intakeMotorTwo.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("LeftAlgae motor velocity", intakeMotorOne.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("LeftAlgae motor Voltage", intakeMotorOne.getMotorVoltage().getValueAsDouble());
 
     SmartDashboard.putBoolean("Has Algae", hasAlgae());
     // This method will be called once per scheduler run

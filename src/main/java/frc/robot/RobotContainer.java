@@ -117,7 +117,7 @@ public class RobotContainer {
     // RT: Spit Algae
     controller.btn_RightTrigger
         .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE)))
+            () -> subStateMachine.tryState(RobotState.SCORING_ALGAE)))
         .onFalse(Commands.deferredProxy(
             () -> subStateMachine.tryState(RobotState.NONE)));
 
