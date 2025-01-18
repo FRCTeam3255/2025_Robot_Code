@@ -114,7 +114,7 @@ public final class Constants {
     public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.CounterClockwise_Positive;
     public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final NeutralModeValue STEER_NEUTRAL_MODE = NeutralModeValue.Coast;
-    public static final Current DRIVE_CURRENT_LIMIT = Units.Amps.of(90);
+    public static final Current DRIVE_CURRENT_LIMIT = Units.Amps.of(99999);
 
     public static TalonFXConfiguration DRIVE_CONFIG = new TalonFXConfiguration();
     public static TalonFXConfiguration STEER_CONFIG = new TalonFXConfiguration();
@@ -130,7 +130,7 @@ public final class Constants {
       DRIVE_CONFIG.MotorOutput.Inverted = DRIVE_MOTOR_INVERT;
       DRIVE_CONFIG.MotorOutput.NeutralMode = DRIVE_NEUTRAL_MODE;
       DRIVE_CONFIG.Feedback.SensorToMechanismRatio = DRIVE_GEAR_RATIO;
-      DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
       DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimit = DRIVE_CURRENT_LIMIT.in(Units.Amps);
 
       STEER_CONFIG.Slot0.kP = STEER_P;
@@ -183,9 +183,9 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_D);
 
       public static final double MASS = 125;
-      public static final double MOI = 125;
+      public static final double MOI = 6.8;
       public static final double WHEEL_COF = 1.0;
-      public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(0);
+      public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
