@@ -106,13 +106,13 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public AngularVelocity getVelocityToRotate(Rotation2d desiredYaw) {
     double yawSetpoint = constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.getThetaController()
-        .calculate(getRotation().getDegrees(), desiredYaw.getDegrees());
+        .calculate(getRotation().getRadians(), desiredYaw.getRadians());
 
     // limit the PID output to our maximum rotational speed
-    yawSetpoint = MathUtil.clamp(yawSetpoint, -constDrivetrain.TURN_SPEED.in(Units.DegreesPerSecond),
-        constDrivetrain.TURN_SPEED.in(Units.DegreesPerSecond));
+    yawSetpoint = MathUtil.clamp(yawSetpoint, -constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond),
+        constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
 
-    return Units.DegreesPerSecond.of(yawSetpoint);
+    return Units.RadiansPerSecond.of(yawSetpoint);
   }
 
   /**
@@ -148,22 +148,18 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
-   * Returns the ChassisSpeeds needed to align to the nearest REEF. This must be
-   * called every loop until you reach the desired pose.
+   * Returns the closest reef branch to the robot.
    * 
    * @param leftBranchRequested If we are requesting to align to the left or right
    *                            branch
-   * @param driverX             The x-axis from the driver
-   *                            controller (to go
-   *                            towards the reef): 0-1
-   * @return The ChassisSpeeds needed to align to the nearest reef
+   * @return The desired reef branch face to align to
    */
-  public ChassisSpeeds alignToReef(boolean leftBranchRequested, double driverX, double driverY) {
+  public Pose2d getDesiredReef(boolean leftBranchRequested) {
     // Get the closest reef branch face using either branch on the face
     List<Pose2d> reefPoses = constField.getReefPositions().get();
     Pose2d currentPose = getPose();
-    Pose2d closestReef = currentPose.nearest(reefPoses);
-    int closestReefIndex = reefPoses.indexOf(closestReef);
+    Pose2d desiredReef = currentPose.nearest(reefPoses);
+    int closestReefIndex = reefPoses.indexOf(desiredReef);
 
     // Invert faces on the back of the reef so they're always relative to the driver
     if (closestReefIndex > 3 && closestReefIndex < 10) {
@@ -173,29 +169,11 @@ public class Drivetrain extends SN_SuperSwerve {
     // If we were closer to the left branch but selected the right branch (or
     // vice-versa), switch to our desired branch
     if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
-      closestReef = reefPoses.get(closestReefIndex - 1);
+      desiredReef = reefPoses.get(closestReefIndex - 1);
     } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
-      closestReef = reefPoses.get(closestReefIndex + 1);
+      desiredReef = reefPoses.get(closestReefIndex + 1);
     }
-    desiredAlignmentPose = closestReef;
-
-    Distance reefDistance = Meters.of(currentPose.getTranslation().getDistance(closestReef.getTranslation()));
-
-    // If thats too high, we don't want to initiate auto-align yet.
-    if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
-      // Instead, we're just going to align rotationally to it.
-      return new ChassisSpeeds(driverX, driverY,
-          getVelocityToRotate(closestReef.getRotation()).in(Units.RadiansPerSecond));
-    }
-
-    // Otherwise, we're going to calculate auto-align speeds to one of the reef
-    // branches on that face UNLESS the driver provides an override
-    if (driverX < constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE) {
-      // This assumes that the driver only overrides if we're already facing the reef,
-      // so it can be robot relative to make things ezpz :>
-      return new ChassisSpeeds(driverX, 0.0, currentPose.getRotation().getDegrees());
-    }
-    return getAlignmentSpeeds(closestReef);
+    return desiredReef;
   }
 
   /**

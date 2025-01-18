@@ -4,15 +4,20 @@
 
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constDrivetrain;
-import frc.robot.Constants.constField;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
@@ -45,6 +50,8 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
+    subDrivetrain.setFieldRelative();
+
     if (slowMode.getAsBoolean()) {
       slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
     } else {
@@ -54,18 +61,39 @@ public class DriveManual extends Command {
     // Get Joystick inputs
     double transMultiplier = slowMultiplier * redAllianceMultiplier
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
+    LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
+    LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
+    AngularVelocity rVelocity = Units.RadiansPerSecond
+        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
 
-    double xVelocity = xAxis.getAsDouble() * transMultiplier;
-    double yVelocity = -yAxis.getAsDouble() * transMultiplier;
-    double rVelocity = -rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond);
-
+    // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain.alignToReef(leftReef.getAsBoolean(),
-          xVelocity, yVelocity);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
+      Distance reefDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredReef.getTranslation()));
+
+      if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
+        // Rotational-only auto-align
+        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+            subDrivetrain.getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+
+        // Auto-align Driver Override
+      } else if (xVelocity.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
+        // Assumes that the driver only overrides if we're already facing the reef,
+        // so it can be robot relative to make things ezpz :>
+        subDrivetrain.setRobotRelative();
+        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+            rVelocity.in(RadiansPerSecond), isOpenLoop);
+      } else {
+        ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredReef);
+        subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      }
     } else {
-      subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);
+      // Regular driving
+      subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+          rVelocity.in(RadiansPerSecond), isOpenLoop);
     }
+
   }
 
   @Override

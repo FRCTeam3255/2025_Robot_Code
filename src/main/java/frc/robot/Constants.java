@@ -204,8 +204,8 @@ public final class Constants {
       public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
           .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
 
-      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1.8);
-      public static final double MIN_DRIVER_OVERRIDE = 0.1;
+      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1);
+      public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
           3,
