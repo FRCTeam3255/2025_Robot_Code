@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -64,6 +68,7 @@ public class RobotContainer {
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
     configureAutoBindings();
+    configureAutoSelector();
 
     subDrivetrain.resetModulesToAbsolute();
 
@@ -75,11 +80,6 @@ public class RobotContainer {
             Commands.deferredProxy(
                 () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
 
-    // Commands.sequence(
-    // Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
-    // subElevator)));
-
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             Commands.deferredProxy(
@@ -87,19 +87,9 @@ public class RobotContainer {
             Commands.waitSeconds(1.5),
             Commands.deferredProxy(
                 () -> subStateMachine.tryState(RobotState.NONE).until(() -> !hasCoralTrigger.getAsBoolean()))));
-    // Commands.sequence(
-    // Commands.runOnce(() ->
-    // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
-    // Commands.waitSeconds(0.3),
-    // Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT),
-    // subElevator)));
 
     NamedCommands.registerCommand("PrepCoralStation",
         Commands.print("Prep Coral Station"));
-    // Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
-    // subElevator));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
@@ -107,9 +97,6 @@ public class RobotContainer {
                 .deferredProxy(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER).until(hasCoralTrigger)),
             Commands.deferredProxy(
                 () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
-
-    // new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
-
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -219,10 +206,20 @@ public class RobotContainer {
             () -> subStateMachine.tryState(RobotState.HAS_ALGAE)));
   }
 
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   public Command getAutonomousCommand() {
-    // return new PathPlannerAuto("4-Piece-Low");
-    return Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
-        new PathPlannerAuto("4-Piece-Low"));
+    return autoChooser.getSelected();
+  }
+
+  private void configureAutoSelector() {
+    autoChooser.setDefaultOption("4-Piece-Low",
+        Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            new PathPlannerAuto("4-Piece-Low")));
+    autoChooser.addOption("4-Piece-Low",
+        Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            new PathPlannerAuto("4-Piece-Low")));
+    SmartDashboard.putData(autoChooser);
   }
 
   public static Command AddVisionMeasurement() {
