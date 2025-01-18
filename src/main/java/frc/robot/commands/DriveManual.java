@@ -61,7 +61,7 @@ public class DriveManual extends Command {
 
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       ChassisSpeeds desiredChassisSpeeds = subDrivetrain.alignToReef(leftReef.getAsBoolean(),
-          xVelocity);
+          xVelocity, yVelocity);
       subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
     } else {
       subDrivetrain.drive(new Translation2d(xVelocity, yVelocity), rVelocity, isOpenLoop);

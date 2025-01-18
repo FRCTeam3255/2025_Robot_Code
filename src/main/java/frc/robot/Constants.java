@@ -93,9 +93,6 @@ public final class Constants {
     // Distance between Front & Back Wheels
     public static final double WHEELBASE = Units.Meters.convertFrom(23.75, Units.Inches);
 
-    public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
-    public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
-
     // -- CONFIGS --
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final double DRIVE_P = 0.18;
@@ -203,24 +200,29 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
+      // TODO: Test if this actually works LOL
       public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
           .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
 
-      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Inches.of(6);
+      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1.8);
       public static final double MIN_DRIVER_OVERRIDE = 0.1;
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
           3,
           0,
           0);
+      public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
 
-      // TODO: These can probably be much higher constraints... im just very scared
       public static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
-          3, 0, 0, new TrapezoidProfile.Constraints(360, Math.pow(360, 2)));
+          3, 0, 0, new TrapezoidProfile.Constraints(TURN_SPEED.in(Units.DegreesPerSecond),
+              Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
+      public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
       static {
+        TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
+
         ROTATION_CONTROLLER.enableContinuousInput(0, 360);
-        ROTATION_CONTROLLER.setTolerance(constDrivetrain.AT_ROTATION_TOLERANCE.in(Units.Degrees));
+        ROTATION_CONTROLLER.setTolerance(AT_ROTATION_TOLERANCE.in(Units.Degrees));
       }
 
       public static HolonomicDriveController TELEOP_AUTO_ALIGN_CONTROLLER = new HolonomicDriveController(
@@ -326,13 +328,15 @@ public final class Constants {
       public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
       public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
 
-      public static final List<Pose2d> REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+      private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
+      private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
-      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+      private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F,
           REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
-      public static final Pose2d[] RED_POSES = getRedAlliancePoses();
+
+      private static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -341,13 +345,25 @@ public final class Constants {
           bluePose.getRotation().plus(Rotation2d.fromDegrees(180)));
     }
 
-    public static Pose2d[] getRedAlliancePoses() {
+    private static Pose2d[] getRedAlliancePoses() {
       Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
 
       for (int i = 0; i < poses.BLUE_POSES.length; i++) {
         returnedPoses[i] = getRedAlliancePose(poses.BLUE_POSES[i]);
       }
       return returnedPoses;
+    }
+
+    private static List<Pose2d> getRedReefPoses() {
+      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_REEF_POSES.size()];
+
+      for (int i = 0; i < poses.BLUE_REEF_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(poses.BLUE_REEF_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
+          returnedPoses[11]);
     }
 
     /**
@@ -357,7 +373,7 @@ public final class Constants {
      * @see <a href=
      *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
      *      Robot Coordinate Systems</a>
-     * @return An array of field element positions in this order: ResetPose
+     * @return An array of field element positions
      */
     public static Supplier<Pose2d[]> getFieldPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
@@ -365,6 +381,23 @@ public final class Constants {
 
       }
       return () -> poses.BLUE_POSES;
+    }
+
+    /**
+     * Gets the positions of all of the necessary field elements on the field. All
+     * coordinates are in meters and are relative to the blue alliance.
+     * 
+     * @see <a href=
+     *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
+     *      Robot Coordinate Systems</a>
+     * @return An array of the reef branches for your alliance
+     */
+    public static Supplier<List<Pose2d>> getReefPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> poses.RED_REEF_POSES;
+
+      }
+      return () -> poses.BLUE_REEF_POSES;
     }
   }
 

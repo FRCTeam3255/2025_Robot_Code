@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Meters;
 
+import java.util.List;
+
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
 
@@ -138,6 +140,9 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public ChassisSpeeds getAlignmentSpeeds(Pose2d desiredPose) {
     desiredAlignmentPose = desiredPose;
+    // TODO: This might run better if instead of 0, we use
+    // constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond);.
+    // I dont know why. it might though
     return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(getPose(), desiredPose, 0,
         desiredPose.getRotation());
   }
@@ -153,66 +158,52 @@ public class Drivetrain extends SN_SuperSwerve {
    *                            towards the reef): 0-1
    * @return The ChassisSpeeds needed to align to the nearest reef
    */
-  public ChassisSpeeds alignToReef(boolean leftBranchRequested, double driverX) {
+  public ChassisSpeeds alignToReef(boolean leftBranchRequested, double driverX, double driverY) {
     // Get the closest reef branch face using either branch on the face
+    List<Pose2d> reefPoses = constField.getReefPositions().get();
     Pose2d currentPose = getPose();
-    Pose2d closestReef = currentPose.nearest(constField.poses.REEF_POSES);
-    int closestReefIndex = constField.poses.REEF_POSES.indexOf(closestReef);
+    Pose2d closestReef = currentPose.nearest(reefPoses);
+    int closestReefIndex = reefPoses.indexOf(closestReef);
 
-    // This switches the branch to the other right on the face if we're closer to
-    // the left one (and vice versa)
+    // Invert faces on the back of the reef so they're always relative to the driver
     if (closestReefIndex > 3 && closestReefIndex < 10) {
-      // invert faces on the back of the reef so theyre still relative to the driver
       leftBranchRequested = !leftBranchRequested;
     }
 
+    // If we were closer to the left branch but selected the right branch (or
+    // vice-versa), switch to our desired branch
     if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
-      closestReef = constField.poses.REEF_POSES.get(closestReefIndex - 1);
+      closestReef = reefPoses.get(closestReefIndex - 1);
     } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
-      closestReef = constField.poses.REEF_POSES.get(closestReefIndex + 1);
+      closestReef = reefPoses.get(closestReefIndex + 1);
     }
     desiredAlignmentPose = closestReef;
 
-    // Calculate your distance from it
     Distance reefDistance = Meters.of(currentPose.getTranslation().getDistance(closestReef.getTranslation()));
 
-    // If thats too high, we don't want to initiate auto-align yet
+    // If thats too high, we don't want to initiate auto-align yet.
     if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
-      // Instead, we're just going to align rotationally to it
-      return getAlignmentSpeeds(closestReef);
-    } else {
-      // Otherwise, we're going to calculate auto-align speeds to one of the reef
-      // branches on that face.
-
-      // TODO; ADD DRIVER OVERRIDE
-      // if (driverX < constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE) {
-      // Calculate the auto-align speeds using the HDC controller
-      return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(
-          currentPose, closestReef,
-          constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond),
-          closestReef.getRotation());
-      // } else {
-      // // Calculate the driver override using the HDC controller
-      // return ChassisSpeeds.fromFieldRelativeSpeeds(
-      // -driverX * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
-      // * Math.asin(closestReef.getRotation().getDegrees()),
-      // -driverX * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
-      // * Math.acos(closestReef.getRotation().getDegrees()),
-      // 0,
-      // currentPose.getRotation());
-      // }
+      // Instead, we're just going to align rotationally to it.
+      return new ChassisSpeeds(driverX, driverY,
+          getVelocityToRotate(closestReef.getRotation()).in(Units.RadiansPerSecond));
     }
+
+    // Otherwise, we're going to calculate auto-align speeds to one of the reef
+    // branches on that face UNLESS the driver provides an override
+    if (driverX < constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE) {
+      // This assumes that the driver only overrides if we're already facing the reef,
+      // so it can be robot relative to make things ezpz :>
+      return new ChassisSpeeds(driverX, 0.0, currentPose.getRotation().getDegrees());
+    }
+    return getAlignmentSpeeds(closestReef);
   }
 
   /**
-   * Drive the drivetrain with ChassisSpeeds
+   * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
-   * @param chassisSpeeds
-   *                      Desired ChassisSpeeds
-   * @param isOpenLoop
-   *                      Are the modules being set based on open loop or closed
-   *                      loop
-   *                      control
+   * @param chassisSpeeds Desired ChassisSpeeds
+   * @param isOpenLoop    Are the modules being set based on open loop or closed
+   *                      loop control
    *
    */
   public void drive(ChassisSpeeds chassisSpeeds, boolean isOpenLoop) {
