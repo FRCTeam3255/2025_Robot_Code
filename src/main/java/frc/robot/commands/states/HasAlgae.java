@@ -38,7 +38,7 @@ public class HasAlgae extends Command {
   @Override
   public void end(boolean interrupted) {
     // globalAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.HAS_ALGAE_INTAKE_SPEED);
-    globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HAS_ALGAE_INTAKE_VOLTAGE);
+    globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
   }
 
   // Returns true when the command should end.

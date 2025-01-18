@@ -10,6 +10,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
@@ -19,8 +22,8 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotorOne;
   TalonFX intakeMotorTwo;
   TalonFXConfiguration intakeConfig;
-  double intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-  double intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
+  AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;;
+  Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -38,16 +41,17 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public boolean hasAlgae() {
-    double intakeCurrent = intakeMotorOne.getStatorCurrent().getValueAsDouble();
+    Current intakeCurrent = intakeMotorOne.getStatorCurrent().getValue();
 
-    double intakeVelocity = intakeMotorOne.getVelocity().getValueAsDouble();
+    AngularVelocity intakeVelocity = intakeMotorOne.getVelocity().getValue();
     double intakeAcceleration = intakeMotorOne.getAcceleration().getValueAsDouble();
 
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
-        && (intakeVelocity >= intakeHasGamePieceVelocity) && (intakeVelocity < 0) && (intakeAcceleration > 0)) {
+    if (hasGamePiece || (intakeCurrent.gte(intakeHasGamePieceCurrent))
+        && (intakeVelocity.gte(intakeHasGamePieceVelocity)) && (intakeVelocity.lt(Units.RotationsPerSecond.zero()))
+        && (intakeAcceleration < 0)) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
