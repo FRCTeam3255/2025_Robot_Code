@@ -54,9 +54,9 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new NeutralOut());
   }
 
-  public void resetSensorPosition(double setpoint) {
-    rightMotorLeader.setPosition(setpoint);
-    leftMotorFollower.setPosition(setpoint);
+  public void resetSensorPosition(Distance setpoint) {
+    rightMotorLeader.setPosition(setpoint.in(Inches));
+    leftMotorFollower.setPosition(setpoint.in(Inches));
 
   }
 
