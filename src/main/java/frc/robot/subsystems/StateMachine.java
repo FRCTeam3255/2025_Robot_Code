@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,15 +26,23 @@ import frc.robot.commands.states.PrepNet;
 import frc.robot.commands.states.PrepProcessor;
 import frc.robot.commands.states.ScoringAlgae;
 
+@Logged
 public class StateMachine extends SubsystemBase {
   public static RobotState currentRobotState;
   public static TargetState currentTargetState;
+  @NotLogged
   AlgaeIntake subAlgaeIntake;
+  @NotLogged
   Climber subClimber;
+  @NotLogged
   CoralOuttake subCoralOuttake;
+  @NotLogged
   Drivetrain subDrivetrain;
+  @NotLogged
   Elevator subElevator;
+  @NotLogged
   Hopper subHopper;
+  @NotLogged
   StateMachine subStateMachine = this;
 
   /** Creates a new StateMachine. */
@@ -266,7 +276,5 @@ public class StateMachine extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putString("CURRENT ROBOT STATE", getRobotState().toString());
-    SmartDashboard.putString("CURRENT TARGET STATE", getTargetState().toString());
   }
 }
