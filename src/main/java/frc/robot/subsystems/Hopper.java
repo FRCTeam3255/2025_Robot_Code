@@ -6,11 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constHopper;
 import frc.robot.RobotMap.mapHopper;
 
+@Logged
 public class Hopper extends SubsystemBase {
 
   TalonFX hopperMotor;

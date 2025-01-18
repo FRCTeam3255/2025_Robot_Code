@@ -9,10 +9,12 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
 
+@Logged
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotorOne;
   TalonFX intakeMotorTwo;
