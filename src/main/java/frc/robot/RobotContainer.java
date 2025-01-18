@@ -26,11 +26,11 @@ public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
+  private final SN_XboxController conTester = new SN_XboxController(mapControllers.TESTER_USB);
 
   private static final Drivetrain subDrivetrain = new Drivetrain();
   private final Hopper subHopper = new Hopper();
   private static final Vision subVision = new Vision();
-
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
@@ -38,7 +38,7 @@ public class RobotContainer {
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper);
 
-  private final IntakeCoralHopper com_IntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
+  private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake);
   private final Climb comClimb = new Climb(subStateMachine, subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
@@ -50,6 +50,54 @@ public class RobotContainer {
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
+
+  Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER));
+
+  Command TRY_NONE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.NONE));
+
+  Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND));
+
+  Command TRY_EJECTING_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE));
+
+  Command TRY_SCORING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
+
+  Command TRY_CLIMBING_DEEP = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP));
+
+  Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
+
+  Command TRY_CLEANING_L3 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L3));
+
+  Command TRY_CLEANING_L2 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L2));
+
+  Command TRY_PREP_NET = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_NET));
+
+  Command TRY_PREP_CORAL_L1 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1));
+
+  Command TRY_PREP_CORAL_L2 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2));
+
+  Command TRY_PREP_CORAL_L3 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3));
+
+  Command TRY_PREP_CORAL_L4 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4));
+
+  Command TRY_HAS_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_CORAL));
+
+  Command TRY_HAS_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
@@ -64,6 +112,7 @@ public class RobotContainer {
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureTesterBindings(conTester);
 
     subDrivetrain.resetModulesToAbsolute();
 
@@ -96,19 +145,76 @@ public class RobotContainer {
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
         .ignoringDisable(true));
 
+    controller.btn_Back
+        .whileTrue(TRY_INTAKING_CORAL_HOPPER)
+        .onFalse(TRY_NONE);
+
+    controller.btn_LeftTrigger
+        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
+        .onFalse(TRY_NONE);
+
+    controller.btn_RightTrigger
+        .onTrue(TRY_EJECTING_ALGAE)
+        .onFalse(TRY_NONE);
+
+    controller.btn_RightBumper
+        .whileTrue(TRY_SCORING_CORAL)
+        .onFalse(TRY_NONE);
+
+    controller.btn_LeftBumper
+        .whileTrue(TRY_CLIMBING_DEEP)
+        .onFalse(TRY_NONE);
+
+    controller.btn_East
+        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
+
+    controller.btn_South
+        .onTrue(TRY_PREP_PROCESSOR);
+
+    controller.btn_West
+        .whileTrue(TRY_CLEANING_L3)
+        .onFalse(TRY_NONE);
+
+    controller.btn_North
+        .whileTrue(TRY_CLEANING_L2)
+        .onFalse(TRY_NONE);
+
+    controller.btn_NorthWest
+        .onTrue(TRY_PREP_NET);
+
+    // btn_SouthEast: Eject Algae
+    controller.btn_SouthEast
+        .whileTrue(TRY_EJECTING_ALGAE)
+        .onFalse(TRY_NONE);
+
+    controller.btn_A
+        .onTrue(TRY_PREP_CORAL_L1);
+    controller.btn_B
+        .onTrue(TRY_PREP_CORAL_L2);
+    controller.btn_Y
+        .onTrue(TRY_PREP_CORAL_L3);
+    controller.btn_X
+        .onTrue(TRY_PREP_CORAL_L4);
+
+    hasCoralTrigger
+        .whileTrue(TRY_HAS_CORAL);
+
+    hasAlgaeTrigger
+        .whileTrue(TRY_HAS_ALGAE);
+  }
+
+  private void configureTesterBindings(SN_XboxController controller) {
+    // Start: Reset Elevator Sensor Position
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
+        .ignoringDisable(true));
+
     // Back: Intake Coral
     controller.btn_Back
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+        .whileTrue(comIntakeCoralHopper);
 
     // LT: Eat Algae
-    controller.btn_LeftTrigger
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+    controller.btn_LeftBumper
+        .whileTrue(comIntakingAlgaeGround);
 
     // RT: Spit Algae
     controller.btn_RightTrigger
@@ -118,18 +224,12 @@ public class RobotContainer {
             () -> subStateMachine.tryState(RobotState.NONE)));
 
     // RB: Score Coral
-    controller.btn_RightBumper
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.SCORING_CORAL)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+    controller.btn_RightTrigger
+        .whileTrue(comPlaceCoral);
 
     // LB: Climb
-    controller.btn_LeftBumper
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+    controller.btn_LeftTrigger
+        .whileTrue(comClimb);
 
     // btn_East: Set Elevator to Neutral
     controller.btn_East
@@ -137,58 +237,29 @@ public class RobotContainer {
 
     // btn_South: Prep Processor
     controller.btn_South
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR)));
+        .whileTrue(comPrepProcessor);
 
     // btn_West: Clean L3 Reef
     controller.btn_West
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.CLEANING_L3)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+        .whileTrue(comCleaningL3Reef);
 
     // btn_North: Clean L2 Reef
     controller.btn_North
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.CLEANING_L2)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+        .whileTrue(comCleaningL2Reef);
 
     // btn_NorthWest: Prep Net
     controller.btn_NorthWest
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_NET)));
-
-    // btn_SouthEast: Eject Algae
-    controller.btn_SouthEast
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+        .whileTrue(comPrepNet);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1)));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
     controller.btn_B
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2)));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
     controller.btn_Y
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3)));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
     controller.btn_X
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)));
-
-    // hasCoralTrigger
-    hasCoralTrigger
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.HAS_CORAL)));
-
-    // hasAlgaeTrigger
-    hasAlgaeTrigger
-        .whileTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.HAS_ALGAE)));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
 
   public Command getAutonomousCommand() {
