@@ -42,7 +42,9 @@ public class RobotContainer {
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake);
   private final Climb comClimb = new Climb(subStateMachine, subClimber);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine, subCoralOuttake);
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
+      subCoralOuttake);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
@@ -62,6 +64,9 @@ public class RobotContainer {
 
   Command TRY_EJECTING_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE));
+
+  Command TRY_SCORING_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
 
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
@@ -154,7 +159,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
-        .onTrue(TRY_EJECTING_ALGAE)
+        .onTrue(TRY_SCORING_ALGAE)
         .onFalse(TRY_NONE);
 
     controller.btn_RightBumper
@@ -218,7 +223,7 @@ public class RobotContainer {
 
     // RT: Spit Algae
     controller.btn_RightBumper
-        .whileTrue(comEjectingAlgae);
+        .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
     controller.btn_RightTrigger
