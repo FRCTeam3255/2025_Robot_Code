@@ -228,7 +228,7 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.20;
+    public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
     public static final double HAS_ALGAE_INTAKE_SPEED = .05;
     public static final double HAS_ALGAE_INTAKE_VOLTAGE = -1;
@@ -238,8 +238,8 @@ public final class Constants {
     }
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final double ALGAE_INTAKE_HAS_GP_VELOCITY = 1;
-    public static final double ALGAE_INTAKE_HAS_GP_CURRENT = 60;
+    public static final double ALGAE_INTAKE_HAS_GP_VELOCITY = -100;
+    public static final double ALGAE_INTAKE_HAS_GP_CURRENT = 18;
   }
 
   public static class constCoralOuttake {

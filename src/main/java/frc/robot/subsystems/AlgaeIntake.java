@@ -39,12 +39,13 @@ public class AlgaeIntake extends SubsystemBase {
     double intakeCurrent = intakeMotorOne.getStatorCurrent().getValueAsDouble();
 
     double intakeVelocity = intakeMotorOne.getVelocity().getValueAsDouble();
+    double intakeAcceleration = intakeMotorOne.getAcceleration().getValueAsDouble();
 
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
-        && (Math.abs(intakeVelocity) <= intakeHasGamePieceVelocity)) {
+        && (intakeVelocity >= intakeHasGamePieceVelocity) && (intakeVelocity < 0) && (intakeAcceleration > 0)) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
