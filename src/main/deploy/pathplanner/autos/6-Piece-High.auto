@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "P-F"
+            "pathName": "P-I"
           }
         },
         {
@@ -25,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F-CSBottom"
+            "pathName": "I-CSTop"
           }
         },
         {
@@ -37,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-E"
+            "pathName": "CSTop-J"
           }
         },
         {
@@ -49,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E-CSBottom"
+            "pathName": "J-CSTop"
           }
         },
         {
@@ -61,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-D"
+            "pathName": "CSTop-K"
           }
         },
         {
@@ -73,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "D-CSBottom"
+            "pathName": "K-CSTop"
           }
         },
         {
@@ -85,7 +79,55 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSTop-L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-B"
           }
         },
         {
