@@ -29,6 +29,8 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
     rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
 
+    lastDesiredPosition = Units.Inches.of(0);
+
     configure();
   }
 

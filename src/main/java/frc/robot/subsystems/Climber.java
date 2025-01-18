@@ -26,6 +26,8 @@ public class Climber extends SubsystemBase {
   public Climber() {
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN);
     climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN_2);
+
+    lastDesiredPosition = Units.Inches.of(0);
   }
 
   public void setClimberMotorVelocity(double velocity) {
