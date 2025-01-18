@@ -20,8 +20,8 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
-    intakeMotorOne = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_ONE_CAN);
-    intakeMotorTwo = new TalonFX(mapAlgaeIntake.ALGAE_MOTOR_TWO_CAN);
+    intakeMotorOne = new TalonFX(mapAlgaeIntake.INTAKE_LEFT_MOTOR_CAN);
+    intakeMotorTwo = new TalonFX(mapAlgaeIntake.INTAKE_RIGHT_MOTOR_CAN);
 
     intakeMotorOne.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
     intakeMotorTwo.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
