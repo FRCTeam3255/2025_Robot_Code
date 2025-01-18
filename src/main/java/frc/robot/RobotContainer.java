@@ -63,9 +63,13 @@ public class RobotContainer {
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureAutoBindings();
 
     subDrivetrain.resetModulesToAbsolute();
 
+  }
+
+  private void configureAutoBindings() {
     NamedCommands.registerCommand("PrepPlace",
         Commands.sequence(
             Commands.deferredProxy(
@@ -82,9 +86,7 @@ public class RobotContainer {
                 () -> subStateMachine.tryState(RobotState.SCORING_CORAL).until(() -> !hasCoralTrigger.getAsBoolean())),
             Commands.waitSeconds(1.5),
             Commands.deferredProxy(
-                () -> subStateMachine.tryState(RobotState.NONE).until(() -> !hasCoralTrigger.getAsBoolean())))
-
-    );
+                () -> subStateMachine.tryState(RobotState.NONE).until(() -> !hasCoralTrigger.getAsBoolean()))));
     // Commands.sequence(
     // Commands.runOnce(() ->
     // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
@@ -107,6 +109,7 @@ public class RobotContainer {
                 () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
 
     // new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
+
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
