@@ -21,7 +21,6 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,6 +44,8 @@ public class Drivetrain extends SN_SuperSwerve {
 
   StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
+  StructPublisher<Pose2d> desiredAlignmentPosePublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("/SmartDashboard/Drivetrain/Desired Alignment Pose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> desiredStatesPublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("/SmartDashboard/Drivetrain/Desired States", SwerveModuleState.struct).publish();
   StructArrayPublisher<SwerveModuleState> actualStatesPublisher = NetworkTableInstance.getDefault()
@@ -147,16 +148,30 @@ public class Drivetrain extends SN_SuperSwerve {
    * 
    * @param leftBranchRequested If we are requesting to align to the left or right
    *                            branch
-   * @param driverX             The x velocity calculated from the driver
+   * @param driverX             The x-axis from the driver
    *                            controller (to go
-   *                            towards the reef)
+   *                            towards the reef): 0-1
    * @return The ChassisSpeeds needed to align to the nearest reef
    */
-  public ChassisSpeeds alignToReef(boolean leftBranchRequested, LinearVelocity driverX) {
+  public ChassisSpeeds alignToReef(boolean leftBranchRequested, double driverX) {
     // Get the closest reef branch face using either branch on the face
     Pose2d currentPose = getPose();
     Pose2d closestReef = currentPose.nearest(constField.poses.REEF_POSES);
     int closestReefIndex = constField.poses.REEF_POSES.indexOf(closestReef);
+
+    // This switches the branch to the other right on the face if we're closer to
+    // the left one (and vice versa)
+    if (closestReefIndex > 3 && closestReefIndex < 10) {
+      // invert faces on the back of the reef so theyre still relative to the driver
+      leftBranchRequested = !leftBranchRequested;
+    }
+
+    if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
+      closestReef = constField.poses.REEF_POSES.get(closestReefIndex - 1);
+    } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
+      closestReef = constField.poses.REEF_POSES.get(closestReefIndex + 1);
+    }
+    desiredAlignmentPose = closestReef;
 
     // Calculate your distance from it
     Distance reefDistance = Meters.of(currentPose.getTranslation().getDistance(closestReef.getTranslation()));
@@ -169,27 +184,23 @@ public class Drivetrain extends SN_SuperSwerve {
       // Otherwise, we're going to calculate auto-align speeds to one of the reef
       // branches on that face.
 
-      // This switches the branch to the other right on the face if we're closer to
-      // the left one (and vice versa)
-      if (leftBranchRequested && (closestReefIndex % 2 != 1)) {
-        closestReef = constField.poses.REEF_POSES.get(closestReefIndex + 1);
-      }
-
-      if (driverX.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
-        // Calculate the auto-align speeds using the HDC controller
-        // TODO: Hope and pray that this works
-        return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(
-            currentPose, closestReef,
-            constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond),
-            closestReef.getRotation());
-      } else {
-        // Calculate the driver override using the HDC controller
-        return ChassisSpeeds.fromFieldRelativeSpeeds(
-            -driverX.in(Units.MetersPerSecond) * Math.asin(closestReef.getRotation().getDegrees()),
-            -driverX.in(Units.MetersPerSecond) * Math.acos(closestReef.getRotation().getDegrees()),
-            0,
-            currentPose.getRotation());
-      }
+      // TODO; ADD DRIVER OVERRIDE
+      // if (driverX < constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE) {
+      // Calculate the auto-align speeds using the HDC controller
+      return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(
+          currentPose, closestReef,
+          constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond),
+          closestReef.getRotation());
+      // } else {
+      // // Calculate the driver override using the HDC controller
+      // return ChassisSpeeds.fromFieldRelativeSpeeds(
+      // -driverX * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
+      // * Math.asin(closestReef.getRotation().getDegrees()),
+      // -driverX * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond)
+      // * Math.acos(closestReef.getRotation().getDegrees()),
+      // 0,
+      // currentPose.getRotation());
+      // }
     }
   }
 
@@ -235,6 +246,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
     field.setRobotPose(getPose());
     robotPosePublisher.set(getPose());
+    desiredAlignmentPosePublisher.set(desiredAlignmentPose);
     desiredStatesPublisher.set(getDesiredModuleStates());
     actualStatesPublisher.set(getActualModuleStates());
 

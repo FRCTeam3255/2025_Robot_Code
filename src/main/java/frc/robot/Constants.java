@@ -207,7 +207,7 @@ public final class Constants {
           .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
 
       public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Inches.of(6);
-      public static final LinearVelocity MIN_DRIVER_OVERRIDE = Units.MetersPerSecond.of(0.5);
+      public static final double MIN_DRIVER_OVERRIDE = 0.1;
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
           3,
