@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "P-F"
@@ -25,7 +31,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
@@ -49,7 +55,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
@@ -73,7 +79,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {

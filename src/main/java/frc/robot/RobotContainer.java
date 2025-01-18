@@ -67,14 +67,24 @@ public class RobotContainer {
     subDrivetrain.resetModulesToAbsolute();
 
     NamedCommands.registerCommand("PrepPlace",
-        Commands.print("PrepPlace"));
+        Commands.sequence(
+            Commands.deferredProxy(
+                () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
+
     // Commands.sequence(
     // Commands.runOnce(() ->
     // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
     // subElevator)));
 
-    NamedCommands.registerCommand("Place Sequence",
-        Commands.print("Place Sequence"));
+    NamedCommands.registerCommand("PlaceSequence",
+        Commands.sequence(
+            Commands.deferredProxy(
+                () -> subStateMachine.tryState(RobotState.SCORING_CORAL).until(() -> !hasCoralTrigger.getAsBoolean())),
+            Commands.waitSeconds(1.5),
+            Commands.deferredProxy(
+                () -> subStateMachine.tryState(RobotState.NONE).until(() -> !hasCoralTrigger.getAsBoolean())))
+
+    );
     // Commands.sequence(
     // Commands.runOnce(() ->
     // subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
@@ -83,14 +93,19 @@ public class RobotContainer {
     // subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT),
     // subElevator)));
 
-    NamedCommands.registerCommand("Prep Coral Station",
+    NamedCommands.registerCommand("PrepCoralStation",
         Commands.print("Prep Coral Station"));
     // Commands.runOnce(() ->
     // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
     // subElevator));
 
-    NamedCommands.registerCommand("Get Coral Station Piece",
-        Commands.print("Get Coral Station Piece"));
+    NamedCommands.registerCommand("GetCoralStationPiece",
+        Commands.sequence(
+            Commands
+                .deferredProxy(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER).until(hasCoralTrigger)),
+            Commands.deferredProxy(
+                () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
+
     // new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
   }
 
@@ -203,7 +218,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return new PathPlannerAuto("4-Piece-Low");
-    return new PathPlannerAuto("4-Piece-Low");
+    return Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+        new PathPlannerAuto("4-Piece-Low"));
   }
 
   public static Command AddVisionMeasurement() {
