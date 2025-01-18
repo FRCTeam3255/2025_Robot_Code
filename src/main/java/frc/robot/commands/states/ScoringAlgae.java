@@ -16,6 +16,7 @@ public class ScoringAlgae extends Command {
 
   public ScoringAlgae(StateMachine passedStateMachine, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    globalStateMachine = passedStateMachine;
     this.subAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
@@ -25,7 +26,7 @@ public class ScoringAlgae extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
-    subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED);
+    subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
