@@ -13,7 +13,6 @@ import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
 
 @Logged
-
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeMotorOne;
   TalonFX intakeMotorTwo;

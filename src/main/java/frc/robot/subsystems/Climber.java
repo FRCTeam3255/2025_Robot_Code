@@ -6,9 +6,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
+@Logged
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
