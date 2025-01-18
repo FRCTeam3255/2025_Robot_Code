@@ -236,8 +236,8 @@ public final class Constants {
     }
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final double ALGAE_INTAKE_HAS_GP_VEOLOCITY = 10;
-    public static final double ALGAE_INTAKE_HAS_GP_CURRENT = 30;
+    public static final double ALGAE_INTAKE_HAS_GP_VEOLOCITY = 1;
+    public static final double ALGAE_INTAKE_HAS_GP_CURRENT = 60;
   }
 
   public static class constCoralOuttake {

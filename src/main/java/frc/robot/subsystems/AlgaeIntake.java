@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
@@ -27,7 +28,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeMotorTwo.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
   }
 
-  public boolean hasGamePiece = true;
+  public boolean hasGamePiece = false;
 
   public void setAlgaeIntakeMotor(double speed) {
     intakeMotorOne.set(-speed);
@@ -43,7 +44,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VEOLOCITY;
 
     if (hasGamePiece || (intakeCurrent >= intakeHasGamePieceCurrent)
-        && (intakeVelocity <= intakeHasGamePieceVelocity)) {
+        && (Math.abs(intakeVelocity) <= intakeHasGamePieceVelocity)) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
@@ -53,6 +54,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putNumber("RightAlgae motor", intakeMotorOne.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("LeftAlgae motor", intakeMotorTwo.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("LeftAlgae motor velocity", intakeMotorOne.getVelocity().getValueAsDouble());
+
+    SmartDashboard.putBoolean("Has Algae", hasAlgae());
     // This method will be called once per scheduler run
   }
 }
