@@ -53,7 +53,7 @@ public class RobotContainer {
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
     () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER));
 
-  Command TRY_NONE_STATE = Commands.deferredProxy(
+  Command TRY_NONE = Commands.deferredProxy(
     () -> subStateMachine.tryState(RobotState.NONE));
 
   Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
@@ -145,23 +145,23 @@ public class RobotContainer {
     
     controller.btn_Back
         .whileTrue(TRY_INTAKING_CORAL_HOPPER)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_LeftTrigger
         .whileTrue(TRY_INTAKING_ALGAE_GROUND)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
         .onTrue(TRY_EJECTING_ALGAE)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_RightBumper
         .whileTrue(TRY_SCORING_CORAL)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_LeftBumper
         .whileTrue(TRY_CLIMBING_DEEP)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_East
         .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
@@ -171,11 +171,11 @@ public class RobotContainer {
 
     controller.btn_West
         .whileTrue(TRY_CLEANING_L3)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_North
         .whileTrue(TRY_CLEANING_L2)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_NorthWest
         .onTrue(TRY_PREP_NET);
@@ -183,7 +183,7 @@ public class RobotContainer {
     // btn_SouthEast: Eject Algae
     controller.btn_SouthEast
         .whileTrue(TRY_EJECTING_ALGAE)
-        .onFalse(TRY_NONE_STATE);
+        .onFalse(TRY_NONE);
 
     controller.btn_A
         .onTrue(TRY_PREP_CORAL_L1);
