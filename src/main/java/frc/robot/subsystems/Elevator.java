@@ -4,19 +4,25 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
+
 @Logged
 public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
@@ -49,10 +55,35 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new NeutralOut());
   }
 
+  public void setVoltage(Voltage volts) {
+    rightMotorLeader.setControl(new VoltageOut(volts.in(Units.Volts)));
+    leftMotorFollower.setControl(new VoltageOut(volts.in(Units.Volts)));
+  }
+
   public void resetSensorPosition(double setpoint) {
     rightMotorLeader.setPosition(setpoint);
     leftMotorFollower.setPosition(setpoint);
 
+  }
+
+  final SysIdRoutine sysIdRoutine = new SysIdRoutine(
+      new SysIdRoutine.Config(
+          null, // Use default ramp rate (1 V/s)
+          Units.Volts.of(4), // Reduce dynamic step voltage to 4 to prevent brownout
+          null, // Use default timeout (10 s)
+                // Log state with Phoenix SignalLogger class
+          (state) -> SignalLogger.writeString("state", state.toString())),
+      new SysIdRoutine.Mechanism(
+          (volts) -> setVoltage(volts),
+          null,
+          this));
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
   }
 
   @Override
