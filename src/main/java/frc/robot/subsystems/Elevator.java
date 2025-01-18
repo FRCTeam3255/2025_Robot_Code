@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -20,13 +22,12 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
-  double lastDesiredPosition;
+  Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
   public Elevator() {
     leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
     rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
-    lastDesiredPosition = 0.0;
 
     configure();
   }
@@ -43,7 +44,7 @@ public class Elevator extends SubsystemBase {
   public void setPosition(Distance height) {
     rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
-    lastDesiredPosition = height.magnitude();
+    lastDesiredPosition = height;
   }
 
   public void setNeutral() {
@@ -72,6 +73,6 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
 
-    SmartDashboard.putNumber("Elevator/Last Desired Position", lastDesiredPosition);
+    SmartDashboard.putNumber("Elevator/Last Desired Position", lastDesiredPosition.in(Inches));
   }
 }

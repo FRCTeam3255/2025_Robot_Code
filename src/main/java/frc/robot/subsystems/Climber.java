@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -19,12 +21,11 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
   TalonFX climberMotor2;
-  double lastDesiredPosition;
+  Distance lastDesiredPosition;
 
   public Climber() {
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN);
     climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN_2);
-    lastDesiredPosition = 0.0;
   }
 
   public void setClimberMotorVelocity(double velocity) {
@@ -39,7 +40,7 @@ public class Climber extends SubsystemBase {
   public void setPosition(Distance height) {
     climberMotor.setControl(new PositionVoltage(height.in(Units.Inches)));
     climberMotor2.setControl(new Follower(climberMotor.getDeviceID(), true));
-    lastDesiredPosition = height.magnitude();
+    lastDesiredPosition = height;
   }
 
   public void setNeutral() {
@@ -55,6 +56,6 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Climber/Last Desired Position", lastDesiredPosition);
+    SmartDashboard.putNumber("Climber/Last Desired Position", lastDesiredPosition.in(Inches));
   }
 }
