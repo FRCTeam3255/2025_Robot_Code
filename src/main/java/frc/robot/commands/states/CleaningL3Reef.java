@@ -4,8 +4,6 @@
 
 package frc.robot.commands.states;
 
-import java.lang.Thread.State;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.AlgaeIntake;
@@ -45,7 +43,6 @@ public class CleaningL3Reef extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalAlgaeIntake.setAlgaeIntakeMotor(0);
   }
 
   // Returns true when the command should end.
