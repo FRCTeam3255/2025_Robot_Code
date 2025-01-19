@@ -237,7 +237,7 @@ public class StateMachine extends SubsystemBase {
         }
         break;
     }
-    return Commands.print("ITS SO OVER D: Invalid State Provided (╯‵□′)╯︵┻━┻");
+    return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
   }
 
   public static enum RobotState {
