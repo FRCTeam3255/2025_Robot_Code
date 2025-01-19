@@ -17,9 +17,9 @@ public class IntakeCoralHopper extends Command {
   CoralOuttake subCoralOuttake;
 
   /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(StateMachine passedStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
+  public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subCoralIntake = subHopper;
     this.subCoralOuttake = subCoralOuttake;
 
@@ -30,7 +30,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
-    subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

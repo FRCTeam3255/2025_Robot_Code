@@ -15,10 +15,10 @@ public class PrepNet extends Command {
   Elevator globalElevator;
 
   /** Creates a new PrepNet. */
-  public PrepNet(StateMachine passedStateMachine, Elevator passedElevator) {
+  public PrepNet(StateMachine subStateMachine, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalElevator = passedElevator;
+    globalStateMachine = subStateMachine;
+    globalElevator = subElevator;
 
     addRequirements(globalStateMachine);
   }

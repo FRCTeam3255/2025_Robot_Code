@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CoralOuttake;
-
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.StateMachine;
 
@@ -19,16 +19,18 @@ public class None extends Command {
   Hopper subHopper;
   AlgaeIntake subAlgaeIntake;
   Climber subClimber;
+  Elevator subElevator;
 
   /** Creates a new none. */
-  public None(StateMachine passedStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
-      AlgaeIntake subAlgaeIntake, Climber subClimber) {
+  public None(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
+      AlgaeIntake subAlgaeIntake, Climber subClimber, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subCoralOuttake = subCoralOuttake;
     this.subHopper = subHopper;
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;
+    this.subElevator = subElevator;
 
     addRequirements(globalStateMachine);
   }
@@ -41,6 +43,7 @@ public class None extends Command {
     subHopper.runHopper(0);
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subClimber.setClimberMotorVelocity(0);
+    subElevator.setNeutral();
 
   }
 

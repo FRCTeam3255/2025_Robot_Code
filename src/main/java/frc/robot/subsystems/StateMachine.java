@@ -88,7 +88,7 @@ public class StateMachine extends SubsystemBase {
           case SCORING_CORAL:
           case SCORING_ALGAE:
           case CLIMBING_DEEP:
-            return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber);
+            return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator);
         }
         break;
 

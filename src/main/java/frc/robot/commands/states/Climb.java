@@ -16,10 +16,10 @@ public class Climb extends Command {
   Climber globalClimber;
 
   /** Creates a new Climb. */
-  public Climb(StateMachine passedStateMachine, Climber passedClimber) {
+  public Climb(StateMachine subStateMachine, Climber subClimber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalClimber = passedClimber;
+    globalStateMachine = subStateMachine;
+    globalClimber = subClimber;
 
     addRequirements(globalStateMachine);
   }
@@ -28,7 +28,7 @@ public class Climb extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.CLIMBING_DEEP);
-    globalClimber.setClimberMotorVelocity(Constants.consClimber.CLIMBER_MOTOR_VELOCITY);
+    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_VELOCITY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

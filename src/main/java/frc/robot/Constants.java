@@ -180,6 +180,7 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
+
       public static final double MASS = 115;
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.8;
@@ -233,18 +234,24 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.15;
+    public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
+
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = -1;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
   }
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_INTAKE_SPEED = 0.3;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
@@ -253,8 +260,13 @@ public final class Constants {
     }
   }
 
-  public static class consClimber {
+  public static class constClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+
+    public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
+    static {
+      CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    }
   }
 
   public static class constElevator {
