@@ -131,7 +131,7 @@ public class RobotContainer {
 
   private void configureAutoBindings() {
     NamedCommands.registerCommand("PrepPlace",
-        Commands.sequence(TRY_PREP_CORAL_L3));
+        Commands.sequence(TRY_PREP_CORAL_L3).asProxy());
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
