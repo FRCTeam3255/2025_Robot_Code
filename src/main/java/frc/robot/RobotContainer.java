@@ -160,16 +160,20 @@ public class RobotContainer {
 
   private void configureOperatorBindings(SN_XboxController controller) {
     controller.btn_LeftTrigger
-        .whileTrue(TRY_INTAKING_CORAL_HOPPER);
+        .whileTrue(TRY_INTAKING_CORAL_HOPPER)
+        .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
-        .whileTrue(TRY_SCORING_CORAL);
+        .whileTrue(TRY_SCORING_CORAL)
+        .onFalse(TRY_NONE);
 
     controller.btn_LeftBumper
-        .whileTrue(TRY_INTAKING_ALGAE_GROUND);
+        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
+        .onFalse(TRY_NONE);
 
     controller.btn_RightBumper
-        .whileTrue(TRY_SCORING_ALGAE);
+        .whileTrue(TRY_SCORING_ALGAE)
+        .onFalse(TRY_NONE);
 
     // TODO: Has Coral Overide Back BTN
     // TODO: Has Algae Overide Meneu BTN
@@ -181,10 +185,12 @@ public class RobotContainer {
         .onTrue(TRY_PREP_NET);
 
     controller.btn_East
-        .whileTrue(TRY_CLEANING_L3);
+        .whileTrue(TRY_CLEANING_L3)
+        .onFalse(TRY_NONE);
 
     controller.btn_West
-        .whileTrue(TRY_CLEANING_L2);
+        .whileTrue(TRY_CLEANING_L2)
+        .onFalse(TRY_NONE);
 
     controller.btn_South
         .whileTrue(TRY_PREP_PROCESSOR);
