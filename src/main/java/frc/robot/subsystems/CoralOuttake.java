@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapCoralOuttake;
+
 @Logged
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
@@ -22,8 +23,8 @@ public class CoralOuttake extends SubsystemBase {
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
-    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN);
-    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN_2);
+    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
+    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
 
     configure();
