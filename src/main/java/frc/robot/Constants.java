@@ -254,7 +254,7 @@ public final class Constants {
     }
   }
 
-  public static class consClimber {
+  public static class constClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
