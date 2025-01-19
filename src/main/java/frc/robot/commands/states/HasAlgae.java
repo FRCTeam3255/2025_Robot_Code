@@ -16,8 +16,8 @@ public class HasAlgae extends Command {
   AlgaeIntake globalAlgaeIntake;
 
   /** Creates a new HasAlgae. */
-  public HasAlgae(StateMachine passedStateMachine, AlgaeIntake subAlgaeIntake) {
-    globalStateMachine = passedStateMachine;
+  public HasAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
+    globalStateMachine = subStateMachine;
     globalAlgaeIntake = subAlgaeIntake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(globalStateMachine);

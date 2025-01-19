@@ -18,11 +18,11 @@ public class IntakingAlgaeGround extends Command {
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
 
-  public IntakingAlgaeGround(StateMachine subStateMachine, Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
+  public IntakingAlgaeGround(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subStateMachine = subStateMachine;
-    globalElevator = passedElevator;
-    globalAlgaeIntake = passedAlgaeIntake;
+    globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(subStateMachine);
   }

@@ -16,10 +16,10 @@ public class EjectCoral extends Command {
   CoralOuttake globalCoralOuttake;
 
   /** Creates a new CoralOuttake. */
-  public EjectCoral(StateMachine passedStateMachine, CoralOuttake passedCoralOuttake) {
+  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalCoralOuttake = passedCoralOuttake;
+    globalStateMachine = subStateMachine;
+    globalCoralOuttake = subCoralOuttake;
 
     addRequirements(globalStateMachine);
   }
