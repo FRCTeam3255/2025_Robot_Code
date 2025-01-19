@@ -137,7 +137,7 @@ public class RobotContainer {
         Commands.sequence(
             TRY_SCORING_CORAL.until(() -> !hasCoralTrigger.getAsBoolean()),
             Commands.waitSeconds(1.5),
-            TRY_NONE.until(() -> !hasCoralTrigger.getAsBoolean())));
+            TRY_NONE.until(() -> !hasCoralTrigger.getAsBoolean())).asProxy());
 
     NamedCommands.registerCommand("PrepCoralStation",
         Commands.print("Prep Coral Station"));
@@ -145,7 +145,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
             TRY_INTAKING_CORAL_HOPPER.until(hasCoralTrigger),
-            TRY_PREP_CORAL_L3));
+            TRY_PREP_CORAL_L3).asProxy());
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
