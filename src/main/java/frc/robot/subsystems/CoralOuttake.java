@@ -19,7 +19,7 @@ public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
   CANrange coralSensor;
-  boolean hasCoral;
+  boolean hasGamePieceCoral;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -40,17 +40,17 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2.set(-speed);
   }
 
-  public void setHasCoral(boolean hasCoral) {
-    this.hasCoral = hasCoral;
+  public void setHasGamePieceCoral(boolean hasCoral) {
+    this.hasGamePieceCoral = hasCoral;
   }
 
   public boolean hasCoral() {
-    if (hasCoral || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
-      hasCoral = true;
+    if (hasGamePieceCoral || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
+      hasGamePieceCoral = true;
     } else {
-      hasCoral = false;
+      hasGamePieceCoral = false;
     }
-    return hasCoral;
+    return hasGamePieceCoral;
   }
 
   @Override
