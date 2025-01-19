@@ -32,9 +32,7 @@ public class Elevator extends SubsystemBase {
     rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
-  }
-
-  public void configure() {
+    
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
