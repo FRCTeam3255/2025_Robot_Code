@@ -17,8 +17,8 @@ public class Climber extends SubsystemBase {
   TalonFX climberMotor2;
 
   public Climber() {
-    climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN);
-    climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_CAN_2);
+    climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
+    climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_RIGHT_CAN);
   }
 
   public void setClimberMotorVelocity(double velocity) {

@@ -35,30 +35,30 @@ public class RobotMap {
   }
 
   public static class mapClimber {
-    public static final int CLIMBER_CAN = 20;
-    public static final int CLIMBER_CAN_2 = 21;
+    public static final int CLIMBER_LEFT_CAN = 20;
+    public static final int CLIMBER_RIGHT_CAN = 21;
   }
 
   public static class mapAlgaeIntake {
-    public static final int ALGAE_MOTOR_ONE_CAN = 10;
-    public static final int ALGAE_MOTOR_TWO_CAN = 11;
+    public static final int INTAKE_LEFT_MOTOR_CAN = 10;
+    public static final int INTAKE_RIGHT_MOTOR_CAN = 11;
     public static final int ALGAE_SENSOR_CAN = 12;
   }
 
   public static class mapCoralOuttake {
-    public static final int CORAL_OUTTAKE_MOTOR_CAN = 30;
-    public static final int CORAL_OUTTAKE_MOTOR_CAN_2 = 31;
+    public static final int CORAL_OUTTAKE_LEFT_MOTOR_CAN = 30;
+    public static final int CORAL_OUTTAKE_RIGHT_MOTOR_CAN = 31;
     public static final int CORAL_SENSOR_CAN = 32;
   }
 
   // Hopper is 40-49
   public static class mapHopper {
     public static final int HOPPER_MOTOR_CAN = 40;
-    public static final int HOPPER_SENSOR_DIO = 0;
+    public static final int HOPPER_SENSOR_CAN = 0;
   }
 
   public static class mapElevator {
-    public static final int LEFT_ELEVATOR_CAN = 50;
-    public static final int RIGHT_ELEVATOR_CAN = 51;
+    public static final int ELEVATOR_LEFT_CAN = 50;
+    public static final int ELEVATOR_RIGHT_CAN = 51;
   }
 }

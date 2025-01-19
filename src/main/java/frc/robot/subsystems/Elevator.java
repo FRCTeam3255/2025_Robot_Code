@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
+
 @Logged
 public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
@@ -24,8 +25,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
-    rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     configure();
   }
