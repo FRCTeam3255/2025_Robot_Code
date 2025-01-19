@@ -30,7 +30,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -246,6 +245,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_INTAKE_SPEED = 0.3;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
@@ -256,6 +256,11 @@ public final class Constants {
 
   public static class consClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+
+    public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
+    static {
+      CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    }
   }
 
   public static class constElevator {

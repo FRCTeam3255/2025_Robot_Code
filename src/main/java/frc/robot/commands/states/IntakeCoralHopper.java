@@ -30,7 +30,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
-    subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

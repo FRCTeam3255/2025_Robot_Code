@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import frc.robot.Constants.consClimber;
 
 @Logged
 public class Climber extends SubsystemBase {
@@ -31,6 +32,8 @@ public class Climber extends SubsystemBase {
     lastDesiredPosition = Units.Degrees.of(0);
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
     climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_RIGHT_CAN);
+
+    climberMotor.getConfigurator().apply(consClimber.CLIMBER_CONFIG);
   }
 
   public void setClimberMotorVelocity(double velocity) {
