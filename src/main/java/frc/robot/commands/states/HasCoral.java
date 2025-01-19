@@ -41,6 +41,6 @@ public class HasCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalCoralOuttake.hasCoral();
+    return true;
   }
 }
