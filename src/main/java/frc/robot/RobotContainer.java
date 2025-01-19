@@ -137,7 +137,7 @@ public class RobotContainer {
         Commands.sequence(
             TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
             Commands.waitSeconds(1.5),
-            TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())).asProxy());
+            TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
 
     NamedCommands.registerCommand("PrepCoralStation",
         Commands.print("Prep Coral Station"));
