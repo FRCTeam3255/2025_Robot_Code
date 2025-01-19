@@ -14,9 +14,9 @@ public class ScoringAlgae extends Command {
   StateMachine globalStateMachine;
   AlgaeIntake subAlgaeIntake;
 
-  public ScoringAlgae(StateMachine passedStateMachine, AlgaeIntake subAlgaeIntake) {
+  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);

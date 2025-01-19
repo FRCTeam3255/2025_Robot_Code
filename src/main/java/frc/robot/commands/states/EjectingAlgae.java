@@ -16,10 +16,10 @@ public class EjectingAlgae extends Command {
   AlgaeIntake globalAlgaeIntake;
   StateMachine globalStateMachine;
 
-  public EjectingAlgae(StateMachine passedStateMachine, AlgaeIntake passedAlgaeIntake) {
+  public EjectingAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalAlgaeIntake = passedAlgaeIntake;
+    globalStateMachine = subStateMachine;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
   }

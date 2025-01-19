@@ -17,9 +17,9 @@ public class IntakeCoralHopper extends Command {
   CoralOuttake subCoralOuttake;
 
   /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(StateMachine passedStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
+  public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subCoralIntake = subHopper;
     this.subCoralOuttake = subCoralOuttake;
 

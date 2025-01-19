@@ -18,11 +18,11 @@ public class CleaningL3Reef extends Command {
   AlgaeIntake globalAlgaeIntake;
 
   /** Creates a new CleaningL3Reef. */
-  public CleaningL3Reef(StateMachine passedStateMachine, Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
+  public CleaningL3Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalElevator = passedElevator;
-    globalAlgaeIntake = passedAlgaeIntake;
+    globalStateMachine = subStateMachine;
+    globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
   }

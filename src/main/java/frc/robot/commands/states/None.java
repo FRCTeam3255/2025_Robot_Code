@@ -22,10 +22,10 @@ public class None extends Command {
   Elevator subElevator;
 
   /** Creates a new none. */
-  public None(StateMachine passedStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
+  public None(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
       AlgaeIntake subAlgaeIntake, Climber subClimber, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subCoralOuttake = subCoralOuttake;
     this.subHopper = subHopper;
     this.subAlgaeIntake = subAlgaeIntake;

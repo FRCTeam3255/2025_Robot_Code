@@ -15,10 +15,10 @@ public class PrepProcessor extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
 
-  public PrepProcessor(StateMachine passedStateMachine, Elevator passedElevator) {
+  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalElevator = passedElevator;
+    globalStateMachine = subStateMachine;
+    globalElevator = subElevator;
 
     addRequirements(globalStateMachine);
   }
