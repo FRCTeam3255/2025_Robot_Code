@@ -10,6 +10,7 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,6 +48,7 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subStateMachine, subClimber);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
@@ -66,6 +68,9 @@ public class RobotContainer {
 
   Command TRY_EJECTING_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE));
+
+  Command TRY_SCORING_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
 
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
@@ -158,7 +163,7 @@ public class RobotContainer {
   private void configureOperatorBindings(SN_XboxController controller) {
 
     // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
 
     controller.btn_Back
@@ -170,7 +175,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
-        .onTrue(TRY_EJECTING_ALGAE)
+        .onTrue(TRY_SCORING_ALGAE)
         .onFalse(TRY_NONE);
 
     controller.btn_RightBumper
@@ -221,7 +226,7 @@ public class RobotContainer {
 
   private void configureTesterBindings(SN_XboxController controller) {
     // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
 
     // Back: Intake Coral
@@ -233,11 +238,8 @@ public class RobotContainer {
         .whileTrue(comIntakingAlgaeGround);
 
     // RT: Spit Algae
-    controller.btn_RightTrigger
-        .onTrue(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.SCORING_ALGAE)))
-        .onFalse(Commands.deferredProxy(
-            () -> subStateMachine.tryState(RobotState.NONE)));
+    controller.btn_RightBumper
+        .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
     controller.btn_RightTrigger
