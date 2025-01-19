@@ -26,9 +26,7 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
     outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
-  }
 
-  public void configure() {
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
   }
