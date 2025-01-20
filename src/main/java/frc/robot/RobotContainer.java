@@ -152,8 +152,6 @@ public class RobotContainer {
     controller.btn_B
         .onTrue(TRY_CLIMBING_DEEP);
 
-    // TODO: Add Teleop Align to LT and RT
-
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
   }
