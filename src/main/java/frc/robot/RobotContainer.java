@@ -108,6 +108,12 @@ public class RobotContainer {
   Command TRY_HAS_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
 
+  Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
+
+  Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
+
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
@@ -121,6 +127,7 @@ public class RobotContainer {
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureSensorBindings();
     configureAutoBindings();
     configureAutoSelector();
     configureTesterBindings(conTester);
@@ -198,10 +205,23 @@ public class RobotContainer {
 
     controller.btn_X
         .onTrue(TRY_PREP_CORAL_L2);
-
+    
     controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
+    controller.btn_LeftStick
+        .onTrue(TRY_PREP_ALGAE_0);
+
+    controller.btn_RightStick
+        .onTrue(TRY_PREP_CORAL_0);
+  }
+
+  private void configureSensorBindings() {
+    hasCoralTrigger
+        .whileTrue(TRY_HAS_CORAL);
+
+    hasAlgaeTrigger
+        .whileTrue(TRY_HAS_ALGAE);
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
@@ -251,17 +271,17 @@ public class RobotContainer {
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
     controller.btn_B
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
     controller.btn_Y
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
     controller.btn_X
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
-  
+
   SendableChooser<Command> autoChooser = new SendableChooser<>();
-  
+
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }

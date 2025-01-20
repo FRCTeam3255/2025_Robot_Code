@@ -299,6 +299,7 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(0);
   }
 
   public static class constField {
