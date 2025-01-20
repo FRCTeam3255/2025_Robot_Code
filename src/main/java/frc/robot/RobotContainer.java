@@ -155,66 +155,57 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
-    controller.btn_Back
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
+    controller.btn_B
+        .onTrue(TRY_CLIMBING_DEEP);
+
+    controller.btn_North
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-
-    // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
-        .ignoringDisable(true));
-
-    controller.btn_Back
+    controller.btn_LeftTrigger
         .whileTrue(TRY_INTAKING_CORAL_HOPPER)
         .onFalse(TRY_NONE);
 
-    controller.btn_LeftTrigger
-        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
-        .onFalse(TRY_NONE);
-
     controller.btn_RightTrigger
-        .onTrue(TRY_SCORING_ALGAE)
-        .onFalse(TRY_NONE);
-
-    controller.btn_RightBumper
         .whileTrue(TRY_SCORING_CORAL)
         .onFalse(TRY_NONE);
 
     controller.btn_LeftBumper
-        .whileTrue(TRY_CLIMBING_DEEP)
+        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
         .onFalse(TRY_NONE);
 
+    controller.btn_RightBumper
+        .whileTrue(TRY_SCORING_ALGAE)
+        .onFalse(TRY_NONE);
+
+    // TODO: Has Coral Overide Back BTN
+    // TODO: Has Algae Overide Meneu BTN
+
+    controller.btn_North
+        .onTrue(TRY_PREP_NET);
+
     controller.btn_East
-        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
-
-    controller.btn_South
-        .onTrue(TRY_PREP_PROCESSOR);
-
-    controller.btn_West
         .whileTrue(TRY_CLEANING_L3)
         .onFalse(TRY_NONE);
 
-    controller.btn_North
+    controller.btn_West
         .whileTrue(TRY_CLEANING_L2)
         .onFalse(TRY_NONE);
 
-    controller.btn_NorthWest
-        .onTrue(TRY_PREP_NET);
-
-    // btn_SouthEast: Eject Algae
-    controller.btn_SouthEast
-        .whileTrue(TRY_EJECTING_ALGAE)
-        .onFalse(TRY_NONE);
+    controller.btn_South
+        .whileTrue(TRY_PREP_PROCESSOR);
 
     controller.btn_A
         .onTrue(TRY_PREP_CORAL_L1);
+
     controller.btn_B
-        .onTrue(TRY_PREP_CORAL_L2);
-    controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L3);
+
     controller.btn_X
+        .onTrue(TRY_PREP_CORAL_L2);
+    
+    controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
     controller.btn_LeftStick
@@ -225,9 +216,6 @@ public class RobotContainer {
 
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
-
-    hasAlgaeTrigger
-        .whileTrue(TRY_HAS_ALGAE);
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
