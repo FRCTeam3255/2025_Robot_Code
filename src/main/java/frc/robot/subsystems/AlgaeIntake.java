@@ -74,7 +74,6 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void setAlgaeIntakeVoltage(double voltage) {
     intakeRollerMotor.setVoltage(voltage);
-    intakePivotMotor.setVoltage(voltage);
   }
 
   @Override
