@@ -127,6 +127,7 @@ public class RobotContainer {
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureSensorBindings();
     configureAutoBindings();
     configureAutoSelector();
     configureTesterBindings(conTester);
@@ -222,7 +223,9 @@ public class RobotContainer {
 
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
+  }
 
+  private void configureSensorBindings() {
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
 
