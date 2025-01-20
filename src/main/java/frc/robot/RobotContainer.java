@@ -178,9 +178,6 @@ public class RobotContainer {
     // TODO: Has Coral Overide Back BTN
     // TODO: Has Algae Overide Meneu BTN
 
-    // TODO: Prep 0 Algae Left Stick BTN
-    // TODO: Prep 0 Coral Right Stick BTN
-
     controller.btn_North
         .onTrue(TRY_PREP_NET);
 
