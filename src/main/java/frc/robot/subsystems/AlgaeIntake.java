@@ -41,8 +41,8 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.set(speed);
   }
 
-  public void setAlgaeIntakePivotPosition(Angle degrees) {
-    intakePivotMotor.setPosition(degrees);
+  public void setAlgaeIntakePivotPosition(Angle setpoint) {
+    intakePivotMotor.setPosition(setpoint);
   }
 
   public boolean hasAlgae() {
