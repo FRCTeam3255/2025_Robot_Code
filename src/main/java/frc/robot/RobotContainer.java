@@ -219,6 +219,9 @@ public class RobotContainer {
   private void configureSensorBindings() {
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
+
+    hasAlgaeTrigger
+        .whileTrue(TRY_HAS_ALGAE);
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
