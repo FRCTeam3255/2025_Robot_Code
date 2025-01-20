@@ -131,27 +131,21 @@ public class RobotContainer {
 
   private void configureAutoBindings() {
     NamedCommands.registerCommand("PrepPlace",
-        Commands.sequence(
-            Commands.deferredProxy(
-                () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
+        Commands.sequence(TRY_PREP_CORAL_L3.asProxy()));
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            Commands.deferredProxy(
-                () -> subStateMachine.tryState(RobotState.SCORING_CORAL).until(() -> !hasCoralTrigger.getAsBoolean())),
+            TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
             Commands.waitSeconds(1.5),
-            Commands.deferredProxy(
-                () -> subStateMachine.tryState(RobotState.NONE).until(() -> !hasCoralTrigger.getAsBoolean()))));
+            TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
 
     NamedCommands.registerCommand("PrepCoralStation",
         Commands.print("Prep Coral Station"));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-            Commands
-                .deferredProxy(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER).until(hasCoralTrigger)),
-            Commands.deferredProxy(
-                () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3))));
+          TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
+          TRY_PREP_CORAL_L3.asProxy()));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
