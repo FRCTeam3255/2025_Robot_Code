@@ -291,8 +291,8 @@ public class StateMachine extends SubsystemBase {
     PREP_CORAL_L4,
     PREP_NET,
     PREP_PROCESSOR,
-    ALGAE_PREP_0,
-    CORAL_PREP_0,
+    PREP_ALGAE_0,
+    PREP_CORAL_0,
   }
 
   @Override
