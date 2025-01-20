@@ -15,9 +15,9 @@ public class HasCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
 
-  public HasCoral(StateMachine passedStateMachine, CoralOuttake subCoralOuttake) {
+  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     addRequirements(globalStateMachine);
   }
@@ -41,6 +41,6 @@ public class HasCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalCoralOuttake.hasCoral();
+    return true;
   }
 }

@@ -4,12 +4,13 @@
 
 package frc.robot.subsystems;
 
+import java.util.List;
+
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
-import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -28,7 +29,7 @@ import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
-
+@Logged
 public class Drivetrain extends SN_SuperSwerve {
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -43,6 +44,8 @@ public class Drivetrain extends SN_SuperSwerve {
 
   StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
+  StructPublisher<Pose2d> desiredAlignmentPosePublisher = NetworkTableInstance.getDefault()
+      .getStructTopic("/SmartDashboard/Drivetrain/Desired Alignment Pose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> desiredStatesPublisher = NetworkTableInstance.getDefault()
       .getStructArrayTopic("/SmartDashboard/Drivetrain/Desired States", SwerveModuleState.struct).publish();
   StructArrayPublisher<SwerveModuleState> actualStatesPublisher = NetworkTableInstance.getDefault()
@@ -101,13 +104,13 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public AngularVelocity getVelocityToRotate(Rotation2d desiredYaw) {
     double yawSetpoint = constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.getThetaController()
-        .calculate(getRotation().getDegrees(), desiredYaw.getDegrees());
+        .calculate(getRotation().getRadians(), desiredYaw.getRadians());
 
     // limit the PID output to our maximum rotational speed
-    yawSetpoint = MathUtil.clamp(yawSetpoint, -constDrivetrain.TURN_SPEED.in(Units.DegreesPerSecond),
-        constDrivetrain.TURN_SPEED.in(Units.DegreesPerSecond));
+    yawSetpoint = MathUtil.clamp(yawSetpoint, -constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond),
+        constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
 
-    return Units.DegreesPerSecond.of(yawSetpoint);
+    return Units.RadiansPerSecond.of(yawSetpoint);
   }
 
   /**
@@ -135,19 +138,54 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public ChassisSpeeds getAlignmentSpeeds(Pose2d desiredPose) {
     desiredAlignmentPose = desiredPose;
+    // TODO: This might run better if instead of 0, we use
+    // constDrivetrain.TELEOP_AUTO_ALIGN.DESIRED_AUTO_ALIGN_SPEED.in(Units.MetersPerSecond);.
+    // I dont know why. it might though
     return constDrivetrain.TELEOP_AUTO_ALIGN.TELEOP_AUTO_ALIGN_CONTROLLER.calculate(getPose(), desiredPose, 0,
         desiredPose.getRotation());
   }
 
-  public void alignToReef() {
-    // TODO: This in another pr
-    // HERES WHAT WE'RE GONNA DO
-    // 1. Get the closest reef branch; thats the one we wanna snap to
-    // 2. check your distance from it
-    // 2. if thats too high, just provide a rotational velocity. if not, WE'RE GOING
-    // TO DO THE WHOLE SHEBANG
-    // 3.
+  /**
+   * Returns the closest reef branch to the robot.
+   * 
+   * @param leftBranchRequested If we are requesting to align to the left or right
+   *                            branch
+   * @return The desired reef branch face to align to
+   */
+  public Pose2d getDesiredReef(boolean leftBranchRequested) {
+    // Get the closest reef branch face using either branch on the face
+    List<Pose2d> reefPoses = constField.getReefPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredReef = currentPose.nearest(reefPoses);
+    int closestReefIndex = reefPoses.indexOf(desiredReef);
 
+    // Invert faces on the back of the reef so they're always relative to the driver
+    if (closestReefIndex > 3 && closestReefIndex < 10) {
+      leftBranchRequested = !leftBranchRequested;
+    }
+
+    // If we were closer to the left branch but selected the right branch (or
+    // vice-versa), switch to our desired branch
+    if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
+      desiredReef = reefPoses.get(closestReefIndex - 1);
+    } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
+      desiredReef = reefPoses.get(closestReefIndex + 1);
+    }
+    return desiredReef;
+  }
+
+  /**
+   * Drive the drivetrain with pre-calculated ChassisSpeeds
+   *
+   * @param chassisSpeeds Desired ChassisSpeeds
+   * @param isOpenLoop    Are the modules being set based on open loop or closed
+   *                      loop control
+   *
+   */
+  public void drive(ChassisSpeeds chassisSpeeds, boolean isOpenLoop) {
+    SwerveModuleState[] desiredModuleStates = swerveKinematics
+        .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
+    setModuleStates(desiredModuleStates, isOpenLoop);
   }
 
   @Override
@@ -175,6 +213,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
     field.setRobotPose(getPose());
     robotPosePublisher.set(getPose());
+    desiredAlignmentPosePublisher.set(desiredAlignmentPose);
     desiredStatesPublisher.set(getDesiredModuleStates());
     actualStatesPublisher.set(getActualModuleStates());
 

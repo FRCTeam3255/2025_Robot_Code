@@ -14,9 +14,9 @@ public class ScoringAlgae extends Command {
   StateMachine globalStateMachine;
   AlgaeIntake subAlgaeIntake;
 
-  public ScoringAlgae(StateMachine passedStateMachine, AlgaeIntake subAlgaeIntake) {
+  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
@@ -38,6 +38,7 @@ public class ScoringAlgae extends Command {
   @Override
   public void end(boolean interrupted) {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
+    subAlgaeIntake.setHasGamePiece(false);
   }
 
   // Returns true when the command should end.

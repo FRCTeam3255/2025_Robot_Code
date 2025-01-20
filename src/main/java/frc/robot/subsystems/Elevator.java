@@ -4,32 +4,35 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
 
+@Logged
 public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
+  Distance lastDesiredPosition;
+
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
-    rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
-    configure();
-  }
-
-  public void configure() {
+    lastDesiredPosition = Units.Inches.of(0);
+    
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
@@ -41,6 +44,7 @@ public class Elevator extends SubsystemBase {
   public void setPosition(Distance height) {
     rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
+    lastDesiredPosition = height;
   }
 
   public void setNeutral() {
@@ -48,9 +52,9 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new NeutralOut());
   }
 
-  public void resetSensorPosition(double setpoint) {
-    rightMotorLeader.setPosition(setpoint);
-    leftMotorFollower.setPosition(setpoint);
+  public void resetSensorPosition(Distance setpoint) {
+    rightMotorLeader.setPosition(setpoint.in(Inches));
+    leftMotorFollower.setPosition(setpoint.in(Inches));
 
   }
 
@@ -69,5 +73,6 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
 
+    SmartDashboard.putNumber("Elevator/Last Desired Position", lastDesiredPosition.in(Inches));
   }
 }

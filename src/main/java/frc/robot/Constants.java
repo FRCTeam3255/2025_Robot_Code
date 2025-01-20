@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -92,9 +93,6 @@ public final class Constants {
     // Distance between Front & Back Wheels
     public static final double WHEELBASE = Units.Meters.convertFrom(23.75, Units.Inches);
 
-    public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
-    public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
-
     // -- CONFIGS --
     // This PID is implemented on each module, not the Drivetrain subsystem.
     public static final double DRIVE_P = 0.18;
@@ -182,7 +180,8 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 125;
+      public static final double MASS = 115;
+      // TODO: Calcuate the real vaule
       public static final double MOI = 6.8;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
@@ -201,23 +200,29 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
-      // Teleop Snapping to Rotation (Yaw)
-      public static final double YAW_SNAP_P = 3;
-      public static final double YAW_SNAP_I = 0;
-      public static final double YAW_SNAP_D = 0;
+      // TODO: Test if this actually works LOL
+      public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
+          .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
+
+      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1);
+      public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
           3,
           0,
           0);
+      public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
 
-      // TODO: These can probably be much higher constraints... im just very scared
       public static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
-          3, 0, 0, new TrapezoidProfile.Constraints(360, Math.pow(360, 2)));
+          3, 0, 0, new TrapezoidProfile.Constraints(TURN_SPEED.in(Units.DegreesPerSecond),
+              Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
+      public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
       static {
+        TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
+
         ROTATION_CONTROLLER.enableContinuousInput(0, 360);
-        ROTATION_CONTROLLER.setTolerance(constDrivetrain.AT_ROTATION_TOLERANCE.in(Units.Degrees));
+        ROTATION_CONTROLLER.setTolerance(AT_ROTATION_TOLERANCE.in(Units.Degrees));
       }
 
       public static HolonomicDriveController TELEOP_AUTO_ALIGN_CONTROLLER = new HolonomicDriveController(
@@ -228,18 +233,24 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.15;
+    public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
+
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = -1;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
   }
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_INTAKE_SPEED = 0.3;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
@@ -248,8 +259,13 @@ public final class Constants {
     }
   }
 
-  public static class consClimber {
+  public static class constClimber {
     public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+
+    public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
+    static {
+      CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    }
   }
 
   public static class constElevator {
@@ -282,6 +298,7 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(0);
   }
 
   public static class constField {
@@ -326,28 +343,15 @@ public final class Constants {
       public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
       public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
 
-      public static final Pose2d[] REEF_POSES = new Pose2d[] { REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+      private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
+      private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
-      public static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
+      private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F,
           REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
-      public static final Pose2d[] RED_POSES = getRedAlliancePoses();
-    }
 
-    public static Pose2d[] getReefMidpoints() {
-      Pose2d[] reefMidpoints = new Pose2d[poses.REEF_POSES.length / 2];
-
-      for (int i = 0; i < poses.REEF_POSES.length; i++) {
-        reefMidpoints[i] = new Pose2d((poses.REEF_POSES[i].getX() + poses.REEF_POSES[i + 1].getX()) / 2,
-            (poses.REEF_POSES[i].getY() + poses.REEF_POSES[i + 1].getY()) / 2,
-            poses.REEF_POSES[i].getRotation().plus(poses.REEF_POSES[i + 1].getRotation()).div(2));
-
-        if (isRedAlliance()) {
-          reefMidpoints[i] = getRedAlliancePose(reefMidpoints[i]);
-        }
-      }
-      return reefMidpoints;
+      private static final Pose2d[] RED_POSES = getRedAlliancePoses();
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -356,13 +360,25 @@ public final class Constants {
           bluePose.getRotation().plus(Rotation2d.fromDegrees(180)));
     }
 
-    public static Pose2d[] getRedAlliancePoses() {
+    private static Pose2d[] getRedAlliancePoses() {
       Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
 
       for (int i = 0; i < poses.BLUE_POSES.length; i++) {
         returnedPoses[i] = getRedAlliancePose(poses.BLUE_POSES[i]);
       }
       return returnedPoses;
+    }
+
+    private static List<Pose2d> getRedReefPoses() {
+      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_REEF_POSES.size()];
+
+      for (int i = 0; i < poses.BLUE_REEF_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(poses.BLUE_REEF_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
+          returnedPoses[11]);
     }
 
     /**
@@ -372,7 +388,7 @@ public final class Constants {
      * @see <a href=
      *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
      *      Robot Coordinate Systems</a>
-     * @return An array of field element positions in this order: ResetPose
+     * @return An array of field element positions
      */
     public static Supplier<Pose2d[]> getFieldPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
@@ -380,6 +396,23 @@ public final class Constants {
 
       }
       return () -> poses.BLUE_POSES;
+    }
+
+    /**
+     * Gets the positions of all of the necessary field elements on the field. All
+     * coordinates are in meters and are relative to the blue alliance.
+     * 
+     * @see <a href=
+     *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
+     *      Robot Coordinate Systems</a>
+     * @return An array of the reef branches for your alliance
+     */
+    public static Supplier<List<Pose2d>> getReefPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> poses.RED_REEF_POSES;
+
+      }
+      return () -> poses.BLUE_REEF_POSES;
     }
   }
 

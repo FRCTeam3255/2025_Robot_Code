@@ -18,11 +18,11 @@ public class IntakingAlgaeGround extends Command {
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
 
-  public IntakingAlgaeGround(StateMachine subStateMachine, Elevator passedElevator, AlgaeIntake passedAlgaeIntake) {
+  public IntakingAlgaeGround(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subStateMachine = subStateMachine;
-    globalElevator = passedElevator;
-    globalAlgaeIntake = passedAlgaeIntake;
+    globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(subStateMachine);
   }
@@ -43,12 +43,11 @@ public class IntakingAlgaeGround extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalAlgaeIntake.setAlgaeIntakeMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalAlgaeIntake.hasAlgae();
   }
 }
