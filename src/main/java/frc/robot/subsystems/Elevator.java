@@ -24,6 +24,8 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
+  Distance currentLeftPosition = Units.Inches.of(0);
+  Distance currentRightPosition = Units.Inches.of(0);
   Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
@@ -32,13 +34,13 @@ public class Elevator extends SubsystemBase {
     rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
-    
+
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
   public Distance getElevatorPosition() {
-    return Units.Inches.of(rightMotorLeader.get());
+    return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
   public void setPosition(Distance height) {
@@ -61,18 +63,17 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator/Left/Pos", leftMotorFollower.getPosition().getValueAsDouble());
+    currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
+    currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+    
     SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
     SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Current", leftMotorFollower.getSupplyCurrent().getValueAsDouble());
 
-    SmartDashboard.putNumber("Elevator/Right/Pos", rightMotorLeader.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/CLO", rightMotorLeader.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Output", rightMotorLeader.get());
     SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Last Desired Position", lastDesiredPosition.in(Inches));
   }
 }
