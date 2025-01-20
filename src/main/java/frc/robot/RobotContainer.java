@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -116,9 +117,13 @@ public class RobotContainer {
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
-  public Pose3d elevatorStageOne = Pose3d.kZero;
-  public Pose3d elevatorCarriage = Pose3d.kZero;
-  public Pose3d algaeIntake = Pose3d.kZero;
+  @NotLogged
+  private Pose3d elevatorStageOne = Pose3d.kZero;
+  @NotLogged
+  private Pose3d elevatorCarriage = Pose3d.kZero;
+  @NotLogged
+  private Pose3d algaeIntake = Pose3d.kZero;
+  public Pose3d[] componentPositions = { elevatorStageOne, elevatorCarriage, algaeIntake };
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
