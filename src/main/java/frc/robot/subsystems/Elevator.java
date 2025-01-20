@@ -24,7 +24,7 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
-  Distance lastDesiredPosition;
+  private Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -32,13 +32,17 @@ public class Elevator extends SubsystemBase {
     rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
-    
+
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
   public Distance getElevatorPosition() {
     return Units.Inches.of(rightMotorLeader.get());
+  }
+
+  public Distance getLastDesiredPosition() {
+    return lastDesiredPosition;
   }
 
   public void setPosition(Distance height) {

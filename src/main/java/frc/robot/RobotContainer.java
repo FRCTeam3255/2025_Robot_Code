@@ -38,7 +38,7 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
   private final SN_XboxController conTester = new SN_XboxController(mapControllers.TESTER_USB);
 
-  private static final Drivetrain subDrivetrain = new Drivetrain();
+  private final Drivetrain subDrivetrain = new Drivetrain();
   private final Hopper subHopper = new Hopper();
   private static final Vision subVision = new Vision();
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
@@ -116,7 +116,6 @@ public class RobotContainer {
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
-  Pose3d blankPose = Pose3d.kZero;
   public Pose3d elevatorStageOne = Pose3d.kZero;
   public Pose3d elevatorCarriage = Pose3d.kZero;
   public Pose3d algaeIntake = Pose3d.kZero;
@@ -300,28 +299,37 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
-  public static Command AddVisionMeasurement() {
+  public Command AddVisionMeasurement() {
     return new AddVisionMeasurement(subDrivetrain, subVision)
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 
   public void updateLoggedPoses() {
     Pose3d currentRobotPose = new Pose3d(subDrivetrain.getPose());
+    double elevatorPos, algaeAngle;
 
     // If we're in simulation, we can't log real mechanism data because they don't
     // exist. Instead, we'll log where we *want* the mechanisms to be and assume
     // they get there instantly.
     if (Robot.isSimulation()) {
-      elevatorStageOne = new Pose3d(0.0889,
-          0,
-          0.109474, new Rotation3d(Units.Degrees.of(0), Units.Degrees.of(0), Units.Degrees.of(0)));
-
-      elevatorCarriage = elevatorStageOne
-          .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters)), Rotation3d.kZero));
-
-      algaeIntake = elevatorCarriage
-          .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), Rotation3d.kZero));
-
+      elevatorPos = subElevator.getLastDesiredPosition().in(Units.Meters) / 2;
+      // algaeAngle = subAlgaeIntake.getLastDesiredAngle().in(Units.Degrees);
+    } else {
+      // Use real positions
+      elevatorPos = (subElevator.getElevatorPosition().in(Units.Meters) / 2);
+      // algaeAngle = subAlgaeIntake.getAngle().in(Units.Degrees);
     }
+
+    elevatorStageOne = new Pose3d(new Translation3d(0.0889,
+        0,
+        0.109474 + elevatorPos), Rotation3d.kZero);
+
+    elevatorCarriage = elevatorStageOne
+        .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters) + elevatorPos),
+            Rotation3d.kZero));
+
+    // TODO: add algae intake angle
+    algaeIntake = elevatorCarriage
+        .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), Rotation3d.kZero));
   }
 }

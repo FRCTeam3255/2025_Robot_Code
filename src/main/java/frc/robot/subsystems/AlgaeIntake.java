@@ -75,7 +75,6 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     SmartDashboard.putNumber("RightAlgae motor", intakeMotorOne.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("LeftAlgae motor", intakeMotorTwo.getStatorCurrent().getValueAsDouble());
     SmartDashboard.putNumber("LeftAlgae motor velocity", intakeMotorOne.getVelocity().getValueAsDouble());
