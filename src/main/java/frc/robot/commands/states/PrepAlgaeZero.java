@@ -12,12 +12,12 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class AlgaePrep0 extends Command {
+public class PrepAlgaeZero extends Command {
   /** Creates a new AlgaePrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
 
-  public AlgaePrep0(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
@@ -28,7 +28,7 @@ public class AlgaePrep0 extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.ALGAE_PREP_0);
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
   }
 

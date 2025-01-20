@@ -108,11 +108,11 @@ public class RobotContainer {
   Command TRY_HAS_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
 
-  Command TRY_ALGAE_PREP_0 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.ALGAE_PREP_0));
+  Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
 
-  Command TRY_CORAL_PREP_0 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CORAL_PREP_0));
+  Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
@@ -218,10 +218,10 @@ public class RobotContainer {
         .onTrue(TRY_PREP_CORAL_L4);
 
     controller.btn_LeftStick
-        .onTrue(TRY_ALGAE_PREP_0);
+        .onTrue(TRY_PREP_ALGAE_0);
 
     controller.btn_RightStick
-        .onTrue(TRY_CORAL_PREP_0);
+        .onTrue(TRY_PREP_CORAL_0);
 
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);

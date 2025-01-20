@@ -14,7 +14,7 @@ import frc.robot.Constants.constElevator;
 import frc.robot.commands.states.CleaningL2Reef;
 import frc.robot.commands.states.CleaningL3Reef;
 import frc.robot.commands.states.Climb;
-import frc.robot.commands.states.CoralPrep0;
+import frc.robot.commands.states.PrepCoralZero;
 import frc.robot.commands.states.EjectCoral;
 import frc.robot.commands.states.HasAlgae;
 import frc.robot.commands.states.HasCoral;
@@ -156,10 +156,10 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
-      case CORAL_PREP_0:
+      case PREP_CORAL_ZERO:
         switch (currentRobotState) {
           case HAS_CORAL:
-            return new CoralPrep0(subStateMachine, subElevator);
+            return new PrepCoralZero(subStateMachine, subElevator);
         }
         break;
 
@@ -169,7 +169,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
-          case CORAL_PREP_0:
+          case PREP_CORAL_ZERO:
             return new PlaceCoral(subStateMachine, subCoralOuttake);
         }
         break;
@@ -235,15 +235,15 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case PREP_NET:
           case PREP_PROCESSOR:
-          case ALGAE_PREP_0:
+          case PREP_ALGAE_ZERO:
             return new ScoringAlgae(subStateMachine, subAlgaeIntake);
         }
         break;
 
-      case ALGAE_PREP_0:
+      case PREP_ALGAE_ZERO:
         switch (currentRobotState) {
           case HAS_ALGAE:
-            return new CoralPrep0(subStateMachine, subElevator);
+            return new PrepCoralZero(subStateMachine, subElevator);
         }
         break;
 
@@ -268,7 +268,7 @@ public class StateMachine extends SubsystemBase {
     PREP_CORAL_L4,
     EJECTING_CORAL,
     SCORING_CORAL,
-    CORAL_PREP_0,
+    PREP_CORAL_ZERO,
 
     INTAKING_ALGAE_GROUND,
     CLEANING_L2,
@@ -278,7 +278,7 @@ public class StateMachine extends SubsystemBase {
     PREP_PROCESSOR,
     EJECTING_ALGAE,
     SCORING_ALGAE,
-    ALGAE_PREP_0,
+    PREP_ALGAE_ZERO,
 
     CLIMBING_DEEP
   }
