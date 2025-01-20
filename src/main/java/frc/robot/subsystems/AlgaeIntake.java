@@ -44,13 +44,17 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.set(speed);
   }
 
-  public void setAlgaePivotPosition(Angle setpoint) {
+  public void setAlgaePivotAngle(Angle setpoint) {
     intakePivotMotor.setPosition(setpoint.in(Units.Degrees));
     lastDesiredAngle = setpoint;
   }
 
-  public Angle getAlgaePivotPosition() {
+  public Angle getPivotAngle() {
     return Units.Degrees.of(intakePivotMotor.getPosition().getValueAsDouble());
+  }
+
+  public Angle getLastDesiredPivotAngle() {
+    return lastDesiredAngle;
   }
 
   public boolean hasAlgae() {
@@ -86,13 +90,14 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Algae Intake/Roller/Stator Current",
+        intakeRollerMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Roller/Velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Roller/Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("RightAlgae motor", intakeRollerMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor", intakePivotMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Pivot/Stator Current",
+        intakePivotMotor.getStatorCurrent().getValueAsDouble());
 
     SmartDashboard.putBoolean("Has Algae", hasAlgae());
-    // This method will be called once per scheduler run
   }
 }

@@ -123,13 +123,9 @@ public class RobotContainer {
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
-  @NotLogged
   private Pose3d elevatorStageOne = Pose3d.kZero;
-  @NotLogged
   private Pose3d elevatorCarriage = Pose3d.kZero;
-  @NotLogged
   private Pose3d algaeIntake = Pose3d.kZero;
-  public Pose3d[] componentPositions = { elevatorStageOne, elevatorCarriage, algaeIntake };
 
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
@@ -219,7 +215,7 @@ public class RobotContainer {
 
     controller.btn_X
         .onTrue(TRY_PREP_CORAL_L2);
-    
+
     controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
@@ -316,7 +312,6 @@ public class RobotContainer {
   }
 
   public void updateLoggedPoses() {
-    Pose3d currentRobotPose = new Pose3d(subDrivetrain.getPose());
     double elevatorPos, algaeAngle;
 
     // If we're in simulation, we can't log real mechanism data because they don't
@@ -324,11 +319,11 @@ public class RobotContainer {
     // they get there instantly.
     if (Robot.isSimulation()) {
       elevatorPos = subElevator.getLastDesiredPosition().in(Units.Meters) / 2;
-      // algaeAngle = subAlgaeIntake.getLastDesiredAngle().in(Units.Degrees);
+      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle().in(Units.Degrees);
     } else {
       // Use real positions
       elevatorPos = (subElevator.getElevatorPosition().in(Units.Meters) / 2);
-      // algaeAngle = subAlgaeIntake.getAngle().in(Units.Degrees);
+      algaeAngle = subAlgaeIntake.getPivotAngle().in(Units.Degrees);
     }
 
     elevatorStageOne = new Pose3d(new Translation3d(0.0889,
@@ -339,8 +334,7 @@ public class RobotContainer {
         .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters) + elevatorPos),
             Rotation3d.kZero));
 
-    // TODO: add algae intake angle
     algaeIntake = elevatorCarriage
-        .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), Rotation3d.kZero));
+        .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), new Rotation3d(0, algaeAngle, 0)));
   }
 }
