@@ -12,6 +12,11 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -111,6 +116,11 @@ public class RobotContainer {
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
+  Pose3d blankPose = Pose3d.kZero;
+  public Pose3d elevatorStageOne = Pose3d.kZero;
+  public Pose3d elevatorCarriage = Pose3d.kZero;
+  public Pose3d algaeIntake = Pose3d.kZero;
+
   public RobotContainer() {
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
@@ -144,8 +154,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-          TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
-          TRY_PREP_CORAL_L3.asProxy()));
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
+            TRY_PREP_CORAL_L3.asProxy()));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -265,17 +275,17 @@ public class RobotContainer {
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
     controller.btn_B
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
     controller.btn_Y
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
     controller.btn_X
-    .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
-  
+
   SendableChooser<Command> autoChooser = new SendableChooser<>();
-  
+
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
@@ -293,5 +303,25 @@ public class RobotContainer {
   public static Command AddVisionMeasurement() {
     return new AddVisionMeasurement(subDrivetrain, subVision)
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
+  }
+
+  public void updateLoggedPoses() {
+    Pose3d currentRobotPose = new Pose3d(subDrivetrain.getPose());
+
+    // If we're in simulation, we can't log real mechanism data because they don't
+    // exist. Instead, we'll log where we *want* the mechanisms to be and assume
+    // they get there instantly.
+    if (Robot.isSimulation()) {
+      elevatorStageOne = new Pose3d(0.0889,
+          0,
+          0.109474, new Rotation3d(Units.Degrees.of(0), Units.Degrees.of(0), Units.Degrees.of(0)));
+
+      elevatorCarriage = elevatorStageOne
+          .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters)), Rotation3d.kZero));
+
+      algaeIntake = elevatorCarriage
+          .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), Rotation3d.kZero));
+
+    }
   }
 }
