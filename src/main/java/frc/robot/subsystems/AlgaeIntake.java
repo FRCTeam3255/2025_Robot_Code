@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,6 +27,7 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFXConfiguration intakeConfig;
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+  private Angle lastDesiredAngle = Degrees.zero();
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -41,8 +44,13 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.set(speed);
   }
 
-  public void setAlgaeIntakePivotPosition(Angle setpoint) {
-    intakePivotMotor.setPosition(setpoint);
+  public void setAlgaePivotPosition(Angle setpoint) {
+    intakePivotMotor.setPosition(setpoint.in(Units.Degrees));
+    lastDesiredAngle = setpoint;
+  }
+
+  public Angle getAlgaePivotPosition() {
+    return Units.Degrees.of(intakePivotMotor.getPosition().getValueAsDouble());
   }
 
   public boolean hasAlgae() {
