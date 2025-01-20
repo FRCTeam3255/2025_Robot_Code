@@ -239,10 +239,15 @@ public final class Constants {
 
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = -1;
     public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+    public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
     }
+
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
@@ -299,6 +304,7 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(35);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(0);
   }
 
   public static class constField {
