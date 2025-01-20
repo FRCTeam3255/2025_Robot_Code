@@ -40,8 +40,8 @@ public class RobotMap {
   }
 
   public static class mapAlgaeIntake {
-    public static final int INTAKE_LEFT_MOTOR_CAN = 10;
-    public static final int INTAKE_RIGHT_MOTOR_CAN = 11;
+    public static final int INTAKE_ROLLER_MOTOR_CAN = 10;
+    public static final int INTAKE_PIVOT_MOTOR_CAN = 11;
     public static final int ALGAE_SENSOR_CAN = 12;
   }
 
