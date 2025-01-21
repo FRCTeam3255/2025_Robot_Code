@@ -61,7 +61,7 @@ public class Elevator extends SubsystemBase {
 
   public void setVoltage(Voltage volts) {
     rightMotorLeader.setControl(new VoltageOut(volts.in(Units.Volts)));
-    leftMotorFollower.setControl(new VoltageOut(volts.in(Units.Volts)));
+    leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 
   public void resetSensorPosition(Distance setpoint) {
@@ -94,7 +94,7 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
     currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
-    
+
     SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
     SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());

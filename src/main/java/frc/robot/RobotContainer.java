@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -108,7 +109,7 @@ public class RobotContainer {
 
   Command TRY_HAS_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
-  
+
   Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
 
@@ -152,8 +153,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-          TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
-          TRY_PREP_CORAL_L3.asProxy()));
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
+            TRY_PREP_CORAL_L3.asProxy()));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -206,7 +207,7 @@ public class RobotContainer {
 
     controller.btn_X
         .onTrue(TRY_PREP_CORAL_L2);
-    
+
     controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
@@ -234,13 +235,13 @@ public class RobotContainer {
     controller.btn_Back
         .whileTrue(comIntakeCoralHopper);
 
-    // LT: Eat Algae
-    controller.btn_LeftBumper
-        .whileTrue(comIntakingAlgaeGround);
+    // // LT: Eat Algae
+    // controller.btn_LeftBumper
+    // .whileTrue(comIntakingAlgaeGround);
 
-    // RT: Spit Algae
-    controller.btn_RightBumper
-        .whileTrue(comScoringAlgae);
+    // // RT: Spit Algae
+    // controller.btn_RightBumper
+    // .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
     controller.btn_RightTrigger
@@ -275,17 +276,28 @@ public class RobotContainer {
     controller.btn_B.whileTrue(subElevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
     controller.btn_X.whileTrue(subElevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+    controller.btn_LeftBumper.onTrue(Commands.runOnce(SignalLogger::start));
+    controller.btn_RightBumper.onTrue(Commands.runOnce(SignalLogger::stop));
+
     /*
-    // btn_A/B/Y/X: Set Elevator to Coral Levels
-    controller.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
-    controller.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
-    controller.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
-    controller.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
-        */
+     * // btn_A/B/Y/X: Set Elevator to Coral Levels
+     * controller.btn_A
+     * .onTrue(Commands.runOnce(() ->
+     * subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT),
+     * subElevator));
+     * controller.btn_B
+     * .onTrue(Commands.runOnce(() ->
+     * subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT),
+     * subElevator));
+     * controller.btn_Y
+     * .onTrue(Commands.runOnce(() ->
+     * subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT),
+     * subElevator));
+     * controller.btn_X
+     * .onTrue(Commands.runOnce(() ->
+     * subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
+     * subElevator));
+     */
 
   }
 
