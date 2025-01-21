@@ -19,7 +19,7 @@ public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
   CANrange coralSensor;
-  boolean hasGamePieceCoral;
+  boolean hasGamePieceCoral = false;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -41,7 +41,7 @@ public class CoralOuttake extends SubsystemBase {
   }
 
   public boolean hasCoral() {
-    if (hasGamePieceCoral || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
+    if (coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
       hasGamePieceCoral = true;
     } else {
       hasGamePieceCoral = false;
@@ -51,8 +51,11 @@ public class CoralOuttake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("CORAL OUTTAKE RPM",
+        outtakeMotor.getVelocity().getValue().in(Units.RotationsPerSecond));
     SmartDashboard.putNumber("CORAL SENSOR DISTANCE", coralSensor.getDistance().getValue().in(Units.Inches));
     SmartDashboard.putBoolean("CORAL SENSOR HAS GP", hasCoral());
+
     // This method will be called once per scheduler run
   }
 }

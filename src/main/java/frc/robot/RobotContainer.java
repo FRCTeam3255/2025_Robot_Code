@@ -143,7 +143,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
-            Commands.waitSeconds(1.5),
+            Commands.waitSeconds(1),
             TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
 
     NamedCommands.registerCommand("PrepCoralStation",
@@ -151,8 +151,8 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-          TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
-          TRY_PREP_CORAL_L3.asProxy()));
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
+            TRY_PREP_CORAL_L3.asProxy()));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -160,7 +160,7 @@ public class RobotContainer {
         .onTrue(TRY_CLIMBING_DEEP);
 
     controller.btn_North
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -205,7 +205,7 @@ public class RobotContainer {
 
     controller.btn_X
         .onTrue(TRY_PREP_CORAL_L2);
-    
+
     controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
