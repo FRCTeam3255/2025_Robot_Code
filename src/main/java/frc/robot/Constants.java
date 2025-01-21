@@ -183,7 +183,7 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Pounds.of(125);
+      public static final Mass MASS = Units.Pounds.of(145);
       // TODO: Calcuate the real vaule
       public static final Distance HEIGHT = Units.Feet.of(8);
       public static final Distance WIDTH = Units.Inches.of(31);
