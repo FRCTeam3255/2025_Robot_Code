@@ -4,11 +4,16 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,7 +47,9 @@ public class RobotContainer {
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake);
   private final Climb comClimb = new Climb(subStateMachine, subClimber);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine, subCoralOuttake);
+  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
+      subCoralOuttake);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
@@ -62,6 +69,9 @@ public class RobotContainer {
 
   Command TRY_EJECTING_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE));
+
+  Command TRY_SCORING_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
 
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
@@ -98,6 +108,12 @@ public class RobotContainer {
 
   Command TRY_HAS_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
+  
+  Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
+
+  Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
@@ -108,94 +124,100 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(
             new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
-                conDriver.btn_LeftBumper));
+                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
+    configureSensorBindings();
+    configureAutoBindings();
+    configureAutoSelector();
     configureTesterBindings(conTester);
 
     subDrivetrain.resetModulesToAbsolute();
 
+  }
+
+  private void configureAutoBindings() {
     NamedCommands.registerCommand("PrepPlace",
+        Commands.sequence(TRY_PREP_CORAL_L3.asProxy()));
+
+    NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator)));
+            TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
+            Commands.waitSeconds(1.5),
+            TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
 
-    NamedCommands.registerCommand("Place Sequence",
+    NamedCommands.registerCommand("PrepCoralStation",
+        Commands.print("Prep Coral Station"));
+
+    NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-            Commands.runOnce(() -> subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED)),
-            Commands.waitSeconds(0.3),
-            Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator)));
-
-    NamedCommands.registerCommand("Prep Coral Station",
-        Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
-
-    NamedCommands.registerCommand("Get Coral Station Piece",
-        new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake));
+          TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
+          TRY_PREP_CORAL_L3.asProxy()));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
-    controller.btn_Back
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.getFieldPositions().get()[0])));
+    controller.btn_B
+        .onTrue(TRY_CLIMBING_DEEP);
+
+    controller.btn_North
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
-
-    // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
-        .ignoringDisable(true));
-
-    controller.btn_Back
+    controller.btn_LeftTrigger
         .whileTrue(TRY_INTAKING_CORAL_HOPPER)
         .onFalse(TRY_NONE);
 
-    controller.btn_LeftTrigger
-        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
-        .onFalse(TRY_NONE);
-
     controller.btn_RightTrigger
-        .onTrue(TRY_EJECTING_ALGAE)
-        .onFalse(TRY_NONE);
-
-    controller.btn_RightBumper
         .whileTrue(TRY_SCORING_CORAL)
         .onFalse(TRY_NONE);
 
     controller.btn_LeftBumper
-        .whileTrue(TRY_CLIMBING_DEEP)
+        .whileTrue(TRY_INTAKING_ALGAE_GROUND)
         .onFalse(TRY_NONE);
 
+    controller.btn_RightBumper
+        .whileTrue(TRY_SCORING_ALGAE)
+        .onFalse(TRY_NONE);
+
+    // TODO: Has Coral Overide Back BTN
+    // TODO: Has Algae Overide Meneu BTN
+
+    controller.btn_North
+        .onTrue(TRY_PREP_NET);
+
     controller.btn_East
-        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
-
-    controller.btn_South
-        .onTrue(TRY_PREP_PROCESSOR);
-
-    controller.btn_West
         .whileTrue(TRY_CLEANING_L3)
         .onFalse(TRY_NONE);
 
-    controller.btn_North
+    controller.btn_West
         .whileTrue(TRY_CLEANING_L2)
         .onFalse(TRY_NONE);
 
-    controller.btn_NorthWest
-        .onTrue(TRY_PREP_NET);
-
-    // btn_SouthEast: Eject Algae
-    controller.btn_SouthEast
-        .whileTrue(TRY_EJECTING_ALGAE)
-        .onFalse(TRY_NONE);
+    controller.btn_South
+        .whileTrue(TRY_PREP_PROCESSOR);
 
     controller.btn_A
         .onTrue(TRY_PREP_CORAL_L1);
+
     controller.btn_B
-        .onTrue(TRY_PREP_CORAL_L2);
-    controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L3);
+
     controller.btn_X
+        .onTrue(TRY_PREP_CORAL_L2);
+    
+    controller.btn_Y
         .onTrue(TRY_PREP_CORAL_L4);
 
+    controller.btn_LeftStick
+        .onTrue(TRY_PREP_ALGAE_0);
+
+    controller.btn_RightStick
+        .onTrue(TRY_PREP_CORAL_0);
+  }
+
+  private void configureSensorBindings() {
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
 
@@ -205,7 +227,7 @@ public class RobotContainer {
 
   private void configureTesterBindings(SN_XboxController controller) {
     // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(0))
+    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
 
     // Back: Intake Coral
@@ -218,7 +240,7 @@ public class RobotContainer {
 
     // RT: Spit Algae
     controller.btn_RightBumper
-        .whileTrue(comEjectingAlgae);
+        .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
     controller.btn_RightTrigger
@@ -253,28 +275,34 @@ public class RobotContainer {
     controller.btn_B.whileTrue(subElevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
     controller.btn_X.whileTrue(subElevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+    /*
     // btn_A/B/Y/X: Set Elevator to Coral Levels
-    // controller.btn_A
-    // .onTrue(Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT),
-    // subElevator));
-    // controller.btn_B
-    // .onTrue(Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT),
-    // subElevator));
-    // controller.btn_Y
-    // .onTrue(Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT),
-    // subElevator));
-    // controller.btn_X
-    // .onTrue(Commands.runOnce(() ->
-    // subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT),
-    // subElevator));
+    controller.btn_A
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
+    controller.btn_B
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
+    controller.btn_Y
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
+    controller.btn_X
+        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
+        */
+
   }
 
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   public Command getAutonomousCommand() {
-    // return new PathPlannerAuto("4-Piece-Low");
-    return new PathPlannerAuto("L");
+    return autoChooser.getSelected();
+  }
+
+  private void configureAutoSelector() {
+    autoChooser.setDefaultOption("4-Piece-Low",
+        Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            new PathPlannerAuto("4-Piece-Low")));
+    autoChooser.addOption("4-Piece-Low",
+        Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            new PathPlannerAuto("4-Piece-Low")));
+    SmartDashboard.putData(autoChooser);
   }
 
   public static Command AddVisionMeasurement() {

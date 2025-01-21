@@ -14,6 +14,7 @@ import frc.robot.Constants.constElevator;
 import frc.robot.commands.states.CleaningL2Reef;
 import frc.robot.commands.states.CleaningL3Reef;
 import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.PrepCoralZero;
 import frc.robot.commands.states.EjectCoral;
 import frc.robot.commands.states.HasAlgae;
 import frc.robot.commands.states.HasCoral;
@@ -88,7 +89,7 @@ public class StateMachine extends SubsystemBase {
           case SCORING_CORAL:
           case SCORING_ALGAE:
           case CLIMBING_DEEP:
-            return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber);
+            return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator);
         }
         break;
 
@@ -155,12 +156,20 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case PREP_CORAL_ZERO:
+        switch (currentRobotState) {
+          case HAS_CORAL:
+            return new PrepCoralZero(subStateMachine, subElevator);
+        }
+        break;
+
       case SCORING_CORAL:
         switch (currentRobotState) {
           case PREP_CORAL_L1:
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
+          case PREP_CORAL_ZERO:
             return new PlaceCoral(subStateMachine, subCoralOuttake);
         }
         break;
@@ -226,7 +235,15 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case PREP_NET:
           case PREP_PROCESSOR:
+          case PREP_ALGAE_ZERO:
             return new ScoringAlgae(subStateMachine, subAlgaeIntake);
+        }
+        break;
+
+      case PREP_ALGAE_ZERO:
+        switch (currentRobotState) {
+          case HAS_ALGAE:
+            return new PrepCoralZero(subStateMachine, subElevator);
         }
         break;
 
@@ -236,8 +253,9 @@ public class StateMachine extends SubsystemBase {
             return new Climb(subStateMachine, subClimber);
         }
         break;
+
     }
-    return Commands.print("ITS SO OVER D: Invalid State Provided (╯‵□′)╯︵┻━┻");
+    return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
   }
 
   public static enum RobotState {
@@ -250,6 +268,7 @@ public class StateMachine extends SubsystemBase {
     PREP_CORAL_L4,
     EJECTING_CORAL,
     SCORING_CORAL,
+    PREP_CORAL_ZERO,
 
     INTAKING_ALGAE_GROUND,
     CLEANING_L2,
@@ -259,6 +278,7 @@ public class StateMachine extends SubsystemBase {
     PREP_PROCESSOR,
     EJECTING_ALGAE,
     SCORING_ALGAE,
+    PREP_ALGAE_ZERO,
 
     CLIMBING_DEEP
   }
@@ -271,6 +291,8 @@ public class StateMachine extends SubsystemBase {
     PREP_CORAL_L4,
     PREP_NET,
     PREP_PROCESSOR,
+    PREP_ALGAE_0,
+    PREP_CORAL_0,
   }
 
   @Override

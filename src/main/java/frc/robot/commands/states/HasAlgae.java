@@ -5,6 +5,7 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -15,8 +16,8 @@ public class HasAlgae extends Command {
   AlgaeIntake globalAlgaeIntake;
 
   /** Creates a new HasAlgae. */
-  public HasAlgae(StateMachine passedStateMachine, AlgaeIntake subAlgaeIntake) {
-    globalStateMachine = passedStateMachine;
+  public HasAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
+    globalStateMachine = subStateMachine;
     globalAlgaeIntake = subAlgaeIntake;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(globalStateMachine);
@@ -36,11 +37,12 @@ public class HasAlgae extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalAlgaeIntake.hasAlgae();
+    return true;
   }
 }

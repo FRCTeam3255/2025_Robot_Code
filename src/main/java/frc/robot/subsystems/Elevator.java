@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.SignalLogger;
+import static edu.wpi.first.units.Units.Inches;
+
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -13,7 +15,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,26 +29,29 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
+  Distance currentLeftPosition = Units.Inches.of(0);
+  Distance currentRightPosition = Units.Inches.of(0);
+  Distance lastDesiredPosition;
+
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.LEFT_ELEVATOR_CAN);
-    rightMotorLeader = new TalonFX(mapElevator.RIGHT_ELEVATOR_CAN);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
-    configure();
-  }
+    lastDesiredPosition = Units.Inches.of(0);
 
-  public void configure() {
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
   public Distance getElevatorPosition() {
-    return Units.Inches.of(rightMotorLeader.get());
+    return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
   public void setPosition(Distance height) {
     rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
+    lastDesiredPosition = height;
   }
 
   public void setNeutral() {
@@ -60,10 +64,9 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new VoltageOut(volts.in(Units.Volts)));
   }
 
-  public void resetSensorPosition(double setpoint) {
-    rightMotorLeader.setPosition(setpoint);
-    leftMotorFollower.setPosition(setpoint);
-
+  public void resetSensorPosition(Distance setpoint) {
+    rightMotorLeader.setPosition(setpoint.in(Inches));
+    leftMotorFollower.setPosition(setpoint.in(Inches));
   }
 
   final SysIdRoutine sysIdRoutine = new SysIdRoutine(
@@ -89,17 +92,17 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator/Left/Pos", leftMotorFollower.getPosition().getValueAsDouble());
+    currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
+    currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+    
     SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
     SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Current", leftMotorFollower.getSupplyCurrent().getValueAsDouble());
 
-    SmartDashboard.putNumber("Elevator/Right/Pos", rightMotorLeader.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/CLO", rightMotorLeader.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Output", rightMotorLeader.get());
     SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
-
   }
 }

@@ -17,9 +17,9 @@ public class PrepCoralLv extends Command {
   Distance globalDistance;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(StateMachine passedStateMachine, Elevator subElevator, Distance height) {
+  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, Distance height) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.globalElevator = subElevator;
     this.globalDistance = height;
 
@@ -55,6 +55,6 @@ public class PrepCoralLv extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -15,10 +15,10 @@ public class PlaceCoral extends Command {
   CoralOuttake globalCoralOuttake;
 
   /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine passedStateMachine, CoralOuttake passedCoralOuttake) {
+  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalCoralOuttake = passedCoralOuttake;
+    globalStateMachine = subStateMachine;
+    globalCoralOuttake = subCoralOuttake;
 
     addRequirements(globalStateMachine);
   }
