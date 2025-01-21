@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Kilograms;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -31,6 +33,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -180,10 +183,14 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-
-      public static final double MASS = 115;
+      public static final Mass MASS = Units.Pounds.of(125);
       // TODO: Calcuate the real vaule
+      public static final Distance HEIGHT = Units.Feet.of(8);
+      public static final Distance WIDTH = Units.Inches.of(31);
       public static final double MOI = 6.8;
+      // (1 / 12) * MASS.in(Units.Kilograms)
+      // * (Math.pow(HEIGHT.in(Units.Meters), 2) + Math.pow(WIDTH.in(Units.Meters),
+      // 2));
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
@@ -196,7 +203,8 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, TRACK_WIDTH / 2.0),
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
-      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS.in(Units.Kilograms), MOI, MODULE_CONFIG,
+          MODULE_OFFSETS);
 
     }
 
@@ -243,11 +251,7 @@ public final class Constants {
     static {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
     }
-
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
@@ -255,7 +259,7 @@ public final class Constants {
   }
 
   public static class constCoralOuttake {
-    public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED = 1;
     public static final double CORAL_INTAKE_SPEED = 0.3;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
@@ -289,14 +293,16 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
-      ELEVATOR_CONFIG.Slot0.kG = 0.3;
-      ELEVATOR_CONFIG.Slot0.kS = 0.4;
-      // ELEVATOR_CONFIG.Slot0.kP = 1;
-      ELEVATOR_CONFIG.Slot0.kP = 0.3;
+      ELEVATOR_CONFIG.Slot0.kG = 1.1895;
+      ELEVATOR_CONFIG.Slot0.kS = 0.45128;
+      ELEVATOR_CONFIG.Slot0.kV = 0.043428;
+      ELEVATOR_CONFIG.Slot0.kA = 0.013851;
+      ELEVATOR_CONFIG.Slot0.kP = 69.62;
+      ELEVATOR_CONFIG.Slot0.kD = 10.845;
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(17.946289);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(21.946289);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.742188);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(58.888916);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(50);
