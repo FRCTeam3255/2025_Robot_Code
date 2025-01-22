@@ -287,12 +287,12 @@ public class RobotContainer {
   }
 
   private void configureAutoSelector() {
-    autoChooser.setDefaultOption("6-Piece-High",
+    autoChooser.setDefaultOption("L",
         Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
-            new PathPlannerAuto("6-Piece-High")));
-    autoChooser.addOption("6-Piece-High",
+            new PathPlannerAuto("L")));
+    autoChooser.addOption("L",
         Commands.sequence(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
-            new PathPlannerAuto("6-Piece-High")));
+            new PathPlannerAuto("L")));
     SmartDashboard.putData(autoChooser);
   }
 
