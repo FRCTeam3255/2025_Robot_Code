@@ -41,6 +41,12 @@ public final class Constants {
    */
   public static final double MAX_VOLTAGE = 12;
 
+  private static boolean IS_COMP_ROBOT = true;
+
+  public static void setCompBot(boolean isCompRobot) {
+    IS_COMP_ROBOT = isCompRobot;
+  }
+
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
@@ -179,7 +185,6 @@ public final class Constants {
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
-
 
       public static final double MASS = 115;
       // TODO: Calcuate the real vaule

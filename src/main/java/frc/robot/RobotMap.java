@@ -3,6 +3,8 @@ package frc.robot;
 // Contains all ports on our robot
 
 public class RobotMap {
+  public static final int PRAC_BOT_DIO = 0;
+
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
     public static final int OPERATOR_USB = 1;

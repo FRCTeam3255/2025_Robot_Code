@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,6 +29,7 @@ import frc.robot.subsystems.StateMachine.RobotState;
 
 @Logged
 public class RobotContainer {
+  private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
@@ -300,4 +302,12 @@ public class RobotContainer {
     return new AddVisionMeasurement(subDrivetrain, subVision)
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
+
+  /**
+   * @return If the robot is the practice robot
+   */
+  public static boolean isPracticeBot() {
+    return !isPracticeBot.get();
+  }
+
 }
