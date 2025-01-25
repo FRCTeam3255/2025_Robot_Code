@@ -3,6 +3,8 @@ package frc.robot;
 // Contains all ports on our robot
 
 public class RobotMap {
+  public static final int PRAC_BOT_DIO = 0;
+
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
     public static final int OPERATOR_USB = 1;
@@ -54,7 +56,7 @@ public class RobotMap {
   // Hopper is 40-49
   public static class mapHopper {
     public static final int HOPPER_MOTOR_CAN = 40;
-    public static final int HOPPER_SENSOR_CAN = 0;
+    public static final int HOPPER_SENSOR_DIO = 1;
   }
 
   public static class mapElevator {

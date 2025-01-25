@@ -22,6 +22,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
@@ -39,6 +40,7 @@ public class Drivetrain extends SN_SuperSwerve {
       new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
           mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
   };
+
   Pose2d desiredAlignmentPose = Pose2d.kZero;
   Pose2d robotPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
@@ -46,8 +48,10 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public Drivetrain() {
     super(
-        constDrivetrain.SWERVE_CONSTANTS,
-        modules,
+        (RobotContainer.isPracticeBot()) ? constDrivetrain.PRACTICE_BOT.SWERVE_CONSTANTS
+            : constDrivetrain.SWERVE_CONSTANTS,
+        (RobotContainer.isPracticeBot()) ? constDrivetrain.PRACTICE_BOT.MODULES
+            : constDrivetrain.MODULES,
         constDrivetrain.WHEELBASE,
         constDrivetrain.TRACK_WIDTH,
         mapDrivetrain.CAN_BUS_NAME,
