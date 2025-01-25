@@ -7,25 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
-import frc.robot.commands.states.CleaningL2Reef;
-import frc.robot.commands.states.CleaningL3Reef;
-import frc.robot.commands.states.Climb;
-import frc.robot.commands.states.PrepCoralZero;
-import frc.robot.commands.states.EjectCoral;
-import frc.robot.commands.states.HasAlgae;
-import frc.robot.commands.states.HasCoral;
-import frc.robot.commands.states.IntakeCoralHopper;
-import frc.robot.commands.states.IntakingAlgaeGround;
-import frc.robot.commands.states.None;
-import frc.robot.commands.states.PlaceCoral;
-import frc.robot.commands.states.PrepCoralLv;
-import frc.robot.commands.states.PrepNet;
-import frc.robot.commands.states.PrepProcessor;
-import frc.robot.commands.states.ScoringAlgae;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.states.*;
 
 @Logged
 public class StateMachine extends SubsystemBase {
@@ -209,7 +193,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_ALGAE:
           case PREP_PROCESSOR:
-            return new PrepNet(subStateMachine, subElevator);
+            return new PrepNet(subStateMachine, subElevator, subAlgaeIntake);
         }
         break;
 
@@ -217,7 +201,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_ALGAE:
           case PREP_NET:
-            return new PrepProcessor(subStateMachine, subElevator);
+            return new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake);
         }
         break;
 
