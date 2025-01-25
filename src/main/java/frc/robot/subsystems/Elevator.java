@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
 
@@ -46,6 +47,11 @@ public class Elevator extends SubsystemBase {
 
   public Distance getElevatorPosition() {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+  }
+
+  public boolean isAtSetpoint() {
+        return (getElevatorPosition().compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+        getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
   public Distance getLastDesiredPosition() {
