@@ -256,6 +256,13 @@ public final class Constants {
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+
+    public static final Distance ZEROED_POS = Units.Meters.of(0);
+
+    public static final Measure<TimeUnit> ZEROING_TIMEOUT = Units.Seconds.of(3);
+
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
   }
 
   public static class constCoralOuttake {
@@ -309,13 +316,6 @@ public final class Constants {
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
-
-    public static final Distance ZEROED_POS = Units.Meters.of(0);
-
-    public static final Measure<TimeUnit> ZEROING_TIMEOUT = Units.Seconds.of(3);
-
-    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
-    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
   }
 
   public static class constField {

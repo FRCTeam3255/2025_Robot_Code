@@ -7,7 +7,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +32,12 @@ public class AlgaeIntake extends SubsystemBase {
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
   private Angle lastDesiredAngle = Degrees.zero();
+
+  PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
+
+  public static boolean attemptingZeroing = false;
+  public static boolean hasZeroed = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
