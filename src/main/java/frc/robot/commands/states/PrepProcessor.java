@@ -6,6 +6,7 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
@@ -16,12 +17,14 @@ public class PrepProcessor extends Command {
   /** Creates a new PrepProcessor. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  AlgaeIntake globalAlgaeIntake;
   LED subLED;
 
-  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator, LED globalLED) {
+  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
     subLED = globalLED;
     addRequirements(globalStateMachine);
   }
@@ -31,6 +34,8 @@ public class PrepProcessor extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
     subLED.setLED(constLED.LED_PREP_PROCESSOR);
   }
 
@@ -47,6 +52,6 @@ public class PrepProcessor extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalElevator.isAtSetpoint();
   }
 }

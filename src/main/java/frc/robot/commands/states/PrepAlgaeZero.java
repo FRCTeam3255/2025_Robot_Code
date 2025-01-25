@@ -9,6 +9,7 @@ import java.lang.Thread.State;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -19,12 +20,15 @@ public class PrepAlgaeZero extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   LED subLED;
+  AlgaeIntake globalAlgaeIntake;
 
-  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, LED globalLED) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     subLED = globalLED;
+    globalAlgaeIntake = subAlgaeIntake;
+
     addRequirements(globalStateMachine);
   }
 
@@ -34,6 +38,8 @@ public class PrepAlgaeZero extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
     subLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,6 +55,6 @@ public class PrepAlgaeZero extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalElevator.isAtSetpoint();
   }
 }

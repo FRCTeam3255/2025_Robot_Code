@@ -37,6 +37,8 @@ public class IntakingAlgaeGround extends Command {
     subStateMachine.setRobotState(RobotState.INTAKING_ALGAE_GROUND);
     globalElevator.setPosition(Constants.constElevator.ALGAE_GROUND_INTAKE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.INTAKE_ALGAE_GROUND_PIVOT_POSITION);
     subLED.setLED(constLED.LED_INTAKE_ALGAE_GROUND);
   }
 

@@ -197,7 +197,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_ALGAE:
           case PREP_PROCESSOR:
-            return new PrepNet(subStateMachine, subElevator, subLED);
+            return new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 
@@ -205,7 +205,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_ALGAE:
           case PREP_NET:
-            return new PrepProcessor(subStateMachine, subElevator, subLED);
+            return new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 

@@ -36,6 +36,8 @@ public class CleaningL3Reef extends Command {
     globalStateMachine.setRobotState(RobotState.CLEANING_L3);
     globalElevator.setPosition(Constants.constElevator.ALGAE_L3_CLEANING);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLEANING_REEF_L3_PIVOT_POSITION);
     subLED.setLED(constLED.LED_CLEANING_L3_REEF);
   }
 
