@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -523,5 +524,33 @@ public final class Constants {
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
+  }
+
+  public static class constLED {
+    public static final CANdleConfiguration LED_CONFIG = new CANdleConfiguration();
+    static {
+      LED_CONFIG.brightnessScalar = 1;
+
+    }
+
+    // These are the RGB values for the LEDs (sorry no animation)
+    public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
+
+    public static final int[] LED_PREP_PROCESSOR = { 255, 150, 0 };// orange
+    public static final int[] LED_PREP_NET = { 255, 0, 200 };// magenta
+    public static final int[] LED_PREP_CORAL_ZERO = { 20, 100, 0 };// forest green
+    public static final int[] LED_PREP_CORAL_LV = { 80, 49, 76 };// grimace purple
+    public static final int[] LED_PREP_ALGAE_ZERO = { 0, 255, 255 };// cyan
+    public static final int[] LED_PLACE_CORAL = { 251, 251, 0 }; // yellow
+    public static final int[] LED_NONE = { 6, 2, 112 }; // indigo
+    public static final int[] LED_INTAKE_ALGAE_GROUND = { 0, 0, 255 }; // blue
+    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 255, 0 };// green
+    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // white
+    public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
+    public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
+    public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
+    public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
+    public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
   }
 }
