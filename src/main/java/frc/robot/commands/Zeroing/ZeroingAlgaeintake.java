@@ -15,20 +15,21 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constElevator;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 
 public class ZeroingAlgaeintake extends Command {
-  Elevator subElevator;
+  AlgaeIntake subAlgaeIntake;
 
   boolean zeroingSuccess = false;
   Measure<TimeUnit> zeroingTimestamp = Units.Seconds.of(0);
 
   Measure<AngularVelocityUnit> lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
-  public void ManualZeroElevator(Elevator subElevator) {
-    this.subElevator = subElevator;
+  public void ManualZeroAlgaeintake(AlgaeIntake subAlgaeIntake) {
+    this.subAlgaeIntake = subAlgaeIntake;
 
-    addRequirements(subElevator);
+    addRequirements(subAlgaeIntake);
   }
 
   @Override
@@ -38,7 +39,7 @@ public class ZeroingAlgaeintake extends Command {
   @Override
   public void execute() {
     // Check if we have raised the elevator above a certain speed
-    if (subElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
+    if (subAlgaeIntake.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
         || Elevator.attemptingZeroing) {
       // Enter zeroing mode!
       if (!Elevator.attemptingZeroing) {
@@ -52,13 +53,13 @@ public class ZeroingAlgaeintake extends Command {
         Elevator.attemptingZeroing = false;
         System.out.println("Elevator Zeroing Failed :(");
       } else {
-        boolean deltaRotorVelocity = subElevator.getRotorVelocity().minus(lastRotorVelocity)
+        boolean deltaRotorVelocity = subAlgaeIntake.getRotorVelocity().minus(lastRotorVelocity)
             .lte(constElevator.MANUAL_ZEROING_DELTA_VELOCITY);
 
         if (deltaRotorVelocity && lastRotorVelocity.lte(Units.RotationsPerSecond.of(0))) {
           zeroingSuccess = true;
         } else {
-          lastRotorVelocity = subElevator.getRotorVelocity();
+          lastRotorVelocity = subAlgaeIntake.getRotorVelocity();
         }
       }
     }
@@ -68,7 +69,7 @@ public class ZeroingAlgaeintake extends Command {
   public void end(boolean interrupted) {
     if (!interrupted) {
       Elevator.hasZeroed = true;
-      subElevator.setElevatorSensorPosition(constElevator.ZEROED_POS);
+      subAlgaeIntake.setSensorPosition(constElevator.ZEROED_POS);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
@@ -77,7 +78,7 @@ public class ZeroingAlgaeintake extends Command {
 
   @Override
   public boolean isFinished() {
-    boolean rotorVelocityIsZero = subElevator.getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
+    boolean rotorVelocityIsZero = subAlgaeIntake.getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
     SmartDashboard.putBoolean("Zeroing/Pivot/Is Rotor Velocity Zero", rotorVelocityIsZero);
     return zeroingSuccess && rotorVelocityIsZero;
   }

@@ -12,10 +12,13 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
@@ -51,6 +54,21 @@ public class AlgaeIntake extends SubsystemBase {
 
   public Angle getPivotAngle() {
     return intakePivotMotor.getPosition().getValue();
+  }
+
+  /**
+   * Sets the current position of the elevator motor to read as the given value
+   */
+  public void setSensorPosition(Measure<DistanceUnit> zeroedPos) {
+    intakePivotMotor.setPosition(zeroedPos.in(Units.Meters));
+  }
+
+  public Distance getPosition() {
+    return Units.Inches.of(intakePivotMotor.getPosition().getValueAsDouble());
+  }
+
+  public AngularVelocity getRotorVelocity() {
+    return Units.RotationsPerSecond.of(intakePivotMotor.getRotorVelocity().getValueAsDouble());
   }
 
   public Angle getLastDesiredPivotAngle() {
