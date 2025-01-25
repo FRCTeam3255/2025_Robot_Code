@@ -57,8 +57,8 @@ public class RobotContainer {
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake);
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator);
-  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake);
+  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake);
   private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
   private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,

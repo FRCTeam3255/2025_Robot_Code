@@ -6,6 +6,7 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 
@@ -13,12 +14,14 @@ import frc.robot.subsystems.StateMachine;
 public class PrepNet extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  AlgaeIntake globalAlgaeIntake;
 
   /** Creates a new PrepNet. */
-  public PrepNet(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepNet(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
   }
@@ -28,6 +31,8 @@ public class PrepNet extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_NET);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +48,6 @@ public class PrepNet extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalElevator.isAtSetpoint();
   }
 }

@@ -256,6 +256,15 @@ public final class Constants {
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+
+    // TODO: Get actual angles pls :D pretty please cherries on top
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(12);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(34);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(56);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(78);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(91);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
   }
 
   public static class constCoralOuttake {
@@ -316,6 +325,8 @@ public final class Constants {
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
+
+    public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
   }
 
   public static class constField {
