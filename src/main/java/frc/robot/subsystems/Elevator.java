@@ -9,11 +9,13 @@ import static edu.wpi.first.units.Units.Inches;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
@@ -26,6 +28,8 @@ public class Elevator extends SubsystemBase {
 
   Distance currentLeftPosition = Units.Inches.of(0);
   Distance currentRightPosition = Units.Inches.of(0);
+
+  VoltageOut voltageRequest;
   private Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
@@ -34,6 +38,7 @@ public class Elevator extends SubsystemBase {
     rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
+    voltageRequest = new VoltageOut(0);
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
@@ -58,6 +63,15 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new NeutralOut());
   }
 
+  public void setVoltage(Voltage voltage) {
+    rightMotorLeader.setControl(voltageRequest.withOutput(voltage.in(Units.Volts)));
+  }
+
+  public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+  }
+
   public void resetSensorPosition(Distance setpoint) {
     rightMotorLeader.setPosition(setpoint.in(Inches));
     leftMotorFollower.setPosition(setpoint.in(Inches));
@@ -69,7 +83,7 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
     currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
-    
+
     SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
     SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
     SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
