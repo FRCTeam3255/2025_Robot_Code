@@ -32,9 +32,7 @@ public class PrepProcessor extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
-    globalAlgaeIntake.setAlgaeIntakePivotPosition(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
-  }
-
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

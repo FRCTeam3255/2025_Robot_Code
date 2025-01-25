@@ -34,7 +34,7 @@ public class PrepAlgaeZero extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
 
-    globalAlgaeIntake.setAlgaeIntakePivotPosition(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

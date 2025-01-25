@@ -32,7 +32,7 @@ public class PrepNet extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_NET);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
-    globalAlgaeIntake.setAlgaeIntakePivotPosition(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

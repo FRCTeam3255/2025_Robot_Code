@@ -34,7 +34,7 @@ public class CleaningL3Reef extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_L3_CLEANING);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
 
-    globalAlgaeIntake.setAlgaeIntakePivotPosition(Constants.constAlgaeIntake.CLEANING_REEF_L3_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLEANING_REEF_L3_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -259,6 +259,7 @@ public final class Constants {
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(78);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(91);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
   }
 
   public static class constCoralOuttake {
