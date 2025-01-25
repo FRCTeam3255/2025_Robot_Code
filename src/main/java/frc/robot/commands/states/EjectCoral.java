@@ -6,7 +6,9 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -14,13 +16,14 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class EjectCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  LED subLED;
 
   /** Creates a new CoralOuttake. */
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake) {
+  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
-
+    subLED = globalLED;
     addRequirements(globalStateMachine);
   }
 
@@ -29,6 +32,7 @@ public class EjectCoral extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    subLED.setLED(constLED.LED_EJECT_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

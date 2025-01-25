@@ -8,7 +8,9 @@ import java.lang.Thread.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -16,12 +18,13 @@ public class PrepAlgaeZero extends Command {
   /** Creates a new AlgaePrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  LED subLED;
 
-  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
-
+    subLED = globalLED;
     addRequirements(globalStateMachine);
   }
 
@@ -30,6 +33,7 @@ public class PrepAlgaeZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
+    subLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

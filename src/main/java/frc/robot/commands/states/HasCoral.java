@@ -5,7 +5,9 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -14,11 +16,13 @@ public class HasCoral extends Command {
   /** Creates a new HasCoral. */
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  LED subLED;
 
-  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake) {
+  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
+    subLED = globalLED;
     addRequirements(globalStateMachine);
   }
 
@@ -26,6 +30,7 @@ public class HasCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL);
+    subLED.setLED(constLED.LED_HAS_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

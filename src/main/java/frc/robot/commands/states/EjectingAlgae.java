@@ -6,7 +6,9 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -15,12 +17,13 @@ public class EjectingAlgae extends Command {
   /** Creates a new EjectingAlgae. */
   AlgaeIntake globalAlgaeIntake;
   StateMachine globalStateMachine;
+  LED subLED;
 
-  public EjectingAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
+  public EjectingAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalAlgaeIntake = subAlgaeIntake;
-
+    subLED = globalLED;
     addRequirements(globalStateMachine);
   }
 
@@ -29,6 +32,7 @@ public class EjectingAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_ALGAE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    subLED.setLED(constLED.LED_EJECTING_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

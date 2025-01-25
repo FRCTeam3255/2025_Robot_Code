@@ -6,19 +6,22 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ScoringAlgae extends Command {
   StateMachine globalStateMachine;
   AlgaeIntake subAlgaeIntake;
+  LED subLED;
 
-  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake) {
+  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED globalLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.subAlgaeIntake = subAlgaeIntake;
-
+    subLED = globalLED;
     addRequirements(globalStateMachine);
   }
 
@@ -27,6 +30,7 @@ public class ScoringAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
     subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    subLED.setLED(constLED.LED_SCORING_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

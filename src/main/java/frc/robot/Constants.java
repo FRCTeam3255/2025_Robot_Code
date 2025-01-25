@@ -477,4 +477,27 @@ public final class Constants {
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
   }
+
+  public static class constLED {
+    public static final double LED_BRIGHTNESS = 1;
+
+    // These are the RGB values for the LEDs (sorry no animation)
+    public static final int[] LED_SCORING_ALGAE = { 39, 183, 140 };
+    public static final int[] LED_PREP_PROCESSOR = { 0, 0, 0 };
+    public static final int[] LED_PREP_NET = { 0, 0, 0 };
+    public static final int[] LED_PREP_CORAL_ZERO = { 0, 0, 0 };
+    public static final int[] LED_PREP_CORAL_LV = { 0, 0, 0 };
+    public static final int[] LED_PREP_ALGAE_ZERO = { 0, 0, 0 };
+    public static final int[] LED_PLACE_CORAL = { 0, 0, 0 };
+    public static final int[] LED_NONE = { 0, 0, 0 };
+    public static final int[] LED_INTAKE_ALGAE_GROUND = { 0, 0, 0 };
+    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 0, 0 };
+    public static final int[] LED_HAS_CORAL = { 0, 0, 0 };
+    public static final int[] LED_HAS_ALGAE = { 0, 0, 0 };
+    public static final int[] LED_EJECTING_ALGAE = { 0, 0, 0 };
+    public static final int[] LED_EJECT_CORAL = { 0, 0, 0 };
+    public static final int[] LED_CLIMB = { 0, 0, 0 };
+    public static final int[] LED_CLEANING_L2_REEF = { 0, 0, 0 };
+    public static final int[] LED_CLEANING_L3_REEF = { 0, 0, 0 };
+  }
 }
