@@ -61,7 +61,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public AngularVelocity getRotorVelocity() {
-    return Units.RotationsPerSecond.of(rightMotorLeader.getRotorVelocity().getValueAsDouble());
+    return rightMotorLeader.getRotorVelocity().getValue();
   }
 
   public Distance getLastDesiredPosition() {
