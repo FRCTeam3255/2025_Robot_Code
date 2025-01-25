@@ -29,6 +29,8 @@ public class EjectingAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_ALGAE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.EJECT_ALGAE_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
