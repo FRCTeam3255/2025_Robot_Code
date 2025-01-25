@@ -45,12 +45,12 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setPosition(setpoint.in(Units.Degrees));
+    intakePivotMotor.setPosition(setpoint);
     lastDesiredAngle = setpoint;
   }
 
   public Angle getPivotAngle() {
-    return Units.Degrees.of(intakePivotMotor.getPosition().getValueAsDouble());
+    return intakePivotMotor.getPosition().getValue();
   }
 
   public Angle getLastDesiredPivotAngle() {
