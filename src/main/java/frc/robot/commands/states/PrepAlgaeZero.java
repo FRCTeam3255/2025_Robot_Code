@@ -8,6 +8,7 @@ import java.lang.Thread.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 
@@ -16,11 +17,13 @@ public class PrepAlgaeZero extends Command {
   /** Creates a new AlgaePrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  AlgaeIntake globalAlgaeIntake;
 
-  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
   }
@@ -30,6 +33,8 @@ public class PrepAlgaeZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
+
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
