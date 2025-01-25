@@ -29,8 +29,5 @@ public class TalonFXLogger extends ClassSpecificLogger<TalonFX> {
     backend.log("Temperature", motor.getDeviceTemp().getValue());
     backend.log("Velocity", motor.getVelocity().getValue());
     backend.log("Acceleration", motor.getAcceleration().getValue());
-    backend.log("Break Mode", motor.getControlMode().toString());
-    backend.log("Forward Limit", motor.getForwardLimit().toString());
-    backend.log("Reverse Limit", motor.getReverseLimit().toString());
   }
 }
