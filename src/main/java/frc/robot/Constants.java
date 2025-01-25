@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -334,10 +335,21 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
-      ELEVATOR_CONFIG.Slot0.kG = 0.3;
-      ELEVATOR_CONFIG.Slot0.kS = 0.4;
-      // ELEVATOR_CONFIG.Slot0.kP = 1;
+
+      ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
+      ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
+      ELEVATOR_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
+      ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
       ELEVATOR_CONFIG.Slot0.kP = 0.3;
+      ELEVATOR_CONFIG.Slot0.kI = 0.0;
+      ELEVATOR_CONFIG.Slot0.kD = 0.0;
+    }
+    public static MotionMagicConfigs MOTION_MAGIC_CONFIGS = ELEVATOR_CONFIG.MotionMagic;
+    static {
+      // TODO: Tune these values
+      MOTION_MAGIC_CONFIGS.MotionMagicCruiseVelocity = 80;
+      MOTION_MAGIC_CONFIGS.MotionMagicAcceleration = 160;
+      MOTION_MAGIC_CONFIGS.MotionMagicJerk = 1600;
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
