@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
 
   Distance currentLeftPosition = Units.Inches.of(0);
   Distance currentRightPosition = Units.Inches.of(0);
-  Distance lastDesiredPosition;
+  private Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -41,6 +41,10 @@ public class Elevator extends SubsystemBase {
 
   public Distance getElevatorPosition() {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+  }
+
+  public Distance getLastDesiredPosition() {
+    return lastDesiredPosition;
   }
 
   public void setPosition(Distance height) {
