@@ -44,9 +44,9 @@ public class Elevator extends SubsystemBase {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
-  public Boolean isAtSetpoint() {
-        return (getElevatorPosition().compareTo(getElevatorPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
-        getElevatorPosition().compareTo(getElevatorPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  public Boolean isAtSetpoint(Distance targetPosition) {
+        return (getElevatorPosition().compareTo(targetPosition.minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+        getElevatorPosition().compareTo(targetPosition.plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
   public Distance getLastDesiredPosition() {
