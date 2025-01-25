@@ -26,7 +26,6 @@ public class TalonFXLogger extends ClassSpecificLogger<TalonFX> {
     backend.log("Motor Voltage", motor.getMotorVoltage().getValue());
     backend.log("Stator Current", motor.getStatorCurrent().getValue());
     backend.log("Supply Current", motor.getSupplyCurrent().getValue());
-    backend.log("Supply Current", motor.getSupplyCurrent().getValue());
     backend.log("Temperature", motor.getDeviceTemp().getValue());
     backend.log("Velocity", motor.getVelocity().getValue());
     backend.log("Acceleration", motor.getAcceleration().getValue());
