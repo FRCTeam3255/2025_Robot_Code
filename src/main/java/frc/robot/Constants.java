@@ -316,12 +316,6 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
 
-    /**
-     * The value that the pivot reports when it is at it's zeroed position. This
-     * may not necessarily be 0 due to mechanical slop
-     */
-    public static final Angle ZEROED_ANGLE = Units.Degrees.of(0);
-
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
