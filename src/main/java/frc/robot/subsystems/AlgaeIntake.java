@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -25,6 +27,7 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFXConfiguration intakeConfig;
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+  private Angle lastDesiredAngle = Degrees.zero();
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -41,8 +44,17 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.set(speed);
   }
 
-  public void setAlgaeIntakePivotPosition(Angle setpoint) {
+  public void setAlgaePivotAngle(Angle setpoint) {
     intakePivotMotor.setPosition(setpoint);
+    lastDesiredAngle = setpoint;
+  }
+
+  public Angle getPivotAngle() {
+    return intakePivotMotor.getPosition().getValue();
+  }
+
+  public Angle getLastDesiredPivotAngle() {
+    return lastDesiredAngle;
   }
 
   public boolean hasAlgae() {
@@ -78,13 +90,14 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Algae Intake/Roller/Stator Current",
+        intakeRollerMotor.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Roller/Velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Roller/Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("RightAlgae motor", intakeRollerMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor", intakePivotMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("LeftAlgae motor Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("Algae Intake/Pivot/Stator Current",
+        intakePivotMotor.getStatorCurrent().getValueAsDouble());
 
     SmartDashboard.putBoolean("Has Algae", hasAlgae());
-    // This method will be called once per scheduler run
   }
 }
