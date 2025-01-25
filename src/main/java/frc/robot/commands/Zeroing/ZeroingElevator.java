@@ -9,6 +9,7 @@ import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.TimeUnit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,9 +22,9 @@ public class ZeroingElevator extends Command {
   Elevator subElevator;
 
   boolean zeroingSuccess = false;
-  Measure<TimeUnit> zeroingTimestamp = Units.Seconds.of(0);
+  Time zeroingTimestamp = Units.Seconds.of(0);
 
-  Measure<AngularVelocityUnit> lastRotorVelocity = Units.RotationsPerSecond.of(0);
+  AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
   public void ManualZeroElevator(Elevator subElevator) {
     this.subElevator = subElevator;
