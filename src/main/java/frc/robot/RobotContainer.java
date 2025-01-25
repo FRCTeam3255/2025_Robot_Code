@@ -144,6 +144,9 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
+    if (subCoralOuttake.hasCoral()) {
+      subStateMachine.setRobotState(RobotState.HAS_CORAL);
+    }
   }
 
   private void configureAutoBindings() {
