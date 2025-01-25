@@ -6,8 +6,10 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -16,14 +18,15 @@ public class CleaningL2Reef extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
+  LED globalLED;
 
   /** Creates a new CleaningL2Reef. */
-  public CleaningL2Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+  public CleaningL2Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -33,6 +36,7 @@ public class CleaningL2Reef extends Command {
     globalStateMachine.setRobotState(RobotState.CLEANING_L2);
     globalElevator.setPosition(Constants.constElevator.ALGAE_L2_CLEANING);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
+    globalLED.setLED(constLED.LED_CLEANING_L2_REEF);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLEANING_REEF_L2_PIVOT_POSITION);
   }
