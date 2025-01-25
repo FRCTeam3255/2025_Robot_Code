@@ -52,22 +52,26 @@ public class RobotContainer {
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
+  private final LED subLED = new LED();
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
-      subDrivetrain, subElevator, subHopper);
+      subDrivetrain, subElevator, subHopper, subLED);
 
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake);
-  private final Climb comClimb = new Climb(subStateMachine, subClimber);
+      subCoralOuttake, subLED);
+  private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
-      subCoralOuttake);
-  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake);
-  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake);
-  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
-  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
+      subCoralOuttake, subLED);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
+  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
+  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
+  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
-      subAlgaeIntake);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
+      subAlgaeIntake, subLED);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
 
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER));
