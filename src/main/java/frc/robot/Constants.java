@@ -31,6 +31,11 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.TimeUnit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -304,6 +309,13 @@ public final class Constants {
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
+
+    public static final Measure<DistanceUnit> ZEROED_POS = Units.Meters.of(0);
+
+    public static final Measure<TimeUnit> ZEROING_TIMEOUT = Units.Seconds.of(3);
+
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
   }
 
   public static class constField {

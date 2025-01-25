@@ -9,11 +9,17 @@ import static edu.wpi.first.units.Units.Inches;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constElevator;
@@ -23,6 +29,12 @@ import frc.robot.RobotMap.mapElevator;
 public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
+
+  PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
+
+  public static boolean attemptingZeroing = false;
+  public static boolean hasZeroed = false;
 
   Distance currentLeftPosition = Units.Inches.of(0);
   Distance currentRightPosition = Units.Inches.of(0);
@@ -37,6 +49,13 @@ public class Elevator extends SubsystemBase {
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+  }
+
+  /**
+   * Sets the current position of the elevator motor to read as the given value
+   */
+  public void setElevatorSensorPosition(Measure<DistanceUnit> zeroedPos) {
+    rightMotorLeader.setPosition(zeroedPos.in(Units.Meters));
   }
 
   public Distance getElevatorPosition() {
@@ -56,6 +75,10 @@ public class Elevator extends SubsystemBase {
   public void setNeutral() {
     rightMotorLeader.setControl(new NeutralOut());
     leftMotorFollower.setControl(new NeutralOut());
+  }
+
+  public AngularVelocity getRotorVelocity() {
+    return Units.RotationsPerSecond.of(rightMotorLeader.getRotorVelocity().getValueAsDouble());
   }
 
   public void resetSensorPosition(Distance setpoint) {
