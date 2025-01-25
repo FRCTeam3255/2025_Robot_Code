@@ -6,6 +6,7 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 
@@ -14,11 +15,13 @@ public class PrepProcessor extends Command {
   /** Creates a new PrepProcessor. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  AlgaeIntake globalAlgaeIntake;
 
-  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
   }
@@ -28,6 +31,10 @@ public class PrepProcessor extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
+
+    globalAlgaeIntake.setAlgaeIntakePivotPosition(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
+  }
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
