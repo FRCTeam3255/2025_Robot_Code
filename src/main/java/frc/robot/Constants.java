@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
+import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -34,6 +35,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
   /**
@@ -47,6 +49,34 @@ public final class Constants {
   }
 
   public static class constDrivetrain {
+    public static class PRACTICE_BOT {
+      public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+          SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
+          0.09779 * Math.PI,
+          SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
+          SN_SwerveConstants.MK4I.FALCON.L2.maxSpeedMeters);
+
+      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.109375;
+      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.066406;
+      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.049316;
+      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.314209;
+
+      public static SN_SwerveModule[] MODULES = new SN_SwerveModule[] {
+          new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
+              mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
+              constDrivetrain.PRACTICE_BOT.FRONT_LEFT_ABS_ENCODER_OFFSET),
+          new SN_SwerveModule(1, mapDrivetrain.FRONT_RIGHT_DRIVE_CAN, mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+              mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
+              constDrivetrain.PRACTICE_BOT.FRONT_RIGHT_ABS_ENCODER_OFFSET),
+          new SN_SwerveModule(2, mapDrivetrain.BACK_LEFT_DRIVE_CAN, mapDrivetrain.BACK_LEFT_STEER_CAN,
+              mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.PRACTICE_BOT.BACK_LEFT_ABS_ENCODER_OFFSET),
+          new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
+              mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
+              constDrivetrain.PRACTICE_BOT.BACK_RIGHT_ABS_ENCODER_OFFSET),
+      };
+
+    }
+
     // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
@@ -57,18 +87,25 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.109375;
-    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.066406;
-    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.049316;
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.314209;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.59082;
+    public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.033936;
+    public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.894775;
+    public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.343750;
+
+    public static SN_SwerveModule[] MODULES = new SN_SwerveModule[] {
+        new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
+            mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
+        new SN_SwerveModule(1, mapDrivetrain.FRONT_RIGHT_DRIVE_CAN, mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+            mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_RIGHT_ABS_ENCODER_OFFSET),
+        new SN_SwerveModule(2, mapDrivetrain.BACK_LEFT_DRIVE_CAN, mapDrivetrain.BACK_LEFT_STEER_CAN,
+            mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_LEFT_ABS_ENCODER_OFFSET),
+        new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
+            mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
+    };
 
     public static final double WHEEL_DIAMETER = 0.09779;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-
-    // Taken from the online listing
-    public static final double DRIVE_GEAR_RATIO = 6.75;
-    public static final double STEER_GEAR_RATIO = 150.0 / 7.0;
 
     /**
      * <p>
@@ -127,7 +164,7 @@ public final class Constants {
       DRIVE_CONFIG.Slot0.kD = DRIVE_D;
       DRIVE_CONFIG.MotorOutput.Inverted = DRIVE_MOTOR_INVERT;
       DRIVE_CONFIG.MotorOutput.NeutralMode = DRIVE_NEUTRAL_MODE;
-      DRIVE_CONFIG.Feedback.SensorToMechanismRatio = DRIVE_GEAR_RATIO;
+      DRIVE_CONFIG.Feedback.SensorToMechanismRatio = SWERVE_CONSTANTS.driveGearRatio;
       DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
       DRIVE_CONFIG.CurrentLimits.SupplyCurrentLimit = DRIVE_CURRENT_LIMIT.in(Units.Amps);
 
@@ -136,7 +173,7 @@ public final class Constants {
       STEER_CONFIG.Slot0.kD = STEER_D;
       STEER_CONFIG.MotorOutput.Inverted = STEER_MOTOR_INVERT;
       STEER_CONFIG.MotorOutput.NeutralMode = STEER_NEUTRAL_MODE;
-      STEER_CONFIG.Feedback.SensorToMechanismRatio = STEER_GEAR_RATIO;
+      STEER_CONFIG.Feedback.SensorToMechanismRatio = SWERVE_CONSTANTS.steerGearRatio;
       STEER_CONFIG.ClosedLoopGeneral.ContinuousWrap = true;
 
       CANCODER_CONFIG.MagnetSensor.SensorDirection = CANCODER_INVERT;
@@ -341,7 +378,7 @@ public final class Constants {
     /*
      * All poses on the field, defined by their location on the BLUE Alliance
      */
-    public static class poses {
+    public static class POSES {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
 
       // BRANCH POSES
@@ -376,19 +413,19 @@ public final class Constants {
     }
 
     private static Pose2d[] getRedAlliancePoses() {
-      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_POSES.length];
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_POSES.length];
 
-      for (int i = 0; i < poses.BLUE_POSES.length; i++) {
-        returnedPoses[i] = getRedAlliancePose(poses.BLUE_POSES[i]);
+      for (int i = 0; i < POSES.BLUE_POSES.length; i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_POSES[i]);
       }
       return returnedPoses;
     }
 
     private static List<Pose2d> getRedReefPoses() {
-      Pose2d[] returnedPoses = new Pose2d[poses.BLUE_REEF_POSES.size()];
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_REEF_POSES.size()];
 
-      for (int i = 0; i < poses.BLUE_REEF_POSES.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(poses.BLUE_REEF_POSES.get(i));
+      for (int i = 0; i < POSES.BLUE_REEF_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_REEF_POSES.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
@@ -407,10 +444,10 @@ public final class Constants {
      */
     public static Supplier<Pose2d[]> getFieldPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> poses.RED_POSES;
+        return () -> POSES.RED_POSES;
 
       }
-      return () -> poses.BLUE_POSES;
+      return () -> POSES.BLUE_POSES;
     }
 
     /**
@@ -424,10 +461,10 @@ public final class Constants {
      */
     public static Supplier<List<Pose2d>> getReefPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> poses.RED_REEF_POSES;
+        return () -> POSES.RED_REEF_POSES;
 
       }
-      return () -> poses.BLUE_REEF_POSES;
+      return () -> POSES.BLUE_REEF_POSES;
     }
   }
 
