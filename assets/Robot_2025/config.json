@@ -1,0 +1,90 @@
+{
+    "name": "Robot_2025",
+    "disableSimplification": false ,
+    "rotations": [
+    {
+      "axis": "x",
+      "degrees": 180
+    },
+    {
+      "axis": "y",
+      "degrees": 0
+    },
+    {
+      "axis": "z",
+      "degrees": 0
+    }
+  ],
+  "position": [
+    0,
+    0,
+    0
+  ],
+    "cameras": [ 
+    ],
+    "components": [
+        {
+            "zeroedRotations": [
+              {
+                "axis": "x",
+                "degrees": 180
+              },
+              {
+                "axis": "y",
+                "degrees": 0
+              },
+              {
+                "axis": "z",
+                "degrees": 0
+              }
+            ],
+            "zeroedPosition": [
+              -0.0889,
+              0,
+              -0.109474
+            ]
+          },
+          {
+            "zeroedRotations": [
+              {
+                "axis": "x",
+                "degrees": 0
+              },
+              {
+                "axis": "y",
+                "degrees": 180
+              },
+              {
+                "axis": "z",
+                "degrees": 180
+              }
+            ],
+            "zeroedPosition": [
+              -0.0889,
+              0,
+              -0.134874
+            ]
+          },
+          {
+            "zeroedRotations": [
+              {
+                "axis": "x",
+                "degrees": 180
+              },
+              {
+                "axis": "y",
+                "degrees": 0
+              },
+              {
+                "axis": "z",
+                "degrees": 0
+              }
+            ],
+            "zeroedPosition": [
+              -0.164338,
+              0,
+              -0.427228
+            ]
+          }
+    ] 
+  }
