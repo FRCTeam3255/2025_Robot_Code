@@ -18,14 +18,14 @@ public class PrepProcessor extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
-  LED subLED;
+  LED globalLED;
 
-  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public PrepProcessor(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -36,7 +36,7 @@ public class PrepProcessor extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
-    subLED.setLED(constLED.LED_PREP_PROCESSOR);
+    globalLED.setLED(constLED.LED_PREP_PROCESSOR);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

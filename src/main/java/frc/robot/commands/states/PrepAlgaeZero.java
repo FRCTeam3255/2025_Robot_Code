@@ -19,14 +19,14 @@ public class PrepAlgaeZero extends Command {
   /** Creates a new AlgaePrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
-  LED subLED;
+  LED globalLED;
   AlgaeIntake globalAlgaeIntake;
 
-  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
-    subLED = globalLED;
+    globalLED = subLED;
     globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
@@ -37,7 +37,7 @@ public class PrepAlgaeZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    subLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
+    globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }

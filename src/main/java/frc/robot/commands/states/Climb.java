@@ -16,14 +16,14 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class Climb extends Command {
   StateMachine globalStateMachine;
   Climber globalClimber;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new Climb. */
-  public Climb(StateMachine subStateMachine, Climber subClimber, LED globalLED) {
+  public Climb(StateMachine subStateMachine, Climber subClimber, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalClimber = subClimber;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -32,7 +32,7 @@ public class Climb extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.CLIMBING_DEEP);
     globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_VELOCITY);
-    subLED.setLED(constLED.LED_CLIMB);
+    globalLED.setLED(constLED.LED_CLIMB);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

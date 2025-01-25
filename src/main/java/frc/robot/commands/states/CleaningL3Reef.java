@@ -18,15 +18,15 @@ public class CleaningL3Reef extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new CleaningL3Reef. */
-  public CleaningL3Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public CleaningL3Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -38,7 +38,7 @@ public class CleaningL3Reef extends Command {
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLEANING_REEF_L3_PIVOT_POSITION);
-    subLED.setLED(constLED.LED_CLEANING_L3_REEF);
+    globalLED.setLED(constLED.LED_CLEANING_L3_REEF);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

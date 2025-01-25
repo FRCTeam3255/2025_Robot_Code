@@ -22,11 +22,11 @@ public class None extends Command {
   AlgaeIntake subAlgaeIntake;
   Climber subClimber;
   Elevator subElevator;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new none. */
   public None(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
-      AlgaeIntake subAlgaeIntake, Climber subClimber, Elevator subElevator, LED globaLED) {
+      AlgaeIntake subAlgaeIntake, Climber subClimber, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.subCoralOuttake = subCoralOuttake;
@@ -34,7 +34,7 @@ public class None extends Command {
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;
     this.subElevator = subElevator;
-    subLED = globaLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -47,7 +47,7 @@ public class None extends Command {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subClimber.setClimberMotorVelocity(0);
     subElevator.setNeutral();
-    subLED.setLED(constLED.LED_NONE);
+    globalLED.setLED(constLED.LED_NONE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

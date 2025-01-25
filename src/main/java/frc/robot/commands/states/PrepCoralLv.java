@@ -17,15 +17,15 @@ public class PrepCoralLv extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   Distance globalDistance;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, Distance height, LED globalLED) {
+  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, Distance height, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.globalElevator = subElevator;
     this.globalDistance = height;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(subElevator);
     addRequirements(globalStateMachine);
   }
@@ -42,7 +42,7 @@ public class PrepCoralLv extends Command {
     else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
     globalElevator.setPosition(globalDistance);
-    subLED.setLED(constLED.LED_PREP_CORAL_LV);
+    globalLED.setLED(constLED.LED_PREP_CORAL_LV);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

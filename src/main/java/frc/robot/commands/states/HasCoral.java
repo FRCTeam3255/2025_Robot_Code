@@ -16,13 +16,13 @@ public class HasCoral extends Command {
   /** Creates a new HasCoral. */
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
-  LED subLED;
+  LED globalLED;
 
-  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED globalLED) {
+  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -30,7 +30,7 @@ public class HasCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL);
-    subLED.setLED(constLED.LED_HAS_CORAL);
+    globalLED.setLED(constLED.LED_HAS_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

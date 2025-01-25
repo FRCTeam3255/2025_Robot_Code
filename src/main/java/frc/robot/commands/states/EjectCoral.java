@@ -16,14 +16,14 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class EjectCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new CoralOuttake. */
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED globalLED) {
+  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -32,7 +32,7 @@ public class EjectCoral extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
-    subLED.setLED(constLED.LED_EJECT_CORAL);
+    globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

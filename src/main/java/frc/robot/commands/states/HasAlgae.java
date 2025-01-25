@@ -16,13 +16,13 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class HasAlgae extends Command {
   StateMachine globalStateMachine;
   AlgaeIntake globalAlgaeIntake;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new HasAlgae. */
-  public HasAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public HasAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED) {
     globalStateMachine = subStateMachine;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(globalStateMachine);
   }
@@ -31,7 +31,7 @@ public class HasAlgae extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_ALGAE);
-    subLED.setLED(constLED.LED_HAS_ALGAE);
+    globalLED.setLED(constLED.LED_HAS_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

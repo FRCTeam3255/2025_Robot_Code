@@ -19,15 +19,15 @@ public class IntakingAlgaeGround extends Command {
   StateMachine subStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
-  LED subLED;
+  LED globalLED;
 
   public IntakingAlgaeGround(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake,
-      LED globalLED) {
+      LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.subStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(subStateMachine);
   }
 
@@ -39,7 +39,7 @@ public class IntakingAlgaeGround extends Command {
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.INTAKE_ALGAE_GROUND_PIVOT_POSITION);
-    subLED.setLED(constLED.LED_INTAKE_ALGAE_GROUND);
+    globalLED.setLED(constLED.LED_INTAKE_ALGAE_GROUND);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

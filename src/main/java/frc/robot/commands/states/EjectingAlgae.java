@@ -17,13 +17,13 @@ public class EjectingAlgae extends Command {
   /** Creates a new EjectingAlgae. */
   AlgaeIntake globalAlgaeIntake;
   StateMachine globalStateMachine;
-  LED subLED;
+  LED globalLED;
 
-  public EjectingAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public EjectingAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -32,7 +32,7 @@ public class EjectingAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_ALGAE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
-    subLED.setLED(constLED.LED_EJECTING_ALGAE);
+    globalLED.setLED(constLED.LED_EJECTING_ALGAE);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.EJECT_ALGAE_PIVOT_POSITION);
   }

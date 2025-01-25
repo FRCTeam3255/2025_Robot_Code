@@ -16,15 +16,15 @@ public class PrepNet extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
-  LED subLED;
+  LED globalLED;
 
   /** Creates a new PrepNet. */
-  public PrepNet(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED globalLED) {
+  public PrepNet(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -35,7 +35,7 @@ public class PrepNet extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
-    subLED.setLED(Constants.constLED.LED_PREP_NET);
+    globalLED.setLED(Constants.constLED.LED_PREP_NET);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -17,13 +17,13 @@ public class PrepCoralZero extends Command {
   /** Creates a new CoralPrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
-  LED subLED;
+  LED globalLED;
 
-  public PrepCoralZero(StateMachine subStateMachine, Elevator subElevator, LED globalLED) {
+  public PrepCoralZero(StateMachine subStateMachine, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
-    subLED = globalLED;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -32,7 +32,7 @@ public class PrepCoralZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    subLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
+    globalLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
