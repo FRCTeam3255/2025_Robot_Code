@@ -253,14 +253,6 @@ public final class Constants {
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
   }
 
-  public static class constLimelight {
-    public static final double MEGA_TAG2_STD_DEVS_POSITION = 0.7;
-    public static final double MEGA_TAG2_STD_DEVS_HEADING = 9999999;
-    public static final double MEGA_TAG1_STD_DEVS_POSITION = 0.3;
-    public static final double MEGA_TAG1_STD_DEVS_HEADING = 0.1;
-
-  }
-
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
     public static final double CORAL_INTAKE_SPEED = 0.3;
@@ -436,7 +428,7 @@ public final class Constants {
      * <p>
      * <b>Units:</b> Meters
      */
-    public static final double STD_DEVS_POS = 0.7;
+    public static final double MEGA_TAG2_STD_DEVS_POSITION = 0.7;
 
     /**
      * <p>
@@ -444,8 +436,17 @@ public final class Constants {
      * </p>
      * <b>Units:</b> Radians
      */
-    public static final double STD_DEVS_HEADING = 9999999;
+    public static final double MEGA_TAG2_STD_DEVS_HEADING = 9999999;
 
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data
+     * </p>
+     * <b>Units:</b> Meters
+     */
+    public static final double MEGA_TAG1_STD_DEVS_POSITION = .3;
+
+    public static final double MEGA_TAG1_STD_DEVS_HEADING = .1;
     /**
      * <p>
      * Maximum rate of rotation before we begin rejecting pose updates
