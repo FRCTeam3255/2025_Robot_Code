@@ -180,7 +180,6 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-
       public static final double MASS = 115;
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.8;
@@ -252,6 +251,9 @@ public final class Constants {
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+
+    // TODO: Get actual angles pls :D
+    public static final Angle CLEANING_REEF_PIVOT_POSITION = Units.Degrees.of(12);
   }
 
   public static class constCoralOuttake {
