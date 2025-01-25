@@ -13,7 +13,10 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,11 +30,16 @@ public class Elevator extends SubsystemBase {
   private TalonFX leftMotorFollower;
   private TalonFX rightMotorLeader;
 
+  private Distance lastDesiredPosition;
+
   Distance currentLeftPosition = Units.Inches.of(0);
   Distance currentRightPosition = Units.Inches.of(0);
 
+  PositionVoltage positionRequest;
   VoltageOut voltageRequest;
-  private Distance lastDesiredPosition;
+
+  public static boolean attemptingZeroing = false;
+  public static boolean hasZeroed = false;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -52,6 +60,21 @@ public class Elevator extends SubsystemBase {
   public boolean isAtSetpoint() {
         return (getElevatorPosition().compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  }
+
+  /**
+   * Sets the current position of the elevator motor to read as the given value
+   */
+  public void setSensorPosition(Measure<DistanceUnit> zeroedPos) {
+    rightMotorLeader.setPosition(zeroedPos.in(Units.Meters));
+  }
+
+  public Distance getPosition() {
+    return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+  }
+
+  public AngularVelocity getRotorVelocity() {
+    return Units.RotationsPerSecond.of(rightMotorLeader.getRotorVelocity().getValueAsDouble());
   }
 
   public Distance getLastDesiredPosition() {
