@@ -310,7 +310,7 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
 
-    public static final Measure<DistanceUnit> ZEROED_POS = Units.Meters.of(0);
+    public static final Distance ZEROED_POS = Units.Meters.of(0);
 
     public static final Measure<TimeUnit> ZEROING_TIMEOUT = Units.Seconds.of(3);
 
