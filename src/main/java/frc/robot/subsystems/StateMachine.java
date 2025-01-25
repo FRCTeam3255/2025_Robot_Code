@@ -177,6 +177,7 @@ public class StateMachine extends SubsystemBase {
       case CLEANING_L2:
         switch (currentRobotState) {
           case NONE:
+          case CLEANING_L3:
             return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
         }
         break;
@@ -184,6 +185,7 @@ public class StateMachine extends SubsystemBase {
       case CLEANING_L3:
         switch (currentRobotState) {
           case NONE:
+          case CLEANING_L2:
             return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
         }
         break;
@@ -200,6 +202,7 @@ public class StateMachine extends SubsystemBase {
       case PREP_NET:
         switch (currentRobotState) {
           case HAS_ALGAE:
+          case PREP_ALGAE_ZERO:
           case PREP_PROCESSOR:
             return new PrepNet(subStateMachine, subElevator);
         }
@@ -208,8 +211,18 @@ public class StateMachine extends SubsystemBase {
       case PREP_PROCESSOR:
         switch (currentRobotState) {
           case HAS_ALGAE:
+          case PREP_ALGAE_ZERO:
           case PREP_NET:
             return new PrepProcessor(subStateMachine, subElevator);
+        }
+        break;
+
+      case PREP_ALGAE_ZERO:
+        switch (currentRobotState) {
+          case HAS_ALGAE:
+          case PREP_NET:
+          case PREP_PROCESSOR:
+            return new PrepCoralZero(subStateMachine, subElevator);
         }
         break;
 
@@ -229,13 +242,6 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR:
           case PREP_ALGAE_ZERO:
             return new ScoringAlgae(subStateMachine, subAlgaeIntake);
-        }
-        break;
-
-      case PREP_ALGAE_ZERO:
-        switch (currentRobotState) {
-          case HAS_ALGAE:
-            return new PrepCoralZero(subStateMachine, subElevator);
         }
         break;
 
