@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constElevator;
 import frc.robot.subsystems.Elevator;
 
-public class ZeroingElevator extends Command {
+public class ManualZeroElevator extends Command {
   Elevator subElevator;
 
   boolean zeroingSuccess = false;
@@ -26,7 +26,7 @@ public class ZeroingElevator extends Command {
 
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
-  public void ManualZeroElevator(Elevator subElevator) {
+  public ManualZeroElevator(Elevator subElevator) {
     this.subElevator = subElevator;
 
     addRequirements(subElevator);
@@ -69,7 +69,7 @@ public class ZeroingElevator extends Command {
   @Override
   public void end(boolean interrupted) {
     subElevator.setSoftwareLimits(true, true);
-    
+
     if (!interrupted) {
       Elevator.hasZeroed = true;
       subElevator.resetSensorPosition(constElevator.ZEROED_POS);
