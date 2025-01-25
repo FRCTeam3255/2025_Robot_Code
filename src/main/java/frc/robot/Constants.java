@@ -180,7 +180,6 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-
       public static final double MASS = 115;
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.8;
@@ -252,6 +251,14 @@ public final class Constants {
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+  }
+
+  public static class constLimelight {
+    public static final double MEGA_TAG2_STD_DEVS_POSITION = 0.7;
+    public static final double MEGA_TAG2_STD_DEVS_HEADING = 9999999;
+    public static final double MEGA_TAG1_STD_DEVS_POSITION = 0.3;
+    public static final double MEGA_TAG1_STD_DEVS_HEADING = 0.1;
+
   }
 
   public static class constCoralOuttake {
