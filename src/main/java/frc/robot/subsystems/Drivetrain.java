@@ -16,9 +16,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.Units;
@@ -33,7 +30,6 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
-
   StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
       .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
   StructPublisher<Pose2d> desiredAlignmentPosePublisher = NetworkTableInstance.getDefault()
@@ -44,6 +40,20 @@ public class Drivetrain extends SN_SuperSwerve {
       .getStructArrayTopic("/SmartDashboard/Drivetrain/Actual States", SwerveModuleState.struct).publish();
 
   Pose2d desiredAlignmentPose = new Pose2d(0, 0, new Rotation2d(0));
+  private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
+      new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
+          mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
+      new SN_SwerveModule(1, mapDrivetrain.FRONT_RIGHT_DRIVE_CAN, mapDrivetrain.FRONT_RIGHT_STEER_CAN,
+          mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_RIGHT_ABS_ENCODER_OFFSET),
+      new SN_SwerveModule(2, mapDrivetrain.BACK_LEFT_DRIVE_CAN, mapDrivetrain.BACK_LEFT_STEER_CAN,
+          mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_LEFT_ABS_ENCODER_OFFSET),
+      new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
+          mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
+  };
+  Pose2d desiredAlignmentPose = Pose2d.kZero;
+  Pose2d robotPose = Pose2d.kZero;
+  SwerveModuleState[] desiredModuleStates;
+  SwerveModuleState[] actualModuleStates;
 
   public Drivetrain() {
     super(
@@ -66,9 +76,9 @@ public class Drivetrain extends SN_SuperSwerve {
             constDrivetrain.MEASUREMENT_STD_DEVS_POS,
             constDrivetrain.MEASUREMENT_STD_DEV_HEADING),
         VecBuilder.fill(
-            constVision.STD_DEVS_POS,
-            constVision.STD_DEVS_POS,
-            constVision.STD_DEVS_HEADING),
+            constVision.MEGA_TAG2_STD_DEVS_POSITION,
+            constVision.MEGA_TAG2_STD_DEVS_POSITION,
+            constVision.MEGA_TAG2_STD_DEVS_HEADING),
         constDrivetrain.AUTO.AUTO_DRIVE_PID,
         constDrivetrain.AUTO.AUTO_STEER_PID,
         constDrivetrain.AUTO.ROBOT_CONFIG,
@@ -205,11 +215,10 @@ public class Drivetrain extends SN_SuperSwerve {
           mod.getRawAbsoluteEncoder());
     }
 
-    field.setRobotPose(getPose());
-    robotPosePublisher.set(getPose());
-    desiredAlignmentPosePublisher.set(desiredAlignmentPose);
-    desiredStatesPublisher.set(getDesiredModuleStates());
-    actualStatesPublisher.set(getActualModuleStates());
+    robotPose = getPose();
+    field.setRobotPose(robotPose);
+    desiredModuleStates = getDesiredModuleStates();
+    actualModuleStates = getActualModuleStates();
 
     SmartDashboard.putData(field);
     SmartDashboard.putNumber("Drivetrain/Rotation", getRotationMeasure().in(Units.Degrees));

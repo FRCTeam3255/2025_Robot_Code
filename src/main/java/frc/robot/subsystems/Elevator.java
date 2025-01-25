@@ -16,6 +16,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
 
@@ -26,7 +27,7 @@ public class Elevator extends SubsystemBase {
 
   Distance currentLeftPosition = Units.Inches.of(0);
   Distance currentRightPosition = Units.Inches.of(0);
-  Distance lastDesiredPosition;
+  private Distance lastDesiredPosition;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -41,6 +42,15 @@ public class Elevator extends SubsystemBase {
 
   public Distance getElevatorPosition() {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
+  }
+
+  public boolean isAtSetpoint() {
+        return (getElevatorPosition().compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+        getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public Distance getLastDesiredPosition() {
+    return lastDesiredPosition;
   }
 
   public void setPosition(Distance height) {

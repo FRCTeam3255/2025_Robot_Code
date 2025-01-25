@@ -281,13 +281,22 @@ public final class Constants {
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
+      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+
+    // TODO: Get actual angles pls :D pretty please cherries on top
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(12);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(34);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(56);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(78);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(91);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
   }
 
   public static class constCoralOuttake {
@@ -341,6 +350,7 @@ public final class Constants {
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
+    public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
   }
 
   public static class constField {
@@ -465,7 +475,7 @@ public final class Constants {
      * <p>
      * <b>Units:</b> Meters
      */
-    public static final double STD_DEVS_POS = 0.7;
+    public static final double MEGA_TAG2_STD_DEVS_POSITION = 0.7;
 
     /**
      * <p>
@@ -473,8 +483,17 @@ public final class Constants {
      * </p>
      * <b>Units:</b> Radians
      */
-    public static final double STD_DEVS_HEADING = 9999999;
+    public static final double MEGA_TAG2_STD_DEVS_HEADING = 9999999;
 
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data
+     * </p>
+     * <b>Units:</b> Meters
+     */
+    public static final double MEGA_TAG1_STD_DEVS_POSITION = .3;
+
+    public static final double MEGA_TAG1_STD_DEVS_HEADING = .1;
     /**
      * <p>
      * Maximum rate of rotation before we begin rejecting pose updates
