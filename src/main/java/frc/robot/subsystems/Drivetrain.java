@@ -63,9 +63,9 @@ public class Drivetrain extends SN_SuperSwerve {
             constDrivetrain.MEASUREMENT_STD_DEVS_POS,
             constDrivetrain.MEASUREMENT_STD_DEV_HEADING),
         VecBuilder.fill(
-            constVision.STD_DEVS_POS,
-            constVision.STD_DEVS_POS,
-            constVision.STD_DEVS_HEADING),
+            constVision.MEGA_TAG2_STD_DEVS_POSITION,
+            constVision.MEGA_TAG2_STD_DEVS_POSITION,
+            constVision.MEGA_TAG2_STD_DEVS_HEADING),
         constDrivetrain.AUTO.AUTO_DRIVE_PID,
         constDrivetrain.AUTO.AUTO_STEER_PID,
         constDrivetrain.AUTO.ROBOT_CONFIG,

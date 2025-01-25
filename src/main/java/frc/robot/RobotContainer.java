@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constField;
+import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
@@ -147,6 +149,23 @@ public class RobotContainer {
     if (subCoralOuttake.hasCoral()) {
       subStateMachine.setRobotState(RobotState.HAS_CORAL);
     }
+  }
+
+  public void setMegaTag2(boolean setMegaTag2) {
+
+    if (setMegaTag2) {
+      subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
+          constVision.MEGA_TAG2_STD_DEVS_POSITION,
+          constVision.MEGA_TAG2_STD_DEVS_POSITION,
+          constVision.MEGA_TAG2_STD_DEVS_HEADING));
+    } else {
+      // Use MegaTag 1
+      subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
+          constVision.MEGA_TAG1_STD_DEVS_POSITION,
+          constVision.MEGA_TAG1_STD_DEVS_POSITION,
+          constVision.MEGA_TAG1_STD_DEVS_HEADING));
+    }
+    subVision.setMegaTag2(setMegaTag2);
   }
 
   private void configureAutoBindings() {
