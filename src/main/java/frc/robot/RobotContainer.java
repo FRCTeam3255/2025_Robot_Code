@@ -143,8 +143,8 @@ public class RobotContainer {
     if (setMegaTag2) {
       subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
           constVision.MEGA_TAG2_STD_DEVS_POSITION,
-          constVision.MEGA_TAG1_STD_DEVS_POSITION,
-          constVision.MEGA_TAG1_STD_DEVS_HEADING));
+          constVision.MEGA_TAG2_STD_DEVS_POSITION,
+          constVision.MEGA_TAG2_STD_DEVS_HEADING));
     } else {
       // Use MegaTag 1
       subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(

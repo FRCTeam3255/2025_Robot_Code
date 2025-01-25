@@ -61,7 +61,7 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    PoseEstimate currentEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+    PoseEstimate currentEstimate;
 
     if (useMegaTag2) {
       currentEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
