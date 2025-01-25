@@ -30,16 +30,6 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
-  StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
-      .getStructTopic("/SmartDashboard/Drivetrain/Robot Pose", Pose2d.struct).publish();
-  StructPublisher<Pose2d> desiredAlignmentPosePublisher = NetworkTableInstance.getDefault()
-      .getStructTopic("/SmartDashboard/Drivetrain/Desired Alignment Pose", Pose2d.struct).publish();
-  StructArrayPublisher<SwerveModuleState> desiredStatesPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("/SmartDashboard/Drivetrain/Desired States", SwerveModuleState.struct).publish();
-  StructArrayPublisher<SwerveModuleState> actualStatesPublisher = NetworkTableInstance.getDefault()
-      .getStructArrayTopic("/SmartDashboard/Drivetrain/Actual States", SwerveModuleState.struct).publish();
-
-  Pose2d desiredAlignmentPose = new Pose2d(0, 0, new Rotation2d(0));
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -50,6 +40,7 @@ public class Drivetrain extends SN_SuperSwerve {
       new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
           mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
   };
+
   Pose2d desiredAlignmentPose = Pose2d.kZero;
   Pose2d robotPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
