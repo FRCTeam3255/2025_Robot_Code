@@ -18,12 +18,7 @@ public class LED extends SubsystemBase {
 
   public LED() {
     LED = new CANdle(mapLED.LED_CAN);
-    configure();
-  }
-
-  public void configure() {
-    LED.configFactoryDefault();
-    LED.configBrightnessScalar(constLED.LED_BRIGHTNESS);
+    LED.configAllSettings(constLED.LED_CONFIG);
   }
 
   public void setLED(int[] rgb) {

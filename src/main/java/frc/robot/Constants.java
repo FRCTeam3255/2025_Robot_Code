@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -510,5 +511,6 @@ public final class Constants {
     public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+    public static final CANdleConfiguration LED_CONFIG = new CANdleConfiguration();
   }
 }
