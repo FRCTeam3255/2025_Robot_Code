@@ -180,7 +180,6 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-
       public static final double MASS = 115;
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.8;
@@ -429,7 +428,7 @@ public final class Constants {
      * <p>
      * <b>Units:</b> Meters
      */
-    public static final double STD_DEVS_POS = 0.7;
+    public static final double MEGA_TAG2_STD_DEVS_POSITION = 0.7;
 
     /**
      * <p>
@@ -437,8 +436,17 @@ public final class Constants {
      * </p>
      * <b>Units:</b> Radians
      */
-    public static final double STD_DEVS_HEADING = 9999999;
+    public static final double MEGA_TAG2_STD_DEVS_HEADING = 9999999;
 
+    /**
+     * <p>
+     * Pose estimator standard deviation for vision data
+     * </p>
+     * <b>Units:</b> Meters
+     */
+    public static final double MEGA_TAG1_STD_DEVS_POSITION = .3;
+
+    public static final double MEGA_TAG1_STD_DEVS_HEADING = .1;
     /**
      * <p>
      * Maximum rate of rotation before we begin rejecting pose updates
