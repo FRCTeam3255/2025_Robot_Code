@@ -244,7 +244,7 @@ public final class Constants {
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
+      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
