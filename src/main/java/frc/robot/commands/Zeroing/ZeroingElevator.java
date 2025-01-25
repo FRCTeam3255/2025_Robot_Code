@@ -34,6 +34,7 @@ public class ZeroingElevator extends Command {
 
   @Override
   public void initialize() {
+    subElevator.setSoftwareLimits(false, true);
   }
 
   @Override
@@ -67,9 +68,11 @@ public class ZeroingElevator extends Command {
 
   @Override
   public void end(boolean interrupted) {
+    subElevator.setSoftwareLimits(true, true);
+    
     if (!interrupted) {
       Elevator.hasZeroed = true;
-      subElevator.setSensorPosition(constElevator.ZEROED_POS);
+      subElevator.resetSensorPosition(constElevator.ZEROED_POS);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");

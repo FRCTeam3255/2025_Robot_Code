@@ -62,17 +62,6 @@ public class Elevator extends SubsystemBase {
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
-  /**
-   * Sets the current position of the elevator motor to read as the given value
-   */
-  public void setSensorPosition(Measure<DistanceUnit> zeroedPos) {
-    rightMotorLeader.setPosition(zeroedPos.in(Units.Meters));
-  }
-
-  public Distance getPosition() {
-    return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
-  }
-
   public AngularVelocity getRotorVelocity() {
     return Units.RotationsPerSecond.of(rightMotorLeader.getRotorVelocity().getValueAsDouble());
   }
@@ -93,12 +82,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setVoltage(Voltage voltage) {
-    rightMotorLeader.setControl(voltageRequest.withOutput(voltage.in(Units.Volts)));
+    rightMotorLeader.setControl(voltageRequest.withOutput(voltage));
   }
 
   public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+    
+    rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
   public void resetSensorPosition(Distance setpoint) {
