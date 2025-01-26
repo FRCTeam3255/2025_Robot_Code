@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -12,16 +13,20 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
 import frc.robot.Robot;
 
+@Logged
+
 public class RobotPoses extends SubsystemBase {
 
   Pose3d elevatorStageOne = Pose3d.kZero;
   Pose3d elevatorCarriage = Pose3d.kZero;
   Pose3d algaeIntake = Pose3d.kZero;
-  private final Elevator subElevator = new Elevator();
-  private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
+  private Elevator subElevator;
+  private AlgaeIntake subAlgaeIntake;
 
   /** Creates a new RobotPoses. */
-  public RobotPoses() {
+  public RobotPoses(Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+    this.subElevator = subElevator;
+    this.subAlgaeIntake = subAlgaeIntake;
   }
 
   @Override
