@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.constElevator;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.states.*;
