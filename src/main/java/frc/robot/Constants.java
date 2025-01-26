@@ -282,7 +282,26 @@ public final class Constants {
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(90).in(Units.Degrees);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Degrees);
+
+      // Why do crabs never share their things? - Because they are shellfish!
+
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
+
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      ALGAE_PIVOT_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 0.1;
+      ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
+
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1000;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 1000;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
