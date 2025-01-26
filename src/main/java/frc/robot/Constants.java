@@ -363,8 +363,8 @@ public final class Constants {
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
-    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
-    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
 
     /**
      * The value that the motor reports when it is at it's zeroed position. This
