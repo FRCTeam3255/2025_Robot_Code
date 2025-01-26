@@ -6,8 +6,10 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -15,14 +17,16 @@ public class IntakeCoralHopper extends Command {
   StateMachine globalStateMachine;
   Hopper subCoralIntake;
   CoralOuttake subCoralOuttake;
+  LED globalLED;
 
   /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
+  public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
+      LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.subCoralIntake = subHopper;
     this.subCoralOuttake = subCoralOuttake;
-
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -31,6 +35,7 @@ public class IntakeCoralHopper extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
     subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
+    globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

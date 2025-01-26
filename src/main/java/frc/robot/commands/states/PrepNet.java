@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -15,14 +16,15 @@ public class PrepNet extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake globalAlgaeIntake;
+  LED globalLED;
 
   /** Creates a new PrepNet. */
-  public PrepNet(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+  public PrepNet(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalAlgaeIntake = subAlgaeIntake;
-
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -33,6 +35,7 @@ public class PrepNet extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
+    globalLED.setLED(Constants.constLED.LED_PREP_NET);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
