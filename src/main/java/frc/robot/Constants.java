@@ -313,12 +313,6 @@ public final class Constants {
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
 
     /**
-     * The value that the motor reports when it is at it's zeroed position. This
-     * may not necessarily be 0 due to mechanical slop
-     */
-    public static final Distance ZEROED_POS = Units.Meters.of(0);
-
-    /**
      * The velocity that the motor goes at once it has zeroed (and can no longer
      * continue in that direction)
      */
@@ -330,6 +324,15 @@ public final class Constants {
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Angle ZEROED_POS = Units.Degrees.of(0);
+
+    /**
+     * 
+     * /**
+     * The elapsed time required to consider the motor as zeroed
+     */
+    public static final Time ZEROED_TIME = Units.Seconds.of(1);
+
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-2);
   }
 
   public static class constCoralOuttake {
