@@ -4,12 +4,12 @@
 
 package frc.robot.commands.states;
 
-import java.lang.Thread.State;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -17,12 +17,14 @@ public class PrepAlgaeZero extends Command {
   /** Creates a new AlgaePrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  LED globalLED;
   AlgaeIntake globalAlgaeIntake;
 
-  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+  public PrepAlgaeZero(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
+    globalLED = subLED;
     globalAlgaeIntake = subAlgaeIntake;
 
     addRequirements(globalStateMachine);
@@ -33,6 +35,7 @@ public class PrepAlgaeZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
+    globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }

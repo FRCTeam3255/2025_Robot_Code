@@ -18,6 +18,8 @@ import frc.robot.Constants.constField;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  boolean hasAutonomousRun;
+
   private RobotContainer m_robotContainer;
 
   @Override
@@ -47,8 +49,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-
     m_robotContainer.setMegaTag2(false);
+
+    if (!hasAutonomousRun) {
+      m_robotContainer.checkForManualZeroing().schedule();
+    }
   }
 
   @Override
@@ -70,6 +75,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
+    hasAutonomousRun = true;
   }
 
   @Override
@@ -83,6 +89,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_robotContainer.setMegaTag2(true);
+
+    m_robotContainer.checkForManualZeroing().cancel();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

@@ -4,19 +4,16 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -24,18 +21,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Zeroing.ManualZeroElevator;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
 
 @Logged
 public class RobotContainer {
+  private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
@@ -48,22 +45,26 @@ public class RobotContainer {
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
+  private final LED subLED = new LED();
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
-      subDrivetrain, subElevator, subHopper);
+      subDrivetrain, subElevator, subHopper, subLED);
 
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake);
-  private final Climb comClimb = new Climb(subStateMachine, subClimber);
+      subCoralOuttake, subLED);
+  private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
-      subCoralOuttake);
-  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake);
-  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake);
-  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake);
-  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake);
-  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake);
+      subCoralOuttake, subLED);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+  private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
+  private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
+  private final CleaningL3Reef comCleaningL3Reef = new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
+  private final CleaningL2Reef comCleaningL2Reef = new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake,
+      subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
-      subAlgaeIntake);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake);
+      subAlgaeIntake, subLED);
+  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
 
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER));
@@ -328,9 +329,20 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
+  public Command checkForManualZeroing() {
+    return new ManualZeroElevator(subElevator).ignoringDisable(true);
+  }
+
   public Command AddVisionMeasurement() {
     return new AddVisionMeasurement(subDrivetrain, subVision)
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
+  }
+
+  /**
+   * @return If the robot is the practice robot
+   */
+  public static boolean isPracticeBot() {
+    return !isPracticeBot.get();
   }
 
   public void updateLoggedPoses() {
