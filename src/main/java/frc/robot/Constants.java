@@ -303,9 +303,6 @@ public final class Constants {
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
 
-    /**
-     * The voltage supplied to the motor in order to zero
-     */
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
@@ -317,16 +314,9 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    /**
-     * 
-     * /**
-     * The elapsed time required to consider the motor as zeroed
-     */
     public static final Angle ZEROED_POS = Units.Degrees.of(0);
 
     /**
-     * 
-     * /**
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
@@ -399,7 +389,6 @@ public final class Constants {
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
 
-    // -- Zeroing --
     /**
      * The voltage supplied to the motor in order to zero
      */
@@ -418,8 +407,6 @@ public final class Constants {
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
     /**
-     * 
-     *
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
