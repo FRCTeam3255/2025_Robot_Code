@@ -27,6 +27,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
 import frc.robot.commands.Zeroing.ZeroElevator;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
