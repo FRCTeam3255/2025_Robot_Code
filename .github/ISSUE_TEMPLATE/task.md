@@ -7,9 +7,6 @@ assignees: ''
 
 ---
 
-**Title**
-A clear and concise title for the task.
-
 **Description**
 A clear and concise description of the task.
 
