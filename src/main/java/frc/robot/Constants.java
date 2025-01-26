@@ -33,6 +33,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -359,6 +360,17 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+
+    public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
+
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
+
+    /**
+     * The value that the motor reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     */
+    public static final Distance ZEROED_POS = Units.Meters.of(0);
   }
 
   public static class constField {
