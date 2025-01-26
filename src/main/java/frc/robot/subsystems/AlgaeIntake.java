@@ -31,8 +31,7 @@ public class AlgaeIntake extends SubsystemBase {
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
 
-  private Angle lastDesiredAngle = Degrees.zero();
-  private Distance lastDesiredPosition;
+  private Angle lastDesiredAngle = Degrees.zero();]
 
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
@@ -61,7 +60,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public AngularVelocity getRotorVelocity() {
-    return Units.RotationsPerSecond.of(intakePivotMotor.getRotorVelocity().getValueAsDouble());
+    return intakePivotMotor.getRotorVelocity().getValue();
   }
 
   public boolean isRotorVelocityZero() {
