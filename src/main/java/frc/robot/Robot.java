@@ -75,6 +75,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
 
+    hasAutonomousRun = true;
   }
 
   @Override
