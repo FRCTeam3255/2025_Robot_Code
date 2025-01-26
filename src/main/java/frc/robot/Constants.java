@@ -347,10 +347,17 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
-      ELEVATOR_CONFIG.Slot0.kG = 0.3;
-      ELEVATOR_CONFIG.Slot0.kS = 0.4;
-      // ELEVATOR_CONFIG.Slot0.kP = 1;
+
+      ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
+      ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
+      ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      ELEVATOR_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
       ELEVATOR_CONFIG.Slot0.kP = 0.3;
+      ELEVATOR_CONFIG.Slot0.kI = 0.0;
+      ELEVATOR_CONFIG.Slot0.kD = 0.0;
+
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 350;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
@@ -367,8 +374,9 @@ public final class Constants {
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
-    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(7);
-    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(7);
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
+
 
     /**
      * The value that the motor reports when it is at it's zeroed position. This
