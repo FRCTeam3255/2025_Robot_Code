@@ -198,7 +198,7 @@ public class RobotContainer {
         .onTrue(TRY_CLIMBING_DEEP);
 
     controller.btn_North
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(constField.POSES.RESET_POSE)));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -345,7 +345,7 @@ public class RobotContainer {
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
-  
+
   public void updateLoggedPoses() {
     double elevatorPos, algaeAngle;
 
