@@ -7,14 +7,16 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
 import frc.robot.Constants.constAlgaeIntake;
@@ -26,9 +28,15 @@ public class AlgaeIntake extends SubsystemBase {
 
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+
   private Angle lastDesiredAngle = Degrees.zero();
 
   MotionMagicVoltage motionRequest;
+  PositionVoltage positionRequest;
+  VoltageOut voltageRequest;
+
+  public static boolean attemptingZeroing = false;
+  public static boolean hasZeroed = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -50,12 +58,35 @@ public class AlgaeIntake extends SubsystemBase {
     lastDesiredAngle = setpoint;
   }
 
+  public AngularVelocity getRotorVelocity() {
+    return intakePivotMotor.getRotorVelocity().getValue();
+  }
+
+  public boolean isRotorVelocityZero() {
+    return getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
+  }
+
+  public void setVoltage(Voltage voltage) {
+    intakePivotMotor.setControl(voltageRequest.withOutput(voltage));
+  }
+
+  public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
+    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
+    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+
+    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+  }
+
   public Angle getPivotAngle() {
     return intakePivotMotor.getPosition().getValue();
   }
 
   public Angle getLastDesiredPivotAngle() {
     return lastDesiredAngle;
+  }
+
+  public void resetSensorPosition(Angle zeroedPos) {
+    intakePivotMotor.setPosition(zeroedPos);
   }
 
   public boolean hasAlgae() {
