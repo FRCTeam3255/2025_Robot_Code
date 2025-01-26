@@ -186,6 +186,16 @@ public class RobotContainer {
         Commands.sequence(
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
             TRY_PREP_CORAL_L3.asProxy()));
+
+    NamedCommands.registerCommand("CleanL3Reef", TRY_CLEANING_L3.asProxy().until(hasAlgaeTrigger));
+
+    NamedCommands.registerCommand("PrepProcessor", TRY_PREP_PROCESSOR.asProxy().until(hasAlgaeTrigger));
+
+    NamedCommands.registerCommand("ScoreAlgaeSequence",
+        Commands.sequence(
+            TRY_SCORING_ALGAE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean()),
+            Commands.waitSeconds(1.5),
+            TRY_NONE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean())));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
