@@ -333,7 +333,7 @@ public class RobotContainer {
   }
 
   public Command checkForManualZeroing() {
-    return new ManualZeroElevator(subElevator);
+    return new ManualZeroElevator(subElevator).ignoringDisable(true);
   }
 
   public Command AddVisionMeasurement() {
