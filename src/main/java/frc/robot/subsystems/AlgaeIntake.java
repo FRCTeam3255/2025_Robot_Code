@@ -31,7 +31,7 @@ public class AlgaeIntake extends SubsystemBase {
   AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
 
-  private Angle lastDesiredAngle = Degrees.zero();]
+  private Angle lastDesiredAngle = Degrees.zero();
 
   PositionVoltage positionRequest;
   VoltageOut voltageRequest;
