@@ -7,8 +7,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
@@ -29,12 +29,15 @@ public class Elevator extends SubsystemBase {
   Distance currentRightPosition = Units.Inches.of(0);
   private Distance lastDesiredPosition;
 
+  MotionMagicVoltage motionRequest;
+
   /** Creates a new Elevator. */
   public Elevator() {
     leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
     rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
+    motionRequest = new MotionMagicVoltage(0);
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
@@ -45,7 +48,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtSetpoint() {
-        return (getElevatorPosition().compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+    return (getElevatorPosition()
+        .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
@@ -54,7 +58,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPosition(Distance height) {
-    rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
+    rightMotorLeader.setControl(motionRequest.withPosition(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
     lastDesiredPosition = height;
   }
@@ -67,7 +71,6 @@ public class Elevator extends SubsystemBase {
   public void resetSensorPosition(Distance setpoint) {
     rightMotorLeader.setPosition(setpoint.in(Inches));
     leftMotorFollower.setPosition(setpoint.in(Inches));
-
   }
 
   @Override
