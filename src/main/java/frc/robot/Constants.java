@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -344,10 +343,9 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kP = 0.3;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
-      // TODO: Tune these values
+
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 350;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;
-      // ELEVATOR_CONFIG.MotionMagic.MotionMagicJerk = 1600;
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(9.039062);
