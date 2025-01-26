@@ -307,7 +307,10 @@ public final class Constants {
     /**
      * The voltage supplied to the motor in order to zero
      */
-    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
+    public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
+
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
 
     /**
      * The value that the motor reports when it is at it's zeroed position. This
@@ -326,7 +329,7 @@ public final class Constants {
      * /**
      * The elapsed time required to consider the motor as zeroed
      */
-    public static final Time ZEROED_TIME = Units.Seconds.of(1);
+    public static final Angle ZEROED_POS = Units.Degrees.of(0);
   }
 
   public static class constCoralOuttake {
