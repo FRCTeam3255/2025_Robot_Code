@@ -20,13 +20,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constVision;
+import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.ZeroElevator;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -331,6 +332,25 @@ public class RobotContainer {
 
   public Command checkForManualZeroing() {
     return new ManualZeroElevator(subElevator).ignoringDisable(true);
+  }
+
+  /**
+   * Returns the command to zero all subsystems. This will make all subsystems
+   * move
+   * themselves downwards until they see a current spike and cancel any incoming
+   * commands that
+   * require those motors. If the zeroing does not end within a certain time
+   * frame (set in constants), it will interrupt itself.
+   * 
+   * @return Parallel commands to zero the Climber, Elevator, and Shooter Pivot
+   */
+  public Command zeroSubsystems() {
+    Command returnedCommand = new ParallelCommandGroup(
+        new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
+        new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    returnedCommand.addRequirements(subStateMachine);
+    return returnedCommand;
   }
 
   public Command AddVisionMeasurement() {

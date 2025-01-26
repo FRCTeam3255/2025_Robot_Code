@@ -34,6 +34,9 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -366,11 +369,30 @@ public final class Constants {
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
 
+    // -- Zeroing --
+    /**
+     * The voltage supplied to the motor in order to zero
+     */
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
+
     /**
      * The value that the motor reports when it is at it's zeroed position. This
      * may not necessarily be 0 due to mechanical slop
      */
     public static final Distance ZEROED_POS = Units.Meters.of(0);
+
+    /**
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     */
+    public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
+
+    /**
+     * 
+     * /**
+     * The elapsed time required to consider the motor as zeroed
+     */
+    public static final Time ZEROED_TIME = Units.Seconds.of(1);
   }
 
   public static class constField {
