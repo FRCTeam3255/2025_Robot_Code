@@ -146,7 +146,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case HAS_CORAL:
-            return new PrepCoralZero(subStateMachine, subElevator);
+            return new PrepCoralZero(subStateMachine, subElevator, subLED);
         }
         break;
 
@@ -225,7 +225,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case PREP_NET:
           case PREP_PROCESSOR:
-            return new PrepCoralZero(subStateMachine, subElevator);
+            return new PrepAlgaeZero(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 
