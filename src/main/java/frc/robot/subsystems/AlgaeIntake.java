@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Degrees;
 
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +28,8 @@ public class AlgaeIntake extends SubsystemBase {
   Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
   private Angle lastDesiredAngle = Degrees.zero();
 
+  MotionMagicVoltage motionRequest;
+
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
     intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN);
@@ -43,7 +46,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setPosition(setpoint);
+    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Degrees)));
     lastDesiredAngle = setpoint;
   }
 
