@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -13,22 +11,17 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
@@ -351,7 +344,7 @@ public class RobotContainer {
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
-  
+
   public void updateLoggedPoses() {
     double elevatorPos, algaeAngle;
 
