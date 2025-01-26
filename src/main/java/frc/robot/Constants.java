@@ -299,6 +299,17 @@ public final class Constants {
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(91);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
+
+    public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
+
+    public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
+    public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
+
+    /**
+     * The value that the motor reports when it is at it's zeroed position. This
+     * may not necessarily be 0 due to mechanical slop
+     */
+    public static final Angle ZEROED_POS = Units.Degrees.of(0);
   }
 
   public static class constCoralOuttake {
@@ -365,6 +376,7 @@ public final class Constants {
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
+
 
     /**
      * The value that the motor reports when it is at it's zeroed position. This
