@@ -33,7 +33,7 @@ import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
-import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -333,7 +333,8 @@ public class RobotContainer {
   }
 
   public Command checkForManualZeroing() {
-    return new ManualZeroElevator(subElevator).ignoringDisable(true);
+    return new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+        .ignoringDisable(true);
   }
 
   public Command AddVisionMeasurement() {
@@ -347,7 +348,7 @@ public class RobotContainer {
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
   }
-  
+
   public void updateLoggedPoses() {
     double elevatorPos, algaeAngle;
 
