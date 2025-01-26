@@ -303,7 +303,6 @@ public final class Constants {
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
 
-    // -- Zeroing --
     /**
      * The voltage supplied to the motor in order to zero
      */
@@ -420,7 +419,7 @@ public final class Constants {
 
     /**
      * 
-     * /**
+     *
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
