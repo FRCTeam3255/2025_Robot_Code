@@ -68,6 +68,10 @@ public class Elevator extends SubsystemBase {
     return lastDesiredPosition;
   }
 
+  public boolean isRotorVelocityZero() {
+    return getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
+  }
+
   public void setPosition(Distance height) {
     rightMotorLeader.setControl(new PositionVoltage(height.in(Units.Inches)));
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));

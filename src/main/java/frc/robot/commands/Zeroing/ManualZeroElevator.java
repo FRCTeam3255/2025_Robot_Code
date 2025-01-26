@@ -76,8 +76,6 @@ public class ManualZeroElevator extends Command {
 
   @Override
   public boolean isFinished() {
-    boolean rotorVelocityIsZero = subElevator.getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
-    SmartDashboard.putBoolean("Zeroing/Pivot/Is Rotor Velocity Zero", rotorVelocityIsZero);
-    return zeroingSuccess && rotorVelocityIsZero;
+    return zeroingSuccess && subElevator.isRotorVelocityZero();
   }
 }
