@@ -51,7 +51,7 @@ public class RobotContainer {
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
-  private static final Elevator subElevator = new Elevator();
+  private final Elevator subElevator = new Elevator();
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper);
 
@@ -332,7 +332,7 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
-  public static Command checkForManualZeroing() {
+  public Command checkForManualZeroing() {
     return new ManualZeroElevator(subElevator);
   }
 

@@ -14,7 +14,7 @@ import frc.robot.Constants.constElevator;
 import frc.robot.subsystems.Elevator;
 
 public class ManualZeroElevator extends Command {
-  Elevator subElevator;
+  Elevator globalElevator;
 
   boolean zeroingSuccess = false;
   Time zeroingTimestamp = Units.Seconds.of(0);
@@ -22,20 +22,20 @@ public class ManualZeroElevator extends Command {
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
   public ManualZeroElevator(Elevator subElevator) {
-    this.subElevator = subElevator;
+    this.globalElevator = subElevator;
 
     addRequirements(subElevator);
   }
 
   @Override
   public void initialize() {
-    subElevator.setSoftwareLimits(false, true);
+    globalElevator.setSoftwareLimits(false, true);
   }
 
   @Override
   public void execute() {
     // Check if we have raised the elevator above a certain speed
-    if (subElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
+    if (globalElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
         || Elevator.attemptingZeroing) {
       // Enter zeroing mode!
       if (!Elevator.attemptingZeroing) {
@@ -49,13 +49,13 @@ public class ManualZeroElevator extends Command {
         Elevator.attemptingZeroing = false;
         System.out.println("Elevator Zeroing Failed :(");
       } else {
-        boolean deltaRotorVelocity = subElevator.getRotorVelocity().minus(lastRotorVelocity)
+        boolean deltaRotorVelocity = globalElevator.getRotorVelocity().minus(lastRotorVelocity)
             .lte(constElevator.MANUAL_ZEROING_DELTA_VELOCITY);
 
         if (deltaRotorVelocity && lastRotorVelocity.lte(Units.RotationsPerSecond.of(0))) {
           zeroingSuccess = true;
         } else {
-          lastRotorVelocity = subElevator.getRotorVelocity();
+          lastRotorVelocity = globalElevator.getRotorVelocity();
         }
       }
     }
@@ -63,11 +63,11 @@ public class ManualZeroElevator extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    subElevator.setSoftwareLimits(true, true);
+    globalElevator.setSoftwareLimits(true, true);
 
     if (!interrupted) {
       Elevator.hasZeroed = true;
-      subElevator.resetSensorPosition(constElevator.ZEROED_POS);
+      globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
@@ -76,6 +76,6 @@ public class ManualZeroElevator extends Command {
 
   @Override
   public boolean isFinished() {
-    return zeroingSuccess && subElevator.isRotorVelocityZero();
+    return zeroingSuccess && globalElevator.isRotorVelocityZero();
   }
 }
