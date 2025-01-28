@@ -7,24 +7,31 @@ assignees: ''
 
 ---
 
-**Description**
-A clear and concise description of what the bug is.
-
-**Steps to Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
 **Actual behavior**
 A clear and concise description of what actually happened.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Steps to Reproduce**
+If known, please provide the steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
 **Additional context**
 Add any other context about the problem here.
+
+**Testing Criteria**
+- type: dropdown
+    id: dropdown-0
+    attributes:
+      label: Testing Criteria
+      description: What must be completed for this to be merged in?
+      options:
+        - No testing required - Not Robot Code
+        - Tested in Sim
+        - Tested on the Real Robot
+        - Other (Write Below)
+      default: 1
