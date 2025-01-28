@@ -47,7 +47,7 @@ public class RobotContainer {
       subDrivetrain, subElevator, subHopper, subLED);
 
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake, subLED);
+      subCoralOuttake, subLED, subElevator);
   private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake, subLED);
