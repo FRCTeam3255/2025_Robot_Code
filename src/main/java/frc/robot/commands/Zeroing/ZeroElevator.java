@@ -30,7 +30,7 @@ public class ZeroElevator extends Command {
 
     subElevator.setVoltage(Units.Volts.zero());
     zeroingTimestamp = Units.Seconds.zero();
-    hasZeroed = Elevator.hasZeroed;
+    hasZeroed = subElevator.hasZeroed;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,7 +50,7 @@ public class ZeroElevator extends Command {
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
       subElevator.resetSensorPosition(constElevator.ZEROED_POS);
-      Elevator.hasZeroed = true;
+      subElevator.hasZeroed = true;
     }
   }
 

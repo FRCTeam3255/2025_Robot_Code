@@ -27,23 +27,24 @@ public class ManualZeroAlgaeIntake extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   @Override
   public void execute() {
     // Check if we have raised the algae intake above a certain speed
     if (globalAlgaeIntake.getRotorVelocity().gte(constAlgaeIntake.MANUAL_ZEROING_START_VELOCITY)
-        || AlgaeIntake.attemptingZeroing) {
+        || globalAlgaeIntake.attemptingZeroing) {
       // Enter zeroing mode!
-      if (!AlgaeIntake.attemptingZeroing) {
-        AlgaeIntake.attemptingZeroing = true;
+      if (!globalAlgaeIntake.attemptingZeroing) {
+        globalAlgaeIntake.attemptingZeroing = true;
         zeroingTimestamp = Units.Seconds.of(Timer.getFPGATimestamp());
         System.out.println("Algae Intake Zeroing Started!");
       }
 
       // Check if time elapsed is too high (zeroing timeout)
       if (Units.Seconds.of(Timer.getFPGATimestamp()).minus(zeroingTimestamp).gte(constAlgaeIntake.ZEROING_TIMEOUT)) {
-        AlgaeIntake.attemptingZeroing = false;
+        globalAlgaeIntake.attemptingZeroing = false;
         System.out.println("Algae Intake Zeroing Failed :(");
       } else {
         boolean deltaRotorVelocity = globalAlgaeIntake.getRotorVelocity().minus(lastRotorVelocity)
@@ -63,7 +64,7 @@ public class ManualZeroAlgaeIntake extends Command {
     globalAlgaeIntake.setSoftwareLimits(true, true);
 
     if (!interrupted) {
-      AlgaeIntake.hasZeroed = true;
+      globalAlgaeIntake.hasZeroed = true;
       globalAlgaeIntake.resetSensorPosition(constAlgaeIntake.ZEROED_POS);
       System.out.println("Algae Intake Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {

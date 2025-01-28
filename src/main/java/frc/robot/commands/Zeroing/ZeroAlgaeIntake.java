@@ -32,7 +32,7 @@ public class ZeroAlgaeIntake extends Command {
 
     subAlgaeIntake.setVoltage(Units.Volts.zero());
     zeroingTimestamp = Units.Seconds.zero();
-    hasZeroed = AlgaeIntake.hasZeroed;
+    hasZeroed = subAlgaeIntake.hasZeroed;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,7 +52,7 @@ public class ZeroAlgaeIntake extends Command {
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
       subAlgaeIntake.resetSensorPosition(constAlgaeIntake.ZEROED_POS);
-      AlgaeIntake.hasZeroed = true;
+      subAlgaeIntake.hasZeroed = true;
     }
   }
 

@@ -358,6 +358,10 @@ public class RobotContainer {
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 
+  public boolean allZeroed() {
+    return subElevator.hasZeroed && subAlgaeIntake.hasZeroed;
+  }
+
   /**
    * @return If the robot is the practice robot
    */
