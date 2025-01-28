@@ -30,7 +30,7 @@ Add any other context about the problem here.
       label: Completion Criteria
       description: What must be completed for this to be merged in?
       options:
-        - No testing required
+        - No testing required - Not Robot Code
         - Tested in Sim
         - Tested on the Real Robot
         - Other (Write Below)
