@@ -286,7 +286,29 @@ public final class Constants {
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
+
+      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
+      // Units.Degrees.of(90).in(Units.Degrees);
+      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
+      // Units.Degrees.of(0).in(Units.Degrees);
+      //
+      // // Why do crabs never share their things? - Because they are shellfish!
+      //
+      // ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
+      //
+      // ALGAE_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
+      // ALGAE_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
+      // ALGAE_PIVOT_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      // ALGAE_PIVOT_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      // ALGAE_PIVOT_CONFIG.Slot0.kP = 0.1;
+      // ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
+      // ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
+      // ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+      //
+      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1000;
+      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 1000;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
@@ -383,17 +405,18 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
-
+    
     /**
      * The voltage supplied to the motor in order to zero
      */
     public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
-
+    
     /**
      * The value that the motor reports when it is at it's zeroed position. This
      * may not necessarily be 0 due to mechanical slop

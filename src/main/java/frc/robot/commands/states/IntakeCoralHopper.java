@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -17,16 +18,18 @@ public class IntakeCoralHopper extends Command {
   StateMachine globalStateMachine;
   Hopper subCoralIntake;
   CoralOuttake subCoralOuttake;
+  Elevator globalElevator;
   LED globalLED;
 
   /** Creates a new IntakeCoralHopper. */
   public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
-      LED subLED) {
+      LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.subCoralIntake = subHopper;
     this.subCoralOuttake = subCoralOuttake;
     globalLED = subLED;
+    globalElevator = subElevator;
     addRequirements(globalStateMachine);
   }
 
@@ -36,6 +39,7 @@ public class IntakeCoralHopper extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
     subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
+    globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
