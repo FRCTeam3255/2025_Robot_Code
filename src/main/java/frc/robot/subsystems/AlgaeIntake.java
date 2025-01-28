@@ -31,11 +31,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   private Angle lastDesiredAngle = Degrees.zero();
 
+  PositionVoltage positionRequest;
+  VoltageOut voltageRequest = new VoltageOut(0);
   MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
-  VoltageOut voltageRequest;
 
-  public static boolean attemptingZeroing = false;
-  public static boolean hasZeroed = false;
+  public boolean attemptingZeroing = false;
+  public boolean hasZeroed = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {

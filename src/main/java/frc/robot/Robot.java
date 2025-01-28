@@ -12,13 +12,17 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Elevator;
 
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  boolean hasAutonomousRun;
+  boolean hasAutonomousRun = false;
+  private boolean bothSubsystemsZeroed = false;
 
   private RobotContainer m_robotContainer;
 
@@ -48,6 +52,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
@@ -69,9 +74,14 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (bothSubsystemsZeroed && m_autonomousCommand != null) {
+      Commands.deferredProxy(() -> m_autonomousCommand).schedule();
+    } else if (m_autonomousCommand != null) {
+      m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
+    } else {
+      m_robotContainer.zeroSubsystems().schedule();
     }
 
     hasAutonomousRun = true;
@@ -87,12 +97,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
 
     m_robotContainer.checkForManualZeroing().cancel();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+
+    if (!hasAutonomousRun) {
+      m_robotContainer.zeroSubsystems().schedule();
     }
   }
 
