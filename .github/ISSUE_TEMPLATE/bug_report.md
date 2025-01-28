@@ -23,11 +23,11 @@ If known, please provide the steps to reproduce the behavior:
 **Additional context**
 Add any other context about the problem here.
 
-**Completion Criteria**
+**Testing Criteria**
 - type: dropdown
     id: dropdown-0
     attributes:
-      label: Completion Criteria
+      label: Testing Criteria
       description: What must be completed for this to be merged in?
       options:
         - No testing required - Not Robot Code

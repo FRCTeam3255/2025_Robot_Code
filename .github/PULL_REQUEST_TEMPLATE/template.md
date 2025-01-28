@@ -11,5 +11,5 @@ assignees: ''
 A clear and concise description of what's in this pull request.
 
 **Completion Criteria**
-- [ ] Has met it's original completion criteria 
+- [ ] Has met it's original testing criteria 
 - [ ] Issue(s) have been linked to this Pull Request
