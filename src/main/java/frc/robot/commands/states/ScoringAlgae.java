@@ -42,7 +42,7 @@ public class ScoringAlgae extends Command {
   @Override
   public void end(boolean interrupted) {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
-    subAlgaeIntake.algaeToggle(false);
+    subAlgaeIntake.setHasAlgaeOverride(false);
   }
 
   // Returns true when the command should end.

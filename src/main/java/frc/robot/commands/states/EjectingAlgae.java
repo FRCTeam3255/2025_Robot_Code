@@ -46,7 +46,7 @@ public class EjectingAlgae extends Command {
   @Override
   public void end(boolean interrupted) {
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
-    globalAlgaeIntake.algaeToggle(false);
+    globalAlgaeIntake.setHasAlgaeOverride(false);
   }
 
   // Returns true when the command should end.
