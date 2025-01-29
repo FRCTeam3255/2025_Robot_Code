@@ -35,8 +35,8 @@ public class AlgaeIntake extends SubsystemBase {
   VoltageOut voltageRequest = new VoltageOut(0);
   MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
 
-  public static boolean attemptingZeroing = false;
-  public static boolean hasZeroed = false;
+  public boolean attemptingZeroing = false;
+  public boolean hasZeroed = false;
   public boolean hasGamePiece = false;
 
   /** Creates a new AlgaeIntake. */
@@ -111,7 +111,7 @@ public class AlgaeIntake extends SubsystemBase {
     hasGamePiece = passedHasGamePiece;
   }
 
-  public void algaeToggle(boolean hasGamePiece) {
+  public void algaeToggle() {
     this.hasGamePiece = !hasGamePiece;
   }
 

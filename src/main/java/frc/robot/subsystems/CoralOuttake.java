@@ -42,7 +42,7 @@ public class CoralOuttake extends SubsystemBase {
     this.hasCoralOverride = hasCoral;
   }
 
-  public void coralToggle(boolean hasCoral) {
+  public void coralToggle() {
     this.hasCoralOverride = !hasCoralOverride;
   }
 
