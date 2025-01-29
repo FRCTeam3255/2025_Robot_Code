@@ -36,6 +36,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   public static boolean attemptingZeroing = false;
   public static boolean hasZeroed = false;
+  public boolean hasGamePiece = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -45,8 +46,6 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
     intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
-
-  public boolean hasGamePiece = false;
 
   public void setAlgaeIntakeMotor(double speed) {
     intakeRollerMotor.set(speed);
@@ -97,9 +96,9 @@ public class AlgaeIntake extends SubsystemBase {
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || (intakeCurrent.gte(intakeHasGamePieceCurrent))
+    if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
         && (intakeVelocity.gte(intakeHasGamePieceVelocity)) && (intakeVelocity.lt(Units.RotationsPerSecond.zero()))
-        && (intakeAcceleration < 0)) {
+        && (intakeAcceleration < 0))) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
@@ -107,7 +106,7 @@ public class AlgaeIntake extends SubsystemBase {
     return hasGamePiece;
   }
 
-  public void setHasGamePiece(boolean passedHasGamePiece) {
+  public void setHasAlgaeOverride(boolean passedHasGamePiece) {
     hasGamePiece = passedHasGamePiece;
   }
 
