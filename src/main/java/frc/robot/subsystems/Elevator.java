@@ -35,10 +35,10 @@ public class Elevator extends SubsystemBase {
   Distance currentRightPosition = Units.Inches.of(0);
 
   PositionVoltage positionRequest;
-  VoltageOut voltageRequest;
+  VoltageOut voltageRequest = new VoltageOut(0);
 
-  public static boolean attemptingZeroing = false;
-  public static boolean hasZeroed = false;
+  public boolean attemptingZeroing = false;
+  public boolean hasZeroed = false;
 
   MotionMagicVoltage motionRequest;
 
@@ -90,6 +90,7 @@ public class Elevator extends SubsystemBase {
 
   public void setVoltage(Voltage voltage) {
     rightMotorLeader.setControl(voltageRequest.withOutput(voltage));
+    leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 
   public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
