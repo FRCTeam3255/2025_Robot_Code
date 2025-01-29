@@ -321,8 +321,8 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(100);
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(91);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(23);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
