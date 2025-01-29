@@ -120,6 +120,10 @@ public class RobotContainer {
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
+  Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
+
+  Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
+
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
@@ -206,8 +210,9 @@ public class RobotContainer {
         .whileTrue(TRY_SCORING_ALGAE)
         .onFalse(TRY_NONE);
 
-    // TODO: Has Coral Overide Back BTN
-    // TODO: Has Algae Overide Meneu BTN
+    controller.btn_Back.onTrue(HAS_CORAL_OVERRIDE);
+
+    controller.btn_Start.onTrue(HAS_ALGAE_OVERRIDE);
 
     controller.btn_North
         .onTrue(TRY_PREP_NET);
