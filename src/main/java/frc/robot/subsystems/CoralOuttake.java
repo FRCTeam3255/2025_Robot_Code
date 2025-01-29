@@ -38,8 +38,8 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2.set(-speed);
   }
 
-  public void setHasCoralOverride(boolean hasCoral) {
-    this.hasCoralOverride = hasCoral;
+  public void coralToggle(boolean hasCoral) {
+    this.hasCoralOverride = !hasCoralOverride;
   }
 
   public boolean hasCoral() {

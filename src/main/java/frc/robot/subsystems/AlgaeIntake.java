@@ -106,8 +106,8 @@ public class AlgaeIntake extends SubsystemBase {
     return hasGamePiece;
   }
 
-  public void setHasAlgaeOverride(boolean passedHasGamePiece) {
-    hasGamePiece = passedHasGamePiece;
+  public void algaeToggle(boolean passedHasGamePiece) {
+    hasGamePiece = !hasGamePiece;
   }
 
   public double getAlgaeIntakeVoltage() {

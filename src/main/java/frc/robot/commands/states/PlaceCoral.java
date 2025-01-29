@@ -43,6 +43,7 @@ public class PlaceCoral extends Command {
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.coralToggle(false);
   }
 
   // Returns true when the command should end.

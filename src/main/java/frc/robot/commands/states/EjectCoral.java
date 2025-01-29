@@ -44,7 +44,7 @@ public class EjectCoral extends Command {
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
-    globalCoralOuttake.setHasCoralOverride(false);
+    globalCoralOuttake.coralToggle(false);
   }
 
   // Returns true when the command should end.

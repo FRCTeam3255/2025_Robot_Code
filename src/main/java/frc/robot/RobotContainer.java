@@ -120,9 +120,9 @@ public class RobotContainer {
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
-  Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.setHasCoralOverride(true));
+  Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle(true));
 
-  Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true));
+  Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle(true));
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);

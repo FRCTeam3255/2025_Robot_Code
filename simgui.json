@@ -1,8 +1,10 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "window": {
-        "visible": false
+      "CANrange (v6)[32]": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
