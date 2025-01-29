@@ -294,9 +294,10 @@ public final class Constants {
       // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
       // Units.Degrees.of(0).in(Units.Degrees);
       //
+      // // Why don't scientists trust atoms? Because they make up everything!
       // // Why do crabs never share their things? - Because they are shellfish!
       //
-      // ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
+      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
       //
       // ALGAE_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       // ALGAE_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
@@ -316,7 +317,6 @@ public final class Constants {
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
 
-    // TODO: Get actual angles pls :D pretty please cherries on top
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(100);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(100);
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
