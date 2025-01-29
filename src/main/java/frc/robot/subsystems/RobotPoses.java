@@ -17,29 +17,31 @@ import frc.robot.Robot;
 @Logged
 public class RobotPoses extends SubsystemBase {
 
-  Pose3d elevatorStageOne = Pose3d.kZero;
-  Pose3d elevatorCarriage = Pose3d.kZero;
-  Pose3d algaeIntake = Pose3d.kZero;
+  Pose3d comp0Drivetrain = Pose3d.kZero;
+  Pose3d comp1ElevatorStageOne = Pose3d.kZero;
+  Pose3d comp2ElevatorCarriage = Pose3d.kZero;
+  Pose3d comp3AlgaeIntake = Pose3d.kZero;
   @NotLogged
   private Elevator subElevator;
   @NotLogged
   private AlgaeIntake subAlgaeIntake;
+  @NotLogged
+  private Drivetrain subDrivetrain;
 
   /** Creates a new RobotPoses. */
 
-  public RobotPoses(Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+  public RobotPoses(Drivetrain subDrivetrain, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
+    this.subDrivetrain = subDrivetrain;
     this.subElevator = subElevator;
     this.subAlgaeIntake = subAlgaeIntake;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-
     double elevatorPos, algaeAngle;
 
-    // If we're in simulation, we can't log real mechanism data because they don't
-    // exist. Instead, we'll log where we *want* the mechanisms to be and assume
+    comp0Drivetrain = new Pose3d(subDrivetrain.getPose());
+
     // they get there instantly.
     if (Robot.isSimulation()) {
       elevatorPos = subElevator.getLastDesiredPosition().in(Units.Meters) / 2;
@@ -50,16 +52,15 @@ public class RobotPoses extends SubsystemBase {
       algaeAngle = subAlgaeIntake.getPivotAngle().in(Units.Degrees);
     }
 
-    elevatorStageOne = new Pose3d(new Translation3d(0.0889,
+    comp1ElevatorStageOne = new Pose3d(new Translation3d(0.0889,
         0,
         0.109474 + elevatorPos), Rotation3d.kZero);
 
-    elevatorCarriage = elevatorStageOne
+    comp2ElevatorCarriage = comp1ElevatorStageOne
         .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters) + elevatorPos),
             Rotation3d.kZero));
 
-    algaeIntake = elevatorCarriage
+    comp3AlgaeIntake = comp2ElevatorCarriage
         .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), new Rotation3d(0, algaeAngle, 0)));
-
   }
 }
