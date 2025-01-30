@@ -348,8 +348,7 @@ public final class Constants {
 
     public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-2);
 
-    public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(new Translation3d(0, 0, 0.1),
-        Rotation3d.kZero);
+    public static final Transform3d ALGAE_INTAKE_TO_ALGAE = Transform3d.kZero;
   }
 
   public static class constCoralOuttake {

@@ -79,13 +79,15 @@ public class RobotPoses extends SubsystemBase {
 
     // -- SCORING ELEMENTS --
     if (subAlgaeIntake.hasAlgae()) {
-      algaePose = comp3AlgaeIntake.transformBy(constAlgaeIntake.ALGAE_INTAKE_TO_ALGAE);
+      algaePose = comp0Drivetrain.plus(new Transform3d(Pose3d.kZero, comp3AlgaeIntake))
+          .transformBy(constAlgaeIntake.ALGAE_INTAKE_TO_ALGAE);
     } else {
       algaePose = constField.POSES.SCORING_ELEMENT_NOT_COLLECTED;
     }
 
     if (subCoralIntake.hasCoral()) {
-      coralPose = comp2ElevatorCarriage.transformBy(constElevator.CARRIAGE_TO_CORAL);
+      coralPose = comp0Drivetrain.plus(new Transform3d(Pose3d.kZero, comp2ElevatorCarriage))
+          .transformBy(constElevator.CARRIAGE_TO_CORAL);
     } else {
       coralPose = constField.POSES.SCORING_ELEMENT_NOT_COLLECTED;
     }
