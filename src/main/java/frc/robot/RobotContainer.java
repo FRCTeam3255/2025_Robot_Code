@@ -42,7 +42,7 @@ public class RobotContainer {
   private final Climber subClimber = new Climber();
   private final Elevator subElevator = new Elevator();
   private final LED subLED = new LED();
-  private final RobotPoses robotPose = new RobotPoses(subDrivetrain, subElevator, subAlgaeIntake);
+  private final RobotPoses robotPose = new RobotPoses(subDrivetrain, subElevator, subAlgaeIntake, subCoralOuttake);
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper, subLED);
 

@@ -24,7 +24,10 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -344,6 +347,9 @@ public final class Constants {
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
 
     public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-2);
+
+    public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(new Translation3d(0, 0, 0.1),
+        Rotation3d.kZero);
   }
 
   public static class constCoralOuttake {
@@ -433,6 +439,8 @@ public final class Constants {
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
+
+    public static final Transform3d CARRIAGE_TO_CORAL = Transform3d.kZero;
   }
 
   public static class constField {
@@ -462,6 +470,7 @@ public final class Constants {
      */
     public static class POSES {
       public static final Pose2d RESET_POSE = new Pose2d(0, 0, new Rotation2d());
+      public static final Pose3d SCORING_ELEMENT_NOT_COLLECTED = new Pose3d(0, 0, -1, Rotation3d.kZero);
 
       // BRANCH POSES
       public static final Pose2d REEF_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
