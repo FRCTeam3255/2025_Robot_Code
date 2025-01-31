@@ -439,7 +439,10 @@ public final class Constants {
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
 
-    public static final Transform3d CARRIAGE_TO_CORAL = Transform3d.kZero;
+    public static final Transform3d CARRIAGE_TO_CORAL = new Transform3d(
+        Units.Meters.convertFrom(194, Units.Millimeters), 0,
+        Units.Meters.convertFrom(318 + 40, Units.Millimeters),
+        new Rotation3d(0, Units.Radians.convertFrom(35, Units.Degrees), 0));
   }
 
   public static class constField {
