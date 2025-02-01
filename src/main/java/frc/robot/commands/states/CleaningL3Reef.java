@@ -6,6 +6,7 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
@@ -49,7 +50,11 @@ public class CleaningL3Reef extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalElevator.setPosition(Constants.constElevator.PREP_0);
+    if (!globalAlgaeIntake.hasAlgae()) {
+      globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.AFTER_CLEANING_PIVOT_ANGLE);
+      globalElevator.setPosition(Constants.constElevator.PREP_0);
+    }
+
   }
 
   // Returns true when the command should end.

@@ -73,7 +73,7 @@ public class AlgaeIntake extends SubsystemBase {
     constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
     constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
 
-    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
 
   public Angle getPivotAngle() {
