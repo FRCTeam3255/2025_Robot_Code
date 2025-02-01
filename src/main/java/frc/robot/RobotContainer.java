@@ -25,6 +25,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
+import edu.wpi.first.wpilibj.RobotController;
 
 @Logged
 public class RobotContainer {
@@ -128,6 +129,7 @@ public class RobotContainer {
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
+    RobotController.setBrownoutVoltage(5.5);
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
 
     subDrivetrain
