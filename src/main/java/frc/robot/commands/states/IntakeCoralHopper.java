@@ -40,6 +40,7 @@ public class IntakeCoralHopper extends Command {
     subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     subCoralIntake.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
+    subCoralIntake.runHopper(Constants.constHopper.HOPPER_ROLLER_SPEED);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
 
