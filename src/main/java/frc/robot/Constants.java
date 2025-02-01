@@ -320,10 +320,11 @@ public final class Constants {
     public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(100);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(100);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
+
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(99);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
@@ -408,8 +409,8 @@ public final class Constants {
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(60);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(60);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
-    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(3);
-    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(19);
+    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
+    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
