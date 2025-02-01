@@ -4,10 +4,14 @@
 
 package frc.robot.commands.states;
 
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
@@ -15,13 +19,15 @@ import frc.robot.subsystems.StateMachine;
 public class PlaceCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  Elevator globalElevator;
   LED globalLED;
 
   /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED) {
+  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
+    globalElevator = subElevator;
     globalLED = subLED;
     addRequirements(globalStateMachine);
   }
@@ -44,9 +50,13 @@ public class PlaceCoral extends Command {
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoralOverride(false);
+    if (globalCoralOuttake.hasCoral() == true) {
+    } else {
+      globalElevator.setPosition(Constants.constElevator.PREP_0);
+    }
   }
 
-  // Returns true when the command should end.
+  // Returns true when the command should end. :3
   @Override
   public boolean isFinished() {
     return false;
