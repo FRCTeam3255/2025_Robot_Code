@@ -12,7 +12,7 @@ import frc.robot.subsystems.*;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCoralHopper extends Command {
   StateMachine globalStateMachine;
-  Hopper globalCoralIntake;
+  Hopper globalHopper;
   CoralOuttake globalCoralOuttake;
   Elevator globalElevator;
   LED globalLED;
@@ -22,7 +22,7 @@ public class IntakeCoralHopper extends Command {
       LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
-    this.globalCoralIntake = subHopper;
+    this.globalHopper = subHopper;
     this.globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
     globalElevator = subElevator;
@@ -34,7 +34,7 @@ public class IntakeCoralHopper extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
-    globalCoralIntake.runHopper(Constants.constHopper.HOPPER_SPEED);
+    globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
@@ -48,7 +48,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
-    globalCoralIntake.runHopper(0);
+    globalHopper.runHopper(0);
   }
 
   // Returns true when the command should end.
