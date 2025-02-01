@@ -51,7 +51,7 @@ public class CleaningL3Reef extends Command {
   @Override
   public void end(boolean interrupted) {
     if (!globalAlgaeIntake.hasAlgae()) {
-      globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.AFTER_CLEANING_PIVOT_ANGLE);
+      globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
       globalElevator.setPosition(Constants.constElevator.PREP_0);
     }
 

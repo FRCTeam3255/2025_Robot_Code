@@ -300,7 +300,7 @@ public final class Constants {
       // // Why don't scientists trust atoms? Because they make up everything!
       // // Why do crabs never share their things? - Because they are shellfish!
       //
-      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 27 / 1000;
+      ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
       //
       // ALGAE_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       // ALGAE_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
@@ -322,7 +322,7 @@ public final class Constants {
 
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
-    public static final Angle AFTER_CLEANING_PIVOT_ANGLE = Units.Degrees.of(99);
+
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
