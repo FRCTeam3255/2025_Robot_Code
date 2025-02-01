@@ -250,8 +250,15 @@ public class StateMachine extends SubsystemBase {
 
       case CLIMBING_DEEP:
         switch (currentRobotState) {
-          case NONE:
+          case PREP_CLIMBING:
             return new Climb(subStateMachine, subClimber, subLED);
+        }
+        break;
+
+      case PREP_CLIMBING:
+        switch (currentRobotState) {
+          case NONE:
+            return new PrepClimbing(subStateMachine, subClimber, subElevator, subLED);
         }
         break;
 
@@ -281,7 +288,8 @@ public class StateMachine extends SubsystemBase {
     SCORING_ALGAE,
     PREP_ALGAE_ZERO,
 
-    CLIMBING_DEEP
+    CLIMBING_DEEP,
+    PREP_CLIMBING
   }
 
   public static enum TargetState {

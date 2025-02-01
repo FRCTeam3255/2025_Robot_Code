@@ -120,6 +120,9 @@ public class RobotContainer {
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
+  Command TRY_PREP_CLIMBING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CLIMBING));
+
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
@@ -245,6 +248,9 @@ public class RobotContainer {
 
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
+
+    controller.btn_SouthEast
+        .onTrue(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.NONE)));
   }
 
   private void configureSensorBindings() {
