@@ -158,6 +158,17 @@ public class Robot extends TimedRobot {
     Current PORT10 = Amps.of(PDH.getCurrent(10));
     Current PORT11 = Amps.of(PDH.getCurrent(11));
     Current PORT12 = Amps.of(PDH.getCurrent(12));
+    Current PORT13 = Amps.of(PDH.getCurrent(13));
+    Current PORT14 = Amps.of(PDH.getCurrent(14));
+    Current PORT15 = Amps.of(PDH.getCurrent(15));
+    Current PORT16 = Amps.of(PDH.getCurrent(16));
+    Current PORT17 = Amps.of(PDH.getCurrent(17));
+    Current PORT18 = Amps.of(PDH.getCurrent(18));
+    Current PORT19 = Amps.of(PDH.getCurrent(19));
+    Current PORT20 = Amps.of(PDH.getCurrent(20));
+    Current PORT21 = Amps.of(PDH.getCurrent(21));
+    Current PORT22 = Amps.of(PDH.getCurrent(22));
+    Current PORT23 = Amps.of(PDH.getCurrent(23));
 
   }
 
