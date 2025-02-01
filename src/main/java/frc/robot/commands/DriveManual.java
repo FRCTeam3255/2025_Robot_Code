@@ -22,14 +22,15 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
-  DoubleSupplier xAxis, yAxis, rotationAxis;
+  DoubleSupplier xAxis, yAxis, rotationAxis, reefOverrideAxis;
   BooleanSupplier slowMode, leftReef, rightReef;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
+      DoubleSupplier reefOverrideAxis) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -37,6 +38,7 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.reefOverrideAxis = reefOverrideAxis;
 
     isOpenLoop = true;
 
@@ -66,6 +68,9 @@ public class DriveManual extends Command {
     AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
 
+    // TODO: may be tweaking, but i think this breaks on red alliance
+    LinearVelocity reefOverride = Units.MetersPerSecond.of(reefOverrideAxis.getAsDouble() * transMultiplier);
+
     // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
@@ -78,11 +83,12 @@ public class DriveManual extends Command {
             subDrivetrain.getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
 
         // Auto-align Driver Override
-      } else if (xVelocity.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
+      } else if (reefOverride.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
         // Assumes that the driver only overrides if we're already facing the reef,
         // so it can be robot relative to make things ezpz :>
         subDrivetrain.setRobotRelative();
-        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+        subDrivetrain.drive(
+            new Translation2d(reefOverride.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
             rVelocity.in(RadiansPerSecond), isOpenLoop);
       } else {
         ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredReef);
