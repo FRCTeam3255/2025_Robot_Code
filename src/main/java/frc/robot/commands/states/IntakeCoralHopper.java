@@ -38,6 +38,7 @@ public class IntakeCoralHopper extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
     subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
+    subCoralIntake.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
@@ -51,6 +52,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void end(boolean interrupted) {
     subCoralOuttake.setCoralOuttake(0);
+    subCoralIntake.runHopper(0);
   }
 
   // Returns true when the command should end.
