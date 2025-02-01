@@ -51,6 +51,7 @@ public class PlaceCoral extends Command {
     globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoralOverride(false);
     if (globalCoralOuttake.hasCoral() == true) {
+      globalElevator.setPosition(Constants.constElevator.PREP_0);
     } else {
       globalElevator.setPosition(Constants.constElevator.PREP_0);
     }
