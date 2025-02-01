@@ -615,10 +615,39 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = 0.5;
 
-    public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
+    public static final TalonFXConfiguration HOPPER_ROLLER_CONFIG = new TalonFXConfiguration();
+    public static final TalonFXConfiguration HOPPER_PIVOT_CONFIG = new TalonFXConfiguration();
+    static {
+      HOPPER_ROLLER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      HOPPER_ROLLER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      HOPPER_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      HOPPER_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
+      // HOPPER_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      // HOPPER_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
+      // Units.Degrees.of(90).in(Units.Degrees);
+      // HOPPER_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      // HOPPER_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
+      // Units.Degrees.of(0).in(Units.Degrees);
+
+      // HOPPER_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
+
+      // HOPPER_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
+      // HOPPER_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
+      // HOPPER_PIVOT_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      // HOPPER_PIVOT_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      // HOPPER_PIVOT_CONFIG.Slot0.kP = 0.1;
+      // HOPPER_PIVOT_CONFIG.Slot0.kI = 0.0;
+      // HOPPER_PIVOT_CONFIG.Slot0.kD = 0.0;
+      // HOPPER_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+
+      // HOPPER_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1000;
+      // HOPPER_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 1000;
+    }
+    public static final double HOPPER_ROLLER_SPEED = 0.5;
+    public static final Angle HOPPER_PIVOT_START_CONFIG_POSITION = Units.Degrees.of(0);
+    public static final Angle HOPPER_INTAKE_POSITION = Units.Degrees.of(0);
   }
 
   public static class constLED {

@@ -56,6 +56,7 @@ public class RobotMap {
   // Hopper is 40-49
   public static class mapHopper {
     public static final int HOPPER_MOTOR_CAN = 40;
+    public static final int HOPPER_PIVOT_MOTOR_CAN = 41;
     public static final int HOPPER_SENSOR_DIO = 1;
   }
 

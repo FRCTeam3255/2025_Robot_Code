@@ -4,9 +4,15 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Degrees;
+
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constHopper;
@@ -15,20 +21,33 @@ import frc.robot.RobotMap.mapHopper;
 @Logged
 public class Hopper extends SubsystemBase {
 
-  TalonFX hopperMotor;
+  TalonFX hopperRollerMotor;
+  TalonFX hopperPivotMotor;
   DigitalInput hopperSensor;
+
+  private Angle lastDesiredAngle = Degrees.zero();
+
+  PositionVoltage positionRequest;
+  VoltageOut voltageRequest = new VoltageOut(0);
+  MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
 
   /** Creates a new hopper. */
   public Hopper() {
-    hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
+    hopperRollerMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
     hopperSensor = new DigitalInput(mapHopper.HOPPER_SENSOR_DIO);
+    hopperPivotMotor = new TalonFX(mapHopper.HOPPER_PIVOT_MOTOR_CAN);
 
-    hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
-
+    hopperRollerMotor.getConfigurator().apply(constHopper.HOPPER_ROLLER_CONFIG);
+    hopperPivotMotor.getConfigurator().apply(constHopper.HOPPER_PIVOT_CONFIG);
   }
 
   public void runHopper(double speed) {
-    hopperMotor.set(speed);
+    hopperRollerMotor.set(speed);
+  }
+
+  public void setHopperPivot(Angle setPoint) {
+    hopperPivotMotor.setControl(motionRequest.withPosition(setPoint));
+    lastDesiredAngle = setPoint;
   }
 
   public boolean getHopperSensor() {
