@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
-import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Elevator;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -33,6 +31,8 @@ public class Robot extends TimedRobot {
   private boolean bothSubsystemsZeroed = false;
 
   private RobotContainer m_robotContainer;
+
+  public CommandScheduler commandScheduler = CommandScheduler.getInstance();
 
   @Override
   public void robotInit() {
