@@ -23,13 +23,14 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef;
+  BooleanSupplier slowMode, leftReef, rightReef, cageAlign;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
+      BooleanSupplier cageAlign) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -37,6 +38,7 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.cageAlign = cageAlign;
 
     isOpenLoop = true;
 
@@ -65,6 +67,16 @@ public class DriveManual extends Command {
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
+
+    // Cage auto-align
+    if (cageAlign.getAsBoolean()) {
+      Pose2d desiredCage = subDrivetrain.getDesiredCage();
+      Distance cageDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCage.getTranslation()));
+
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredCage);
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    }
 
     // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {

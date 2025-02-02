@@ -169,6 +169,18 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
+   * @return The closest cage to align to
+   */
+  public Pose2d getDesiredCage() {
+    // Get closest cage
+    List<Pose2d> cagePoses = constField.getCagePositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredCage = currentPose.nearest(cagePoses);
+
+    return desiredCage;
+  }
+
+  /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
    * @param chassisSpeeds Desired ChassisSpeeds

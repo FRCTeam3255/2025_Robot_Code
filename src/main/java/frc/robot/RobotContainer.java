@@ -135,7 +135,8 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(
             new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
-                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger));
+                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
+                conDriver.btn_RightBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);

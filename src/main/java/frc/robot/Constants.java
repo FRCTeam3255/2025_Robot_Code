@@ -496,6 +496,14 @@ public final class Constants {
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
+      // CAGE POSES
+      public static final Pose2d CAGE_1 = new Pose2d(8.775, 7.248, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_2 = new Pose2d(8.775, 6.151, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_3 = new Pose2d(8.775, 5.068, Rotation2d.fromDegrees(0));
+
+      private static final List<Pose2d> BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
+      private static final List<Pose2d> RED_CAGE_POSES = getRedCagePoses();
+
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F,
           REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
@@ -530,6 +538,16 @@ public final class Constants {
           returnedPoses[11]);
     }
 
+    private static List<Pose2d> getRedCagePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CAGE_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_REEF_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
+    }
+
     /**
      * Gets the positions of all of the necessary field elements on the field. All
      * coordinates are in meters and are relative to the blue alliance.
@@ -562,6 +580,17 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    /**
+     * @return Array of cage branches for your alliance
+     */
+    public static Supplier<List<Pose2d>> getCagePositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_CAGE_POSES;
+
+      }
+      return () -> POSES.BLUE_CAGE_POSES;
     }
   }
 
