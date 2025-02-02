@@ -278,15 +278,15 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 1;
+    public static final double ALGAE_INTAKE_SPEED = 0.8;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
 
-    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = -1;
-    public static final TalonFXConfiguration ALGAE_INTAKE_CONFIG = new TalonFXConfiguration();
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 6;
+    public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
-      ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ALGAE_ROLLER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      ALGAE_ROLLER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
@@ -299,30 +299,30 @@ public final class Constants {
       // // Why do crabs never share their things? - Because they are shellfish!
       //
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
-      //
-      // ALGAE_PIVOT_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
-      // ALGAE_PIVOT_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
-      // ALGAE_PIVOT_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
-      // ALGAE_PIVOT_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
-      // ALGAE_PIVOT_CONFIG.Slot0.kP = 0.1;
-      // ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
-      // ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
-      // ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
-      //
-      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1000;
-      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 1000;
+
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.0; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.0; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      ALGAE_PIVOT_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 0.1;
+      ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1000;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 1000;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(-100);
-    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(18);
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RadiansPerSecond.of(250);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(30);
 
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(99);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
@@ -351,11 +351,14 @@ public final class Constants {
         Units.Meters.convertFrom(450, Units.Millimeters), 0,
         Units.Meters.convertFrom(-9, Units.Inches),
         Rotation3d.kZero);
+
+    public static final Angle DEADZONE_DISTANCE = Units.Degrees.of(1);
+
   }
 
   public static class constCoralOuttake {
-    public static final double CORAL_OUTTAKE_SPEED = 0.3;
-    public static final double CORAL_INTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED = 0.7;
+    public static final double CORAL_INTAKE_SPEED = 1;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
@@ -615,13 +618,13 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = 0.5;
+    public static final double HOPPER_SPEED = 1;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
-    stsatic {decwe
 
+    static {
+      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     }
-
   }
 
   public static class constLED {

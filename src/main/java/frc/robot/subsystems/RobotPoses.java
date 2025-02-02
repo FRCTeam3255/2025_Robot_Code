@@ -63,7 +63,7 @@ public class RobotPoses extends SubsystemBase {
     } else {
       // Use real positions
       elevatorPos = (subElevator.getElevatorPosition().in(Units.Meters) / 2);
-      algaeAngle = subAlgaeIntake.getPivotAngle().in(Units.Degrees);
+      algaeAngle = -subAlgaeIntake.getPivotAngle().in(Units.Radians);
     }
 
     comp1ElevatorStageOne = new Pose3d(new Translation3d(0.0889,
