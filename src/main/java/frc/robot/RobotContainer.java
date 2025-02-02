@@ -264,8 +264,11 @@ public class RobotContainer {
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
 
-    controller.btn_SouthEast
-        .onTrue(Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.NONE)));
+    // controller.btn_()
+    // .whileTrue(TRY_PREP_CLIMBING);
+
+    // controller.btn_()
+    // .whileTrue(TRY_CLIMBING_DEEP);
   }
 
   private void configureSensorBindings() {

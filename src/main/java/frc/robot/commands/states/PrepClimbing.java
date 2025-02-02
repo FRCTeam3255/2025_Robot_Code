@@ -23,11 +23,14 @@ public class PrepClimbing extends Command {
     globalClimber = subClimber;
     globalElevator = subElevator;
     globalLED = subLED;
+
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CLIMBING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
