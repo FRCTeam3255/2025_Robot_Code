@@ -63,9 +63,9 @@ public class Robot extends TimedRobot {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
 
-    if (!hasAutonomousRun) {
-      m_robotContainer.checkForManualZeroing().schedule();
-    }
+    // if (!hasAutonomousRun) {
+    // m_robotContainer.checkForManualZeroing().schedule();
+    // }
   }
 
   @Override
@@ -108,15 +108,15 @@ public class Robot extends TimedRobot {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
 
-    m_robotContainer.checkForManualZeroing().cancel();
+    // m_robotContainer.checkForManualZeroing().cancel();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
-    if (!hasAutonomousRun) {
-      m_robotContainer.zeroSubsystems().schedule();
-    }
+    // if (!hasAutonomousRun) {
+    // m_robotContainer.zeroSubsystems().schedule();
+    // }
   }
 
   @Override
