@@ -70,10 +70,10 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
-    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
-    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+    constAlgaeIntake.ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
+    constAlgaeIntake.ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
 
-    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
 
   public Angle getPivotAngle() {
