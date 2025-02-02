@@ -64,8 +64,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
-      m_robotContainer.checkForManualZeroing().schedule();
-    }
+      // m_robotContainer.checkForManualZeroing().schedule();
+     }
   }
 
   @Override

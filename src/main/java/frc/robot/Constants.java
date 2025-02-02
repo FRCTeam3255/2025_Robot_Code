@@ -288,14 +288,12 @@ public final class Constants {
       ALGAE_INTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_INTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
-      // Units.Degrees.of(90).in(Units.Degrees);
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
-      // Units.Degrees.of(0).in(Units.Degrees);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(91).in(Units.Degrees);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(0).in(Units.Degrees);
       //
       // // Why don't scientists trust atoms? Because they make up everything!
       // // Why do crabs never share their things? - Because they are shellfish!
@@ -347,7 +345,7 @@ public final class Constants {
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
 
-    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-2);
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
 
     public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(
         Units.Meters.convertFrom(450, Units.Millimeters), 0,
@@ -362,6 +360,7 @@ public final class Constants {
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     static {
+      CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     }
   }
@@ -379,17 +378,17 @@ public final class Constants {
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(66).in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(62).in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
           .in(Units.Inches);
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
-      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.4545;
+      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.876;
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
@@ -619,6 +618,9 @@ public final class Constants {
     public static final double HOPPER_SPEED = 0.5;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
+    stsatic {decwe
+
+    }
 
   }
 
