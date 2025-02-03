@@ -1,8 +1,10 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "window": {
-        "visible": false
+      "CANrange (v6)[32]": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
@@ -15,6 +17,8 @@
       "Robot/m_robotContainer/autoChooser": "String Chooser",
       "Robot/m_robotContainer/subAlgaeIntake/intakeMotorOne": "Motor Controller",
       "Robot/m_robotContainer/subAlgaeIntake/intakeMotorTwo": "Motor Controller",
+      "Robot/m_robotContainer/subAlgaeIntake/intakePivotMotor": "Motor Controller",
+      "Robot/m_robotContainer/subAlgaeIntake/intakeRollerMotor": "Motor Controller",
       "Robot/m_robotContainer/subClimber/climberMotor": "Motor Controller",
       "Robot/m_robotContainer/subClimber/climberMotor2": "Motor Controller",
       "Robot/m_robotContainer/subCoralOuttake/outtakeMotor": "Motor Controller",

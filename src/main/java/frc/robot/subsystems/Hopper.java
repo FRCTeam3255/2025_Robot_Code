@@ -21,7 +21,7 @@ public class Hopper extends SubsystemBase {
   /** Creates a new hopper. */
   public Hopper() {
     hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
-    hopperSensor = new DigitalInput(mapHopper.HOPPER_SENSOR_CAN);
+    hopperSensor = new DigitalInput(mapHopper.HOPPER_SENSOR_DIO);
 
     hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
 

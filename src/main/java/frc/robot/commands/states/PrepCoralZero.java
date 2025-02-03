@@ -4,11 +4,10 @@
 
 package frc.robot.commands.states;
 
-import java.lang.Thread.State;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -16,12 +15,13 @@ public class PrepCoralZero extends Command {
   /** Creates a new CoralPrep0. */
   StateMachine globalStateMachine;
   Elevator globalElevator;
+  LED globalLED;
 
-  public PrepCoralZero(StateMachine subStateMachine, Elevator subElevator) {
+  public PrepCoralZero(StateMachine subStateMachine, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
-
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -30,6 +30,7 @@ public class PrepCoralZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
+    globalLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,6 +46,6 @@ public class PrepCoralZero extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalElevator.isAtSetpoint();
   }
 }
