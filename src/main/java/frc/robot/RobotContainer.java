@@ -4,36 +4,57 @@
 
 package frc.robot;
 
+import java.util.Set;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.events.EventScheduler;
 import com.pathplanner.lib.events.EventTrigger;
-import java.util.Set;
 
-import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.*;
+import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constElevator;
+import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.states.*;
-import frc.robot.commands.*;
-import frc.robot.commands.Zeroing.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.DriveManual;
+import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ZeroElevator;
+import frc.robot.commands.states.CleaningL2Reef;
+import frc.robot.commands.states.CleaningL3Reef;
+import frc.robot.commands.states.Climb;
+import frc.robot.commands.states.EjectingAlgae;
+import frc.robot.commands.states.IntakeCoralHopper;
+import frc.robot.commands.states.IntakingAlgaeGround;
+import frc.robot.commands.states.PlaceCoral;
+import frc.robot.commands.states.PrepNet;
+import frc.robot.commands.states.PrepProcessor;
+import frc.robot.commands.states.ScoringAlgae;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.RobotPoses;
+import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
-import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.subsystems.Vision;
 
 @Logged
 public class RobotContainer {
@@ -205,10 +226,13 @@ public class RobotContainer {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B
-        .onTrue(TRY_CLIMBING_DEEP);
+        .whileTrue(TRY_CLIMBING_DEEP);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+
+    controller.btn_A
+        .onTrue(TRY_PREP_CLIMBING);
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -264,11 +288,6 @@ public class RobotContainer {
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
 
-    // controller.btn_()
-    // .whileTrue(TRY_PREP_CLIMBING);
-
-    // controller.btn_()
-    // .whileTrue(TRY_CLIMBING_DEEP);
   }
 
   private void configureSensorBindings() {

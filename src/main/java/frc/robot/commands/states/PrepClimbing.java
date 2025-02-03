@@ -7,6 +7,7 @@ package frc.robot.commands.states;
 import java.lang.Thread.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -31,6 +32,8 @@ public class PrepClimbing extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CLIMBING);
+    globalClimber.setPosition(Constants.constClimber.PREP_CLIMB_ANGLE);
+    globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
