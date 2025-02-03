@@ -26,5 +26,8 @@
   },
   "NetworkTables": {
     "combined": true
+  },
+  "NetworkTables Info": {
+    "visible": false
   }
 }
