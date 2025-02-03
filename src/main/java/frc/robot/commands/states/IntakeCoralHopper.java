@@ -55,5 +55,6 @@ public class IntakeCoralHopper extends Command {
   @Override
   public boolean isFinished() {
     return globalCoralOuttake.hasCoral();
+
   }
 }
