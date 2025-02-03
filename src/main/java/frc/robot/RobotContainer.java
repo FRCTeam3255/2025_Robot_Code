@@ -16,6 +16,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -229,7 +230,7 @@ public class RobotContainer {
         .whileTrue(TRY_CLIMBING_DEEP);
 
     controller.btn_North
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
 
     controller.btn_A
         .onTrue(TRY_PREP_CLIMBING);
