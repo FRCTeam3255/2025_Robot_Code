@@ -42,7 +42,6 @@ public class Drivetrain extends SN_SuperSwerve {
   };
 
   Pose2d desiredAlignmentPose = Pose2d.kZero;
-  Pose2d robotPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
 
@@ -206,8 +205,7 @@ public class Drivetrain extends SN_SuperSwerve {
           mod.getRawAbsoluteEncoder());
     }
 
-    robotPose = getPose();
-    field.setRobotPose(robotPose);
+    field.setRobotPose(getPose());
     desiredModuleStates = getDesiredModuleStates();
     actualModuleStates = getActualModuleStates();
 

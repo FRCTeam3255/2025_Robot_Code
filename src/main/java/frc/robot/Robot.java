@@ -4,21 +4,35 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
 
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  boolean hasAutonomousRun = false;
+  private boolean bothSubsystemsZeroed = false;
+
   private RobotContainer m_robotContainer;
+
+  public CommandScheduler commandScheduler = CommandScheduler.getInstance();
 
   @Override
   public void robotInit() {
@@ -31,6 +45,7 @@ public class Robot extends TimedRobot {
     } else {
       DataLogManager.start();
     }
+
     // Log data that is being put to shuffleboard
     DataLogManager.logNetworkTables(true);
     // Log the DS data and joysticks
@@ -41,14 +56,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     m_robotContainer.AddVisionMeasurement().schedule();
-    m_robotContainer.updateLoggedPoses();
     CommandScheduler.getInstance().run();
   }
 
   @Override
   public void disabledInit() {
-
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
+
+    if (!hasAutonomousRun) {
+      m_robotContainer.checkForManualZeroing().schedule();
+    }
   }
 
   @Override
@@ -65,11 +83,17 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (bothSubsystemsZeroed && m_autonomousCommand != null) {
+      Commands.deferredProxy(() -> m_autonomousCommand).schedule();
+    } else if (m_autonomousCommand != null) {
+      m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
+    } else {
+      m_robotContainer.zeroSubsystems().schedule();
     }
 
+    hasAutonomousRun = true;
   }
 
   @Override
@@ -82,9 +106,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
+    m_robotContainer.checkForManualZeroing().cancel();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+
+    if (!hasAutonomousRun) {
+      m_robotContainer.zeroSubsystems().schedule();
     }
   }
 
@@ -108,4 +139,38 @@ public class Robot extends TimedRobot {
   @Override
   public void testExit() {
   }
+
+  @Logged
+  public class PDHValues {
+    @NotLogged
+    PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
+    Voltage voltage = Volts.of(PDH.getVoltage());
+    Current PORT0 = Amps.of(PDH.getCurrent(0));
+    Current PORT1 = Amps.of(PDH.getCurrent(1));
+    Current PORT2 = Amps.of(PDH.getCurrent(2));
+    Current PORT3 = Amps.of(PDH.getCurrent(3));
+    Current PORT4 = Amps.of(PDH.getCurrent(4));
+    Current PORT5 = Amps.of(PDH.getCurrent(5));
+    Current PORT6 = Amps.of(PDH.getCurrent(6));
+    Current PORT7 = Amps.of(PDH.getCurrent(7));
+    Current PORT8 = Amps.of(PDH.getCurrent(8));
+    Current PORT9 = Amps.of(PDH.getCurrent(9));
+    Current PORT10 = Amps.of(PDH.getCurrent(10));
+    Current PORT11 = Amps.of(PDH.getCurrent(11));
+    Current PORT12 = Amps.of(PDH.getCurrent(12));
+    Current PORT13 = Amps.of(PDH.getCurrent(13));
+    Current PORT14 = Amps.of(PDH.getCurrent(14));
+    Current PORT15 = Amps.of(PDH.getCurrent(15));
+    Current PORT16 = Amps.of(PDH.getCurrent(16));
+    Current PORT17 = Amps.of(PDH.getCurrent(17));
+    Current PORT18 = Amps.of(PDH.getCurrent(18));
+    Current PORT19 = Amps.of(PDH.getCurrent(19));
+    Current PORT20 = Amps.of(PDH.getCurrent(20));
+    Current PORT21 = Amps.of(PDH.getCurrent(21));
+    Current PORT22 = Amps.of(PDH.getCurrent(22));
+    Current PORT23 = Amps.of(PDH.getCurrent(23));
+
+  }
+
+  PDHValues pdhValues = new PDHValues();
 }
