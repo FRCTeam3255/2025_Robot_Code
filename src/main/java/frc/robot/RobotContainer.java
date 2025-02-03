@@ -18,6 +18,10 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -138,6 +142,9 @@ public class RobotContainer {
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
+  private Pose3d elevatorStageOne = Pose3d.kZero;
+  private Pose3d elevatorCarriage = Pose3d.kZero;
+  private Pose3d algaeIntake = Pose3d.kZero;
 
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
