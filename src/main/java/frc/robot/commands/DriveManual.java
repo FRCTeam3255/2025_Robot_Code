@@ -61,8 +61,14 @@ public class DriveManual extends Command {
     }
 
     // Get Joystick inputs
-    double transMultiplier = SN_Math.interpolate(slowMultiplier * redAllianceMultiplier
-        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond), 0.0, constElevator.MAX_HEIGHT.in(Units.Meters), 1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
+    double transMultiplier = SN_Math.interpolate(
+      slowMultiplier * redAllianceMultiplier * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond),
+      0.0,
+      constElevator.MAX_HEIGHT.in(Units.Meters),
+      1.0,
+      constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER
+    );
+    
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
