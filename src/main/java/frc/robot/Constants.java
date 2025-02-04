@@ -10,12 +10,14 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.ctre.phoenix6.signals.UpdateModeValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -363,9 +365,11 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
+    public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
     static {
       CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
     }
   }
 
