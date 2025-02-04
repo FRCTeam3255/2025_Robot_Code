@@ -31,6 +31,7 @@ public class CoralOuttake extends SubsystemBase {
 
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
+    coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
   public void setCoralOuttake(double speed) {
@@ -40,6 +41,10 @@ public class CoralOuttake extends SubsystemBase {
 
   public void setHasCoralOverride(boolean hasCoral) {
     this.hasCoralOverride = hasCoral;
+  }
+
+  public void coralToggle() {
+    this.hasCoralOverride = !hasCoralOverride;
   }
 
   public boolean hasCoral() {

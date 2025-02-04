@@ -35,17 +35,17 @@ public class ManualZeroElevator extends Command {
   public void execute() {
     // Check if we have raised the elevator above a certain speed
     if (globalElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
-        || Elevator.attemptingZeroing) {
+        || globalElevator.attemptingZeroing) {
       // Enter zeroing mode!
-      if (!Elevator.attemptingZeroing) {
-        Elevator.attemptingZeroing = true;
+      if (!globalElevator.attemptingZeroing) {
+        globalElevator.attemptingZeroing = true;
         zeroingTimestamp = Units.Seconds.of(Timer.getFPGATimestamp());
         System.out.println("Elevator Zeroing Started!");
       }
 
       // Check if time elapsed is too high (zeroing timeout)
       if (Units.Seconds.of(Timer.getFPGATimestamp()).minus(zeroingTimestamp).gte(constElevator.ZEROING_TIMEOUT)) {
-        Elevator.attemptingZeroing = false;
+        globalElevator.attemptingZeroing = false;
         System.out.println("Elevator Zeroing Failed :(");
       } else {
         boolean deltaRotorVelocity = globalElevator.getRotorVelocity().minus(lastRotorVelocity)
@@ -65,7 +65,7 @@ public class ManualZeroElevator extends Command {
     globalElevator.setSoftwareLimits(true, true);
 
     if (!interrupted) {
-      Elevator.hasZeroed = true;
+      globalElevator.hasZeroed = true;
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {

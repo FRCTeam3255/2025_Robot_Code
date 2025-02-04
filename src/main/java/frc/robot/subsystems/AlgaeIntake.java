@@ -6,11 +6,10 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Degrees;
 
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
-
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
@@ -32,29 +31,29 @@ public class AlgaeIntake extends SubsystemBase {
 
   private Angle lastDesiredAngle = Degrees.zero();
 
-  PositionVoltage positionRequest;
-  VoltageOut voltageRequest;
+  PositionVoltage positionRequest = new PositionVoltage(0);
+  VoltageOut voltageRequest = new VoltageOut(0);
+  MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
 
-  public static boolean attemptingZeroing = false;
-  public static boolean hasZeroed = false;
+  public boolean attemptingZeroing = false;
+  public boolean hasZeroed = false;
+  public boolean hasGamePiece = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
     intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN);
     intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN);
 
-    intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_ROLLER_CONFIG);
     intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
-
-  public boolean hasGamePiece = false;
 
   public void setAlgaeIntakeMotor(double speed) {
     intakeRollerMotor.set(speed);
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setPosition(setpoint);
+    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Degrees)));
     lastDesiredAngle = setpoint;
   }
 
@@ -71,10 +70,10 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
-    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
-    constAlgaeIntake.ALGAE_INTAKE_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+    constAlgaeIntake.ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
+    constAlgaeIntake.ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
 
-    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
 
   public Angle getPivotAngle() {
@@ -98,9 +97,9 @@ public class AlgaeIntake extends SubsystemBase {
     intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || (intakeCurrent.gte(intakeHasGamePieceCurrent))
-        && (intakeVelocity.gte(intakeHasGamePieceVelocity)) && (intakeVelocity.lt(Units.RotationsPerSecond.zero()))
-        && (intakeAcceleration < 0)) {
+    if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
+        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
+        && (intakeAcceleration < 0))) {
       hasGamePiece = true;
     } else {
       hasGamePiece = false;
@@ -108,8 +107,12 @@ public class AlgaeIntake extends SubsystemBase {
     return hasGamePiece;
   }
 
-  public void setHasGamePiece(boolean passedHasGamePiece) {
+  public void setHasAlgaeOverride(boolean passedHasGamePiece) {
     hasGamePiece = passedHasGamePiece;
+  }
+
+  public void algaeToggle() {
+    this.hasGamePiece = !hasGamePiece;
   }
 
   public double getAlgaeIntakeVoltage() {
@@ -118,6 +121,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void setAlgaeIntakeVoltage(double voltage) {
     intakeRollerMotor.setVoltage(voltage);
+  }
+
+  public boolean isAtSetpoint() {
+    return (getPivotAngle()
+        .compareTo(getLastDesiredPivotAngle().minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
+        getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
   }
 
   @Override
