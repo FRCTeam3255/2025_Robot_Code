@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "P-F"
