@@ -7,30 +7,31 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapCoralOuttake;
 
+@Logged
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
   CANrange coralSensor;
+  boolean hasCoralOverride;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
-    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN);
-    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_MOTOR_CAN_2);
+    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
+    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
 
-    configure();
-  }
+    hasCoralOverride = false;
 
-  public void configure() {
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
+    coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
   public void setCoralOuttake(double speed) {
@@ -38,8 +39,20 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2.set(-speed);
   }
 
+  public void setHasCoralOverride(boolean hasCoral) {
+    this.hasCoralOverride = hasCoral;
+  }
+
+  public void coralToggle() {
+    this.hasCoralOverride = !hasCoralOverride;
+  }
+
   public boolean hasCoral() {
-    return coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE);
+    if (hasCoralOverride || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Override

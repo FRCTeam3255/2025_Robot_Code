@@ -6,7 +6,9 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.LED;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -14,13 +16,14 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class Climb extends Command {
   StateMachine globalStateMachine;
   Climber globalClimber;
+  LED globalLED;
 
   /** Creates a new Climb. */
-  public Climb(StateMachine passedStateMachine, Climber passedClimber) {
+  public Climb(StateMachine subStateMachine, Climber subClimber, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    globalClimber = passedClimber;
-
+    globalStateMachine = subStateMachine;
+    globalClimber = subClimber;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -28,7 +31,8 @@ public class Climb extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.CLIMBING_DEEP);
-    globalClimber.setClimberMotorVelocity(Constants.consClimber.CLIMBER_MOTOR_VELOCITY);
+    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_VELOCITY);
+    globalLED.setLED(constLED.LED_CLIMB);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

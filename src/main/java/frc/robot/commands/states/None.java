@@ -5,11 +5,14 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CoralOuttake;
-
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -19,17 +22,20 @@ public class None extends Command {
   Hopper subHopper;
   AlgaeIntake subAlgaeIntake;
   Climber subClimber;
+  Elevator subElevator;
+  LED globalLED;
 
   /** Creates a new none. */
-  public None(StateMachine passedStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
-      AlgaeIntake subAlgaeIntake, Climber subClimber) {
+  public None(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Hopper subHopper,
+      AlgaeIntake subAlgaeIntake, Climber subClimber, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
+    globalStateMachine = subStateMachine;
     this.subCoralOuttake = subCoralOuttake;
     this.subHopper = subHopper;
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;
-
+    this.subElevator = subElevator;
+    globalLED = subLED;
     addRequirements(globalStateMachine);
   }
 
@@ -40,8 +46,10 @@ public class None extends Command {
     subCoralOuttake.setCoralOuttake(0);
     subHopper.runHopper(0);
     subAlgaeIntake.setAlgaeIntakeMotor(0);
+    subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     subClimber.setClimberMotorVelocity(0);
-
+    subElevator.setNeutral();
+    globalLED.setLED(constLED.LED_NONE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

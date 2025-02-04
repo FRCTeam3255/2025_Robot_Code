@@ -6,23 +6,26 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.StateMachine;
+import frc.robot.Constants.constLED;
+import frc.robot.subsystems.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCoralHopper extends Command {
   StateMachine globalStateMachine;
-  Hopper subCoralIntake;
-  CoralOuttake subCoralOuttake;
+  Hopper globalHopper;
+  CoralOuttake globalCoralOuttake;
+  Elevator globalElevator;
+  LED globalLED;
 
   /** Creates a new IntakeCoralHopper. */
-  public IntakeCoralHopper(StateMachine passedStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake) {
+  public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
+      LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    globalStateMachine = passedStateMachine;
-    this.subCoralIntake = subHopper;
-    this.subCoralOuttake = subCoralOuttake;
-
+    globalStateMachine = subStateMachine;
+    this.globalHopper = subHopper;
+    this.globalCoralOuttake = subCoralOuttake;
+    globalLED = subLED;
+    globalElevator = subElevator;
     addRequirements(globalStateMachine);
   }
 
@@ -30,7 +33,10 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
-    subCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
+    globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
+    globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
+    globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,12 +47,13 @@ public class IntakeCoralHopper extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return subCoralOuttake.hasCoral();
+    return globalCoralOuttake.hasCoral();
   }
 }

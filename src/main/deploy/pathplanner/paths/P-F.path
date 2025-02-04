@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.127,
-        "y": 2.0
+        "x": 7.139309210526315,
+        "y": 0.5034539473684209
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.926039106328047,
-        "y": 1.9231860210977436
+        "x": 6.177138157894737,
+        "y": 1.1481085526315793
       },
       "isLocked": false,
       "linkedName": null
@@ -38,7 +38,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
+      "name": "PrepPlace",
       "waypointRelativePos": 0.6953086419753075,
       "endWaypointRelativePos": null,
       "command": null
