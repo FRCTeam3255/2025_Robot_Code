@@ -189,6 +189,7 @@ public final class Constants {
 
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
+    public static final double MINIMUM_ELEVATOR_MULTIPLIER = 0.1;
 
     // Rotational speed (degrees per second) while manually driving
     public static final AngularVelocity TURN_SPEED = Units.DegreesPerSecond.of(360);
@@ -417,6 +418,8 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+
+    public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 

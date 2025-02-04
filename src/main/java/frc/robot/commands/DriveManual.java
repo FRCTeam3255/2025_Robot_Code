@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.frcteam3255.utils.SN_Math;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -63,6 +65,8 @@ public class DriveManual extends Command {
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
+    xVelocity = Units.MetersPerSecond.of(SN_Math.interpolate(xVelocity.in(Units.MetersPerSecond), 0.0, constElevator.MAX_HEIGHT.in(Units.Meters), 1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER));
+    yVelocity = Units.MetersPerSecond.of(SN_Math.interpolate(yVelocity.in(Units.MetersPerSecond), 0.0, constElevator.MAX_HEIGHT.in(Units.Meters), 1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER));
     AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
 
