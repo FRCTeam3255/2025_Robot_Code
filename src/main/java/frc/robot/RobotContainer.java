@@ -73,6 +73,7 @@ public class RobotContainer {
       subAlgaeIntake, subLED);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final ClimberTester comClimberTester = new ClimberTester(subClimber);
+  private final ClimberTesterBackward comClimberTesterBackward = new ClimberTesterBackward(subClimber);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -277,8 +278,12 @@ public class RobotContainer {
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
 
-    // Start: Climber Tester
-    controller.btn_Start
+    // btn_North: Climber Tester Backward
+    controller.btn_North
+        .whileTrue(comClimberTesterBackward);
+
+    // btn_South: Climber Tester
+    controller.btn_South
         .whileTrue(comClimberTester);
 
     // Back: Intake Coral
@@ -305,21 +310,21 @@ public class RobotContainer {
     controller.btn_East
         .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
 
-    // btn_South: Prep Processor
-    controller.btn_South
-        .whileTrue(comPrepProcessor);
+    // // btn_South: Prep Processor
+    // controller.btn_South
+    // .whileTrue(comPrepProcessor);
 
-    // btn_West: Clean L3 Reef
-    controller.btn_West
-        .whileTrue(comCleaningL3Reef);
+    // // btn_West: Clean L3 Reef
+    // controller.btn_West
+    // .whileTrue(comCleaningL3Reef);
 
-    // btn_North: Clean L2 Reef
-    controller.btn_North
-        .whileTrue(comCleaningL2Reef);
+    // // btn_North: Clean L2 Reef
+    // controller.btn_North
+    // .whileTrue(comCleaningL2Reef);
 
-    // btn_NorthWest: Prep Net
-    controller.btn_NorthWest
-        .whileTrue(comPrepNet);
+    // // btn_NorthWest: Prep Net
+    // controller.btn_NorthWest
+    // .whileTrue(comPrepNet);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
