@@ -15,6 +15,7 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -397,19 +398,20 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 0.3;
+      ELEVATOR_CONFIG.Slot0.kP = 0.5;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
+      ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 350;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 5000;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6.25);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(17);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(32.75);
-    public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(60);
-    public static final Distance ALGAE_PREP_NET = Units.Inches.of(60);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(7.25);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.75);
+    public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
+    public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
