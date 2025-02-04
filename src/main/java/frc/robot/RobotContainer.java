@@ -7,14 +7,14 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.events.EventScheduler;
 import com.pathplanner.lib.events.EventTrigger;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,8 +24,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
@@ -136,6 +134,11 @@ public class RobotContainer {
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Map<String, DeferredCommand[]> AUTO_PREP_MAPS = new HashMap<>();
+  DeferredCommand[] SELECTED_AUTO_PREP_MAP = {};
+  String SELECTED_AUTO_PREP_MAP_NAME = "none :(";
+  int AUTO_PREP_NUM = 0;
+
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
@@ -151,6 +154,7 @@ public class RobotContainer {
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
     configureSensorBindings();
+    configureAutoPrepMaps();
     configureAutoBindings();
     configureAutoSelector();
     configureTesterBindings(conTester);
@@ -179,6 +183,36 @@ public class RobotContainer {
     subVision.setMegaTag2(setMegaTag2);
   }
 
+  private void configureAutoPrepMaps() {
+    DeferredCommand AUTO_PREP_CORAL_4 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
+        Set.of(subStateMachine));
+    DeferredCommand AUTO_PREP_CORAL_1 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L1),
+        Set.of(subStateMachine));
+
+    AUTO_PREP_MAPS.put("Four_Piece_Low",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4 });
+
+    AUTO_PREP_MAPS.put("Clockwork_Nine_Piece",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4 });
+
+    AUTO_PREP_MAPS.put("One_Piece_Low",
+        new DeferredCommand[] { AUTO_PREP_CORAL_1 });
+
+    AUTO_PREP_MAPS.put("Six_Piece_High",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4 });
+
+    SELECTED_AUTO_PREP_MAP = AUTO_PREP_MAPS.get("Four_Piece_Low");
+  }
+
+  private void selectAutoMap() {
+    SELECTED_AUTO_PREP_MAP = AUTO_PREP_MAPS.get(autoChooser.getSelected().getName());
+    SELECTED_AUTO_PREP_MAP_NAME = autoChooser.getSelected().getName();
+  }
+
   private void configureAutoBindings() {
     // -- Named Commands --
     NamedCommands.registerCommand("PlaceSequence",
@@ -194,8 +228,9 @@ public class RobotContainer {
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
-    prepPlace.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
-        Set.of(subStateMachine)));
+    prepPlace.onTrue(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM]
+        .andThen(() -> AUTO_PREP_NUM++));
+
     EventTrigger prepCoralStation = new EventTrigger("PrepCoralStation");
     prepCoralStation.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER),
         Set.of(subStateMachine)));
@@ -328,6 +363,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    selectAutoMap();
     return autoChooser.getSelected();
   }
 
