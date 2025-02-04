@@ -165,7 +165,7 @@ public class Robot extends TimedRobot {
     Current RADIO = Amps.of(PDH.getCurrent(17));
     Current FRONT_RIGHT_DRIVE = Amps.of(PDH.getCurrent(18));
     Current FRONT_RIGHT_STEER = Amps.of(PDH.getCurrent(19));
-    Current DIO = Amps.of(PDH.getCurrent(20));
+    Current RIO = Amps.of(PDH.getCurrent(20));
     Current CAN_CODERS = Amps.of(PDH.getCurrent(21));
     Current RADIO_ = Amps.of(PDH.getCurrent(22));
     Current PORT23 = Amps.of(PDH.getCurrent(23));
