@@ -31,7 +31,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   private Angle lastDesiredAngle = Degrees.zero();
 
-  PositionVoltage positionRequest;
+  PositionVoltage positionRequest = new PositionVoltage(0);
   VoltageOut voltageRequest = new VoltageOut(0);
   MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
 
@@ -44,7 +44,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN);
     intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN);
 
-    intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_INTAKE_CONFIG);
+    intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_ROLLER_CONFIG);
     intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
   }
 
@@ -53,7 +53,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setControl(motionRequest.withPosition(setpoint));
+    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Degrees)));
     lastDesiredAngle = setpoint;
   }
 
@@ -98,7 +98,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
     if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
-        && (intakeVelocity.gte(intakeHasGamePieceVelocity)) && (intakeVelocity.lt(Units.RotationsPerSecond.zero()))
+        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
         && (intakeAcceleration < 0))) {
       hasGamePiece = true;
     } else {
@@ -121,6 +121,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void setAlgaeIntakeVoltage(double voltage) {
     intakeRollerMotor.setVoltage(voltage);
+  }
+
+  public boolean isAtSetpoint() {
+    return (getPivotAngle()
+        .compareTo(getLastDesiredPivotAngle().minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
+        getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
   }
 
   @Override

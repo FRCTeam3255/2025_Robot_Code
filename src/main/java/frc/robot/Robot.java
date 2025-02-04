@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
     } else {
       DataLogManager.start();
     }
+
     // Log data that is being put to shuffleboard
     DataLogManager.logNetworkTables(true);
     // Log the DS data and joysticks
@@ -107,7 +108,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
-
     m_robotContainer.checkForManualZeroing().cancel();
 
     if (m_autonomousCommand != null) {
@@ -145,29 +145,29 @@ public class Robot extends TimedRobot {
     @NotLogged
     PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
     Voltage voltage = Volts.of(PDH.getVoltage());
-    Current PORT0 = Amps.of(PDH.getCurrent(0));
-    Current PORT1 = Amps.of(PDH.getCurrent(1));
-    Current PORT2 = Amps.of(PDH.getCurrent(2));
-    Current PORT3 = Amps.of(PDH.getCurrent(3));
-    Current PORT4 = Amps.of(PDH.getCurrent(4));
-    Current PORT5 = Amps.of(PDH.getCurrent(5));
-    Current PORT6 = Amps.of(PDH.getCurrent(6));
-    Current PORT7 = Amps.of(PDH.getCurrent(7));
-    Current PORT8 = Amps.of(PDH.getCurrent(8));
-    Current PORT9 = Amps.of(PDH.getCurrent(9));
-    Current PORT10 = Amps.of(PDH.getCurrent(10));
-    Current PORT11 = Amps.of(PDH.getCurrent(11));
+    Current BACK_RIGHT_STEER = Amps.of(PDH.getCurrent(0));
+    Current BACK_RIGHT_DRIVE = Amps.of(PDH.getCurrent(1));
+    Current RIGHT_ELEVATOR = Amps.of(PDH.getCurrent(2));
+    // Current PORT3 = Amps.of(PDH.getCurrent(3));
+    // Current PORT4 = Amps.of(PDH.getCurrent(4));
+    // Current PORT5 = Amps.of(PDH.getCurrent(5));
+    Current HOPPER_ROLLER = Amps.of(PDH.getCurrent(6));
+    Current LEFT_ELEVATOR = Amps.of(PDH.getCurrent(7));
+    Current BACK_LEFT_STEER = Amps.of(PDH.getCurrent(8));
+    Current BACK_LEFT_DRIVE = Amps.of(PDH.getCurrent(9));
+    Current FRONT_LEFT_STEER = Amps.of(PDH.getCurrent(10));
+    Current FRONT_LEFT_DRIVE = Amps.of(PDH.getCurrent(11));
     Current PORT12 = Amps.of(PDH.getCurrent(12));
     Current PORT13 = Amps.of(PDH.getCurrent(13));
     Current PORT14 = Amps.of(PDH.getCurrent(14));
-    Current PORT15 = Amps.of(PDH.getCurrent(15));
-    Current PORT16 = Amps.of(PDH.getCurrent(16));
-    Current PORT17 = Amps.of(PDH.getCurrent(17));
-    Current PORT18 = Amps.of(PDH.getCurrent(18));
-    Current PORT19 = Amps.of(PDH.getCurrent(19));
-    Current PORT20 = Amps.of(PDH.getCurrent(20));
-    Current PORT21 = Amps.of(PDH.getCurrent(21));
-    Current PORT22 = Amps.of(PDH.getCurrent(22));
+    // Current PORT15 = Amps.of(PDH.getCurrent(15));
+    // Current PORT16 = Amps.of(PDH.getCurrent(16));
+    Current RADIO = Amps.of(PDH.getCurrent(17));
+    Current FRONT_RIGHT_DRIVE = Amps.of(PDH.getCurrent(18));
+    Current FRONT_RIGHT_STEER = Amps.of(PDH.getCurrent(19));
+    Current RIO = Amps.of(PDH.getCurrent(20));
+    Current CAN_CODERS = Amps.of(PDH.getCurrent(21));
+    Current RADIO_ = Amps.of(PDH.getCurrent(22));
     Current PORT23 = Amps.of(PDH.getCurrent(23));
 
   }
