@@ -5,6 +5,7 @@
 package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
@@ -46,7 +47,8 @@ public class None extends Command {
     subHopper.runHopper(0);
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subClimber.setClimberMotorVelocity(0);
-    subElevator.setNeutral();
+    // subElevator.setNeutral();
+    subElevator.setPosition(constElevator.ZEROED_POS);
     globalLED.setLED(constLED.LED_NONE);
   }
 

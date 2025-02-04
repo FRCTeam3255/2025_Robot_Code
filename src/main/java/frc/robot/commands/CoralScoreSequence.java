@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.frcteam3255.joystick.SN_XboxController;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,19 +23,21 @@ public class CoralScoreSequence extends SequentialCommandGroup {
   double startTime = 0;
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  SN_XboxController controller;
 
   /** Creates a new CoralScoreSequence. */
-  public CoralScoreSequence(CoralOuttake subCoralOuttake, StateMachine subStateMachine) {
+  public CoralScoreSequence(CoralOuttake subCoralOuttake, StateMachine subStateMachine, SN_XboxController controller) {
     globalCoralOuttake = subCoralOuttake;
     globalStateMachine = subStateMachine;
+    this.controller = controller;
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-        Commands.runOnce(() -> startTime = Timer.getFPGATimestamp()),
-        Commands.waitUntil(() -> !globalCoralOuttake.hasCoral()),
-        Commands.waitTime(constCoralOuttake.CORAL_SCORE_TIME),
-        Commands.runOnce(() -> globalStateMachine.setRobotState(RobotState.NONE)));
+        Commands.waitSeconds(5),
+        Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
+        // Commands.waitUntil(() -> !globalCoralOuttake.hasCoral()),
+        Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.NONE)));
   }
 }

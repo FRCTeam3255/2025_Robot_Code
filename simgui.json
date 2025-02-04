@@ -1,6 +1,16 @@
 {
   "HALProvider": {
     "Other Devices": {
+      "CANcoder (v6)[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "CANcoder (v6)[1]": {
+        "header": {
+          "open": true
+        }
+      },
       "CANrange (v6)[32]": {
         "header": {
           "open": true

@@ -51,7 +51,8 @@ public class RobotContainer {
   private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake, subElevator, subLED);
-  private final CoralScoreSequence CoralScoreSequence = new CoralScoreSequence(subCoralOuttake, subStateMachine);
+  private final CoralScoreSequence CoralScoreSequence = new CoralScoreSequence(subCoralOuttake, subStateMachine,
+      conOperator);
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
@@ -201,7 +202,7 @@ public class RobotContainer {
 
     controller.btn_RightTrigger
         .whileTrue(TRY_SCORING_CORAL)
-        .onFalse(TRY_NONE);
+        .onTrue(CoralScoreSequence);
 
     controller.btn_LeftBumper
         .whileTrue(TRY_INTAKING_ALGAE_GROUND)

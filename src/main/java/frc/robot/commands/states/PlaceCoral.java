@@ -50,11 +50,11 @@ public class PlaceCoral extends Command {
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoralOverride(false);
-    if (globalCoralOuttake.hasCoral() == true) {
-      globalElevator.setPosition(Constants.constElevator.PREP_0);
-    } else {
-      globalElevator.setPosition(Constants.constElevator.PREP_0);
-    }
+    // if (globalCoralOuttake.hasCoral() == true) {
+    // globalElevator.setPosition(Constants.constElevator.PREP_0);
+    // } else {
+    // globalElevator.setPosition(Constants.constElevator.PREP_0);
+    // }
   }
 
   // Returns true when the command should end. :3
