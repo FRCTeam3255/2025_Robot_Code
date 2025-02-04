@@ -72,6 +72,7 @@ public class RobotContainer {
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
+  private final ClimberTester comClimberTester = new ClimberTester(subClimber);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -275,6 +276,10 @@ public class RobotContainer {
     // Start: Reset Elevator Sensor Position
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
+
+    // Start: Climber Tester
+    controller.btn_Start
+        .whileTrue(comClimberTester);
 
     // Back: Intake Coral
     controller.btn_Back
