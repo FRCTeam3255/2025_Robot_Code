@@ -69,9 +69,9 @@ public class RobotPoses extends SubsystemBase {
       algaeAngle = subAlgaeIntake.getPivotAngle().unaryMinus();
     }
 
-    comp1ElevatorStageOne = new Pose3d(new Translation3d(Units.Inches.of(0.0889),
-        Units.Inches.of(0),
-        Units.Inches.of(0.109474).plus(elevatorPos)), Rotation3d.kZero);
+    comp1ElevatorStageOne = new Pose3d(new Translation3d(Units.Meters.of(0.0889),
+        Units.Meters.of(0),
+        Units.Meters.of(0.109474).plus(elevatorPos)), Rotation3d.kZero);
 
     comp2ElevatorCarriage = comp1ElevatorStageOne
         .transformBy(new Transform3d(
@@ -80,7 +80,7 @@ public class RobotPoses extends SubsystemBase {
 
     comp3AlgaeIntake = comp2ElevatorCarriage
         .transformBy(
-            new Transform3d(new Translation3d(Units.Inches.of(0.075438), Units.Inches.of(0), Units.Inches.of(0.292354)),
+            new Transform3d(new Translation3d(Units.Meters.of(0.075438), Units.Meters.of(0), Units.Meters.of(0.292354)),
                 new Rotation3d(Units.Degrees.of(0), algaeAngle, Units.Degrees.of(0))));
 
     // -- SCORING ELEMENTS --
