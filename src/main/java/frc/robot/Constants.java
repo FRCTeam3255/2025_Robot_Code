@@ -411,11 +411,6 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 5000;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-    public static TalonFXConfiguration ELEVATOR_COAST_CONFIG = new TalonFXConfiguration();
-    static {
-      ELEVATOR_COAST_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-      ELEVATOR_COAST_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    }
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(7.25);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.75);

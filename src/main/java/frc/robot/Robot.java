@@ -7,11 +7,6 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
@@ -26,16 +21,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
-import frc.robot.RobotMap.mapElevator;
+import frc.robot.subsystems.Elevator;
 
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
-  private TalonFX leftMotorFollower;
-  private TalonFX rightMotorLeader;
+  private Elevator subElevator = new Elevator();
 
   boolean hasAutonomousRun = false;
   private boolean bothSubsystemsZeroed = false;
@@ -49,9 +41,6 @@ public class Robot extends TimedRobot {
     Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
-    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
-    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
-
     // Set out log file to be in its own folder
     if (Robot.isSimulation()) {
       DataLogManager.start("logs");
@@ -59,9 +48,7 @@ public class Robot extends TimedRobot {
       DataLogManager.start();
     }
 
-    // Set the elevator motors to coast
-    rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_COAST_CONFIG);
-    leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_COAST_CONFIG);
+    subElevator.setCoastMode(true);
 
     // Log data that is being put to shuffleboard
     DataLogManager.logNetworkTables(true);

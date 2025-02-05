@@ -6,12 +6,14 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Inches;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
@@ -71,6 +73,16 @@ public class Elevator extends SubsystemBase {
 
   public Distance getLastDesiredPosition() {
     return lastDesiredPosition;
+  }
+
+  public void setCoastMode(Boolean coastMode) {
+    if (coastMode) {
+      rightMotorLeader.setNeutralMode(NeutralModeValue.Coast);
+      leftMotorFollower.setNeutralMode(NeutralModeValue.Coast);
+    } else {
+      rightMotorLeader.setNeutralMode(NeutralModeValue.Brake);
+      leftMotorFollower.setNeutralMode(NeutralModeValue.Brake);
+    }
   }
 
   public boolean isRotorVelocityZero() {
