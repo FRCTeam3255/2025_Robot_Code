@@ -32,8 +32,8 @@ public class DriveManual extends Command {
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
-  public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef, Elevator subElevator) {
+  public DriveManual(Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis, DoubleSupplier yAxis,
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
