@@ -65,17 +65,18 @@ public class DriveManual extends Command {
 
     // Get Joystick inputs
     double elevatorHeightMultiplier = SN_Math.interpolate(
-      subElevator.getElevatorPosition().in(Units.Meters),
-      0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
-      1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER
-    );
+        subElevator.getElevatorPosition().in(Units.Meters),
+        0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
+        1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
 
-    double transMultiplier = slowMultiplier * redAllianceMultiplier * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
-    
+    double transMultiplier = slowMultiplier * redAllianceMultiplier
+        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
+
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
+        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+            * elevatorHeightMultiplier);
 
     // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
