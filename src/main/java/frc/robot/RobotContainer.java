@@ -341,6 +341,10 @@ public class RobotContainer {
         .ignoringDisable(true);
   }
 
+  public Command setElevatorCostMode(boolean coastMode) {
+    return Commands.runOnce(() -> subElevator.setCoastMode(coastMode), subElevator);
+  }
+
   /**
    * Returns the command to zero all subsystems. This will make all subsystems
    * move

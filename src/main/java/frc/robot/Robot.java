@@ -27,7 +27,6 @@ import frc.robot.subsystems.Elevator;
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Elevator subElevator = new Elevator();
 
   boolean hasAutonomousRun = false;
   private boolean bothSubsystemsZeroed = false;
@@ -38,7 +37,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
     // Set out log file to be in its own folder
@@ -48,7 +46,7 @@ public class Robot extends TimedRobot {
       DataLogManager.start();
     }
 
-    subElevator.setCoastMode(true);
+    m_robotContainer.setElevatorCostMode(true);
 
     // Log data that is being put to shuffleboard
     DataLogManager.logNetworkTables(true);
