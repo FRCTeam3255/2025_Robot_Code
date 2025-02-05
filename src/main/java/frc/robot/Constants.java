@@ -192,6 +192,7 @@ public final class Constants {
 
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
+    public static final double MINIMUM_ELEVATOR_MULTIPLIER = 0.1;
 
     // Rotational speed (degrees per second) while manually driving
     public static final AngularVelocity TURN_SPEED = Units.DegreesPerSecond.of(360);
@@ -361,8 +362,11 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
+    public static final double CORAL_INTAKE_SPEED = 0.8;
+    public static final double CORAL_INDEXING_SPEED = 0.15;
+
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
+    public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -370,6 +374,7 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+      CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
     }
   }
 
@@ -423,6 +428,8 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+
+    public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -625,6 +632,7 @@ public final class Constants {
 
   public static class constHopper {
     public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_INDEXING_SPEED = 1;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
