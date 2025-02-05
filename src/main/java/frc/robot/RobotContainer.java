@@ -158,8 +158,9 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    if (subCoralOuttake.hasCoral()) {
+    if (subCoralOuttake.sensorSeesCoral()) {
       subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subCoralOuttake.setHasCoral(true);
     }
   }
 
