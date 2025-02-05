@@ -27,6 +27,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, cageAlign;
+  Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
@@ -41,6 +42,7 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.subElevator = subElevator;
     this.cageAlign = cageAlign;
 
     isOpenLoop = true;
