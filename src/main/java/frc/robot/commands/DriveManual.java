@@ -70,7 +70,7 @@ public class DriveManual extends Command {
       1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER
     );
 
-    double transMultiplier = (slowMultiplier * redAllianceMultiplier) * elevatorHeightMultiplier;
+    double transMultiplier = slowMultiplier * redAllianceMultiplier * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
     
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
