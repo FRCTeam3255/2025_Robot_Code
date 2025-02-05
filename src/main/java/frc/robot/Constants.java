@@ -361,8 +361,11 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
+    public static final double CORAL_INTAKE_SPEED = 0.8;
+    public static final double CORAL_INDEXING_SPEED = 0.15;
+
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
+    public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -370,6 +373,7 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+      CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
     }
   }
 
@@ -625,6 +629,7 @@ public final class Constants {
 
   public static class constHopper {
     public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_INDEXING_SPEED = 1;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
