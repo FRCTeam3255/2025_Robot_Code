@@ -62,7 +62,7 @@ public class RobotPoses extends SubsystemBase {
     // they get there instantly.
     if (Robot.isSimulation()) {
       elevatorPos = subElevator.getLastDesiredPosition().div(2);
-      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle();
+      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle().unaryMinus();
     } else {
       // Use real positions
       elevatorPos = (subElevator.getElevatorPosition().div(2));
