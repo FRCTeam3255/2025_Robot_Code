@@ -75,6 +75,7 @@ public class StateMachine extends SubsystemBase {
           case SCORING_CORAL:
           case SCORING_ALGAE:
           case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
         }
@@ -258,6 +259,7 @@ public class StateMachine extends SubsystemBase {
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
           case CLIMBER_DEPLOYING:
+          case NONE:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;

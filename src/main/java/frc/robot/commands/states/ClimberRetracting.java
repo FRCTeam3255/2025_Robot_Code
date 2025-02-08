@@ -35,6 +35,7 @@ public class ClimberRetracting extends Command {
   @Override
   public void initialize() {
     globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_RETRACT_VELOCITY);
+    globalStateMachine.setRobotState(StateMachine.RobotState.CLIMBER_RETRACTING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
