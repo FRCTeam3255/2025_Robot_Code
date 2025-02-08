@@ -207,10 +207,12 @@ public class RobotContainer {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_A
-        .onTrue(TRY_CLIMBER_DEPLOYING);
+        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .onFalse(TRY_NONE);
 
     controller.btn_Y
-        .onTrue(TRY_CLIMBER_RETRACTING);
+        .whileTrue(TRY_CLIMBER_RETRACTING)
+        .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
