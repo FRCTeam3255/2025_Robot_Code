@@ -304,11 +304,11 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
-      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.0;// 0.6; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.65;// 0.1; // Volts to overcome static friction (0.6)
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.45; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.2; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 20;// 32;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 19;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
