@@ -294,9 +294,9 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.21; // TODO: return to degrees
-      // ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 60; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0; // TODO: return to degrees
       //
       // Why don't scientists trust atoms? Because they make up everything!
@@ -304,11 +304,11 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
-      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.6; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.1; // Volts to overcome static friction (0.6)
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.0;// 0.6; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.65;// 0.1; // Volts to overcome static friction (0.6)
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 32;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 20;// 32;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
@@ -327,7 +327,7 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(50);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
