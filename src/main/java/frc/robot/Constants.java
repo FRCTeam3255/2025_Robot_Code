@@ -294,9 +294,9 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 30; // TODO: return to degrees
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 55; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -33; // TODO: return to degrees
 
       // Why don't scientists trust atoms? Because they make up everything!
@@ -328,7 +328,7 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(69.5);
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(56);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
