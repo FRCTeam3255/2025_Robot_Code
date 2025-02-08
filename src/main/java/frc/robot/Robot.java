@@ -37,8 +37,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
-
     // Set out log file to be in its own folder
     if (Robot.isSimulation()) {
       DataLogManager.start("logs");
