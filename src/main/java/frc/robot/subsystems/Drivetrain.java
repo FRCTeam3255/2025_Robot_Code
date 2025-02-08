@@ -14,10 +14,13 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -180,6 +183,35 @@ public class Drivetrain extends SN_SuperSwerve {
     SwerveModuleState[] desiredModuleStates = swerveKinematics
         .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
     setModuleStates(desiredModuleStates, isOpenLoop);
+  }
+
+  /**
+   * Contains logic for automatically aligning & automatically driving to the
+   * reef.
+   * May align only rotationally, automatically drive to a branch, or be
+   * overridden by the driver
+   */
+  public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, LinearVelocity reefOverride, double transMultiplier, boolean isOpenLoop) {
+
+    if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
+      // Rotational-only auto-align
+      drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+          getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+
+    } else if (reefOverride.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
+      // Auto-align Driver Override; assumes the driver only overrides when facing the
+      // reef
+      setRobotRelative();
+      drive(
+          new Translation2d(reefOverride.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+          rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
+    } else {
+      // Full auto-align
+      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef).times(transMultiplier);
+      drive(desiredChassisSpeeds, isOpenLoop);
+    }
   }
 
   @Override
