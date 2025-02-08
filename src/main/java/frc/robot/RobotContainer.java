@@ -307,21 +307,21 @@ public class RobotContainer {
     controller.btn_East
         .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
 
-    // // btn_South: Prep Processor
-    // controller.btn_South
-    // .whileTrue(comPrepProcessor);
+    // btn_South: Prep Processor
+    controller.btn_South
+        .whileTrue(comPrepProcessor);
 
-    // // btn_West: Clean L3 Reef
-    // controller.btn_West
-    // .whileTrue(comCleaningL3Reef);
+    // btn_West: Clean L3 Reef
+    controller.btn_West
+        .whileTrue(comCleaningL3Reef);
 
-    // // btn_North: Clean L2 Reef
-    // controller.btn_North
-    // .whileTrue(comCleaningL2Reef);
+    // btn_North: Clean L2 Reef
+    controller.btn_North
+        .whileTrue(comCleaningL2Reef);
 
-    // // btn_NorthWest: Prep Net
-    // controller.btn_NorthWest
-    // .whileTrue(comPrepNet);
+    // btn_NorthWest: Prep Net
+    controller.btn_NorthWest
+        .whileTrue(comPrepNet);
 
     // btn_A/B/Y/X: Set Elevator to Coral Levels
     controller.btn_A
