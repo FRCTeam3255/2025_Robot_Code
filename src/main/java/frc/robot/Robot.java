@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
     // Set out log file to be in its own folder

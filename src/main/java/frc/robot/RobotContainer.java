@@ -343,7 +343,8 @@ public class RobotContainer {
   }
 
   public Command setElevatorCostMode(boolean coastMode) {
-    return Commands.runOnce(() -> subElevator.setCoastMode(coastMode), subElevator);
+    return Commands.runOnce(() -> subElevator.setCoastMode(coastMode), subElevator).ignoringDisable(true);
+
   }
 
   /**
