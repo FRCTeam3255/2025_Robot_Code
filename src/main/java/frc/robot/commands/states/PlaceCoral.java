@@ -45,15 +45,15 @@ public class PlaceCoral extends Command {
     } else {
       coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED;
     }
-    if (globalElevator.isAtSetpoint()) {
-      globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
-    }
     globalLED.setLED(constLED.LED_PLACE_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.isAtSetpoint()) {
+      globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
+    }
   }
 
   // Called once the command ends or is interrupted.
