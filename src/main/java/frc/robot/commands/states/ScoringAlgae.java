@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
@@ -15,12 +16,14 @@ import frc.robot.subsystems.StateMachine;
 public class ScoringAlgae extends Command {
   StateMachine globalStateMachine;
   AlgaeIntake subAlgaeIntake;
+  Elevator globalElevator;
   LED globalLED;
 
-  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED) {
+  public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.subAlgaeIntake = subAlgaeIntake;
+    globalElevator = subElevator;
     globalLED = subLED;
     addRequirements(globalStateMachine);
   }
@@ -29,7 +32,9 @@ public class ScoringAlgae extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
-    subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    if (globalElevator.isAtSetpoint()) {
+      subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    }
     globalLED.setLED(constLED.LED_SCORING_ALGAE);
   }
 
