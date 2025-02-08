@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 
@@ -19,13 +20,16 @@ public class PlaceCoral extends Command {
   LED globalLED;
   RobotState desiredState;
   double coralOuttakeSpeed;
+  Elevator globalElevator;
 
   /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState) {
+  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState,
+      Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
+    globalElevator = subElevator;
     this.desiredState = desiredState;
     addRequirements(globalStateMachine);
   }
@@ -41,8 +45,9 @@ public class PlaceCoral extends Command {
     } else {
       coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED;
     }
-
-    globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
+    if (globalElevator.isAtSetpoint()) {
+      globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
+    }
     globalLED.setLED(constLED.LED_PLACE_CORAL);
   }
 
