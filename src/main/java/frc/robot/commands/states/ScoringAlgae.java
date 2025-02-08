@@ -32,15 +32,15 @@ public class ScoringAlgae extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
-    if (globalElevator.isAtSetpoint()) {
-      subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
-    }
     globalLED.setLED(constLED.LED_SCORING_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.isAtSetpoint()) {
+      subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    }
   }
 
   // Called once the command ends or is interrupted.
