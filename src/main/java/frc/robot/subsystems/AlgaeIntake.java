@@ -26,9 +26,6 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeRollerMotor;
   TalonFX intakePivotMotor;
 
-  AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
-  Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-
   private Angle lastDesiredAngle = Degrees.zero();
 
   PositionVoltage positionRequest = new PositionVoltage(0);
@@ -37,7 +34,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
-  public boolean hasGamePiece = false;
+  public boolean hasAlgaeOverride = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -94,25 +91,28 @@ public class AlgaeIntake extends SubsystemBase {
     AngularVelocity intakeVelocity = intakeRollerMotor.getVelocity().getValue();
     double intakeAcceleration = intakeRollerMotor.getAcceleration().getValueAsDouble();
 
-    intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
+    Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+    AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
-        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
-        && (intakeAcceleration < 0))) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
+    if (hasAlgaeOverride) {
+      return hasAlgaeOverride;
     }
-    return hasGamePiece;
+
+    if ((intakeCurrent.gte(intakeHasGamePieceCurrent))
+        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
+        && (intakeAcceleration < 0)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void setHasAlgaeOverride(boolean passedHasGamePiece) {
-    hasGamePiece = passedHasGamePiece;
+    hasAlgaeOverride = passedHasGamePiece;
   }
 
   public void algaeToggle() {
-    this.hasGamePiece = !hasGamePiece;
+    this.hasAlgaeOverride = !hasAlgaeOverride;
   }
 
   public double getAlgaeIntakeVoltage() {

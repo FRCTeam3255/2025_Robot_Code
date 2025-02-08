@@ -282,10 +282,10 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.8;
+    public static final double ALGAE_INTAKE_SPEED = 0.7;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
 
-    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 6;
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
@@ -295,9 +295,9 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 60; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 30; // TODO: return to degrees
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -33; // TODO: return to degrees
       //
       // Why don't scientists trust atoms? Because they make up everything!
       // Why do crabs never share their things? - Because they are shellfish!
@@ -320,17 +320,18 @@ public final class Constants {
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RadiansPerSecond.of(250);
-    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(30);
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(2102 / 60);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(69.5);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(69.5);
+
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(56);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
     public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
 
@@ -345,7 +346,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle ZEROED_POS = Units.Degrees.of(0);
+    public static final Angle ZEROED_POS = Units.Degrees.of(-33);
 
     /**
      * The elapsed time required to consider the motor as zeroed
