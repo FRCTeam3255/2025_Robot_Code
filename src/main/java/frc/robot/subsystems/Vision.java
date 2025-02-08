@@ -13,14 +13,24 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
 public class Vision extends SubsystemBase {
-  PoseEstimate lastEstimate = new PoseEstimate();
+  PoseEstimate lastEstimateFront = new PoseEstimate();
+  PoseEstimate lastEstimateBack = new PoseEstimate();
+
   private boolean useMegaTag2 = false;
 
   public Vision() {
   }
 
-  public PoseEstimate getPoseEstimate() {
-    return lastEstimate;
+  public PoseEstimate getFrontPoseEstimate() {
+    return lastEstimateFront;
+  }
+
+  public PoseEstimate getBackPoseEstimate() {
+    return lastEstimateBack;
+  }
+
+  public PoseEstimate[] getPoseEstimates() {
+    return new PoseEstimate[] { getFrontPoseEstimate(), getBackPoseEstimate() };
   }
 
   public void setMegaTag2(boolean useMegaTag2) {
@@ -49,9 +59,9 @@ public class Vision extends SubsystemBase {
     }
 
     // 1 Tag with a large area
-    if (poseEstimate.tagCount == 1 && LimelightHelpers.getTA("limelight") > constVision.AREA_THRESHOLD) {
+    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > constVision.AREA_THRESHOLD) {
       return false;
-      // 2 tags
+      // 2 tags or more
     } else if (poseEstimate.tagCount > 1) {
       return false;
     }
@@ -61,16 +71,22 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    PoseEstimate currentEstimate;
+    PoseEstimate currentFrontEstimate;
+    PoseEstimate currentBackEstimate;
 
     if (useMegaTag2) {
-      currentEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      currentFrontEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
+      currentBackEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
     } else {
-      currentEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+      currentFrontEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
+      currentBackEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
     }
 
-    if (currentEstimate != null) {
-      lastEstimate = currentEstimate;
+    if (currentFrontEstimate != null) {
+      lastEstimateFront = currentFrontEstimate;
+    }
+    if (currentBackEstimate != null) {
+      lastEstimateBack = currentBackEstimate;
     }
   }
 }

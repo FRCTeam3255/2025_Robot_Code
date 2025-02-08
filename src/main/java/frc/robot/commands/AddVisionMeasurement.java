@@ -33,15 +33,18 @@ public class AddVisionMeasurement extends Command {
 
   @Override
   public void execute() {
-    // Tells the limelight where we are on the fielSd
-    LimelightHelpers.SetRobotOrientation("limelight",
+    // Tells the limelight where we are on the field
+    LimelightHelpers.SetRobotOrientation("front",
         subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-
-    estimatedPose = subVision.getPoseEstimate();
+    LimelightHelpers.SetRobotOrientation("back",
+        subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
     AngularVelocity gyroRate = Units.DegreesPerSecond.of(subDrivetrain.getGyroRate());
 
-    if (!subVision.rejectUpdate(estimatedPose, gyroRate)) {
-      subDrivetrain.addVisionMeasurement(estimatedPose.pose, estimatedPose.timestampSeconds);
+    for (PoseEstimate estimatedPose : subVision.getPoseEstimates()) {
+      estimatedPose = subVision.getFrontPoseEstimate();
+      if (!subVision.rejectUpdate(estimatedPose, gyroRate)) {
+        subDrivetrain.addVisionMeasurement(estimatedPose.pose, estimatedPose.timestampSeconds);
+      }
     }
   }
 

@@ -585,6 +585,8 @@ public final class Constants {
   }
 
   public static class constVision {
+    public static final String[] LIMELIGHT_NAMES = new String[] { "front", "back" };
+
     /**
      * <p>
      * Pose estimator standard deviation for vision data
