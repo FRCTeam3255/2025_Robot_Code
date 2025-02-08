@@ -305,17 +305,17 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
       ALGAE_PIVOT_CONFIG.Slot0.kG = 0.6; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.6; // Volts to overcome static friction (0.6)
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.1; // Volts to overcome static friction (0.6)
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 32;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
       ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 8100;
+      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
+      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 8100;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
