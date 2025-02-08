@@ -18,6 +18,7 @@ public class PlaceCoral extends Command {
   CoralOuttake globalCoralOuttake;
   LED globalLED;
   RobotState desiredState;
+  double coralOuttakeSpeed;
 
   /** Creates a new CoralOuttake. */
   public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState) {
@@ -34,12 +35,14 @@ public class PlaceCoral extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL);
     if (desiredState.equals(RobotState.PREP_CORAL_L4)) {
-      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_L4_OUTTAKE_SPEED);
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L4_OUTTAKE_SPEED;
     } else if (desiredState.equals(RobotState.PREP_CORAL_L1)) {
-      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_L1_OUTTAKE_SPEED);
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L1_OUTTAKE_SPEED;
     } else {
-      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED;
     }
+
+    globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
     globalLED.setLED(constLED.LED_PLACE_CORAL);
   }
 
