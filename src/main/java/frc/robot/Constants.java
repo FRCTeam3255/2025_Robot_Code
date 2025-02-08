@@ -331,6 +331,8 @@ public final class Constants {
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
 
+    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
+
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
@@ -383,11 +385,19 @@ public final class Constants {
   }
 
   public static class constClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(10).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+          .in(Units.Rotations);
+
     }
   }
 
@@ -668,7 +678,7 @@ public final class Constants {
     public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
     public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
     public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
-    public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
   }
