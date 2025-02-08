@@ -206,7 +206,7 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B
+    controller.btn_A
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_Y
