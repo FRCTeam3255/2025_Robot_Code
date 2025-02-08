@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   boolean hasAutonomousRun = false;
-  private boolean bothSubsystemsZeroed = false;
+  // private boolean bothSubsystemsZeroed = false;
 
   private RobotContainer m_robotContainer;
 
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    bothSubsystemsZeroed = m_robotContainer.allZeroed();
+    // bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
@@ -83,15 +83,16 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    bothSubsystemsZeroed = m_robotContainer.allZeroed();
+    // bothSubsystemsZeroed = m_robotContainer.allZeroed();
 
-    if (bothSubsystemsZeroed && m_autonomousCommand != null) {
-      Commands.deferredProxy(() -> m_autonomousCommand).schedule();
-    } else if (m_autonomousCommand != null) {
-      m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
-    } else {
-      m_robotContainer.zeroSubsystems().schedule();
-    }
+    // if (bothSubsystemsZeroed && m_autonomousCommand != null) {
+    // Commands.deferredProxy(() -> m_autonomousCommand).schedule();
+    // } else if (m_autonomousCommand != null) {
+    // m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() ->
+    // m_autonomousCommand)).schedule();
+    // } else {
+    // m_robotContainer.zeroSubsystems().schedule();
+    // }
 
     hasAutonomousRun = true;
   }
@@ -106,7 +107,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    bothSubsystemsZeroed = m_robotContainer.allZeroed();
+    // bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
     m_robotContainer.checkForManualZeroing().cancel();
 
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
     }
 
     if (!hasAutonomousRun) {
-      m_robotContainer.zeroSubsystems().schedule();
+      // m_robotContainer.zeroSubsystems().schedule();
     }
   }
 
