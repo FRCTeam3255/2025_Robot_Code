@@ -166,7 +166,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PlaceCoral(subStateMachine, subCoralOuttake, subLED, currentRobotState);
+            return new PlaceCoral(subStateMachine, subCoralOuttake, subLED, currentRobotState, subElevator);
         }
         break;
 
