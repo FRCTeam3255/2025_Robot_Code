@@ -646,13 +646,13 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = 1;
-    public static final double HOPPER_INDEXING_SPEED = 1;
+    public static final double HOPPER_SPEED = .75;
+    public static final double HOPPER_INDEXING_SPEED = .75;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {
-      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
   }
 
