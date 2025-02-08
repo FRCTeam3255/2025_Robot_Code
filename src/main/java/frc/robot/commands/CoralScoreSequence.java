@@ -6,11 +6,9 @@ package frc.robot.commands;
 
 import com.frcteam3255.joystick.SN_XboxController;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.StateMachine;
@@ -20,7 +18,6 @@ import frc.robot.subsystems.StateMachine.RobotState;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class CoralScoreSequence extends SequentialCommandGroup {
-  double startTime = 0;
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   SN_XboxController controller;
@@ -34,10 +31,9 @@ public class CoralScoreSequence extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-
-        Commands.waitSeconds(5),
+        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(constCoralOuttake.CORAL_OUTTAKE_SPEED)),
+        Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
-        // Commands.waitUntil(() -> !globalCoralOuttake.hasCoral()),
         Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.NONE)));
   }
 }

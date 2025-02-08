@@ -364,7 +364,7 @@ public final class Constants {
     public static final double CORAL_INTAKE_SPEED = 1;
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
 
-    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(5);
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(1);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();

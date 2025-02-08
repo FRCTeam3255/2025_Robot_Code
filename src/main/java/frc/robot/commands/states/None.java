@@ -41,7 +41,6 @@ public class None extends Command {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     subClimber.setClimberMotorVelocity(0);
-    // subElevator.setNeutral();
     subElevator.setPosition(constElevator.ZEROED_POS);
     globalLED.setLED(constLED.LED_NONE);
   }

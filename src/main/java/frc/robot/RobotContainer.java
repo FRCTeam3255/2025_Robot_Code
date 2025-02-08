@@ -292,7 +292,7 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightTrigger
-        .whileTrue(comPlaceCoral).onFalse(CoralScoreSequence);
+        .whileTrue(comPlaceCoral).onTrue(CoralScoreSequence);
 
     // LB: Climb
     controller.btn_LeftTrigger
