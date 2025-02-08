@@ -244,7 +244,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_NET:
           case PREP_PROCESSOR:
           case PREP_ALGAE_ZERO:
-            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
         }
         break;
 
