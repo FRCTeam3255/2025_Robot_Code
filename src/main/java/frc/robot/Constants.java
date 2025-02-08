@@ -314,8 +314,8 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
       ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
-      // ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 8100;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
