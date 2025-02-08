@@ -58,7 +58,8 @@ public class RobotContainer {
 
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator);
-  private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
+  private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
+      subAlgaeIntake, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake, subLED);
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
@@ -72,8 +73,6 @@ public class RobotContainer {
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
-  private final ClimberTester comClimberTester = new ClimberTester(subClimber);
-  private final ClimberTesterBackward comClimberTesterBackward = new ClimberTesterBackward(subClimber);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -95,8 +94,11 @@ public class RobotContainer {
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
 
-  Command TRY_CLIMBING_DEEP = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP));
+  Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+
+  Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
 
   Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
@@ -205,7 +207,10 @@ public class RobotContainer {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_B
-        .onTrue(TRY_CLIMBING_DEEP);
+        .onTrue(TRY_CLIMBER_DEPLOYING);
+
+    controller.btn_Y
+        .onTrue(TRY_CLIMBER_RETRACTING);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
@@ -277,14 +282,6 @@ public class RobotContainer {
     // Start: Reset Elevator Sensor Position
     controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
         .ignoringDisable(true));
-
-    // btn_North: Climber Tester Backward
-    controller.btn_North
-        .whileTrue(comClimberTesterBackward);
-
-    // btn_South: Climber Tester
-    controller.btn_South
-        .whileTrue(comClimberTester);
 
     // Back: Intake Coral
     controller.btn_Back
