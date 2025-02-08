@@ -4,6 +4,7 @@
 
 package frc.robot.commands.states;
 
+import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
@@ -16,13 +17,15 @@ public class PlaceCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   LED globalLED;
+  RobotState desiredState;
 
   /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED) {
+  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
+    this.desiredState = desiredState;
     addRequirements(globalStateMachine);
   }
 
@@ -30,7 +33,13 @@ public class PlaceCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    if (desiredState.equals(RobotState.PREP_CORAL_L4)) {
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_L4_OUTTAKE_SPEED);
+    } else if (desiredState.equals(RobotState.PREP_CORAL_L1)) {
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_L1_OUTTAKE_SPEED);
+    } else {
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    }
     globalLED.setLED(constLED.LED_PLACE_CORAL);
   }
 
@@ -43,7 +52,7 @@ public class PlaceCoral extends Command {
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
-    globalCoralOuttake.setHasCoralOverride(false);
+    globalCoralOuttake.setHasCoral(false);
   }
 
   // Returns true when the command should end.
