@@ -252,6 +252,7 @@ public class StateMachine extends SubsystemBase {
       case CLIMBER_DEPLOYING:
         switch (currentRobotState) {
           case NONE:
+          case CLIMBER_RETRACTING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;

@@ -382,6 +382,13 @@ public final class Constants {
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(10).in(Units.Inches);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
+          .in(Units.Inches);
+
     }
   }
 
