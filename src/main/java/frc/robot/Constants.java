@@ -298,7 +298,7 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 30; // TODO: return to degrees
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -33; // TODO: return to degrees
-      //
+
       // Why don't scientists trust atoms? Because they make up everything!
       // Why do crabs never share their things? - Because they are shellfish!
 
