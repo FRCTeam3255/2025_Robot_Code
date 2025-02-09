@@ -4,35 +4,38 @@
 
 package frc.robot.commands.states;
 
+import java.lang.Thread.State;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.LED;
-import frc.robot.Constants;
-import frc.robot.Constants.constLED;
 import frc.robot.subsystems.StateMachine;
-import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Climb extends Command {
-  StateMachine globalStateMachine;
+public class ClimberRetracting extends Command {
+  /** Creates a new ClimberTester. */
   Climber globalClimber;
+  StateMachine globalStateMachine;
+  AlgaeIntake globalAlgaeIntake;
   LED globalLED;
 
-  /** Creates a new Climb. */
-  public Climb(StateMachine subStateMachine, Climber subClimber, LED subLED) {
+  public ClimberRetracting(StateMachine subStateMachine, Climber subClimber, AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalClimber = subClimber;
+    globalAlgaeIntake = subAlgaeIntake;
     globalLED = subLED;
+
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.CLIMBING_DEEP);
-    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_VELOCITY);
-    globalLED.setLED(constLED.LED_CLIMB);
+    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_RETRACT_VELOCITY);
+    globalStateMachine.setRobotState(StateMachine.RobotState.CLIMBER_RETRACTING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
