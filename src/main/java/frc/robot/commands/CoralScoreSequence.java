@@ -10,6 +10,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.commands.states.PlaceCoral;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -21,17 +22,20 @@ public class CoralScoreSequence extends SequentialCommandGroup {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   SN_XboxController controller;
+  PlaceCoral globalPlaceCoral;
 
   /** Creates a new CoralScoreSequence. */
-  public CoralScoreSequence(CoralOuttake subCoralOuttake, StateMachine subStateMachine, SN_XboxController controller) {
+  public CoralScoreSequence(CoralOuttake subCoralOuttake, StateMachine subStateMachine, SN_XboxController controller,
+      PlaceCoral comPlaceCoral) {
     globalCoralOuttake = subCoralOuttake;
     globalStateMachine = subStateMachine;
     this.controller = controller;
+    globalPlaceCoral = comPlaceCoral;
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(constCoralOuttake.CORAL_OUTTAKE_SPEED)),
+        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(comPlaceCoral.getCoralOuttakeSpeed())),
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
         Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.NONE)));

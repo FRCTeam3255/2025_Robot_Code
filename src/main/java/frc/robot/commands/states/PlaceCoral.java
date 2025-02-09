@@ -68,4 +68,8 @@ public class PlaceCoral extends Command {
   public boolean isFinished() {
     return false;
   }
+
+  public double getCoralOuttakeSpeed() {
+    return coralOuttakeSpeed;
+  }
 }
