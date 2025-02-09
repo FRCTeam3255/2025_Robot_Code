@@ -6,15 +6,8 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.constAlgaeIntake;
-import frc.robot.Constants.constLED;
-import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.LED;
-import frc.robot.subsystems.StateMachine;
+import frc.robot.Constants.*;
+import frc.robot.subsystems.*;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class None extends Command {

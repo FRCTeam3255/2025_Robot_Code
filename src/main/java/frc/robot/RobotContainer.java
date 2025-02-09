@@ -54,14 +54,15 @@ public class RobotContainer {
   private final LED subLED = new LED();
   private final RobotPoses robotPose = new RobotPoses(subDrivetrain, subElevator, subAlgaeIntake, subCoralOuttake);
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
-      subDrivetrain, subElevator, subHopper, subLED);
-
+      subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake, subLED, subStateMachine.getRobotState(), subElevator);
+  private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
+      conOperator, subStateMachine.getRobotState());
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
@@ -226,8 +227,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
-        .whileTrue(TRY_SCORING_CORAL)
-        .onFalse(TRY_NONE);
+        .onTrue(TRY_SCORING_CORAL);
 
     controller.btn_LeftBumper
         .whileTrue(TRY_INTAKING_ALGAE_GROUND)
@@ -301,7 +301,7 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightTrigger
-        .whileTrue(comPlaceCoral);
+        .onTrue(comScoringCoral);
 
     // LB: Climb
     controller.btn_LeftTrigger
