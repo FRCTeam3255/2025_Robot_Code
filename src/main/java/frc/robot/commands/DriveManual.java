@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.RadiansPerSecond;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.frcteam3255.utils.SN_Math;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,6 +19,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Elevator;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 
@@ -24,11 +27,12 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef;
+  Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
-  public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
+  public DriveManual(Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis, DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -37,6 +41,7 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.subElevator = subElevator;
 
     isOpenLoop = true;
 
@@ -59,12 +64,19 @@ public class DriveManual extends Command {
     }
 
     // Get Joystick inputs
+    double elevatorHeightMultiplier = SN_Math.interpolate(
+        subElevator.getElevatorPosition().in(Units.Meters),
+        0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
+        1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
+
     double transMultiplier = slowMultiplier * redAllianceMultiplier
-        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
+        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
+
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
+        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+            * elevatorHeightMultiplier);
 
     // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {

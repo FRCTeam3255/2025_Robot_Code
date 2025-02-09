@@ -4,9 +4,7 @@
 
 package frc.robot.commands.states;
 
-import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.wpilibj.Timer;
+import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
@@ -21,14 +19,19 @@ public class PlaceCoral extends Command {
   CoralOuttake globalCoralOuttake;
   Elevator globalElevator;
   LED globalLED;
+  RobotState desiredState;
+  double coralOuttakeSpeed;
 
   /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Elevator subElevator, LED subLED) {
+  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState,
+      Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalElevator = subElevator;
     globalLED = subLED;
+    globalElevator = subElevator;
+    this.desiredState = desiredState;
     addRequirements(globalStateMachine);
   }
 
@@ -36,19 +39,28 @@ public class PlaceCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    if (desiredState.equals(RobotState.PREP_CORAL_L4)) {
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L4_OUTTAKE_SPEED;
+    } else if (desiredState.equals(RobotState.PREP_CORAL_L1)) {
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L1_OUTTAKE_SPEED;
+    } else {
+      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED;
+    }
     globalLED.setLED(constLED.LED_PLACE_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.isAtSetpoint()) {
+      globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setHasCoralOverride(false);
+    globalCoralOuttake.setHasCoral(false);
   }
 
   // Returns true when the command should end. :3

@@ -4,6 +4,7 @@
 
 package frc.robot.commands.states;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.*;
@@ -41,7 +42,7 @@ public class None extends Command {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     subClimber.setClimberMotorVelocity(0);
-    subElevator.setPosition(constElevator.ZEROED_POS);
+    subElevator.setPosition(Units.Inches.zero());
     globalLED.setLED(constLED.LED_NONE);
   }
 

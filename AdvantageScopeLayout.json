@@ -1,0 +1,192 @@
+{
+  "hubs": [
+    {
+      "x": -600,
+      "y": -1056,
+      "width": 2560,
+      "height": 1056,
+      "state": {
+        "sidebar": {
+          "width": 300,
+          "expanded": [
+            "/Robot",
+            "/Robot/m_robotContainer",
+            "/Robot/m_robotContainer/robotPose"
+          ]
+        },
+        "tabs": {
+          "selected": 2,
+          "tabs": [
+            {
+              "type": 0,
+              "title": "",
+              "controller": null,
+              "controllerUUID": "oaawbtwfbemkp35nx04dxy0va0n7pbph",
+              "renderer": "#/whats-new/",
+              "controlsHeight": 0
+            },
+            {
+              "type": 1,
+              "title": "Line Graph",
+              "controller": {
+                "leftSources": [],
+                "rightSources": [],
+                "discreteSources": [
+                  {
+                    "type": "stripes",
+                    "logKey": "NT:Robot/m_robotContainer/subStateMachine/getRobotState",
+                    "logType": "String",
+                    "visible": true,
+                    "options": {
+                      "color": "#2b66a2"
+                    }
+                  }
+                ],
+                "leftLockedRange": null,
+                "rightLockedRange": null,
+                "leftUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "rightUnitConversion": {
+                  "type": null,
+                  "factor": 1
+                },
+                "leftFilter": 0,
+                "rightFilter": 0
+              },
+              "controllerUUID": "vvuhnatfjkxw2dniae7fxq7yru1yjpmv",
+              "renderer": null,
+              "controlsHeight": 200
+            },
+            {
+              "type": 3,
+              "title": "3D Field",
+              "controller": {
+                "sources": [
+                  {
+                    "type": "robot",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/comp0Drivetrain",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {
+                      "model": "Robot_2025"
+                    }
+                  },
+                  {
+                    "type": "component",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/comp1ElevatorStageOne",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {}
+                  },
+                  {
+                    "type": "component",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/comp2ElevatorCarriage",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {}
+                  },
+                  {
+                    "type": "component",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/comp3AlgaeIntake",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {}
+                  },
+                  {
+                    "type": "swerveStates",
+                    "logKey": "NT:Robot/m_robotContainer/subDrivetrain/actualModuleStates",
+                    "logType": "SwerveModuleState[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#00ff00",
+                      "arrangement": "0,1,2,3"
+                    }
+                  },
+                  {
+                    "type": "swerveStates",
+                    "logKey": "NT:Robot/m_robotContainer/subDrivetrain/desiredModuleStates",
+                    "logType": "SwerveModuleState[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#ff0000",
+                      "arrangement": "0,1,2,3"
+                    }
+                  },
+                  {
+                    "type": "gamePiece",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/algaePose",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {
+                      "variant": "Algae"
+                    }
+                  },
+                  {
+                    "type": "gamePiece",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/coralPose",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {
+                      "variant": "Coral"
+                    }
+                  },
+                  {
+                    "type": "trajectory",
+                    "logKey": "NT:/PathPlanner/activePath",
+                    "logType": "Pose2d[]",
+                    "visible": true,
+                    "options": {
+                      "color": "#00ff00",
+                      "size": "normal"
+                    }
+                  },
+                  {
+                    "type": "ghost",
+                    "logKey": "NT:/PathPlanner/targetPose",
+                    "logType": "Pose2d",
+                    "visible": true,
+                    "options": {
+                      "model": "Robot_2025",
+                      "color": "#00ff00"
+                    }
+                  },
+                  {
+                    "type": "heatmap",
+                    "logKey": "NT:Robot/m_robotContainer/robotPose/comp0Drivetrain",
+                    "logType": "Pose3d",
+                    "visible": true,
+                    "options": {
+                      "timeRange": "enabled"
+                    }
+                  }
+                ],
+                "game": "2025 Field",
+                "origin": "auto"
+              },
+              "controllerUUID": "o6i9pivbdervmjctjhfdkw26al0sivid",
+              "renderer": {
+                "cameraIndex": -1,
+                "orbitFov": 50,
+                "cameraPosition": [
+                  -3.5970126159171367,
+                  8.831293020703583,
+                  -9.509023246827292
+                ],
+                "cameraTarget": [
+                  -3.2742751686941483,
+                  -3.2911932277119105,
+                  8.131000503449416
+                ]
+              },
+              "controlsHeight": 244
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "satellites": [],
+  "version": "4.1.0"
+}

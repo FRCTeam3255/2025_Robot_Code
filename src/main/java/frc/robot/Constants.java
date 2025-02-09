@@ -192,6 +192,7 @@ public final class Constants {
 
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
+    public static final double MINIMUM_ELEVATOR_MULTIPLIER = 0.1;
 
     // Rotational speed (degrees per second) while manually driving
     public static final AngularVelocity TURN_SPEED = Units.DegreesPerSecond.of(360);
@@ -330,6 +331,8 @@ public final class Constants {
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
 
+    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
+
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
@@ -361,8 +364,15 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
+
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
+
+    public static final double CORAL_INTAKE_SPEED = 0.8;
+    public static final double CORAL_INDEXING_SPEED = 0.15;
+
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
+    public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
     public static final Time CORAL_SCORE_TIME = Units.Seconds.of(1);
 
@@ -372,15 +382,24 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+      CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
     }
   }
 
   public static class constClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(10).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+          .in(Units.Rotations);
+
     }
   }
 
@@ -403,19 +422,19 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
       ELEVATOR_CONFIG.Slot0.kP = 0.5;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 5000;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(7.25);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.75);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
@@ -425,6 +444,8 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+
+    public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -627,6 +648,7 @@ public final class Constants {
 
   public static class constHopper {
     public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_INDEXING_SPEED = 1;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
@@ -658,7 +680,7 @@ public final class Constants {
     public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
     public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
     public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
-    public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
   }

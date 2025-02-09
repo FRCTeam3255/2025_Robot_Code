@@ -58,9 +58,10 @@ public class RobotContainer {
 
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator);
-  private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
+  private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
+      subAlgaeIntake, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
-      subCoralOuttake, subElevator, subLED);
+      subCoralOuttake, subLED, subStateMachine.getRobotState(), subElevator);
   private final CoralScoreSequence CoralScoreSequence = new CoralScoreSequence(subCoralOuttake, subStateMachine,
       conOperator);
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
@@ -95,8 +96,11 @@ public class RobotContainer {
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
 
-  Command TRY_CLIMBING_DEEP = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP));
+  Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+
+  Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
 
   Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
@@ -147,7 +151,8 @@ public class RobotContainer {
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+            new DriveManual(subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
+                conDriver.axis_RightX,
                 conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger));
 
     configureDriverBindings(conDriver);
@@ -159,8 +164,9 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    if (subCoralOuttake.hasCoral()) {
+    if (subCoralOuttake.sensorSeesCoral()) {
       subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subCoralOuttake.setHasCoral(true);
     }
   }
 
@@ -204,8 +210,13 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B
-        .onTrue(TRY_CLIMBING_DEEP);
+    controller.btn_A
+        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .onFalse(TRY_NONE);
+
+    controller.btn_Y
+        .whileTrue(TRY_CLIMBER_RETRACTING)
+        .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
