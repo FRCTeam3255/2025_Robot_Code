@@ -14,6 +14,8 @@
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "Robot/commandScheduler": "Scheduler",
       "Robot/m_robotContainer/autoChooser": "String Chooser",
       "Robot/m_robotContainer/subAlgaeIntake/intakeMotorOne": "Motor Controller",
       "Robot/m_robotContainer/subAlgaeIntake/intakeMotorTwo": "Motor Controller",

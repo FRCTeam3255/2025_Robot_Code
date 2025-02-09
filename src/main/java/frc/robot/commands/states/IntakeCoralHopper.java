@@ -16,6 +16,7 @@ public class IntakeCoralHopper extends Command {
   CoralOuttake globalCoralOuttake;
   Elevator globalElevator;
   LED globalLED;
+  boolean hasSeenCoral = false;
 
   /** Creates a new IntakeCoralHopper. */
   public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
@@ -42,6 +43,18 @@ public class IntakeCoralHopper extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalCoralOuttake.sensorSeesCoral()) {
+      // begin indexing
+      hasSeenCoral = true;
+      globalCoralOuttake.setIndexingCoral(hasSeenCoral);
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
+      globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
+    } else if (hasSeenCoral && globalCoralOuttake.sensorIndexedCoral()) {
+      // stop indexing
+      hasSeenCoral = false;
+      globalCoralOuttake.setIndexingCoral(hasSeenCoral);
+      globalCoralOuttake.setHasCoral(true);
+    }
   }
 
   // Called once the command ends or is interrupted.
