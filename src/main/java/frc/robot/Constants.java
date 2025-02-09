@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RPM;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -282,10 +285,11 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.7;
+    public static final double ALGAE_INTAKE_SPEED = 0.6;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
 
-    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
+    public static final AngularVelocity ALGAE_HOLD_SPEED = RPM.of(50);
+
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
@@ -314,13 +318,19 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
       ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
+      ALGAE_ROLLER_CONFIG.Slot0.kS = 0.18; // Volts to overcome static friction
+      ALGAE_ROLLER_CONFIG.Slot0.kV = 0; // Volts for a velocity target of 1 rps
+      ALGAE_ROLLER_CONFIG.Slot0.kP = 0.3;
+      ALGAE_ROLLER_CONFIG.Slot0.kI = 0.0;
+      ALGAE_ROLLER_CONFIG.Slot0.kD = 0.00;
+
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(2102 / 60);
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = RPM.of(200);
 
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 

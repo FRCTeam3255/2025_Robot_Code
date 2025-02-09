@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Degrees;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   PositionVoltage positionRequest = new PositionVoltage(0);
   VoltageOut voltageRequest = new VoltageOut(0);
+  VelocityVoltage velocityVoltageRequest = new VelocityVoltage(0);
   MotionMagicVoltage motionRequest = new MotionMagicVoltage(0);
 
   public boolean attemptingZeroing = false;
@@ -121,6 +123,10 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void setAlgaeIntakeVoltage(double voltage) {
     intakeRollerMotor.setVoltage(voltage);
+  }
+
+  public void setAlgaeIntakeVelocityVoltage(AngularVelocity velocity) {
+    intakeRollerMotor.setControl(velocityVoltageRequest.withVelocity(velocity));
   }
 
   public boolean isAtSetpoint() {

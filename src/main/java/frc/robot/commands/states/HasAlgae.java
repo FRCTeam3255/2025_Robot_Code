@@ -42,7 +42,7 @@ public class HasAlgae extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
+    globalAlgaeIntake.setAlgaeIntakeVelocityVoltage(constAlgaeIntake.ALGAE_HOLD_SPEED);
   }
 
   // Returns true when the command should end.
