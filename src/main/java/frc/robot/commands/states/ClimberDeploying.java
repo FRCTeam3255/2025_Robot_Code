@@ -4,63 +4,56 @@
 
 package frc.robot.commands.states;
 
-import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.Constants.constLED;
-import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
+import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class PlaceCoral extends Command {
+public class ClimberDeploying extends Command {
   StateMachine globalStateMachine;
-  CoralOuttake globalCoralOuttake;
+  Climber globalClimber;
   LED globalLED;
-  RobotState desiredState;
-  double coralOuttakeSpeed;
+  AlgaeIntake globalAlgaeIntake;
   Elevator globalElevator;
 
-  /** Creates a new CoralOuttake. */
-  public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState,
-      Elevator subElevator) {
+  /** Creates a new Climb. */
+  public ClimberDeploying(StateMachine subStateMachine, Climber subClimber, Elevator subElevator,
+      AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
-    globalCoralOuttake = subCoralOuttake;
-    globalLED = subLED;
+    globalClimber = subClimber;
     globalElevator = subElevator;
-    this.desiredState = desiredState;
+    globalLED = subLED;
+    globalAlgaeIntake = subAlgaeIntake;
+
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL);
-    if (desiredState.equals(RobotState.PREP_CORAL_L4)) {
-      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L4_OUTTAKE_SPEED;
-    } else if (desiredState.equals(RobotState.PREP_CORAL_L1)) {
-      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_L1_OUTTAKE_SPEED;
-    } else {
-      coralOuttakeSpeed = Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED;
-    }
-    globalLED.setLED(constLED.LED_PLACE_CORAL);
+    globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
+    globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
+    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
+    globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalElevator.isAtSetpoint()) {
-      globalCoralOuttake.setCoralOuttake(coralOuttakeSpeed);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttake(0);
-    globalCoralOuttake.setHasCoral(false);
+    globalClimber.setClimberMotorVelocity(0);
   }
 
   // Returns true when the command should end.

@@ -74,7 +74,8 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL:
           case SCORING_ALGAE:
-          case CLIMBING_DEEP:
+          case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
         }
@@ -165,7 +166,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PlaceCoral(subStateMachine, subCoralOuttake, subLED, currentRobotState);
+            return new PlaceCoral(subStateMachine, subCoralOuttake, subLED, currentRobotState, subElevator);
         }
         break;
 
@@ -248,10 +249,18 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
-      case CLIMBING_DEEP:
+      case CLIMBER_DEPLOYING:
         switch (currentRobotState) {
           case NONE:
-            return new Climb(subStateMachine, subClimber, subLED);
+          case CLIMBER_RETRACTING:
+            return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
+        }
+        break;
+
+      case CLIMBER_RETRACTING:
+        switch (currentRobotState) {
+          case CLIMBER_DEPLOYING:
+            return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;
 
@@ -281,7 +290,8 @@ public class StateMachine extends SubsystemBase {
     SCORING_ALGAE,
     PREP_ALGAE_ZERO,
 
-    CLIMBING_DEEP
+    CLIMBER_DEPLOYING,
+    CLIMBER_RETRACTING
   }
 
   public static enum TargetState {
