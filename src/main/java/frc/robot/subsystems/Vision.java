@@ -91,11 +91,11 @@ public class Vision extends SubsystemBase {
 
     if (currentFrontEstimate != null) {
       lastEstimateFront = currentFrontEstimate;
+      frontPose = currentFrontEstimate.pose;
     }
     if (currentBackEstimate != null) {
       lastEstimateBack = currentBackEstimate;
+      backPose = currentBackEstimate.pose;
     }
-    frontPose = currentFrontEstimate.pose;
-    backPose = currentBackEstimate.pose;
   }
 }
