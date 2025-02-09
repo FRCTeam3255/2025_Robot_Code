@@ -7,14 +7,21 @@ package frc.robot.subsystems;
 import com.frcteam3255.utils.LimelightHelpers;
 import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.units.measure.AngularVelocity;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
+@Logged
 public class Vision extends SubsystemBase {
   PoseEstimate lastEstimateFront = new PoseEstimate();
   PoseEstimate lastEstimateBack = new PoseEstimate();
+
+  Pose2d frontPose = new Pose2d();
+  Pose2d backPose = new Pose2d();
 
   private boolean useMegaTag2 = false;
 
@@ -48,25 +55,27 @@ public class Vision extends SubsystemBase {
    */
 
   public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate) {
-    // Angular velocity is too high to have accurate vision
-    if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
-      return true;
-    }
+    // // Angular velocity is too high to have accurate vision
+    // if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
+    // return true;
+    // }
 
-    // No tags :<
-    if (poseEstimate.tagCount == 0) {
-      return true;
-    }
+    // // No tags :<
+    // if (poseEstimate.tagCount == 0) {
+    // return true;
+    // }
 
-    // 1 Tag with a large area
-    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > constVision.AREA_THRESHOLD) {
-      return false;
-      // 2 tags or more
-    } else if (poseEstimate.tagCount > 1) {
-      return false;
-    }
+    // // 1 Tag with a large area
+    // if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea >
+    // constVision.AREA_THRESHOLD) {
+    // return false;
+    // // 2 tags or more
+    // } else if (poseEstimate.tagCount > 1) {
+    // return false;
+    // }
 
-    return true;
+    // return true;
+    return false;
   }
 
   @Override
@@ -88,5 +97,7 @@ public class Vision extends SubsystemBase {
     if (currentBackEstimate != null) {
       lastEstimateBack = currentBackEstimate;
     }
+    frontPose = currentFrontEstimate.pose;
+    backPose = currentBackEstimate.pose;
   }
 }
