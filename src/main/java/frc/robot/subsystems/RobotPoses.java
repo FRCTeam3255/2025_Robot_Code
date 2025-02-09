@@ -81,7 +81,8 @@ public class RobotPoses extends SubsystemBase {
     comp3AlgaeIntake = comp2ElevatorCarriage
         .transformBy(
             new Transform3d(new Translation3d(Units.Meters.of(0.075438), Units.Meters.of(0), Units.Meters.of(0.292354)),
-                new Rotation3d(Units.Degrees.of(0), algaeAngle.plus(Units.Degrees.of(30)), Units.Degrees.of(0))));
+                new Rotation3d(Units.Degrees.of(0), algaeAngle.plus(constAlgaeIntake.ZEROED_POS),
+                    Units.Degrees.of(0))));
 
     // -- SCORING ELEMENTS --
     if (subAlgaeIntake.hasAlgae()) {
