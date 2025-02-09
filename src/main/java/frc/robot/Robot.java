@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledExit() {
+    m_robotContainer.checkForManualZeroing().cancel();
   }
 
   @Override
