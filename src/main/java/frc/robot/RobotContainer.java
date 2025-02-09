@@ -367,6 +367,7 @@ public class RobotContainer {
         new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
         new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
+    returnedCommand.setName("ZeroSubsystems");
     returnedCommand.addRequirements(subStateMachine);
     return returnedCommand;
   }
