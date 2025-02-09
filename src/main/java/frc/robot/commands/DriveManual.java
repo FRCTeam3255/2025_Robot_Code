@@ -94,7 +94,7 @@ public class DriveManual extends Command {
       // Begin reef auto align (rotationally, automatically driving, or w/ a driver
       // override)
       subDrivetrain.reefAutoDrive(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, reefOverride,
-          transMultiplier, isOpenLoop);
+          elevatorHeightMultiplier, isOpenLoop);
     } else {
       // Regular driving
       subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),

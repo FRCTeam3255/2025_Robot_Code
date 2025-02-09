@@ -193,7 +193,8 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
       LinearVelocity yVelocity,
-      AngularVelocity rVelocity, LinearVelocity reefOverride, double transMultiplier, boolean isOpenLoop) {
+      AngularVelocity rVelocity, LinearVelocity reefOverride, double elevatorMultiplier, boolean isOpenLoop) {
+    desiredAlignmentPose = desiredReef;
 
     if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
       // Rotational-only auto-align
@@ -209,7 +210,7 @@ public class Drivetrain extends SN_SuperSwerve {
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
     } else {
       // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef).times(transMultiplier);
+      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef).times(elevatorMultiplier);
       drive(desiredChassisSpeeds, isOpenLoop);
     }
   }
