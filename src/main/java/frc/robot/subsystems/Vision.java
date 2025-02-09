@@ -55,27 +55,25 @@ public class Vision extends SubsystemBase {
    */
 
   public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate) {
-    // // Angular velocity is too high to have accurate vision
-    // if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
-    // return true;
-    // }
+    // Angular velocity is too high to have accurate vision
+    if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
+      return true;
+    }
 
-    // // No tags :<
-    // if (poseEstimate.tagCount == 0) {
-    // return true;
-    // }
+    // No tags :<
+    if (poseEstimate.tagCount == 0) {
+      return true;
+    }
 
-    // // 1 Tag with a large area
-    // if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea >
-    // constVision.AREA_THRESHOLD) {
-    // return false;
-    // // 2 tags or more
-    // } else if (poseEstimate.tagCount > 1) {
-    // return false;
-    // }
+    // 1 Tag with a large area
+    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > constVision.AREA_THRESHOLD) {
+      return false;
+      // 2 tags or more
+    } else if (poseEstimate.tagCount > 1) {
+      return false;
+    }
 
-    // return true;
-    return false;
+    return true;
   }
 
   @Override
