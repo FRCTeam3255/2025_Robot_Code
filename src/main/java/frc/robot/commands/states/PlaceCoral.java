@@ -17,10 +17,10 @@ import frc.robot.subsystems.StateMachine;
 public class PlaceCoral extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  Elevator globalElevator;
   LED globalLED;
   RobotState desiredState;
   double coralOuttakeSpeed;
-  Elevator globalElevator;
 
   /** Creates a new CoralOuttake. */
   public PlaceCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, RobotState desiredState,
@@ -28,6 +28,7 @@ public class PlaceCoral extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
+    globalElevator = subElevator;
     globalLED = subLED;
     globalElevator = subElevator;
     this.desiredState = desiredState;
@@ -59,13 +60,16 @@ public class PlaceCoral extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoral(false);
   }
 
-  // Returns true when the command should end.
+  // Returns true when the command should end. :3
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public double getCoralOuttakeSpeed() {
+    return coralOuttakeSpeed;
   }
 }

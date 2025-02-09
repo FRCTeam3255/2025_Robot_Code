@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.frcteam3255.joystick.SN_XboxController;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import frc.robot.Constants.constElevator;
@@ -29,11 +31,13 @@ public class StateMachine extends SubsystemBase {
   @NotLogged
   LED subLED;
   @NotLogged
+  SN_XboxController conOperator;
+  @NotLogged
   StateMachine subStateMachine = this;
 
   /** Creates a new StateMachine. */
   public StateMachine(AlgaeIntake subAlgaeIntake, Climber subClimber, CoralOuttake subCoralOuttake,
-      Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED) {
+      Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED, SN_XboxController conOperator) {
     currentRobotState = RobotState.NONE;
     currentTargetState = TargetState.NONE;
 
@@ -44,6 +48,7 @@ public class StateMachine extends SubsystemBase {
     this.subElevator = subElevator;
     this.subHopper = subHopper;
     this.subLED = subLED;
+    this.conOperator = conOperator;
   }
 
   public void setRobotState(RobotState robotState) {
@@ -166,7 +171,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PlaceCoral(subStateMachine, subCoralOuttake, subLED, currentRobotState, subElevator);
+            return new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
+                getRobotState());
         }
         break;
 
