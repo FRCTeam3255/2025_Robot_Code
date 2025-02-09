@@ -25,7 +25,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
-  DoubleSupplier xAxis, yAxis, rotationAxis, reefOverrideAxis;
+  DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef;
   Elevator subElevator;
   boolean isOpenLoop;
@@ -33,8 +33,7 @@ public class DriveManual extends Command {
   double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
-      DoubleSupplier reefOverrideAxis) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -42,7 +41,6 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
-    this.reefOverrideAxis = reefOverrideAxis;
     this.subElevator = subElevator;
 
     isOpenLoop = true;
@@ -57,8 +55,6 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
-    subDrivetrain.setFieldRelative();
-
     // -- Multipliers --
     if (slowMode.getAsBoolean()) {
       slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
@@ -82,8 +78,6 @@ public class DriveManual extends Command {
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
-    LinearVelocity reefOverride = Units.MetersPerSecond.of(reefOverrideAxis.getAsDouble() * transMultiplier);
-
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Reef auto-align is requested
@@ -93,7 +87,7 @@ public class DriveManual extends Command {
 
       // Begin reef auto align (rotationally, automatically driving, or w/ a driver
       // override)
-      subDrivetrain.reefAutoDrive(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, reefOverride,
+      subDrivetrain.reefAutoDrive(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     } else {
       // Regular driving

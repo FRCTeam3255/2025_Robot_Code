@@ -193,7 +193,7 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
       LinearVelocity yVelocity,
-      AngularVelocity rVelocity, LinearVelocity reefOverride, double elevatorMultiplier, boolean isOpenLoop) {
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
     desiredAlignmentPose = desiredReef;
 
     if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
@@ -201,13 +201,6 @@ public class Drivetrain extends SN_SuperSwerve {
       drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
 
-    } else if (reefOverride.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
-      // Auto-align Driver Override; assumes the driver only overrides when facing the
-      // reef
-      setRobotRelative();
-      drive(
-          new Translation2d(reefOverride.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
     } else {
       // Full auto-align
       ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef).times(elevatorMultiplier);
