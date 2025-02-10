@@ -319,19 +319,13 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       ALGAE_PIVOT_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
-
-      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
-      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
-      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
-      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
-
       ALGAE_ROLLER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       ALGAE_ROLLER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
 
-      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
-      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
-      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
-      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
@@ -404,11 +398,6 @@ public final class Constants {
 
       CORAL_OUTTAKE_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       CORAL_OUTTAKE_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
-
-      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
-      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
-      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
-      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
   }
 
@@ -461,7 +450,7 @@ public final class Constants {
       ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
 
-      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
@@ -693,11 +682,6 @@ public final class Constants {
 
       HOPPER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       HOPPER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
-
-      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
-      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
-      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
-      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
   }
 
