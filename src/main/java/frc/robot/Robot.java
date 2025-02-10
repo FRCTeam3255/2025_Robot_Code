@@ -150,9 +150,9 @@ public class Robot extends TimedRobot {
     Current BACK_RIGHT_STEER = Amps.of(PDH.getCurrent(0));
     Current BACK_RIGHT_DRIVE = Amps.of(PDH.getCurrent(1));
     Current RIGHT_ELEVATOR = Amps.of(PDH.getCurrent(2));
-    // Current PORT3 = Amps.of(PDH.getCurrent(3));
-    // Current PORT4 = Amps.of(PDH.getCurrent(4));
-    // Current PORT5 = Amps.of(PDH.getCurrent(5));
+    Current PORT3 = Amps.of(PDH.getCurrent(3));
+    Current PORT4 = Amps.of(PDH.getCurrent(4));
+    Current PORT5 = Amps.of(PDH.getCurrent(5));
     Current HOPPER_ROLLER = Amps.of(PDH.getCurrent(6));
     Current LEFT_ELEVATOR = Amps.of(PDH.getCurrent(7));
     Current BACK_LEFT_STEER = Amps.of(PDH.getCurrent(8));
@@ -162,8 +162,8 @@ public class Robot extends TimedRobot {
     Current PORT12 = Amps.of(PDH.getCurrent(12));
     Current PORT13 = Amps.of(PDH.getCurrent(13));
     Current PORT14 = Amps.of(PDH.getCurrent(14));
-    // Current PORT15 = Amps.of(PDH.getCurrent(15));
-    // Current PORT16 = Amps.of(PDH.getCurrent(16));
+    Current PORT15 = Amps.of(PDH.getCurrent(15));
+    Current PORT16 = Amps.of(PDH.getCurrent(16));
     Current RADIO = Amps.of(PDH.getCurrent(17));
     Current FRONT_RIGHT_DRIVE = Amps.of(PDH.getCurrent(18));
     Current FRONT_RIGHT_STEER = Amps.of(PDH.getCurrent(19));
@@ -176,6 +176,9 @@ public class Robot extends TimedRobot {
       BACK_RIGHT_STEER = Amps.of(PDH.getCurrent(0));
       BACK_RIGHT_DRIVE = Amps.of(PDH.getCurrent(1));
       RIGHT_ELEVATOR = Amps.of(PDH.getCurrent(2));
+      PORT3 = Amps.of(PDH.getCurrent(3));
+      PORT4 = Amps.of(PDH.getCurrent(4));
+      PORT5 = Amps.of(PDH.getCurrent(5));
       HOPPER_ROLLER = Amps.of(PDH.getCurrent(6));
       LEFT_ELEVATOR = Amps.of(PDH.getCurrent(7));
       BACK_LEFT_STEER = Amps.of(PDH.getCurrent(8));
@@ -185,6 +188,8 @@ public class Robot extends TimedRobot {
       PORT12 = Amps.of(PDH.getCurrent(12));
       PORT13 = Amps.of(PDH.getCurrent(13));
       PORT14 = Amps.of(PDH.getCurrent(14));
+      PORT15 = Amps.of(PDH.getCurrent(15));
+      PORT16 = Amps.of(PDH.getCurrent(16));
       RADIO = Amps.of(PDH.getCurrent(17));
       FRONT_RIGHT_DRIVE = Amps.of(PDH.getCurrent(18));
       FRONT_RIGHT_STEER = Amps.of(PDH.getCurrent(19));
