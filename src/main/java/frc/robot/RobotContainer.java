@@ -214,8 +214,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_Y
-        .whileTrue(TRY_CLIMBER_RETRACTING)
-        .onFalse(TRY_NONE);
+        .whileTrue(TRY_CLIMBER_RETRACTING);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));

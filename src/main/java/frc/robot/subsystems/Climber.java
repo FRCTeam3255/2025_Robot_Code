@@ -14,7 +14,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,8 +40,8 @@ public class Climber extends SubsystemBase {
     climberMotor2.set(-velocity);
   }
 
-  public Distance getClimberPosition() {
-    return Units.Inches.of(climberMotor.get());
+  public Angle getClimberPosition() {
+    return Units.Rotations.of(climberMotor.getPosition().getValueAsDouble());
   }
 
   public void setPosition(Angle angle) {

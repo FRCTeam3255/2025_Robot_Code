@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constElevator;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.states.*;
@@ -79,10 +82,15 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL:
           case SCORING_ALGAE:
-          case CLIMBER_DEPLOYING:
-          case CLIMBER_RETRACTING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
+          case CLIMBER_DEPLOYING:
+            if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
+              return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
+                  subLED);
+            } else {
+              Commands.print("Climber is too far down!!! Not safe to return to NONE >____<");
+            }
         }
         break;
 
