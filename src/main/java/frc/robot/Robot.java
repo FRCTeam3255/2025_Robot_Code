@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     m_robotContainer.AddVisionMeasurement().schedule();
     CommandScheduler.getInstance().run();
+    pdhValues.updateValues();
   }
 
   @Override
@@ -170,6 +171,28 @@ public class Robot extends TimedRobot {
     Current CAN_CODERS = Amps.of(PDH.getCurrent(21));
     Current RADIO_ = Amps.of(PDH.getCurrent(22));
     Current PORT23 = Amps.of(PDH.getCurrent(23));
+
+    public void updateValues() {
+      BACK_RIGHT_STEER = Amps.of(PDH.getCurrent(0));
+      BACK_RIGHT_DRIVE = Amps.of(PDH.getCurrent(1));
+      RIGHT_ELEVATOR = Amps.of(PDH.getCurrent(2));
+      HOPPER_ROLLER = Amps.of(PDH.getCurrent(6));
+      LEFT_ELEVATOR = Amps.of(PDH.getCurrent(7));
+      BACK_LEFT_STEER = Amps.of(PDH.getCurrent(8));
+      BACK_LEFT_DRIVE = Amps.of(PDH.getCurrent(9));
+      FRONT_LEFT_STEER = Amps.of(PDH.getCurrent(10));
+      FRONT_LEFT_DRIVE = Amps.of(PDH.getCurrent(11));
+      PORT12 = Amps.of(PDH.getCurrent(12));
+      PORT13 = Amps.of(PDH.getCurrent(13));
+      PORT14 = Amps.of(PDH.getCurrent(14));
+      RADIO = Amps.of(PDH.getCurrent(17));
+      FRONT_RIGHT_DRIVE = Amps.of(PDH.getCurrent(18));
+      FRONT_RIGHT_STEER = Amps.of(PDH.getCurrent(19));
+      RIO = Amps.of(PDH.getCurrent(20));
+      CAN_CODERS = Amps.of(PDH.getCurrent(21));
+      RADIO_ = Amps.of(PDH.getCurrent(22));
+      PORT23 = Amps.of(PDH.getCurrent(23));
+    }
 
   }
 
