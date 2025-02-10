@@ -146,7 +146,7 @@ public class Robot extends TimedRobot {
   public class PDHValues {
     @NotLogged
     PowerDistribution PDH = new PowerDistribution(1, ModuleType.kRev);
-    Voltage voltage = Volts.of(PDH.getVoltage());
+    Voltage VOLTAGE = Volts.of(PDH.getVoltage());
     Current BACK_RIGHT_STEER = Amps.of(PDH.getCurrent(0));
     Current BACK_RIGHT_DRIVE = Amps.of(PDH.getCurrent(1));
     Current RIGHT_ELEVATOR = Amps.of(PDH.getCurrent(2));
@@ -192,6 +192,7 @@ public class Robot extends TimedRobot {
       CAN_CODERS = Amps.of(PDH.getCurrent(21));
       RADIO_ = Amps.of(PDH.getCurrent(22));
       PORT23 = Amps.of(PDH.getCurrent(23));
+      VOLTAGE = Volts.of(PDH.getVoltage());
     }
 
   }
