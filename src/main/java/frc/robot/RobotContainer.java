@@ -350,10 +350,10 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
-  public Command beginManualZeroing() {
+  public void defineManualZeroing() {
     manualZeroSubsystems = new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
         .ignoringDisable(true);
-    return manualZeroSubsystems;
+    manualZeroSubsystems.setName("ManualZeroSubsystems");
   }
 
   /**
@@ -366,7 +366,7 @@ public class RobotContainer {
    * 
    * @return Parallel commands to zero the Climber, Elevator, and Shooter Pivot
    */
-  public Command zeroSubsystems() {
+  public Command defineZeroSubsystems() {
     zeroSubsystems = new ParallelCommandGroup(
         new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
         new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
