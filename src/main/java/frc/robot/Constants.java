@@ -316,6 +316,22 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
+
+      ALGAE_PIVOT_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
+
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
+
+      ALGAE_ROLLER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
+
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
@@ -385,6 +401,14 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
       CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
+
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
+
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
   }
 
@@ -433,6 +457,14 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
+
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
@@ -658,6 +690,14 @@ public final class Constants {
 
     static {
       HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
+
+      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLimit = 50;
+      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+      HOPPER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.1;
     }
   }
 
