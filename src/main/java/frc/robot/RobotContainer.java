@@ -141,6 +141,9 @@ public class RobotContainer {
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Command zeroSubsystems;
+  Command manualZeroSubsystems;
+
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
@@ -347,9 +350,10 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
-  public Command checkForManualZeroing() {
-    return new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+  public Command beginManualZeroing() {
+    manualZeroSubsystems = new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
         .ignoringDisable(true);
+    return manualZeroSubsystems;
   }
 
   /**
@@ -363,13 +367,13 @@ public class RobotContainer {
    * @return Parallel commands to zero the Climber, Elevator, and Shooter Pivot
    */
   public Command zeroSubsystems() {
-    Command returnedCommand = new ParallelCommandGroup(
+    zeroSubsystems = new ParallelCommandGroup(
         new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
         new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-    returnedCommand.setName("ZeroSubsystems");
-    returnedCommand.addRequirements(subStateMachine);
-    return returnedCommand;
+    zeroSubsystems.setName("ZeroSubsystems");
+    zeroSubsystems.addRequirements(subStateMachine);
+    return zeroSubsystems;
   }
 
   public Command AddVisionMeasurement() {
