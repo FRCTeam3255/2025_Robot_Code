@@ -114,7 +114,7 @@ public final class Constants {
             mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
     };
 
-    public static final double WHEEL_DIAMETER = 0.09779;
+    public static final double WHEEL_DIAMETER = 0.100203;
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
