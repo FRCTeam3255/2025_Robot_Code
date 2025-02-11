@@ -65,7 +65,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
-      m_robotContainer.defineManualZeroing();
       m_robotContainer.manualZeroSubsystems.schedule();
     }
   }
@@ -90,9 +89,9 @@ public class Robot extends TimedRobot {
     if (bothSubsystemsZeroed && m_autonomousCommand != null) {
       Commands.deferredProxy(() -> m_autonomousCommand).schedule();
     } else if (m_autonomousCommand != null) {
-      m_robotContainer.defineZeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
+      m_robotContainer.zeroSubsystems.andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
     } else {
-      m_robotContainer.defineZeroSubsystems().schedule();
+      m_robotContainer.zeroSubsystems.schedule();
     }
 
     hasAutonomousRun = true;
@@ -116,7 +115,7 @@ public class Robot extends TimedRobot {
     }
 
     if (!hasAutonomousRun || !bothSubsystemsZeroed) {
-      m_robotContainer.defineZeroSubsystems().schedule();
+      m_robotContainer.zeroSubsystems.schedule();
     }
   }
 

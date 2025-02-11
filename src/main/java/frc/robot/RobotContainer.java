@@ -142,10 +142,9 @@ public class RobotContainer {
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Command zeroSubsystems = new ParallelCommandGroup(
-        new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
-        new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
-  Command manualZeroSubsystems;
+      new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
+      new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
+      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
   Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
@@ -354,32 +353,6 @@ public class RobotContainer {
   private void configureAutoSelector() {
     autoChooser = AutoBuilder.buildAutoChooser("4-Piece-Low");
     SmartDashboard.putData(autoChooser);
-  }
-
-  public void defineManualZeroing() {
-    manualZeroSubsystems = new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
-        .ignoringDisable(true);
-    manualZeroSubsystems.setName("ManualZeroSubsystems");
-  }
-
-  /**
-   * Returns the command to zero all subsystems. This will make all subsystems
-   * move
-   * themselves downwards until they see a current spike and cancel any incoming
-   * commands that
-   * require those motors. If the zeroing does not end within a certain time
-   * frame (set in constants), it will interrupt itself.
-   * 
-   * @return Parallel commands to zero the Climber, Elevator, and Shooter Pivot
-   */
-  public Command defineZeroSubsystems() {
-    zeroSubsystems = new ParallelCommandGroup(
-        new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
-        new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-    zeroSubsystems.setName("ZeroSubsystems");
-    zeroSubsystems.addRequirements(subStateMachine);
-    return zeroSubsystems;
   }
 
   public Command AddVisionMeasurement() {
