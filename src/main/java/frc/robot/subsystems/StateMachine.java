@@ -90,7 +90,8 @@ public class StateMachine extends SubsystemBase {
       case INTAKING_CORAL_HOPPER:
         switch (currentRobotState) {
           case NONE:
-            return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator);
+            return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
+                subAlgaeIntake);
         }
         break;
 

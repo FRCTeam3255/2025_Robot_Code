@@ -40,9 +40,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -229,9 +227,9 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 115;
+      public static final double MASS = 143;
       // TODO: Calcuate the real vaule
-      public static final double MOI = 6.8;
+      public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
