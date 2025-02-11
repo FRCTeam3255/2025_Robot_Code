@@ -143,6 +143,9 @@ public class RobotContainer {
 
   Command zeroSubsystems;
   Command manualZeroSubsystems;
+  Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
+      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+      .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
