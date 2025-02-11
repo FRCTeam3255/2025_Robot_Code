@@ -9,9 +9,7 @@ import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constAlgaeIntake;
-import frc.robot.Constants.constElevator;
 import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Elevator;
 
 public class ZeroAlgaeIntake extends Command {
   AlgaeIntake subAlgaeIntake;
