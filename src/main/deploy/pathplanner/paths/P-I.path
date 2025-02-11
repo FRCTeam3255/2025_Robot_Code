@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.022485930490561,
-        "y": 5.861963767575542
+        "x": 6.821792763157894,
+        "y": 6.0359375
       },
       "isLocked": false,
       "linkedName": null
@@ -32,6 +32,12 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
     {
       "name": "PrepPlace",
       "waypointRelativePos": 0.8149253731343287,
