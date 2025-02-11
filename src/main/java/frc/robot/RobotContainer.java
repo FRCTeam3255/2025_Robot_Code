@@ -141,7 +141,10 @@ public class RobotContainer {
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
-  Command zeroSubsystems;
+  Command zeroSubsystems = new ParallelCommandGroup(
+        new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
+        new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
+        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
   Command manualZeroSubsystems;
   Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
