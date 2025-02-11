@@ -51,7 +51,7 @@ public class RobotContainer {
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake, subLED, subElevator);
+      subCoralOuttake, subLED, subElevator, subAlgaeIntake);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
   private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
@@ -156,10 +156,7 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    if (subCoralOuttake.sensorSeesCoral()) {
-      subStateMachine.setRobotState(RobotState.HAS_CORAL);
-      subCoralOuttake.setHasCoral(true);
-    }
+    checkForCoral();
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
@@ -379,5 +376,12 @@ public class RobotContainer {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public void checkForCoral() {
+    if (subCoralOuttake.sensorSeesCoral()) {
+      subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subCoralOuttake.setHasCoral(true);
+    }
   }
 }

@@ -16,17 +16,19 @@ public class IntakeCoralHopper extends Command {
   CoralOuttake globalCoralOuttake;
   Elevator globalElevator;
   LED globalLED;
+  AlgaeIntake globalAlgaeIntake;
   boolean hasSeenCoral = false;
 
   /** Creates a new IntakeCoralHopper. */
   public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
-      LED subLED, Elevator subElevator) {
+      LED subLED, Elevator subElevator, AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.globalHopper = subHopper;
     this.globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
     globalElevator = subElevator;
+    globalAlgaeIntake = subAlgaeIntake;
     addRequirements(globalStateMachine);
   }
 
@@ -34,6 +36,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
