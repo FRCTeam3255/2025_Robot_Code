@@ -7,9 +7,6 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.events.EventScheduler;
 import com.pathplanner.lib.events.EventTrigger;
 import java.util.Set;
 
@@ -24,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
@@ -56,11 +51,9 @@ public class RobotContainer {
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
       subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
-      subCoralOuttake, subLED, subElevator);
+      subCoralOuttake, subLED, subElevator, subAlgaeIntake);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
-  private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
-      subCoralOuttake, subLED, subStateMachine.getRobotState(), subElevator);
   private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
       conOperator, subStateMachine.getRobotState());
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
@@ -171,10 +164,7 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    if (subCoralOuttake.sensorSeesCoral()) {
-      subStateMachine.setRobotState(RobotState.HAS_CORAL);
-      subCoralOuttake.setHasCoral(true);
-    }
+    checkForCoral();
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
@@ -369,5 +359,12 @@ public class RobotContainer {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public void checkForCoral() {
+    if (subCoralOuttake.sensorSeesCoral()) {
+      subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subCoralOuttake.setHasCoral(true);
+    }
   }
 }
