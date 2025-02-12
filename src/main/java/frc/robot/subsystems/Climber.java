@@ -41,7 +41,7 @@ public class Climber extends SubsystemBase {
   }
 
   public Angle getClimberPosition() {
-    return Units.Rotations.of(climberMotor.getPosition().getValueAsDouble());
+    return climberMotor.getPosition().getValue();
   }
 
   public void setPosition(Angle angle) {
