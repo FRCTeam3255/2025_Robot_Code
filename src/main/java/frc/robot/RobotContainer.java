@@ -148,6 +148,8 @@ public class RobotContainer {
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
+    zeroSubsystems.addRequirements(subStateMachine);
+    manualZeroSubsystems.addRequirements(subStateMachine);
 
     subDrivetrain
         .setDefaultCommand(
