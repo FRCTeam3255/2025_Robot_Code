@@ -1,20 +1,20 @@
 {
-    "fileName": "SuperCORE.json",
-    "name": "SuperCORE",
-    "version": "2025.02.11.19.0949",
-    "frcYear": 2025,
-    "uuid": "f82a9412-6f53-4bc0-960c-6895a5236f57",
-    "mavenUrls": [
-        "http://127.0.0.1:5500/releases/"
-    ],
-    "jsonUrl": "http://127.0.0.1:5500/releases/com/frcteam3255/supercore/SuperCORE-latest.json",
-    "javaDependencies": [
-        {
-            "groupId": "com.frcteam3255",
-            "artifactId": "supercore",
-            "version": "2025.02.11.19.0949"
-        }
-    ],
-    "jniDependencies": [],
-    "cppDependencies": []
+  "fileName": "SuperCORE.json",
+  "name": "SuperCORE",
+  "version": "2025.1.0",
+  "frcYear": 2025,
+  "uuid": "f82a9412-6f53-4bc0-960c-6895a5236f57",
+  "mavenUrls": [
+    "https://frcteam3255.github.io/SuperCORE/releases/"
+  ],
+  "jsonUrl": "https://frcteam3255.github.io/SuperCORE/releases/com/frcteam3255/supercore/SuperCORE-latest.json",
+  "javaDependencies": [
+    {
+      "groupId": "com.frcteam3255",
+      "artifactId": "supercore",
+      "version": "2025.1.0"
+    }
+  ],
+  "jniDependencies": [],
+  "cppDependencies": []
 }
