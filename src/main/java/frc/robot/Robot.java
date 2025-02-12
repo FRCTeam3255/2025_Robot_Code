@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
-      m_robotContainer.checkForManualZeroing().schedule();
+      m_robotContainer.manualZeroSubsystems.schedule();
     }
   }
 
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledExit() {
-    m_robotContainer.checkForManualZeroing().cancel();
+    m_robotContainer.manualZeroSubsystems.cancel();
     m_robotContainer.checkForCoral();
   }
 
@@ -93,9 +93,9 @@ public class Robot extends TimedRobot {
     if (bothSubsystemsZeroed && m_autonomousCommand != null) {
       Commands.deferredProxy(() -> m_autonomousCommand).schedule();
     } else if (m_autonomousCommand != null) {
-      m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
+      m_robotContainer.zeroSubsystems.andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
     } else {
-      m_robotContainer.zeroSubsystems().schedule();
+      m_robotContainer.zeroSubsystems.schedule();
     }
 
     hasAutonomousRun = true;
@@ -113,14 +113,13 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
-    m_robotContainer.checkForManualZeroing().cancel();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
-    if (!hasAutonomousRun) {
-      m_robotContainer.zeroSubsystems().schedule();
+    if (!hasAutonomousRun || !bothSubsystemsZeroed) {
+      m_robotContainer.zeroSubsystems.schedule();
     }
   }
 
