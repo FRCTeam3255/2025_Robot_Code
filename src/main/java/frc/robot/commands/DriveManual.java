@@ -70,7 +70,7 @@ public class DriveManual extends Command {
         1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
 
     double actualDriveSpeed = constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
-    double transMultiplier = 0.0;
+    double transMultiplier = 1.0;
 
     if (actualDriveSpeed < slowMultiplier) {
       transMultiplier = actualDriveSpeed * redAllianceMultiplier * elevatorHeightMultiplier;
