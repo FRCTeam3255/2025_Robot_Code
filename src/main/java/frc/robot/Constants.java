@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.List;
@@ -41,6 +42,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.units.Units;
@@ -135,7 +137,7 @@ public final class Constants {
 
     // -- CONFIGS --
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final double DRIVE_P = 0.18;
+    public static final double DRIVE_P = 1.8;
     public static final double DRIVE_I = 0.0;
     public static final double DRIVE_D = 0;
 
@@ -221,7 +223,7 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 143;
+      public static final Mass MASS = Units.Pounds.of(0);
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
@@ -236,7 +238,8 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, TRACK_WIDTH / 2.0),
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
-      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS.in(Kilograms), MOI, MODULE_CONFIG,
+          MODULE_OFFSETS);
 
     }
 
