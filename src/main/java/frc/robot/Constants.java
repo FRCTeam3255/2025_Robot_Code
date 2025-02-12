@@ -223,7 +223,7 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Pounds.of(0);
+      public static final Mass MASS = Units.Pounds.of(20);
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
