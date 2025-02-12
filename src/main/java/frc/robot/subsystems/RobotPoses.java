@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Distance;
 import frc.robot.Robot;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constCoralOuttake;
@@ -49,7 +51,8 @@ public class RobotPoses extends SubsystemBase {
 
   @Override
   public void periodic() {
-    double elevatorPos, algaeAngle;
+    Distance elevatorPos;
+    Angle algaeAngle;
 
     // -- ROBOT POSITIONS --
     comp0Drivetrain = new Pose3d(subDrivetrain.getPose());
@@ -58,24 +61,28 @@ public class RobotPoses extends SubsystemBase {
     // exist. Instead, we'll log where we *want* the mechanisms to be and assume
     // they get there instantly.
     if (Robot.isSimulation()) {
-      elevatorPos = subElevator.getLastDesiredPosition().in(Units.Meters) / 2;
-      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle().in(Units.Degrees);
+      elevatorPos = subElevator.getLastDesiredPosition().div(2);
+      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle().unaryMinus();
     } else {
       // Use real positions
-      elevatorPos = (subElevator.getElevatorPosition().in(Units.Meters) / 2);
-      algaeAngle = -subAlgaeIntake.getPivotAngle().in(Units.Radians);
+      elevatorPos = (subElevator.getElevatorPosition().div(2));
+      algaeAngle = subAlgaeIntake.getPivotAngle().unaryMinus();
     }
 
-    comp1ElevatorStageOne = new Pose3d(new Translation3d(0.0889,
-        0,
-        0.109474 + elevatorPos), Rotation3d.kZero);
+    comp1ElevatorStageOne = new Pose3d(new Translation3d(Units.Meters.of(0.0889),
+        Units.Meters.of(0),
+        Units.Meters.of(0.109474).plus(elevatorPos)), Rotation3d.kZero);
 
     comp2ElevatorCarriage = comp1ElevatorStageOne
-        .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters) + elevatorPos),
+        .transformBy(new Transform3d(
+            new Translation3d(Units.Inches.of(0), Units.Inches.of(0), Units.Inches.of(1).plus(elevatorPos)),
             Rotation3d.kZero));
 
     comp3AlgaeIntake = comp2ElevatorCarriage
-        .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), new Rotation3d(0, algaeAngle, 0)));
+        .transformBy(
+            new Transform3d(new Translation3d(Units.Meters.of(0.075438), Units.Meters.of(0), Units.Meters.of(0.292354)),
+                new Rotation3d(Units.Degrees.of(0), algaeAngle.plus(constAlgaeIntake.ZEROED_POS),
+                    Units.Degrees.of(0))));
 
     // -- SCORING ELEMENTS --
     if (subAlgaeIntake.hasAlgae()) {
