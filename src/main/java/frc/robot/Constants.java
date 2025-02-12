@@ -137,7 +137,7 @@ public final class Constants {
 
     // -- CONFIGS --
     // This PID is implemented on each module, not the Drivetrain subsystem.
-    public static final double DRIVE_P = 1.8;
+    public static final double DRIVE_P = 0.18;
     public static final double DRIVE_I = 0.0;
     public static final double DRIVE_D = 0;
 
@@ -209,21 +209,21 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 6;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 2.5;
+      public static final double AUTO_STEER_P = 5.6; // 5.7 is also pretty good if we begin seeing undershooting
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Pounds.of(20);
+      public static final Mass MASS = Units.Kilograms.of(40);
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
