@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -39,6 +42,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.units.Units;
@@ -86,12 +90,9 @@ public final class Constants {
 
     }
 
-    // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
-    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
-        SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
-        0.09779 * Math.PI,
-        SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
-        SN_SwerveConstants.MK4I.FALCON.L2.maxSpeedMeters);
+    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
+    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
@@ -132,7 +133,15 @@ public final class Constants {
      * </p>
      */
     // TODO: Find the actual max speed
-    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(THEORETICAL_MAX_DRIVE_SPEED);
+    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(4.5);
+
+    // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
+    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+        SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
+        WHEEL_CIRCUMFERENCE,
+        SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
+        OBSERVED_DRIVE_SPEED.in(MetersPerSecond));
+
     // Physically measured from center to center of the wheels
     // Distance between Left & Right Wheels
     public static final double TRACK_WIDTH = Units.Meters.convertFrom(23.75, Units.Inches);
@@ -213,21 +222,21 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 6;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 2.5;
+      public static final double AUTO_STEER_P = 5.6; // 5.7 is also pretty good if we begin seeing undershooting
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 143;
+      public static final Mass MASS = Units.Kilograms.of(40);
       // TODO: Calcuate the real vaule
       public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
@@ -242,14 +251,15 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, TRACK_WIDTH / 2.0),
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
-      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS.in(Kilograms), MOI, MODULE_CONFIG,
+          MODULE_OFFSETS);
 
     }
 
     public static class TELEOP_AUTO_ALIGN {
       // TODO: Test if this actually works LOL
       public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
-          .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
+          .of(OBSERVED_DRIVE_SPEED.in(MetersPerSecond) / 4);
 
       public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
