@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ManualZeroElevator;
 import frc.robot.subsystems.Elevator;
 
 @Logged
@@ -67,6 +69,8 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
+
+    ManualZeroElevator.hasSetCoastMode = false;
 
     if (!hasAutonomousRun) {
       m_robotContainer.manualZeroSubsystems.schedule();
