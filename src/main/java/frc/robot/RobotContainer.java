@@ -7,9 +7,6 @@ package frc.robot;
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.events.EventScheduler;
 import com.pathplanner.lib.events.EventTrigger;
 import java.util.Set;
 
@@ -24,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
@@ -46,7 +41,7 @@ public class RobotContainer {
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Hopper subHopper = new Hopper();
-  private static final Vision subVision = new Vision();
+  private final Vision subVision = new Vision();
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
@@ -54,14 +49,17 @@ public class RobotContainer {
   private final LED subLED = new LED();
   private final RobotPoses robotPose = new RobotPoses(subDrivetrain, subElevator, subAlgaeIntake, subCoralOuttake);
   private final StateMachine subStateMachine = new StateMachine(subAlgaeIntake, subClimber, subCoralOuttake,
-      subDrivetrain, subElevator, subHopper, subLED);
-
+      subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator);
   private final Climb comClimb = new Climb(subStateMachine, subClimber, subLED);
   private final PlaceCoral comPlaceCoral = new PlaceCoral(subStateMachine,
       subCoralOuttake, subLED, subStateMachine.getRobotState());
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
+  private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
+      subAlgaeIntake, subLED);
+  private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
+      conOperator, subStateMachine.getRobotState());
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
@@ -93,8 +91,11 @@ public class RobotContainer {
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
 
-  Command TRY_CLIMBING_DEEP = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBING_DEEP));
+  Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+
+  Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
 
   Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
@@ -136,12 +137,22 @@ public class RobotContainer {
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Command zeroSubsystems = new ParallelCommandGroup(
+      new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
+      new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
+      .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
+  Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
+      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+      .ignoringDisable(true).withName("ManualZeroSubsystems");
+
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
+    zeroSubsystems.addRequirements(subStateMachine);
+    manualZeroSubsystems.addRequirements(subStateMachine);
 
     subDrivetrain
         .setDefaultCommand(
@@ -158,10 +169,7 @@ public class RobotContainer {
 
     subDrivetrain.resetModulesToAbsolute();
 
-    if (subCoralOuttake.sensorSeesCoral()) {
-      subStateMachine.setRobotState(RobotState.HAS_CORAL);
-      subCoralOuttake.setHasCoral(true);
-    }
+    checkForCoral();
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
@@ -204,8 +212,13 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_B
-        .onTrue(TRY_CLIMBING_DEEP);
+    controller.btn_A
+        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .onFalse(TRY_NONE);
+
+    controller.btn_Y
+        .whileTrue(TRY_CLIMBER_RETRACTING)
+        .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
@@ -217,8 +230,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_RightTrigger
-        .whileTrue(TRY_SCORING_CORAL)
-        .onFalse(TRY_NONE);
+        .onTrue(TRY_SCORING_CORAL);
 
     controller.btn_LeftBumper
         .whileTrue(TRY_INTAKING_ALGAE_GROUND)
@@ -292,7 +304,7 @@ public class RobotContainer {
 
     // RB: Score Coral
     controller.btn_RightTrigger
-        .whileTrue(comPlaceCoral);
+        .onTrue(comScoringCoral);
 
     // LB: Climb
     controller.btn_LeftTrigger
@@ -338,30 +350,6 @@ public class RobotContainer {
     SmartDashboard.putData(autoChooser);
   }
 
-  public Command checkForManualZeroing() {
-    return new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
-        .ignoringDisable(true);
-  }
-
-  /**
-   * Returns the command to zero all subsystems. This will make all subsystems
-   * move
-   * themselves downwards until they see a current spike and cancel any incoming
-   * commands that
-   * require those motors. If the zeroing does not end within a certain time
-   * frame (set in constants), it will interrupt itself.
-   * 
-   * @return Parallel commands to zero the Climber, Elevator, and Shooter Pivot
-   */
-  public Command zeroSubsystems() {
-    Command returnedCommand = new ParallelCommandGroup(
-        new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
-        new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming);
-    returnedCommand.addRequirements(subStateMachine);
-    return returnedCommand;
-  }
-
   public Command AddVisionMeasurement() {
     return new AddVisionMeasurement(subDrivetrain, subVision)
         .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
@@ -376,5 +364,12 @@ public class RobotContainer {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public void checkForCoral() {
+    if (subCoralOuttake.sensorSeesCoral()) {
+      subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subCoralOuttake.setHasCoral(true);
+    }
   }
 }

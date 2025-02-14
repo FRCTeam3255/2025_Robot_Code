@@ -40,9 +40,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -229,9 +227,9 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 115;
+      public static final double MASS = 143;
       // TODO: Calcuate the real vaule
-      public static final double MOI = 6.8;
+      public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
@@ -282,10 +280,10 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.8;
+    public static final double ALGAE_INTAKE_SPEED = 0.7;
     public static final double ALGAE_OUTTAKE_SPEED = -1;
 
-    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 6;
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
@@ -295,41 +293,45 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.21; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(55).in(Units.Rotations);
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0; // TODO: return to degrees
-      //
-      // // Why don't scientists trust atoms? Because they make up everything!
-      // // Why do crabs never share their things? - Because they are shellfish!
-      //
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-33).in(Units.Rotations);
+
+      // Why don't scientists trust atoms? Because they make up everything!
+      // Why do crabs never share their things? - Because they are shellfish!
+
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
-      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.4; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.5; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.45; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.2; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 0.8;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 19;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
-      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+      ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 8100;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RadiansPerSecond.of(250);
-    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(30);
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(2102 / 60);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(69.5);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(69.5);
+
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
+
+    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -342,7 +344,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle ZEROED_POS = Units.Degrees.of(0);
+    public static final Angle ZEROED_POS = Units.Degrees.of(-33);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -372,6 +374,8 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(1);
+
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
     static {
@@ -383,11 +387,19 @@ public final class Constants {
   }
 
   public static class constClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(10).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+          .in(Units.Rotations);
+
     }
   }
 
@@ -585,6 +597,8 @@ public final class Constants {
   }
 
   public static class constVision {
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-front", "limelight-back" };
+
     /**
      * <p>
      * Pose estimator standard deviation for vision data
@@ -635,13 +649,13 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = 1;
-    public static final double HOPPER_INDEXING_SPEED = 1;
+    public static final double HOPPER_SPEED = .75;
+    public static final double HOPPER_INDEXING_SPEED = .75;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {
-      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
   }
 
@@ -668,7 +682,7 @@ public final class Constants {
     public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
     public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
     public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
-    public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
   }
