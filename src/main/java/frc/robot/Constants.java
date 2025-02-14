@@ -94,6 +94,30 @@ public final class Constants {
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
+    /**
+     * <p>
+     * Observed maximum translational speed while manually driving on the
+     * Competition Robot.
+     * </p>
+     */
+    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(4.5);
+
+    // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
+    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
+        SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
+        WHEEL_CIRCUMFERENCE,
+        SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
+        OBSERVED_DRIVE_SPEED.in(MetersPerSecond));
+
+    /**
+     * <p>
+     * Theoretical maximum translational speed while manually driving on the
+     * Competition Robot.
+     * </p>
+     * <b>Units:</b> Meters Per Second
+     */
+    public static final double THEORETICAL_MAX_DRIVE_SPEED = SWERVE_CONSTANTS.maxSpeedMeters;
+
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
@@ -112,35 +136,6 @@ public final class Constants {
         new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
             mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
     };
-
-    public static final double WHEEL_DIAMETER = 0.100203;
-    public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
-    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-
-    /**
-     * <p>
-     * Theoretical maximum translational speed while manually driving on the
-     * Competition Robot.
-     * </p>
-     * <b>Units:</b> Meters Per Second
-     */
-    public static final double THEORETICAL_MAX_DRIVE_SPEED = SWERVE_CONSTANTS.maxSpeedMeters;
-
-    /**
-     * <p>
-     * Observed maximum translational speed while manually driving on the
-     * Competition Robot.
-     * </p>
-     */
-    // TODO: Find the actual max speed
-    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(4.5);
-
-    // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
-    public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
-        SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
-        WHEEL_CIRCUMFERENCE,
-        SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
-        OBSERVED_DRIVE_SPEED.in(MetersPerSecond));
 
     // Physically measured from center to center of the wheels
     // Distance between Left & Right Wheels
