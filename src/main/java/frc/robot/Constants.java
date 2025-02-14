@@ -638,14 +638,26 @@ public final class Constants {
     public static final double AREA_THRESHOLD = 0.2;
 
     // The below values are accounted for in the limelight interface, NOT in code
-    public static final Distance LL_FORWARD = Units.Meters.of(0.3302);
-    public static final Distance LL_RIGHT = Units.Meters.of(-0.2921);
-    public static final Distance LL_UP = Units.Meters.of(0.2286);
+    public static class LIMELIGHT_FRONT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.264363);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.31115);
+      public static final Distance LL_UP = Units.Meters.of(0.2286);
 
-    public static final Angle LL_ROLL = Units.Degrees.of(0);
-    public static final Angle LL_PITCH = Units.Degrees.of(15.92);
-    public static final Angle LL_YAW = Units.Degrees.of(-20);
+      public static final Angle LL_ROLL = Units.Degrees.of(0);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(51.25);
+    }
 
+    public static class LIMELIGHT_BACK {
+      // TOOD: GET THESE NUMBERS AGAIN FROM THE LIMELIGHT TUNER
+      public static final Distance LL_FORWARD = Units.Meters.of(0.3302);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.2921);
+      public static final Distance LL_UP = Units.Meters.of(0.2286);
+
+      public static final Angle LL_ROLL = Units.Degrees.of(0);
+      public static final Angle LL_PITCH = Units.Degrees.of(15.92);
+      public static final Angle LL_YAW = Units.Degrees.of(-20);
+    }
   }
 
   public static class constHopper {
