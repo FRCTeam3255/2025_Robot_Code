@@ -4,19 +4,16 @@ about: Create a report to help us improve
 title: ''
 labels: 🦟™ Bug
 assignees: ''
-body:
-- type: dropdown
-    id: dropdown-0
-    attributes:
-      label: Testing Criteria
-      description: What must be completed for this to be merged in?
-      options:
-        - No testing required - Not Robot Code
-        - Tested in Sim
-        - Tested on the Real Robot
-        - Other (Write Below)
-      default: 1
 ---
+
+**Testing Criteria**
+
+<!-- Add a x into whatever square you want to be checked -->
+
+- [ ] No testing required - Not Robot Code
+- [ ] Tested in Sim
+- [ ] Tested on the Real Robot
+- [ ] Other (Write Below)
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
