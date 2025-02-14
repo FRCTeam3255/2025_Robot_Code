@@ -5,6 +5,9 @@
         "header": {
           "open": true
         }
+      },
+      "window": {
+        "visible": false
       }
     }
   },
@@ -38,6 +41,11 @@
         "right": 2961,
         "top": 79,
         "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[1]": {
         "window": {
           "visible": true
         }
