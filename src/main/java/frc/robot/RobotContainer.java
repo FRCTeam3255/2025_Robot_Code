@@ -131,7 +131,8 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
-
+  Command HAS_CORAL_RUMBLE = new HasCoralRumble(
+      conDriver, conOperator);
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Command zeroSubsystems = new ParallelCommandGroup(
@@ -276,7 +277,7 @@ public class RobotContainer {
 
   private void configureSensorBindings() {
     hasCoralTrigger
-        .whileTrue(TRY_HAS_CORAL);
+        .whileTrue(TRY_HAS_CORAL).onTrue(HAS_CORAL_RUMBLE);
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
