@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
@@ -30,6 +31,7 @@ import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 @Logged
 public class RobotContainer {
@@ -134,6 +136,9 @@ public class RobotContainer {
   Command HAS_CORAL_RUMBLE = new HasCoralRumble(
       conDriver, conOperator);
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
+
+  private final BooleanSupplier readytoPlaceDriver = (() -> subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint()
+      && subHopper.getHopperSensor());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
@@ -281,6 +286,18 @@ public class RobotContainer {
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
+
+    new Trigger(readytoPlaceDriver).onTrue(
+        Commands
+            .runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE))
+            .alongWith(Commands.runOnce(
+                () -> conOperator.setRumble(RumbleType.kBothRumble, constControllers.OPERATOR_READY_TO_PLACE_RUMBLE))))
+        .onFalse(
+            Commands.runOnce(
+                () -> conDriver.setRumble(RumbleType.kBothRumble, 0))
+                .alongWith(
+                    Commands.runOnce(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))));
+
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
