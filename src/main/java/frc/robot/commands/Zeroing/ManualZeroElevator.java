@@ -4,8 +4,11 @@
 
 package frc.robot.commands.Zeroing;
 
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,11 +32,14 @@ public class ManualZeroElevator extends Command {
   @Override
   public void initialize() {
     globalElevator.setSoftwareLimits(false, true);
-    globalElevator.setCoastMode(true);
   }
 
   @Override
   public void execute() {
+    if (globalElevator.getElevatorPosition().lte(constElevator.ZEROED_ZONE)) {
+      globalElevator.setCoastMode(true);
+    }
+
     // Check if we have raised the elevator above a certain speed
     if (globalElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
         || globalElevator.attemptingZeroing) {
