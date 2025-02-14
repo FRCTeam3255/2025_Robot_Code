@@ -7,7 +7,9 @@ assignees: ''
 ---
 
 **Testing Criteria**
+
 <!-- Add a x into whatever square you want to be checked -->
+
 - [ ] No testing required - Not Robot Code
 - [ ] Tested in Sim
 - [ ] Tested on the Real Robot
