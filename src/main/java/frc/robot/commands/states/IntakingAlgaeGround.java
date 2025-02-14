@@ -6,6 +6,7 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
@@ -50,6 +51,7 @@ public class IntakingAlgaeGround extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }
 
   // Returns true when the command should end.
