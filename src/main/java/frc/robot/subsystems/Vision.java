@@ -9,6 +9,7 @@ import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
 import java.util.Optional;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.AngularVelocity;
 
@@ -20,7 +21,10 @@ public class Vision extends SubsystemBase {
   PoseEstimate lastEstimateFront = new PoseEstimate();
   PoseEstimate lastEstimateBack = new PoseEstimate();
 
+  // Not logged, as they turn to false immediately after being read
+  @NotLogged
   boolean newFrontEstimate = false;
+  @NotLogged
   boolean newBackEstimate = false;
 
   Pose2d frontPose = new Pose2d();
