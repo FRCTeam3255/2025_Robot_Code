@@ -10,17 +10,14 @@ assignees: ''
 A clear and concise description of the task.
 
 **Testing Criteria**
-- type: dropdown
-  id: dropdown-0
-  attributes:
-    label: Testing Criteria
-    description: What must be completed for this to be merged in?
-    options:
-      - No testing required - Not Robot Code
-      - Tested in Sim
-      - Tested on the Real Robot
-      - Other (Write Below)
-    default: 1
+What must be completed for this to be merged in?
+
+<!-- Add a "x" into whatever square you want to be checked -->
+
+- [ ] No testing required - Not Robot Code
+- [ ] Tested in Sim
+- [ ] Tested on the Real Robot
+- [ ] Other (Write Below)
 
 **Steps to Complete**
 - [ ] Step 1
