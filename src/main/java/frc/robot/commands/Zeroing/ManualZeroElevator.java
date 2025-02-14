@@ -29,6 +29,7 @@ public class ManualZeroElevator extends Command {
   @Override
   public void initialize() {
     globalElevator.setSoftwareLimits(false, true);
+    globalElevator.setCoastMode(true);
   }
 
   @Override
@@ -67,6 +68,7 @@ public class ManualZeroElevator extends Command {
     if (!interrupted) {
       globalElevator.hasZeroed = true;
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
+      globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");

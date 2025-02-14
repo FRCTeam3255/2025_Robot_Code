@@ -145,7 +145,8 @@ public class RobotContainer {
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
+            new DriveManual(subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
+                conDriver.axis_RightX,
                 conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger));
 
     configureDriverBindings(conDriver);
@@ -340,11 +341,6 @@ public class RobotContainer {
   public Command checkForManualZeroing() {
     return new ManualZeroElevator(subElevator).alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
         .ignoringDisable(true);
-  }
-
-  public Command setElevatorCostMode(boolean coastMode) {
-    return Commands.runOnce(() -> subElevator.setCoastMode(coastMode), subElevator).ignoringDisable(true);
-
   }
 
   /**

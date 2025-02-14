@@ -47,8 +47,6 @@ public class Robot extends TimedRobot {
       DataLogManager.start();
     }
 
-    m_robotContainer.setElevatorCostMode(true);
-
     // Log data that is being put to shuffleboard
     DataLogManager.logNetworkTables(true);
     // Log the DS data and joysticks
