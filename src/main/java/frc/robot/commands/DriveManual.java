@@ -63,20 +63,23 @@ public class DriveManual extends Command {
       slowMultiplier = 1;
     }
 
-    // Get Joystick inputs
-    double elevatorHeightMultiplier = SN_Math.interpolate(
-        subElevator.getElevatorPosition().in(Units.Meters),
-        0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
-        1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
-
     double transMultiplier = slowMultiplier * redAllianceMultiplier
-        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
+        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
 
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
-            * elevatorHeightMultiplier);
+        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond));
+
+    if (subElevator.getElevatorPosition().gt(constElevator.CORAL_L3_HEIGHT)) {
+      if (xVelocity.gt(constElevator.MAX_L3_SPEED.times(0.5))) {
+        xVelocity = constElevator.MAX_L3_SPEED.times(0.5);
+      }
+  
+      if (yVelocity.gt(constElevator.MAX_L3_SPEED.times(0.5))) {
+        yVelocity = constElevator.MAX_L3_SPEED.times(0.5);
+      }
+    }
 
     // Reef auto-align
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {

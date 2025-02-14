@@ -475,6 +475,7 @@ public final class Constants {
         Units.Meters.convertFrom(194, Units.Millimeters), 0,
         Units.Meters.convertFrom(318 + 40, Units.Millimeters),
         new Rotation3d(0, Units.Radians.convertFrom(35, Units.Degrees), 0));
+    public static final LinearVelocity MAX_L3_SPEED = Units.MetersPerSecond.of(0.5);
   }
 
   public static class constField {
