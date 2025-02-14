@@ -54,8 +54,8 @@ public class RobotContainer {
       subCoralOuttake, subLED, subElevator, subAlgaeIntake);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
-  private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
-      conOperator, subStateMachine.getRobotState());
+  private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine,
+      subElevator, subLED, conOperator, subStateMachine.getRobotState());
   private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
