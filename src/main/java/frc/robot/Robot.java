@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
-      m_robotContainer.checkForManualZeroing().schedule();
+      m_robotContainer.manualZeroSubsystems.schedule();
     }
   }
 
@@ -80,7 +80,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledExit() {
-    m_robotContainer.checkForManualZeroing().cancel();
+    m_robotContainer.manualZeroSubsystems.cancel();
     m_robotContainer.checkForCoral();
   }
 
@@ -93,9 +93,9 @@ public class Robot extends TimedRobot {
     if (bothSubsystemsZeroed && m_autonomousCommand != null) {
       Commands.deferredProxy(() -> m_autonomousCommand).schedule();
     } else if (m_autonomousCommand != null) {
-      m_robotContainer.zeroSubsystems().andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
+      m_robotContainer.zeroSubsystems.andThen(Commands.deferredProxy(() -> m_autonomousCommand)).schedule();
     } else {
-      m_robotContainer.zeroSubsystems().schedule();
+      m_robotContainer.zeroSubsystems.schedule();
     }
 
     hasAutonomousRun = true;
@@ -113,14 +113,13 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
-    m_robotContainer.checkForManualZeroing().cancel();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
-    if (!hasAutonomousRun) {
-      m_robotContainer.zeroSubsystems().schedule();
+    if (!hasAutonomousRun || !bothSubsystemsZeroed) {
+      m_robotContainer.zeroSubsystems.schedule();
     }
   }
 
@@ -162,9 +161,9 @@ public class Robot extends TimedRobot {
     MutCurrent BACK_LEFT_DRIVE = Amps.mutable(PDH.getCurrent(9));
     MutCurrent FRONT_LEFT_STEER = Amps.mutable(PDH.getCurrent(10));
     MutCurrent FRONT_LEFT_DRIVE = Amps.mutable(PDH.getCurrent(11));
-    MutCurrent PORT12 = Amps.mutable(PDH.getCurrent(12));
-    MutCurrent PORT13 = Amps.mutable(PDH.getCurrent(13));
-    MutCurrent PORT14 = Amps.mutable(PDH.getCurrent(14));
+    MutCurrent ALGAE_PIVOT = Amps.mutable(PDH.getCurrent(12));
+    MutCurrent CORAL_OUTTAKE = Amps.mutable(PDH.getCurrent(13));
+    MutCurrent ALGAE_ROLLER = Amps.mutable(PDH.getCurrent(14));
     MutCurrent PORT15 = Amps.mutable(PDH.getCurrent(15));
     MutCurrent PORT16 = Amps.mutable(PDH.getCurrent(16));
     MutCurrent RADIO = Amps.mutable(PDH.getCurrent(17));
@@ -189,9 +188,9 @@ public class Robot extends TimedRobot {
       BACK_LEFT_DRIVE.mut_replace(PDH.getCurrent(9), Amps);
       FRONT_LEFT_STEER.mut_replace(PDH.getCurrent(10), Amps);
       FRONT_LEFT_DRIVE.mut_replace(PDH.getCurrent(11), Amps);
-      PORT12.mut_replace(PDH.getCurrent(12), Amps);
-      PORT13.mut_replace(PDH.getCurrent(13), Amps);
-      PORT14.mut_replace(PDH.getCurrent(14), Amps);
+      ALGAE_PIVOT.mut_replace(PDH.getCurrent(12), Amps);
+      CORAL_OUTTAKE.mut_replace(PDH.getCurrent(13), Amps);
+      ALGAE_ROLLER.mut_replace(PDH.getCurrent(14), Amps);
       PORT15.mut_replace(PDH.getCurrent(15), Amps);
       PORT16.mut_replace(PDH.getCurrent(16), Amps);
       RADIO.mut_replace(PDH.getCurrent(17), Amps);
