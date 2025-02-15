@@ -119,7 +119,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subAlgaeIntake, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
         }
         break;
 
@@ -130,7 +130,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subAlgaeIntake, subElevator, constElevator.CORAL_L2_HEIGHT, subLED);
         }
         break;
 
@@ -141,7 +141,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subAlgaeIntake, subElevator, constElevator.CORAL_L3_HEIGHT, subLED);
         }
         break;
 
@@ -152,7 +152,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subAlgaeIntake, subElevator, constElevator.CORAL_L4_HEIGHT, subLED);
         }
         break;
 
@@ -184,6 +184,12 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_ZERO:
             return new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
                 getRobotState());
+          // still allow us to score if we collect algae while scoring coral
+          case HAS_ALGAE:
+            if (subElevator.hasRequestedAnyCoralLevel()) {
+              return new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
+                  getRobotState());
+            }
         }
         break;
 
@@ -217,6 +223,11 @@ public class StateMachine extends SubsystemBase {
           case INTAKING_ALGAE_GROUND:
           case CLEANING_L2:
           case CLEANING_L3:
+          case PREP_CORAL_L1:
+          case PREP_CORAL_L2:
+          case PREP_CORAL_L3:
+          case PREP_CORAL_L4:
+          case SCORING_CORAL:
             return new HasAlgae(subStateMachine, subAlgaeIntake, subLED);
         }
         break;

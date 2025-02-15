@@ -31,8 +31,8 @@ public class ScoringCoral extends SequentialCommandGroup {
   double coralOuttakeSpeed;
 
   /** Creates a new CoralScoreSequence. */
-  public ScoringCoral(CoralOuttake subCoralOuttake, StateMachine subStateMachine, Elevator globalElevator,
-      LED subLED, SN_XboxController controller, RobotState desiredState) {
+  public ScoringCoral(CoralOuttake subCoralOuttake, StateMachine subStateMachine,
+      Elevator globalElevator, LED subLED, SN_XboxController controller, RobotState desiredState) {
     globalCoralOuttake = subCoralOuttake;
     globalStateMachine = subStateMachine;
     globalLED = subLED;
