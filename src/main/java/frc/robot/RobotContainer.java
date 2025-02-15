@@ -137,7 +137,7 @@ public class RobotContainer {
       conDriver, conOperator);
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
-  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint()
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
       && subHopper.getHopperSensor());
 
   Command zeroSubsystems = new ParallelCommandGroup(
@@ -289,14 +289,11 @@ public class RobotContainer {
 
     new Trigger(readytoPlaceCoral).onTrue(
         Commands
-            .runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE))
-            .alongWith(Commands.runOnce(
-                () -> conOperator.setRumble(RumbleType.kBothRumble, constControllers.OPERATOR_READY_TO_PLACE_RUMBLE))))
-        .onFalse(
-            Commands.runOnce(
-                () -> conDriver.setRumble(RumbleType.kBothRumble, 0))
-                .alongWith(
-                    Commands.runOnce(() -> conOperator.setRumble(RumbleType.kBothRumble, 0))));
+            .runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE)))
+        .onTrue(Commands.runOnce(
+            () -> conOperator.setRumble(RumbleType.kBothRumble, constControllers.OPERATOR_READY_TO_PLACE_RUMBLE)))
+        .onFalse(Commands.runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, 0)))
+        .onFalse(Commands.runOnce(() -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
   }
 

@@ -72,9 +72,9 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtAnyCoralScoringPosition() {
-    if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) &&
-        isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) &&
-        isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) &&
+    if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) ||
         isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT)) {
       return true;
     }
