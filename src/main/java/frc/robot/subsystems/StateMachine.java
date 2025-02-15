@@ -41,6 +41,7 @@ public class StateMachine extends SubsystemBase {
       Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED, SN_XboxController conOperator) {
     currentRobotState = RobotState.NONE;
     currentTargetState = TargetState.NONE;
+    currentDriverState = DriverState.MANUAL;
 
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;

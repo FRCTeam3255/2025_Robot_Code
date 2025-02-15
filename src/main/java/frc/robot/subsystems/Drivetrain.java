@@ -212,6 +212,7 @@ public class Drivetrain extends SN_SuperSwerve {
     } else {
       // Full auto-align
       ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
+      subStateMachine.setDriverState(driving);
 
       // Speed limit based on elevator height
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
