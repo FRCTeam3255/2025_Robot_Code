@@ -19,6 +19,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
+import frc.robot.Constants;
 import frc.robot.Constants.constAlgaeIntake;
 
 @Logged
@@ -83,6 +84,12 @@ public class AlgaeIntake extends SubsystemBase {
 
   public void resetSensorPosition(Angle zeroedPos) {
     intakePivotMotor.setPosition(zeroedPos);
+  }
+
+  public boolean isAtSetRotation() {
+    return (getPivotAngle()
+        .compareTo(getLastDesiredPivotAngle().minus(Constants.constAlgaeIntake.INTAKE_DEADZONE_DISTANCE)) > 0) &&
+        getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(Constants.constAlgaeIntake.INTAKE_DEADZONE_DISTANCE)) < 0;
   }
 
   public boolean hasAlgae() {
