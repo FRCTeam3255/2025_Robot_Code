@@ -21,6 +21,8 @@ public class ManualZeroElevator extends Command {
   boolean zeroingSuccess = false;
   Time zeroingTimestamp = Units.Seconds.of(0);
 
+  public static boolean hasSetCoastMode = false;
+
 
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
@@ -37,6 +39,12 @@ public class ManualZeroElevator extends Command {
 
   @Override
   public void execute() {
+
+    if (!hasSetCoastMode) {
+      globalElevator.setCoastMode(true);
+      hasSetCoastMode = true;
+    }
+
     // Check if we have raised the elevator above a certain speed
     if (globalElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
         || globalElevator.attemptingZeroing) {
