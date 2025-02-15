@@ -449,8 +449,6 @@ public final class Constants {
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
 
-    public static final Distance ZEROED_ZONE = Units.Inches.of(1.0);
-
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
