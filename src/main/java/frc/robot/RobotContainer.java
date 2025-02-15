@@ -149,6 +149,7 @@ public class RobotContainer {
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
+  private final Trigger seesCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
 
   public RobotContainer() {
@@ -283,7 +284,9 @@ public class RobotContainer {
 
   private void configureSensorBindings() {
     hasCoralTrigger
-        .whileTrue(TRY_HAS_CORAL).onTrue(HAS_CORAL_RUMBLE);
+        .whileTrue(TRY_HAS_CORAL);
+
+    seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
