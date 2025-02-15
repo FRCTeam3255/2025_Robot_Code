@@ -27,6 +27,8 @@ import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Rumbles.HasCoralRumble;
+import frc.robot.commands.Rumbles.ReadyToPlaceCoralRumble;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -133,12 +135,15 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
-  Command HAS_CORAL_RUMBLE = new HasCoralRumble(
-      conDriver, conOperator);
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Command HAS_CORAL_RUMBLE = new HasCoralRumble(conDriver, conOperator);
+  Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceCoralRumble(conDriver, conOperator, subElevator,
+      subCoralOuttake);
+
+  // Might want to add Drivetrain alignment for this?
   private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
-      && subHopper.getHopperSensor());
+      && subCoralOuttake.hasCoral());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
@@ -286,18 +291,12 @@ public class RobotContainer {
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
 
-    seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
-
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
-    new Trigger(readytoPlaceCoral).onTrue(
-        Commands
-            .runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE)))
-        .onTrue(Commands.runOnce(
-            () -> conOperator.setRumble(RumbleType.kBothRumble, constControllers.OPERATOR_READY_TO_PLACE_RUMBLE)))
-        .onFalse(Commands.runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, 0)))
-        .onFalse(Commands.runOnce(() -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
+    seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
+
+    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_CORAL_RUMBLE);
 
   }
 
