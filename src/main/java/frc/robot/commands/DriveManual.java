@@ -20,20 +20,24 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef;
+  BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
+      rightCoralStationFar;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
   public DriveManual(Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis, DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef) {
+      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
+      BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
+      BooleanSupplier rightCoralStationFar) {
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -41,6 +45,10 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.leftCoralStationNear = leftCoralStationNear;
+    this.rightCoralStationNear = rightCoralStationNear;
+    this.leftCoralStationFar = leftCoralStationFar;
+    this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
 
     isOpenLoop = true;
@@ -78,6 +86,31 @@ public class DriveManual extends Command {
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
+    // -- Coral Station --
+    if (leftCoralStationFar.getAsBoolean()) {
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
+          .getAlignmentSpeeds(Constants.constField.POSES.LEFT_CORAL_STATION_FAR);
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    }
+
+    if (leftCoralStationNear.getAsBoolean()) {
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
+          .getAlignmentSpeeds(Constants.constField.POSES.LEFT_CORAL_STATION_NEAR);
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    }
+
+    if (rightCoralStationFar.getAsBoolean()) {
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
+          .getAlignmentSpeeds(Constants.constField.POSES.RIGHT_CORAL_STATION_FAR);
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    }
+
+    if (rightCoralStationNear.getAsBoolean()) {
+      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
+          .getAlignmentSpeeds(Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR);
+      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+    }
+
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Reef auto-align is requested
@@ -94,6 +127,7 @@ public class DriveManual extends Command {
       subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
     }
+
   }
 
   @Override
