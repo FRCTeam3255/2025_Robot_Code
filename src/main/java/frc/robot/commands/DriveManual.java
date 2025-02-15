@@ -92,7 +92,7 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
@@ -101,7 +101,7 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
@@ -110,7 +110,7 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
@@ -119,7 +119,7 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
