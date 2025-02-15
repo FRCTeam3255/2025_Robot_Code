@@ -33,6 +33,9 @@ import edu.wpi.first.wpilibj.RobotController;
 
 @Logged
 public class RobotContainer {
+  private final String LEFT_LABEL = "Left";
+  private final String RIGHT_LABEL = "Right";
+
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -354,6 +357,14 @@ public class RobotContainer {
 
   public boolean allZeroed() {
     return subElevator.hasZeroed && subAlgaeIntake.hasZeroed;
+  }
+
+  public boolean isAligned() {
+    return subDrivetrain.isAligned();
+  }
+
+  public boolean elevatorAndAlgaeAtSetPoint() {
+    return subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint();
   }
 
   /**
