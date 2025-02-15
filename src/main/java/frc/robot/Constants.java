@@ -261,7 +261,7 @@ public final class Constants {
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
-          5,
+          4,
           0,
           0);
       public static final Distance AT_POINT_TOLERANCE = Units.Inches.of(0.5);
