@@ -65,6 +65,22 @@ public class Elevator extends SubsystemBase {
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
+  public boolean isAtSpecificSetpoint(Distance setpoint) {
+    return (getElevatorPosition()
+        .compareTo(setpoint.minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+        getElevatorPosition().compareTo(setpoint.plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public boolean isAtAnyCoralScoringPosition() {
+    if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) &&
+        isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) &&
+        isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) &&
+        isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT)) {
+      return true;
+    }
+    return false;
+  }
+
   public AngularVelocity getRotorVelocity() {
     return rightMotorLeader.getRotorVelocity().getValue();
   }

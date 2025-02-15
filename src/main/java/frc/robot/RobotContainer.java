@@ -137,7 +137,7 @@ public class RobotContainer {
       conDriver, conOperator);
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
-  private final BooleanSupplier readytoPlaceDriver = (() -> subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint()
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint()
       && subHopper.getHopperSensor());
 
   Command zeroSubsystems = new ParallelCommandGroup(
@@ -287,7 +287,7 @@ public class RobotContainer {
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
-    new Trigger(readytoPlaceDriver).onTrue(
+    new Trigger(readytoPlaceCoral).onTrue(
         Commands
             .runOnce(() -> conDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE))
             .alongWith(Commands.runOnce(
