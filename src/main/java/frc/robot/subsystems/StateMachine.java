@@ -187,6 +187,7 @@ public class StateMachine extends SubsystemBase {
       case INTAKING_ALGAE_GROUND:
         switch (currentRobotState) {
           case NONE:
+          case HAS_ALGAE:
             return new IntakingAlgaeGround(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
