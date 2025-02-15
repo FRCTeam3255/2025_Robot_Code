@@ -98,9 +98,9 @@ public class DriveManual extends Command {
       Pose2d desiredCage = subDrivetrain.getDesiredCage();
       Distance cageDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCage.getTranslation()));
-
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredCage);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      subDrivetrain.autoAlign(cageDistance, desiredCage, xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CAGE_DISTANCE, DriverState.CAGE_AUTO_DRIVING,
+          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
     }
 
     // -- Coral Station --
