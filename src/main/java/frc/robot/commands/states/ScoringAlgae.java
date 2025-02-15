@@ -38,7 +38,7 @@ public class ScoringAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalElevator.isAtSetPoint() && subAlgaeIntake.isAtSetpoint() && subAlgaeIntake.isAtSetRotation()) {
+    if (globalElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint() && subAlgaeIntake.isAtSetPoint()) {
       subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
     }
   }

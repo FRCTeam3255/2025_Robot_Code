@@ -86,12 +86,6 @@ public class AlgaeIntake extends SubsystemBase {
     intakePivotMotor.setPosition(zeroedPos);
   }
 
-  public boolean isAtSetRotation() {
-    return (getPivotAngle()
-        .compareTo(getLastDesiredPivotAngle().minus(Constants.constAlgaeIntake.INTAKE_DEADZONE_DISTANCE)) > 0) &&
-        getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(Constants.constAlgaeIntake.INTAKE_DEADZONE_DISTANCE)) < 0;
-  }
-
   public boolean hasAlgae() {
     Current intakeCurrent = intakeRollerMotor.getStatorCurrent().getValue();
 
@@ -130,7 +124,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.setVoltage(voltage);
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetPoint() {
     return (getPivotAngle()
         .compareTo(getLastDesiredPivotAngle().minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
         getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
