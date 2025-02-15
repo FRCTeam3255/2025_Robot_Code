@@ -73,6 +73,16 @@ public class Elevator extends SubsystemBase {
     return lastDesiredPosition;
   }
 
+  public void setCoastMode(Boolean coastMode) {
+    if (coastMode) {
+      rightMotorLeader.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+      leftMotorFollower.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+    } else {
+      rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+      leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    }
+  }
+
   public boolean isRotorVelocityZero() {
     return getRotorVelocity().isNear(Units.RotationsPerSecond.zero(), 0.01);
   }
