@@ -195,19 +195,21 @@ public class Drivetrain extends SN_SuperSwerve {
    * May align only rotationally, automatically drive to a branch, or be
    * overridden by the driver
    */
-  public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
-      LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
-    desiredAlignmentPose = desiredReef;
 
-    if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
+  public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance) {
+    desiredAlignmentPose = desiredTarget;
+
+    if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+          getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
 
     } else {
       // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef);
+      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
 
       // Speed limit based on elevator height
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
