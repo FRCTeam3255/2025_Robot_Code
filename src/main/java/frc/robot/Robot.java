@@ -1,5 +1,5 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Smutabletware; you can modify and/or share it under the terms mutable
+// Open Source Software; you can modify and/or share it under the terms
 // the WPILib BSD license file in the root directory mutable this project.
 
 package frc.robot;
@@ -11,9 +11,7 @@ import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.units.measure.MutCurrent;
-import edu.wpi.first.units.measure.MutCurrent;
 import edu.wpi.first.units.measure.MutVoltage;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -161,9 +159,9 @@ public class Robot extends TimedRobot {
     MutCurrent BACK_LEFT_DRIVE = Amps.mutable(PDH.getCurrent(9));
     MutCurrent FRONT_LEFT_STEER = Amps.mutable(PDH.getCurrent(10));
     MutCurrent FRONT_LEFT_DRIVE = Amps.mutable(PDH.getCurrent(11));
-    MutCurrent PORT12 = Amps.mutable(PDH.getCurrent(12));
-    MutCurrent PORT13 = Amps.mutable(PDH.getCurrent(13));
-    MutCurrent PORT14 = Amps.mutable(PDH.getCurrent(14));
+    MutCurrent ALGAE_PIVOT = Amps.mutable(PDH.getCurrent(12));
+    MutCurrent CORAL_OUTTAKE = Amps.mutable(PDH.getCurrent(13));
+    MutCurrent ALGAE_ROLLER = Amps.mutable(PDH.getCurrent(14));
     MutCurrent PORT15 = Amps.mutable(PDH.getCurrent(15));
     MutCurrent PORT16 = Amps.mutable(PDH.getCurrent(16));
     MutCurrent RADIO = Amps.mutable(PDH.getCurrent(17));
@@ -188,9 +186,9 @@ public class Robot extends TimedRobot {
       BACK_LEFT_DRIVE.mut_replace(PDH.getCurrent(9), Amps);
       FRONT_LEFT_STEER.mut_replace(PDH.getCurrent(10), Amps);
       FRONT_LEFT_DRIVE.mut_replace(PDH.getCurrent(11), Amps);
-      PORT12.mut_replace(PDH.getCurrent(12), Amps);
-      PORT13.mut_replace(PDH.getCurrent(13), Amps);
-      PORT14.mut_replace(PDH.getCurrent(14), Amps);
+      ALGAE_PIVOT.mut_replace(PDH.getCurrent(12), Amps);
+      CORAL_OUTTAKE.mut_replace(PDH.getCurrent(13), Amps);
+      ALGAE_ROLLER.mut_replace(PDH.getCurrent(14), Amps);
       PORT15.mut_replace(PDH.getCurrent(15), Amps);
       PORT16.mut_replace(PDH.getCurrent(16), Amps);
       RADIO.mut_replace(PDH.getCurrent(17), Amps);
