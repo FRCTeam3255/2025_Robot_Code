@@ -27,7 +27,9 @@ public class ManualZeroAlgaeIntake extends Command {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    globalAlgaeIntake.hasZeroed = false;
+  }
 
   @Override
   public void execute() {

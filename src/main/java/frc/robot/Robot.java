@@ -1,5 +1,5 @@
 // Copyright (c) FIRST and other WPILib contributors.
-// Open Source Smutabletware; you can modify and/or share it under the terms mutable
+// Open Source Software; you can modify and/or share it under the terms
 // the WPILib BSD license file in the root directory mutable this project.
 
 package frc.robot;

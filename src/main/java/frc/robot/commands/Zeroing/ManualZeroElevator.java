@@ -33,6 +33,7 @@ public class ManualZeroElevator extends Command {
   @Override
   public void initialize() {
     globalElevator.setSoftwareLimits(false, true);
+    globalElevator.hasZeroed = false;
   }
 
   @Override
