@@ -92,39 +92,39 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
-    if (leftCoralStationNear.getAsBoolean()) {
+    else if (leftCoralStationNear.getAsBoolean()) {
       Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
-    if (rightCoralStationFar.getAsBoolean()) {
+    else if (rightCoralStationFar.getAsBoolean()) {
       Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
-    if (rightCoralStationNear.getAsBoolean()) {
+    else if (rightCoralStationNear.getAsBoolean()) {
       Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
     }
 
     // -- Controlling --
-    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
@@ -134,7 +134,9 @@ public class DriveManual extends Command {
       // override)
       subDrivetrain.reefAutoDrive(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity,
           elevatorHeightMultiplier, isOpenLoop);
-    } else {
+    }
+
+    else {
       // Regular driving
       subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
