@@ -1,8 +1,13 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "CANcoder (v6)[1]": {
-        "name": "coralSensor"
+      "CANrange (v6)[32]": {
+        "header": {
+          "open": true
+        }
+      },
+      "window": {
+        "visible": false
       }
     }
   },
@@ -11,13 +16,36 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "Robot/commandScheduler": "Scheduler",
       "Robot/m_robotContainer/autoChooser": "String Chooser",
+      "Robot/m_robotContainer/subAlgaeIntake/intakeMotorOne": "Motor Controller",
+      "Robot/m_robotContainer/subAlgaeIntake/intakeMotorTwo": "Motor Controller",
+      "Robot/m_robotContainer/subAlgaeIntake/intakePivotMotor": "Motor Controller",
+      "Robot/m_robotContainer/subAlgaeIntake/intakeRollerMotor": "Motor Controller",
+      "Robot/m_robotContainer/subClimber/climberMotor": "Motor Controller",
+      "Robot/m_robotContainer/subClimber/climberMotor2": "Motor Controller",
+      "Robot/m_robotContainer/subCoralOuttake/outtakeMotor": "Motor Controller",
+      "Robot/m_robotContainer/subCoralOuttake/outtakeMotor2": "Motor Controller",
+      "Robot/m_robotContainer/subElevator/leftMotorFollower": "Motor Controller",
+      "Robot/m_robotContainer/subElevator/rightMotorLeader": "Motor Controller",
+      "Robot/m_robotContainer/subHopper/hopperMotor": "Motor Controller",
       "Robot/m_robotContainer/subHopper/hopperSensor": "Digital Input"
     },
     "windows": {
-      "Robot/m_robotContainer/autoChooser": {
+      "/SmartDashboard/Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[1]": {
         "window": {
           "visible": true
         }
@@ -25,9 +53,23 @@
     }
   },
   "NetworkTables": {
-    "combined": true
+    "transitory": {
+      "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
+        "open": true
+      }
+    }
   },
   "NetworkTables Info": {
-    "visible": false
+    "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "window": {
+        "visible": false
+      }
+    }
   }
 }

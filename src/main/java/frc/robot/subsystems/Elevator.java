@@ -77,11 +77,11 @@ public class Elevator extends SubsystemBase {
 
   public void setCoastMode(Boolean coastMode) {
     if (coastMode) {
-      rightMotorLeader.setNeutralMode(NeutralModeValue.Coast);
-      leftMotorFollower.setNeutralMode(NeutralModeValue.Coast);
+      rightMotorLeader.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+      leftMotorFollower.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
     } else {
-      rightMotorLeader.setNeutralMode(NeutralModeValue.Brake);
-      leftMotorFollower.setNeutralMode(NeutralModeValue.Brake);
+      rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+      leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     }
   }
 

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.022485930490561,
-        "y": 5.861963767575542
+        "x": 6.821792763157894,
+        "y": 6.0359375
       },
       "isLocked": false,
       "linkedName": null
@@ -33,6 +33,12 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "PrepPlace",
       "waypointRelativePos": 0.8149253731343287,
       "endWaypointRelativePos": null,
@@ -40,8 +46,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
