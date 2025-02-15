@@ -88,27 +88,39 @@ public class DriveManual extends Command {
 
     // -- Coral Station --
     if (leftCoralStationFar.getAsBoolean()) {
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
-          .getAlignmentSpeeds(Constants.constField.POSES.LEFT_CORAL_STATION_FAR);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          elevatorHeightMultiplier, isOpenLoop);
     }
 
     if (leftCoralStationNear.getAsBoolean()) {
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
-          .getAlignmentSpeeds(Constants.constField.POSES.LEFT_CORAL_STATION_NEAR);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          elevatorHeightMultiplier, isOpenLoop);
     }
 
     if (rightCoralStationFar.getAsBoolean()) {
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
-          .getAlignmentSpeeds(Constants.constField.POSES.RIGHT_CORAL_STATION_FAR);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          elevatorHeightMultiplier, isOpenLoop);
     }
 
     if (rightCoralStationNear.getAsBoolean()) {
-      ChassisSpeeds desiredChassisSpeeds = subDrivetrain
-          .getAlignmentSpeeds(Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR);
-      subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
+      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          elevatorHeightMultiplier, isOpenLoop);
     }
 
     // -- Controlling --
