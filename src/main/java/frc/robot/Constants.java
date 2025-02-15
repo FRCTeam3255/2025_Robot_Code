@@ -349,14 +349,14 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle ZEROED_POS = Units.Degrees.of(-33);
+    public static final Angle ZEROED_POS = Units.Degrees.of(60);
 
     /**
      * The elapsed time required to consider the motor as zeroed
      */
     public static final Time ZEROED_TIME = Units.Seconds.of(1);
 
-    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(1);
 
     public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(
         Units.Meters.convertFrom(450, Units.Millimeters), 0,
