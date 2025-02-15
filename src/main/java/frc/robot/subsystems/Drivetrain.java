@@ -34,6 +34,7 @@ import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
+import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
@@ -199,17 +200,19 @@ public class Drivetrain extends SN_SuperSwerve {
   public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
       LinearVelocity xVelocity,
       LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance) {
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
     desiredAlignmentPose = desiredTarget;
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
-
+      subStateMachine.setDriverState(rotating);
     } else {
       // Full auto-align
       ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
+      subStateMachine.setDriverState(driving);
 
       // Speed limit based on elevator height
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
