@@ -370,7 +370,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -438,7 +438,7 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
