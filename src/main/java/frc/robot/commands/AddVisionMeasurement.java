@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import com.frcteam3255.utils.LimelightHelpers;
 import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
+import java.util.Optional;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -41,10 +42,9 @@ public class AddVisionMeasurement extends Command {
         subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
     AngularVelocity gyroRate = Units.DegreesPerSecond.of(subDrivetrain.getGyroRate());
 
-    for (PoseEstimate estimatedPose : subVision.getPoseEstimates()) {
-      if (!subVision.rejectUpdate(estimatedPose, gyroRate)) {
-        subDrivetrain.addVisionMeasurement(estimatedPose.pose, estimatedPose.timestampSeconds);
-      }
+    Optional<PoseEstimate> estimatedPose = subVision.determinePoseEstimate(gyroRate);
+    if (estimatedPose.isPresent()) {
+      subDrivetrain.addVisionMeasurement(estimatedPose.get().pose, estimatedPose.get().timestampSeconds);
     }
   }
 

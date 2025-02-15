@@ -55,8 +55,7 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
-    subDrivetrain.setFieldRelative();
-
+    // -- Multipliers --
     if (slowMode.getAsBoolean()) {
       slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
     } else {
@@ -72,40 +71,29 @@ public class DriveManual extends Command {
     double transMultiplier = slowMultiplier * redAllianceMultiplier
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
 
+    // -- Velocities --
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
-    // Reef auto-align
+    // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+      // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredReef.getTranslation()));
 
-      if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
-        // Rotational-only auto-align
-        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-            subDrivetrain.getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
-
-        // Auto-align Driver Override
-      } else if (xVelocity.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
-        // Assumes that the driver only overrides if we're already facing the reef,
-        // so it can be robot relative to make things ezpz :>
-        subDrivetrain.setRobotRelative();
-        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-            rVelocity.in(RadiansPerSecond), isOpenLoop);
-      } else {
-        ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredReef);
-        subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
-      }
+      // Begin reef auto align (rotationally, automatically driving, or w/ a driver
+      // override)
+      subDrivetrain.reefAutoDrive(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity,
+          elevatorHeightMultiplier, isOpenLoop);
     } else {
       // Regular driving
       subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          rVelocity.in(RadiansPerSecond), isOpenLoop);
+          rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
     }
-
   }
 
   @Override
