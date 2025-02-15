@@ -20,21 +20,30 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.DriverState;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
+  StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, cageAlign;
+  BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
+      rightCoralStationFar, cageAlign;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
 
-  public DriveManual(Drivetrain subDrivetrain, DoubleSupplier xAxis, DoubleSupplier yAxis,
+  public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
+      DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
-      BooleanSupplier cageAlign) {
+      BooleanSupplier cageAlign,
+      BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
+      BooleanSupplier rightCoralStationFar) {
+    this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
@@ -42,6 +51,10 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
+    this.leftCoralStationNear = leftCoralStationNear;
+    this.rightCoralStationNear = rightCoralStationNear;
+    this.leftCoralStationFar = leftCoralStationFar;
+    this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
     this.cageAlign = cageAlign;
 
@@ -57,8 +70,7 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
-    subDrivetrain.setFieldRelative();
-
+    // -- Multipliers --
     if (slowMode.getAsBoolean()) {
       slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
     } else {
@@ -74,6 +86,7 @@ public class DriveManual extends Command {
     double transMultiplier = slowMultiplier * redAllianceMultiplier
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
 
+    // -- Velocities --
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
@@ -90,34 +103,73 @@ public class DriveManual extends Command {
       subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
     }
 
-    // Reef auto-align
-    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    // -- Coral Station --
+    else if (leftCoralStationFar.getAsBoolean()) {
+      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else if (leftCoralStationNear.getAsBoolean()) {
+      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else if (rightCoralStationFar.getAsBoolean()) {
+      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else if (rightCoralStationNear.getAsBoolean()) {
+      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    // -- Controlling --
+    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+      // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredReef.getTranslation()));
 
-      if (reefDistance.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
-        // Rotational-only auto-align
-        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-            subDrivetrain.getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
-
-        // Auto-align Driver Override
-      } else if (xVelocity.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MIN_DRIVER_OVERRIDE)) {
-        // Assumes that the driver only overrides if we're already facing the reef,
-        // so it can be robot relative to make things ezpz :>
-        subDrivetrain.setRobotRelative();
-        subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-            rVelocity.in(RadiansPerSecond), isOpenLoop);
-      } else {
-        ChassisSpeeds desiredChassisSpeeds = subDrivetrain.getAlignmentSpeeds(desiredReef);
-        subDrivetrain.drive(desiredChassisSpeeds, isOpenLoop);
-      }
-    } else {
-      // Regular driving
-      subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          rVelocity.in(RadiansPerSecond), isOpenLoop);
+      // Begin reef auto align (rotationally, automatically driving, or w/ a driver
+      // override)
+      subDrivetrain.autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+          DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
+      ;
     }
 
+    else {
+      // Regular driving
+      subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+          rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
+      subStateMachine.setDriverState(DriverState.MANUAL);
+    }
   }
 
   @Override

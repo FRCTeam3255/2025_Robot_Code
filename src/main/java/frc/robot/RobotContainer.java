@@ -153,9 +153,10 @@ public class RobotContainer {
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, conDriver.axis_LeftY, conDriver.axis_LeftX, conDriver.axis_RightX,
-                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
-                conDriver.btn_RightBumper));
+            new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
+                conDriver.axis_RightX,
+                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,conDriver.btn_RightBumper, conDriver.btn_A,
+                conDriver.btn_B, conDriver.btn_X, conDriver.btn_Y));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -209,13 +210,13 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_A
-        .whileTrue(TRY_CLIMBER_DEPLOYING)
-        .onFalse(TRY_NONE);
+    // controller.btn_A
+    // .whileTrue(TRY_CLIMBER_DEPLOYING)
+    // .onFalse(TRY_NONE);
 
-    controller.btn_Y
-        .whileTrue(TRY_CLIMBER_RETRACTING)
-        .onFalse(TRY_NONE);
+    // controller.btn_Y
+    // .whileTrue(TRY_CLIMBER_RETRACTING)
+    // .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
