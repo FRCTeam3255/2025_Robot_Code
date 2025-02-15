@@ -3,47 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 1.5,
+        "y": 1.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8010928890729163,
-        "y": 7.171716640066399
+        "x": 0.5,
+        "y": 1.5
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.297,
-        "y": 5.068
+        "x": 0.0,
+        "y": 1.5
       },
       "prevControl": {
-        "x": 6.642985915492957,
-        "y": 5.974940140845069
+        "x": 1.0,
+        "y": 1.4999999999999998
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.48550724637681153,
-      "rotationDegrees": -53.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepPlace",
-      "waypointRelativePos": 0.7910447761194033,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 10.0,
@@ -54,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "CSTop-Score",
+  "folder": "Tuning",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

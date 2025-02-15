@@ -6,10 +6,11 @@ package frc.robot.subsystems;
 
 import com.frcteam3255.utils.LimelightHelpers;
 import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
+import java.util.Optional;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.units.measure.AngularVelocity;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,6 +21,12 @@ public class Vision extends SubsystemBase {
   PoseEstimate lastEstimateFront = new PoseEstimate();
   PoseEstimate lastEstimateBack = new PoseEstimate();
 
+  // Not logged, as they turn to false immediately after being read
+  @NotLogged
+  boolean newFrontEstimate = false;
+  @NotLogged
+  boolean newBackEstimate = false;
+
   Pose2d frontPose = new Pose2d();
   Pose2d backPose = new Pose2d();
 
@@ -28,16 +35,8 @@ public class Vision extends SubsystemBase {
   public Vision() {
   }
 
-  public PoseEstimate getFrontPoseEstimate() {
-    return lastEstimateFront;
-  }
-
-  public PoseEstimate getBackPoseEstimate() {
-    return lastEstimateBack;
-  }
-
-  public PoseEstimate[] getPoseEstimates() {
-    return new PoseEstimate[] { getFrontPoseEstimate(), getBackPoseEstimate() };
+  public PoseEstimate[] getLastPoseEstimates() {
+    return new PoseEstimate[] { lastEstimateFront, lastEstimateBack };
   }
 
   public void setMegaTag2(boolean useMegaTag2) {
@@ -76,26 +75,80 @@ public class Vision extends SubsystemBase {
     return true;
   }
 
-  @Override
-  public void periodic() {
-    PoseEstimate currentFrontEstimate;
-    PoseEstimate currentBackEstimate;
+  /**
+   * Updates the current pose estimates for the front and back of the robot using
+   * data from Limelight cameras.
+   *
+   * @param gyroRate The current angular velocity of the robot, used to validate
+   *                 the pose estimates.
+   *
+   *                 This method retrieves pose estimates from two Limelight
+   *                 cameras (front and back) and updates the
+   *                 corresponding pose estimates if they are valid. The method
+   *                 supports two modes of operation:
+   *                 one using MegaTag2 and one without. The appropriate pose
+   *                 estimate retrieval method is chosen
+   *                 based on the value of the `useMegaTag2` flag.
+   *
+   *                 If the retrieved pose estimates are valid and not rejected
+   *                 based on the current angular velocity,
+   *                 the method updates the last known estimates and sets flags
+   *                 indicating new estimates are available.
+   */
+  public void setCurrentEstimates(AngularVelocity gyroRate) {
+    PoseEstimate currentEstimateFront = new PoseEstimate();
+    PoseEstimate currentEstimateBack = new PoseEstimate();
 
     if (useMegaTag2) {
-      currentFrontEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
-      currentBackEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateFront = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
     } else {
-      currentFrontEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
-      currentBackEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateFront = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
     }
 
-    if (currentFrontEstimate != null) {
-      lastEstimateFront = currentFrontEstimate;
-      frontPose = currentFrontEstimate.pose;
+    if (currentEstimateFront != null && !rejectUpdate(currentEstimateFront, gyroRate)) {
+      lastEstimateFront = currentEstimateFront;
+      frontPose = currentEstimateFront.pose;
+      newFrontEstimate = true;
     }
-    if (currentBackEstimate != null) {
-      lastEstimateBack = currentBackEstimate;
-      backPose = currentBackEstimate.pose;
+    if (currentEstimateBack != null && !rejectUpdate(currentEstimateBack, gyroRate)) {
+      lastEstimateBack = currentEstimateBack;
+      backPose = currentEstimateBack.pose;
+      newBackEstimate = true;
     }
+  }
+
+  public Optional<PoseEstimate> determinePoseEstimate(AngularVelocity gyroRate) {
+    setCurrentEstimates(gyroRate);
+
+    // No valid pose estimates :(
+    if (!newFrontEstimate && !newBackEstimate) {
+      return Optional.empty();
+
+    } else if (newFrontEstimate && !newBackEstimate) {
+      // One valid pose estimate (front)
+      newFrontEstimate = false;
+      return Optional.of(lastEstimateFront);
+
+    } else if (!newFrontEstimate && newBackEstimate) {
+      // One valid pose estimate (back)
+      newBackEstimate = false;
+      return Optional.of(lastEstimateBack);
+
+    } else {
+      // Two valid pose estimates, disgard the one that's further
+      newFrontEstimate = false;
+      newBackEstimate = false;
+      if (lastEstimateBack.avgTagDist < lastEstimateFront.avgTagDist) {
+        return Optional.of(lastEstimateFront);
+      } else {
+        return Optional.of(lastEstimateBack);
+      }
+    }
+  }
+
+  @Override
+  public void periodic() {
   }
 }
