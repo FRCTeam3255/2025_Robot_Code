@@ -195,54 +195,54 @@ public class Drivetrain extends SN_SuperSwerve {
    * May align only rotationally, automatically drive to a branch, or be
    * overridden by the driver
    */
-  public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
-      LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
-    desiredAlignmentPose = desiredReef;
+  // public void reefAutoDrive(Distance distanceFromReef, Pose2d desiredReef, LinearVelocity xVelocity,
+  //     LinearVelocity yVelocity,
+  //     AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
+  //   desiredAlignmentPose = desiredReef;
 
-    if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
-      // Rotational-only auto-align
-      drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+  //   if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
+  //     // Rotational-only auto-align
+  //     drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+  //         getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
 
-    } else {
-      // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef);
+  //   } else {
+  //     // Full auto-align
+  //     ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef);
 
-      // Speed limit based on elevator height
-      LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
-      AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
+  //     // Speed limit based on elevator height
+  //     LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
+  //     AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
 
-      if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-          || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-          || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
+  //     if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+  //         || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+  //         || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
 
-        desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
-            linearSpeedLimit.in(MetersPerSecond));
-        desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
-            linearSpeedLimit.in(MetersPerSecond));
-        desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
-            angularSpeedLimit.in(RadiansPerSecond));
-      }
+  //       desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
+  //           linearSpeedLimit.in(MetersPerSecond));
+  //       desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
+  //           linearSpeedLimit.in(MetersPerSecond));
+  //       desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
+  //           angularSpeedLimit.in(RadiansPerSecond));
+  //     }
 
-      drive(desiredChassisSpeeds, isOpenLoop);
-    }
-  }
+  //     drive(desiredChassisSpeeds, isOpenLoop);
+  // }
+  // }
 
-  public void coralStationAutoDrive(Distance distanceFromCoralStation, Pose2d desiredCoralStation,
+  public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
       LinearVelocity xVelocity,
       LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
-    desiredAlignmentPose = desiredCoralStation;
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance) {
+    desiredAlignmentPose = desiredTarget;
 
-    if (distanceFromCoralStation.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE)) {
+    if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
-          getVelocityToRotate(desiredCoralStation.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+          getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
 
     } else {
       // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredCoralStation);
+      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
 
       // Speed limit based on elevator height
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
