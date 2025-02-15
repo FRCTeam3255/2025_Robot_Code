@@ -261,7 +261,7 @@ public final class Constants {
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
-          5,
+          4,
           0,
           0);
       public static final Distance AT_POINT_TOLERANCE = Units.Inches.of(0.5);
@@ -638,7 +638,7 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-front", "limelight-back" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
 
     /**
      * <p>
@@ -679,7 +679,7 @@ public final class Constants {
     public static final double AREA_THRESHOLD = 0.2;
 
     // The below values are accounted for in the limelight interface, NOT in code
-    public static class LIMELIGHT_FRONT {
+    public static class LIMELIGHT_RIGHT {
       public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
       public static final Distance LL_RIGHT = Units.Meters.of(0.307594);
       public static final Distance LL_UP = Units.Meters.of(0.211328);
@@ -689,14 +689,15 @@ public final class Constants {
       public static final Angle LL_YAW = Units.Degrees.of(51.25);
     }
 
-    public static class LIMELIGHT_BACK {
-      public static final Distance LL_FORWARD = Units.Meters.of(-0.3302);
-      public static final Distance LL_RIGHT = Units.Meters.of(0.2921);
-      public static final Distance LL_UP = Units.Meters.of(0.2286);
+    public static class LIMELIGHT_LEFT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.307594);
+      public static final Distance LL_UP = Units.Meters.of(0.211328);
 
-      public static final Angle LL_ROLL = Units.Degrees.of(0);
-      public static final Angle LL_PITCH = Units.Degrees.of(15.92);
-      public static final Angle LL_YAW = Units.Degrees.of(160);
+      public static final Angle LL_ROLL = Units.Degrees.of(180);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(-51.25);
+
     }
   }
 
