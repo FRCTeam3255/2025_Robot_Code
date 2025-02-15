@@ -92,8 +92,8 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          elevatorHeightMultiplier, isOpenLoop);
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop);
     }
 
     else if (leftCoralStationNear.getAsBoolean()) {
@@ -101,8 +101,8 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          elevatorHeightMultiplier, isOpenLoop);
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop);
     }
 
     else if (rightCoralStationFar.getAsBoolean()) {
@@ -110,8 +110,8 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          elevatorHeightMultiplier, isOpenLoop);
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop);
     }
 
     else if (rightCoralStationNear.getAsBoolean()) {
@@ -119,8 +119,8 @@ public class DriveManual extends Command {
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
 
-      subDrivetrain.reefAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          elevatorHeightMultiplier, isOpenLoop);
+      subDrivetrain.coralStationAutoDrive(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop);
     }
 
     // -- Controlling --

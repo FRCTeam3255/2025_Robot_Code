@@ -200,7 +200,7 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
     desiredAlignmentPose = desiredReef;
 
-    if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_DISTANCE)) {
+    if (distanceFromReef.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Rotational-only auto-align
       drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           getVelocityToRotate(desiredReef.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
@@ -208,6 +208,41 @@ public class Drivetrain extends SN_SuperSwerve {
     } else {
       // Full auto-align
       ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredReef);
+
+      // Speed limit based on elevator height
+      LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
+      AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
+
+      if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+          || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+          || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
+
+        desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
+            linearSpeedLimit.in(MetersPerSecond));
+        desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
+            linearSpeedLimit.in(MetersPerSecond));
+        desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
+            angularSpeedLimit.in(RadiansPerSecond));
+      }
+
+      drive(desiredChassisSpeeds, isOpenLoop);
+    }
+  }
+
+  public void coralStationAutoDrive(Distance distanceFromCoralStation, Pose2d desiredCoralStation,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop) {
+    desiredAlignmentPose = desiredCoralStation;
+
+    if (distanceFromCoralStation.gte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE)) {
+      // Rotational-only auto-align
+      drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+          getVelocityToRotate(desiredCoralStation.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+
+    } else {
+      // Full auto-align
+      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredCoralStation);
 
       // Speed limit based on elevator height
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
