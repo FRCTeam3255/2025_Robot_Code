@@ -15,7 +15,7 @@
             "height": 128.0,
             "type": "Large Text Display",
             "properties": {
-              "topic": "Robot/m_robotContainer/subStateMachine/getRobotState",
+              "topic": "Robot/m_robotContainer/subStateMachine/getDriverState",
               "period": 0.06,
               "data_type": "string"
             }
