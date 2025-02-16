@@ -262,7 +262,7 @@ public final class Constants {
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
-          5,
+          4,
           0,
           0);
       public static final Distance AT_POINT_TOLERANCE = Units.Inches.of(0.5);
@@ -291,6 +291,8 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -0.6;
+
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); //TODO: Tune this
 
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
@@ -373,7 +375,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -447,8 +449,8 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Coast;
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
-    
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
+
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
@@ -639,7 +641,7 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-front", "limelight-back" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
 
     /**
      * <p>
@@ -680,7 +682,7 @@ public final class Constants {
     public static final double AREA_THRESHOLD = 0.2;
 
     // The below values are accounted for in the limelight interface, NOT in code
-    public static class LIMELIGHT_FRONT {
+    public static class LIMELIGHT_RIGHT {
       public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
       public static final Distance LL_RIGHT = Units.Meters.of(0.307594);
       public static final Distance LL_UP = Units.Meters.of(0.211328);
@@ -690,14 +692,15 @@ public final class Constants {
       public static final Angle LL_YAW = Units.Degrees.of(51.25);
     }
 
-    public static class LIMELIGHT_BACK {
-      public static final Distance LL_FORWARD = Units.Meters.of(-0.3302);
-      public static final Distance LL_RIGHT = Units.Meters.of(0.2921);
-      public static final Distance LL_UP = Units.Meters.of(0.2286);
+    public static class LIMELIGHT_LEFT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.307594);
+      public static final Distance LL_UP = Units.Meters.of(0.211328);
 
-      public static final Angle LL_ROLL = Units.Degrees.of(0);
-      public static final Angle LL_PITCH = Units.Degrees.of(15.92);
-      public static final Angle LL_YAW = Units.Degrees.of(160);
+      public static final Angle LL_ROLL = Units.Degrees.of(180);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(-51.25);
+
     }
   }
 
