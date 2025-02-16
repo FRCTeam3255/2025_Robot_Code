@@ -608,7 +608,7 @@ public final class Constants {
         returnedPoses[i] = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE.get(i));
       }
 
-      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
+      return List.of(returnedPoses[0]);
     }
 
     /**
