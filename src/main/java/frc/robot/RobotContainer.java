@@ -142,14 +142,21 @@ public class RobotContainer {
 
   Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+
   Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
-  Command READY_TO_PLACE_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator, subElevator,
-      subCoralOuttake);
 
-  // Might want to add Drivetrain alignment for this?
-  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyScoringPosition()
-      && subCoralOuttake.hasCoral());
+  Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
+      subElevator.isAtAnyCoralScoringPosition(), subCoralOuttake.hasCoral());
+
+  Command READY_TO_PLACE_ALGAE_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
+      subElevator.isAtAnyAlgaeScoringPosition(), subAlgaeIntake.hasAlgae());
+
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
+      && subCoralOuttake.hasCoral() && subDrivetrain.isAligned());
+
+  private final BooleanSupplier readytoPlaceAlgae = (() -> subElevator.isAtAnyAlgaeScoringPosition()
+      && subAlgaeIntake.hasAlgae());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
@@ -306,7 +313,9 @@ public class RobotContainer {
 
     seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
-    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_RUMBLE);
+    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_CORAL_RUMBLE);
+
+    new Trigger(readytoPlaceAlgae).onTrue(READY_TO_PLACE_ALGAE_RUMBLE);
 
   }
 

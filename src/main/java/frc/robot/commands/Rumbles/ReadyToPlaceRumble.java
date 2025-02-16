@@ -9,23 +9,21 @@ import com.frcteam3255.joystick.SN_XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constControllers;
-import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ReadyToPlaceRumble extends Command {
   SN_XboxController globalDriver;
   SN_XboxController globalOperator;
-  Elevator globalElevator;
-  CoralOuttake globalCoralOuttake;
+  boolean isAtScoringPosition;
+  boolean hasGamePiece;
 
   /** Creates a new ReadyToPlaceCoralRumble. */
-  public ReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator, Elevator subElevator,
-      CoralOuttake subCoralOuttake) {
+  public ReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator,
+      boolean isAtScoringPosition, boolean hasGamePiece) {
     globalDriver = conDriver;
     globalOperator = conOperator;
-    globalElevator = subElevator;
-    globalCoralOuttake = subCoralOuttake;
+    this.isAtScoringPosition = isAtScoringPosition;
+    this.hasGamePiece = hasGamePiece;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -53,6 +51,6 @@ public class ReadyToPlaceRumble extends Command {
   public boolean isFinished() {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
-    return (!globalElevator.isAtAnyScoringPosition() || !globalCoralOuttake.hasCoral());
+    return (!isAtScoringPosition || !hasGamePiece);
   }
 }
