@@ -28,7 +28,7 @@ import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.commands.Rumbles.HasGamePieceRumble;
-import frc.robot.commands.Rumbles.ReadyToPlaceCoralRumble;
+import frc.robot.commands.Rumbles.ReadyToPlaceRumble;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -141,11 +141,11 @@ public class RobotContainer {
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
   Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
-  Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceCoralRumble(conDriver, conOperator, subElevator,
+  Command READY_TO_PLACE_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator, subElevator,
       subCoralOuttake);
 
   // Might want to add Drivetrain alignment for this?
-  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyScoringPosition()
       && subCoralOuttake.hasCoral());
 
   Command zeroSubsystems = new ParallelCommandGroup(
@@ -303,7 +303,7 @@ public class RobotContainer {
 
     seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
-    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_CORAL_RUMBLE);
+    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_RUMBLE);
 
   }
 

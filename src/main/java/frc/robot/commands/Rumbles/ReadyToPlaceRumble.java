@@ -13,14 +13,14 @@ import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ReadyToPlaceCoralRumble extends Command {
+public class ReadyToPlaceRumble extends Command {
   SN_XboxController globalDriver;
   SN_XboxController globalOperator;
   Elevator globalElevator;
   CoralOuttake globalCoralOuttake;
 
   /** Creates a new ReadyToPlaceCoralRumble. */
-  public ReadyToPlaceCoralRumble(SN_XboxController conDriver, SN_XboxController conOperator, Elevator subElevator,
+  public ReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator, Elevator subElevator,
       CoralOuttake subCoralOuttake) {
     globalDriver = conDriver;
     globalOperator = conOperator;
@@ -53,6 +53,6 @@ public class ReadyToPlaceCoralRumble extends Command {
   public boolean isFinished() {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
-    return (!globalElevator.isAtAnyCoralScoringPosition() || !globalCoralOuttake.hasCoral());
+    return (!globalElevator.isAtAnyScoringPosition() || !globalCoralOuttake.hasCoral());
   }
 }

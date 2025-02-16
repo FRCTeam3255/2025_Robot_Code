@@ -71,11 +71,13 @@ public class Elevator extends SubsystemBase {
         getElevatorPosition().compareTo(setpoint.plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
   }
 
-  public boolean isAtAnyCoralScoringPosition() {
+  public boolean isAtAnyScoringPosition() {
     if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) ||
         isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) ||
         isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) ||
-        isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT)) {
+        isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET) ||
+        isAtSpecificSetpoint(constElevator.ALGAE_PREP_PROCESSOR_HEIGHT)) {
       return true;
     }
     return false;
