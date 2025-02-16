@@ -258,6 +258,7 @@ public final class Constants {
 
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -444,7 +445,7 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Coast;
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
-    
+
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
@@ -542,6 +543,9 @@ public final class Constants {
       public static final Pose2d RIGHT_CORAL_STATION_FAR = new Pose2d(1.61, 0.70, Rotation2d.fromDegrees(55));
       public static final Pose2d RIGHT_CORAL_STATION_NEAR = new Pose2d(0.64, 1.37, Rotation2d.fromDegrees(55));
 
+      // processor poses
+      public static final Pose2d PROCESSOR = new Pose2d(6, .22, Rotation2d.fromDegrees(-90));
+
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
@@ -554,6 +558,10 @@ public final class Constants {
       private static final List<Pose2d> BLUE_CORAL_STATION_POSES = List.of(LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
+
+      private static final List<Pose2d> BLUE_PROCESSOR_POSE = List.of(PROCESSOR);
+      private static final List<Pose2d> RED_PROCESSOR_POSE = getRedProcessorPoses();
+
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -588,6 +596,16 @@ public final class Constants {
 
       for (int i = 0; i < POSES.BLUE_CORAL_STATION_POSES.size(); i++) {
         returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CORAL_STATION_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
+    }
+
+    private static List<Pose2d> getRedProcessorPoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_PROCESSOR_POSE.size()];
+
+      for (int i = 0; i < POSES.BLUE_PROCESSOR_POSE.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
@@ -633,6 +651,14 @@ public final class Constants {
       }
       return () -> POSES.BLUE_CORAL_STATION_POSES;
     }
+
+    public static Supplier<List<Pose2d>> getpROCESSORPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_PROCESSOR_POSE;
+      }
+      return () -> POSES.BLUE_PROCESSOR_POSE;
+    }
+
   }
 
   public static class constVision {
