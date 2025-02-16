@@ -289,6 +289,8 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -0.6;
 
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); //TODO: Tune this
+
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
