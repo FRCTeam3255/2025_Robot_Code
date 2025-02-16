@@ -19,15 +19,13 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
+import frc.robot.Constants;
 import frc.robot.Constants.constAlgaeIntake;
 
 @Logged
 public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeRollerMotor;
   TalonFX intakePivotMotor;
-
-  AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
-  Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
 
   private Angle lastDesiredAngle = Degrees.zero();
 
@@ -37,7 +35,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
-  public boolean hasGamePiece = false;
+  public boolean hasAlgaeOverride = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -53,7 +51,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Degrees)));
+    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Rotation)));
     lastDesiredAngle = setpoint;
   }
 
@@ -94,25 +92,28 @@ public class AlgaeIntake extends SubsystemBase {
     AngularVelocity intakeVelocity = intakeRollerMotor.getVelocity().getValue();
     double intakeAcceleration = intakeRollerMotor.getAcceleration().getValueAsDouble();
 
-    intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
+    Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+    AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
-        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
-        && (intakeAcceleration < 0))) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
+    if (hasAlgaeOverride) {
+      return hasAlgaeOverride;
     }
-    return hasGamePiece;
+
+    if ((intakeCurrent.gte(intakeHasGamePieceCurrent))
+        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
+        && (intakeAcceleration < 0)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void setHasAlgaeOverride(boolean passedHasGamePiece) {
-    hasGamePiece = passedHasGamePiece;
+    hasAlgaeOverride = passedHasGamePiece;
   }
 
   public void algaeToggle() {
-    this.hasGamePiece = !hasGamePiece;
+    this.hasAlgaeOverride = !hasAlgaeOverride;
   }
 
   public double getAlgaeIntakeVoltage() {
@@ -123,7 +124,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.setVoltage(voltage);
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetPoint() {
     return (getPivotAngle()
         .compareTo(getLastDesiredPivotAngle().minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
         getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;

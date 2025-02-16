@@ -19,7 +19,7 @@ public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
   CANrange coralSensor;
-  boolean hasCoralOverride;
+  private boolean hasCoral, indexingCoral;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -27,10 +27,11 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
 
-    hasCoralOverride = false;
+    hasCoral = false;
 
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
+    coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
   public void setCoralOuttake(double speed) {
@@ -38,20 +39,32 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2.set(-speed);
   }
 
-  public void setHasCoralOverride(boolean hasCoral) {
-    this.hasCoralOverride = hasCoral;
+  public void setIndexingCoral(boolean indexing) {
+    this.indexingCoral = indexing;
+  }
+
+  public boolean isIndexingCoral() {
+    return indexingCoral;
+  }
+
+  public void setHasCoral(boolean hasCoral) {
+    this.hasCoral = hasCoral;
   }
 
   public void coralToggle() {
-    this.hasCoralOverride = !hasCoralOverride;
+    this.hasCoral = !hasCoral;
+  }
+
+  public boolean sensorSeesCoral() {
+    return coralSensor.getIsDetected().getValue();
+  }
+
+  public boolean sensorIndexedCoral() {
+    return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
   }
 
   public boolean hasCoral() {
-    if (hasCoralOverride || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
-      return true;
-    } else {
-      return false;
-    }
+    return hasCoral;
   }
 
   @Override

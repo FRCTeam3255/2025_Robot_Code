@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.139309210526315,
-        "y": 0.5034539473684209
+        "y": 3.099
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.177138157894737,
-        "y": 1.1481085526315793
+        "x": 6.000570653436612,
+        "y": 2.990077982966311
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.995
       },
       "prevControl": {
-        "x": 5.74902905186817,
-        "y": 2.2041899256894553
+        "x": 5.522243077532121,
+        "y": 3.07383985136394
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,15 +38,21 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "PrepPlace",
-      "waypointRelativePos": 0.6953086419753075,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

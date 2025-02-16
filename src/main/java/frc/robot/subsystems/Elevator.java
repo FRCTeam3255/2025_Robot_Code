@@ -59,7 +59,7 @@ public class Elevator extends SubsystemBase {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetPoint() {
     return (getElevatorPosition()
         .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
@@ -71,6 +71,16 @@ public class Elevator extends SubsystemBase {
 
   public Distance getLastDesiredPosition() {
     return lastDesiredPosition;
+  }
+
+  public void setCoastMode(Boolean coastMode) {
+    if (coastMode) {
+      rightMotorLeader.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+      leftMotorFollower.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+    } else {
+      rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+      leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    }
   }
 
   public boolean isRotorVelocityZero() {
