@@ -68,19 +68,6 @@
             }
           },
           {
-            "title": "Time Left",
-            "x": 384.0,
-            "y": 0.0,
-            "width": 512.0,
-            "height": 128.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/Time Left",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
             "title": "LEFT LABEL",
             "x": 0.0,
             "y": 0.0,
@@ -138,6 +125,22 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "getMatchTime",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 128.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "Robot/getMatchTime",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
             }
           }
         ]

@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,9 +27,6 @@ import frc.robot.Constants.constField;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private static double matchTime = 150.0;
-  private Timer matchTimer;
-
   boolean hasAutonomousRun = false;
   private boolean bothSubsystemsZeroed = false;
 
@@ -40,7 +36,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    matchTimer = new Timer();
     Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
@@ -63,7 +58,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.AddVisionMeasurement().schedule();
     CommandScheduler.getInstance().run();
     pdhValues.updateValues();
-    updateMatchTime();
   }
 
   @Override
@@ -90,9 +84,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    matchTimer.reset();
-    matchTime = 15.0;
-    matchTimer.start();
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
@@ -110,19 +101,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    updateMatchTime();
   }
 
   @Override
-  public void autonomousExit() {
-    matchTimer.stop();
-  }
+  public void autonomousExit() {}
 
   @Override
   public void teleopInit() {
-    matchTimer.reset();
-    matchTime = 135.0;
-    matchTimer.start();
 
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
@@ -138,12 +123,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    updateMatchTime();
   }
 
   @Override
   public void teleopExit() {
-    matchTimer.stop();
   }
 
   @Override
@@ -219,16 +202,8 @@ public class Robot extends TimedRobot {
 
   }
 
-  private void updateMatchTime() {
-    double timeLeft = matchTime - matchTimer.get();
-    String timeLeftString = formatTime(timeLeft);
-    SmartDashboard.putString("Time Left", timeLeftString);
-  }
-
-  private String formatTime(double time) {
-    int minutes = (int) (time / 60);
-    int seconds = (int) (time % 60);
-    return String.format("%02d:%02d", minutes, seconds);
+  public double getMatchTime() {
+    return DriverStation.getMatchTime();
   }
 
   PDHValues pdhValues = new PDHValues();
