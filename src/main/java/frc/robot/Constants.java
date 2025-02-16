@@ -652,7 +652,7 @@ public final class Constants {
       return () -> POSES.BLUE_CORAL_STATION_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getpROCESSORPositions() {
+    public static Supplier<List<Pose2d>> getProcessorPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
         return () -> POSES.RED_PROCESSOR_POSE;
       }
