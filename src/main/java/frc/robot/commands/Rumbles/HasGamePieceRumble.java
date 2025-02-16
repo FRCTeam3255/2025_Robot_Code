@@ -30,6 +30,6 @@ public class HasGamePieceRumble extends SequentialCommandGroup {
         Commands.runOnce(
             () -> conDriver.setRumble(rumbleType, 0))
             .alongWith(
-                Commands.runOnce(() -> conOperator.setRumble(rumbleType, rumbleIntensity))));
+                Commands.runOnce(() -> conOperator.setRumble(rumbleType, 0))));
   }
 }
