@@ -42,7 +42,7 @@ public class DriveManual extends Command {
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
-      BooleanSupplier rightCoralStationFar) {
+      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -56,17 +56,11 @@ public class DriveManual extends Command {
     this.leftCoralStationFar = leftCoralStationFar;
     this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
-    this.processor = processor;
+    this.processor = processorBtn;
 
     isOpenLoop = true;
 
     addRequirements(this.subDrivetrain);
-  }
-
-  public DriveManual(Drivetrain subDrivetrain2, Elevator subElevator2, DoubleSupplier axis_LeftY,
-      DoubleSupplier axis_LeftX, DoubleSupplier axis_RightX, Trigger btn_LeftBumper, Trigger btn_LeftTrigger,
-      Trigger btn_RightTrigger, Trigger btn_A, Trigger btn_B, Trigger btn_X, Trigger btn_Y) {
-    // TODO Auto-generated constructor stub
   }
 
   @Override
