@@ -45,6 +45,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -275,6 +276,8 @@ public final class Constants {
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
+      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(5);
+
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
 
@@ -292,6 +295,8 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -0.6;
+
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); //TODO: Tune this
 
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();

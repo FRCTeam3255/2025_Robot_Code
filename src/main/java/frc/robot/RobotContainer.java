@@ -37,6 +37,9 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 @Logged
 public class RobotContainer {
+  private final String LEFT_LABEL = "Left";
+  private final String RIGHT_LABEL = "Right";
+
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -56,11 +59,11 @@ public class RobotContainer {
       subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator, subAlgaeIntake);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
   private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
       conOperator, subStateMachine.getRobotState());
-  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
@@ -379,6 +382,14 @@ public class RobotContainer {
 
   public boolean allZeroed() {
     return subElevator.hasZeroed && subAlgaeIntake.hasZeroed;
+  }
+
+  public boolean isAligned() {
+    return subDrivetrain.isAligned();
+  }
+
+  public boolean elevatorAndAlgaeAtSetPoint() {
+    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**
