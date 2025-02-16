@@ -192,13 +192,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
-            Commands.waitSeconds(1.5),
             TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
-            TRY_PREP_CORAL_L3.asProxy()));
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral())));
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");

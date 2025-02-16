@@ -10,7 +10,9 @@
     "Tickle Monster",
     "Tuning"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "DEBUG"
+  ],
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 10.0,
   "defaultMaxAngVel": 540.0,

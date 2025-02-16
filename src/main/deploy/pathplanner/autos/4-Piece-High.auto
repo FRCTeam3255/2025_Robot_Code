@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "P-I"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -17,9 +29,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSTop-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -29,9 +53,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSTop-K"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -41,9 +77,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CSTop-L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         }
       ]
