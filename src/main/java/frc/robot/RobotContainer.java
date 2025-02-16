@@ -159,6 +159,8 @@ public class RobotContainer {
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
   private final Trigger seesCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
+  private final Trigger hasAlgaeStateTrigger = new Trigger(
+      () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
@@ -295,7 +297,9 @@ public class RobotContainer {
         .whileTrue(TRY_HAS_CORAL);
 
     hasAlgaeTrigger
-        .whileTrue(TRY_HAS_ALGAE).onTrue(HAS_ALGAE_RUMBLE);
+        .whileTrue(TRY_HAS_ALGAE);
+
+    hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
 
     seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
