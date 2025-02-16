@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    Elastic.selectTab("Disabled");
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
 
@@ -87,6 +88,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Elastic.selectTab("Autonomous");
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
@@ -111,6 +113,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Elastic.selectTab("Teleop");
 
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
