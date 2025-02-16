@@ -51,6 +51,15 @@
   },
   "NetworkTables": {
     "transitory": {
+      "Robot": {
+        "m_robotContainer": {
+          "open": true,
+          "subStateMachine": {
+            "open": true
+          }
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "Field": {
           "open": true
