@@ -32,8 +32,8 @@ public class ReadyToPlaceCoralRumble extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalDriver.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE_INTENSITY);
-    globalOperator.setRumble(RumbleType.kBothRumble, constControllers.DRIVER_READY_TO_PLACE_RUMBLE_INTENSITY);
+    globalDriver.setRumble(RumbleType.kBothRumble, constControllers.READY_TO_PLACE_RUMBLE_INTENSITY);
+    globalOperator.setRumble(RumbleType.kBothRumble, constControllers.READY_TO_PLACE_RUMBLE_INTENSITY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

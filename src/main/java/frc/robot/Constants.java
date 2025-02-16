@@ -59,8 +59,10 @@ public final class Constants {
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
-    public static final double DRIVER_READY_TO_PLACE_RUMBLE_INTENSITY = 1;
-    public static final double OPERATOR_READY_TO_PLACE_RUMBLE_INTENSITY = 1;
+
+    public static final double HAS_CORAL_RUMBLE_INTENSITY = 0.5;
+    public static final double HAS_ALGAE_RUMBLE_INTENSITY = 1;
+    public static final double READY_TO_PLACE_RUMBLE_INTENSITY = 0.5;
   }
 
   public static class constDrivetrain {

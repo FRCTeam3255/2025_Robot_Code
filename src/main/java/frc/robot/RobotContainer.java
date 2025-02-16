@@ -27,7 +27,7 @@ import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
-import frc.robot.commands.Rumbles.HasCoralRumble;
+import frc.robot.commands.Rumbles.HasGamePieceRumble;
 import frc.robot.commands.Rumbles.ReadyToPlaceCoralRumble;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
@@ -137,7 +137,10 @@ public class RobotContainer {
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
-  Command HAS_CORAL_RUMBLE = new HasCoralRumble(conDriver, conOperator);
+  Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
+      Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+  Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
+      Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
   Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceCoralRumble(conDriver, conOperator, subElevator,
       subCoralOuttake);
 
@@ -292,7 +295,7 @@ public class RobotContainer {
         .whileTrue(TRY_HAS_CORAL);
 
     hasAlgaeTrigger
-        .whileTrue(TRY_HAS_ALGAE);
+        .whileTrue(TRY_HAS_ALGAE).onTrue(HAS_ALGAE_RUMBLE);
 
     seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
