@@ -7,13 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "ForceGamePiece"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "P-F"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -37,7 +43,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-E"
+            "pathName": "CSBottom-C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -49,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E-CSBottom"
+            "pathName": "C-CSBottom"
           }
         },
         {
@@ -62,6 +74,12 @@
           "type": "path",
           "data": {
             "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -85,7 +103,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {

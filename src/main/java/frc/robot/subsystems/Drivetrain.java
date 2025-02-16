@@ -234,6 +234,23 @@ public class Drivetrain extends SN_SuperSwerve {
     }
   }
 
+  public boolean isAtRotation(Rotation2d desiredRotation) {
+    return (getRotation().getMeasure()
+        .compareTo(desiredRotation.getMeasure().minus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) > 0) &&
+        getRotation().getMeasure()
+            .compareTo(desiredRotation.getMeasure().plus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) < 0;
+  }
+
+  public boolean isAtPosition(Pose2d desiredPose2d) {
+    return Units.Meters
+        .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
+        .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+  }
+
+  public boolean atPose(Pose2d desiredPose) {
+    return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
+  }
+
   @Override
   public void periodic() {
     super.periodic();
