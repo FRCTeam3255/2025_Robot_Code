@@ -92,6 +92,10 @@ public class Drivetrain extends SN_SuperSwerve {
     super.configure();
   }
 
+  public Boolean isAligned() {
+    return desiredAlignmentPose.getTranslation().getDistance(getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
+  }
+
   public void addEventToAutoMap(String key, Command command) {
     super.autoEventMap.put(key, command);
   }
