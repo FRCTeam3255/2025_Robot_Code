@@ -10,10 +10,12 @@ import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.net.WebServer;
 import edu.wpi.first.units.measure.MutCurrent;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
     Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
@@ -104,11 +107,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousExit() {
-  }
+  public void autonomousExit() {}
 
   @Override
   public void teleopInit() {
+
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
 
@@ -200,6 +203,10 @@ public class Robot extends TimedRobot {
       PORT23.mut_replace(PDH.getCurrent(23), Amps);
     }
 
+  }
+
+  public double getMatchTime() {
+    return DriverStation.getMatchTime();
   }
 
   PDHValues pdhValues = new PDHValues();

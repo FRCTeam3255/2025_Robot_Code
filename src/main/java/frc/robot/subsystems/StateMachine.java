@@ -263,7 +263,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_NET:
           case PREP_PROCESSOR:
           case PREP_ALGAE_ZERO:
-            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
         }
         break;
 
@@ -293,6 +293,8 @@ public class StateMachine extends SubsystemBase {
     CAGE_ROTATION_SNAPPING,
     REEF_AUTO_DRIVING,
     CORAL_STATION_AUTO_DRIVING,
+    PROCESSOR_ROTATION_SNAPPING,
+    PROCESSOR_AUTO_DRIVING,
     CAGE_AUTO_DRIVING,
   }
 
