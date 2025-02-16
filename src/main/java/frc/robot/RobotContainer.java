@@ -365,7 +365,7 @@ public class RobotContainer {
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
-    return subElevator.isAtSetpoint() && subAlgaeIntake.isAtSetpoint();
+    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**
