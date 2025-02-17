@@ -93,7 +93,8 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   public Boolean isAligned() {
-    return desiredAlignmentPose.getTranslation().getDistance(getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
+    return desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
   }
 
   public void addEventToAutoMap(String key, Command command) {
@@ -178,6 +179,15 @@ public class Drivetrain extends SN_SuperSwerve {
       desiredReef = reefPoses.get(closestReefIndex + 1);
     }
     return desiredReef;
+  }
+
+  public Pose2d getDesiredAlgae() {
+    // Get closest cage
+    List<Pose2d> AlgaePoses = constField.getAlgaePositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredAlgae = currentPose.nearest(AlgaePoses);
+
+    return desiredAlgae;
   }
 
   /**

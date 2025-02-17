@@ -32,7 +32,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar, processor;
+      rightCoralStationFar, processor, algae;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -42,7 +42,7 @@ public class DriveManual extends Command {
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
-      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
+      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn, BooleanSupplier algae) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -57,6 +57,7 @@ public class DriveManual extends Command {
     this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
     this.processor = processorBtn;
+    this.algae = algae;
 
     isOpenLoop = true;
 
@@ -161,6 +162,16 @@ public class DriveManual extends Command {
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine
 
       );
+    }
+
+    else if (algae.getAsBoolean()) {
+      Pose2d desiredAlgae = subDrivetrain.getDesiredAlgae();
+      Distance algaeDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredAlgae.getTranslation()));
+      subDrivetrain.autoAlign(algaeDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE,
+          DriverState.ALGAE_AUTO_DRIVING, DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
+
     }
 
     else {
