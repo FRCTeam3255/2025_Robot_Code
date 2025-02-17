@@ -182,6 +182,44 @@
               "robot_color": 4294198070,
               "trajectory_color": 4294967295
             }
+          },
+          {
+            "title": "Left Limelight",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-left",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Right Limelight",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-right",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "autoChooser",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 768.0,
+            "height": 128.0,
+            "type": "Split Button Chooser",
+            "properties": {
+              "topic": "Robot/m_robotContainer/autoChooser",
+              "period": 0.06
+            }
           }
         ]
       }
@@ -233,6 +271,32 @@
               "field_rotation": 0.0,
               "robot_color": 4294198070,
               "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "Right Limelight",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-right",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Left Limelight",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-left",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
