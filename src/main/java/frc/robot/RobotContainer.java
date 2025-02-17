@@ -17,6 +17,7 @@ import java.util.Set;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -78,6 +79,7 @@ public class RobotContainer {
       subAlgaeIntake, subLED);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
 
+  @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
