@@ -147,10 +147,13 @@ public class RobotContainer {
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
 
   Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
-      subElevator.isAtAnyCoralScoringPosition(), subCoralOuttake.hasCoral());
+      subElevator.isAtAnyCoralScoringPosition(), subCoralOuttake.hasCoral(), subDrivetrain.isAligned());
 
+  // Since we don't have an auto align for algae scoring locations yet,
+  // I'm just manually setting the aligned drivetrain condition to true so we're
+  // not checking the drivetrain for if the algae is ready to score
   Command READY_TO_PLACE_ALGAE_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
-      subElevator.isAtAnyAlgaeScoringPosition(), subAlgaeIntake.hasAlgae());
+      subElevator.isAtAnyAlgaeScoringPosition(), subAlgaeIntake.hasAlgae(), true);
 
   private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
       && subCoralOuttake.hasCoral() && subDrivetrain.isAligned());

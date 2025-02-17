@@ -16,14 +16,16 @@ public class ReadyToPlaceRumble extends Command {
   SN_XboxController globalOperator;
   boolean isAtScoringPosition;
   boolean hasGamePiece;
+  boolean isDrivetrainAligned;
 
   /** Creates a new ReadyToPlaceCoralRumble. */
   public ReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator,
-      boolean isAtScoringPosition, boolean hasGamePiece) {
+      boolean isAtScoringPosition, boolean hasGamePiece, boolean isDrivetrainAligned) {
     globalDriver = conDriver;
     globalOperator = conOperator;
     this.isAtScoringPosition = isAtScoringPosition;
     this.hasGamePiece = hasGamePiece;
+    this.isDrivetrainAligned = isDrivetrainAligned;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -51,6 +53,6 @@ public class ReadyToPlaceRumble extends Command {
   public boolean isFinished() {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
-    return (!isAtScoringPosition || !hasGamePiece);
+    return (!isAtScoringPosition || !hasGamePiece || !isDrivetrainAligned);
   }
 }
