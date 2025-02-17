@@ -66,7 +66,7 @@
             }
           },
           {
-            "title": "Algae Pivot",
+            "title": "Algae Pivot 0",
             "x": 675.0,
             "y": 0.0,
             "width": 135.0,
@@ -78,12 +78,12 @@
               "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "true_icon": "Checkmark",
+              "false_icon": "Exclamation Point"
             }
           },
           {
-            "title": "Elevator",
+            "title": "Elevator 0",
             "x": 540.0,
             "y": 0.0,
             "width": 135.0,
@@ -95,8 +95,8 @@
               "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "true_icon": "Checkmark",
+              "false_icon": "Exclamation Point"
             }
           },
           {
@@ -116,24 +116,11 @@
             "title": "active",
             "x": 270.0,
             "y": 540.0,
-            "width": 540.0,
+            "width": 1080.0,
             "height": 135.0,
             "type": "Large Text Display",
             "properties": {
               "topic": "/SmartDashboard/SendableChooser[1]/active",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "selected",
-            "x": 810.0,
-            "y": 540.0,
-            "width": 540.0,
-            "height": 135.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/SendableChooser[1]/selected",
               "period": 0.06,
               "data_type": "string"
             }
