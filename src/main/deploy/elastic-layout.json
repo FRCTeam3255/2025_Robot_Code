@@ -8,19 +8,6 @@
         "layouts": [],
         "containers": [
           {
-            "title": "autoChooser",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 540.0,
-            "height": 135.0,
-            "type": "ComboBox Chooser",
-            "properties": {
-              "topic": "Robot/m_robotContainer/autoChooser",
-              "period": 0.06,
-              "sort_options": false
-            }
-          },
-          {
             "title": "FMSInfo",
             "x": 810.0,
             "y": 0.0,
@@ -37,7 +24,7 @@
             "x": 270.0,
             "y": 135.0,
             "width": 1080.0,
-            "height": 540.0,
+            "height": 405.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -110,6 +97,45 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "SendableChooser[1]",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/SmartDashboard/SendableChooser[1]",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "active",
+            "x": 270.0,
+            "y": 540.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/SendableChooser[1]/active",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "selected",
+            "x": 810.0,
+            "y": 540.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/SendableChooser[1]/selected",
+              "period": 0.06,
+              "data_type": "string"
             }
           }
         ]
