@@ -168,7 +168,7 @@ public class RobotContainer {
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
                 conDriver.axis_RightX,
                 conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger, conDriver.btn_A,
-                conDriver.btn_B, conDriver.btn_X, conDriver.btn_Y, conDriver.btn_South));
+                conDriver.btn_B, conDriver.btn_X, conDriver.btn_Y, conDriver.btn_South, conDriver.btn_West));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
