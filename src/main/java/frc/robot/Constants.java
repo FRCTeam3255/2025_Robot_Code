@@ -567,6 +567,8 @@ public final class Constants {
       private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
       private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
 
+      private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
+
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -655,18 +657,8 @@ public final class Constants {
       return () -> POSES.BLUE_CORAL_STATION_POSES;
     }
 
-    public static Pose2d getProcessorPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return POSES.RED_PROCESSOR_POSE;
-      }
-      return POSES.BLUE_PROCESSOR_POSE;
-    }
-
-    public static Pose2d getOpposingProcessorPosition() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return POSES.BLUE_PROCESSOR_POSE;
-      }
-      return POSES.RED_PROCESSOR_POSE;
+    public static Supplier<List<Pose2d>> getProcessorPositions() {
+      return () -> POSES.PROCESSOR_POSES;
     }
 
   }
