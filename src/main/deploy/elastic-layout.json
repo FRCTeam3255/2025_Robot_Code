@@ -3,6 +3,206 @@
   "grid_size": 135,
   "tabs": [
     {
+      "name": "Disabled",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "autoChooser",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "Robot/m_robotContainer/autoChooser",
+              "period": 0.06,
+              "sort_options": false
+            }
+          },
+          {
+            "title": "FMSInfo",
+            "x": 810.0,
+            "y": 0.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "FMSInfo",
+            "properties": {
+              "topic": "/FMSInfo",
+              "period": 0.06
+            }
+          },
+          {
+            "title": "Field",
+            "x": 270.0,
+            "y": 135.0,
+            "width": 1080.0,
+            "height": 540.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "Right Limelight",
+            "x": 0.0,
+            "y": 135.0,
+            "width": 270.0,
+            "height": 270.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-right",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Left Limelight",
+            "x": 0.0,
+            "y": 405.0,
+            "width": 270.0,
+            "height": 270.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/limelight-left",
+              "period": 0.06,
+              "rotation_turns": 0
+            }
+          },
+          {
+            "title": "Algae Pivot",
+            "x": 675.0,
+            "y": 0.0,
+            "width": 135.0,
+            "height": 135.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subAlgaeIntake/hasZeroed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Elevator",
+            "x": 540.0,
+            "y": 0.0,
+            "width": 135.0,
+            "height": 135.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subElevator/hasZeroed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Autonomous",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 135.0,
+            "width": 1215.0,
+            "height": 540.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "Robot State",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 405.0,
+            "height": 135.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subStateMachine/getRobotState",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Rriving State",
+            "x": 945.0,
+            "y": 0.0,
+            "width": 405.0,
+            "height": 135.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subStateMachine/getDriverState",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "All Zeroed",
+            "x": 1215.0,
+            "y": 135.0,
+            "width": 135.0,
+            "height": 540.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/bothSubsystemsZeroed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "getMatchTime",
+            "x": 405.0,
+            "y": 0.0,
+            "width": 540.0,
+            "height": 135.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "Robot/getMatchTime",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "Teleoperated",
       "grid_layout": {
         "layouts": [],
@@ -141,189 +341,6 @@
               "time_display_mode": "Minutes and Seconds",
               "red_start_time": 15,
               "yellow_start_time": 30
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Autonomous",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "Field",
-            "x": 0.0,
-            "y": 135.0,
-            "width": 1215.0,
-            "height": 540.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
-            }
-          },
-          {
-            "title": "Robot State",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 675.0,
-            "height": 135.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subStateMachine/getRobotState",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Rriving State",
-            "x": 675.0,
-            "y": 0.0,
-            "width": 675.0,
-            "height": 135.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subStateMachine/getDriverState",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "All Zeroed",
-            "x": 1215.0,
-            "y": 135.0,
-            "width": 135.0,
-            "height": 540.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/bothSubsystemsZeroed",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Disabled",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "autoChooser",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 810.0,
-            "height": 135.0,
-            "type": "Split Button Chooser",
-            "properties": {
-              "topic": "Robot/m_robotContainer/autoChooser",
-              "period": 0.06
-            }
-          },
-          {
-            "title": "FMSInfo",
-            "x": 810.0,
-            "y": 0.0,
-            "width": 540.0,
-            "height": 135.0,
-            "type": "FMSInfo",
-            "properties": {
-              "topic": "/FMSInfo",
-              "period": 0.06
-            }
-          },
-          {
-            "title": "Field",
-            "x": 270.0,
-            "y": 135.0,
-            "width": 945.0,
-            "height": 540.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
-            }
-          },
-          {
-            "title": "Right Limelight",
-            "x": 0.0,
-            "y": 135.0,
-            "width": 270.0,
-            "height": 270.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight-right",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
-            "title": "Left Limelight",
-            "x": 0.0,
-            "y": 405.0,
-            "width": 270.0,
-            "height": 270.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/limelight-left",
-              "period": 0.06,
-              "rotation_turns": 0
-            }
-          },
-          {
-            "title": "Algae Pivot",
-            "x": 1215.0,
-            "y": 405.0,
-            "width": 135.0,
-            "height": 270.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subAlgaeIntake/hasZeroed",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Elevator",
-            "x": 1215.0,
-            "y": 135.0,
-            "width": 135.0,
-            "height": 270.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subElevator/hasZeroed",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
             }
           }
         ]
