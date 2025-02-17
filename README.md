@@ -51,15 +51,18 @@ We have code to allow us to manually zero the Algae Intake Pivot and Elevator in
 **How it works:** Limelights get the robot poses by AprilTags, returning the current pose of the robot. The auto alignment sets different desired positions based on what button the driver chooses, then auto drives or turns to the correct angle to the desired position based on the distance from the robot to the desired position.
 
 #### State Machine Control
+![State Machine](assets\2025_statemachine.png)
+
+![Controller Map](assets\2025_controllermap.png)
 
 - State Machine link: https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz
 
 - The state machine prevents us from going to states before the robot is ready to.
 
 - **State Machine subsystem:** Used to manage different states in the robot. It controls which state transitions between different states. We use enums to control what states we could go to from the current state.
-- **States:** Individual commands representing different operational modes of the robot, controlling the behavior of the robot. We set requirements of the commands to be `sunStateMachine`.
+- **States:** Individual commands representing different operational modes of the robot, controlling the behavior of the robot. We set requirements of the commands to be `subStateMachine`.
 - **tryState method:** This method runs when we try to go from the current state to the desired state. It returns the states based on the current states and executes the state command.
-- **Calling states:** We call the `tryState` method in the `robotContainer`. We turn whatever it returns into a Deferred Proxy, allowing the `tryState` method to be evaluated multiple times.
+- **Calling states:** We call the `tryState` method in the `RobotContainer`. We turn whatever it returns into a Deferred Proxy, allowing the `tryState` method to be evaluated multiple times.
 
 #### Scoring Elements Indexing
 We have different velocities for coral intake. It goes faster when the coral is in the hopper, and when the sensor in the coral placer senses the coral, it slows down. This helps keep the coral intaked to a constant position.
