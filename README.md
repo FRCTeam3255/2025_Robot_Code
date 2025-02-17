@@ -48,11 +48,13 @@ We have code to allow us to manually zero the Algae Intake Pivot and Elevator in
 - Smart; decides which to do via closest
 - Double limelights
 
-**How it works:** Limelights get the robot poses by AprilTags, returning the current pose of the robot. The auto alignment sets different desired positions based on what button the driver chooses, then auto drives or turns to the correct angle to the desired position based on the distance from the robot to the desired position.
+- **How it works:** Limelights get the robot poses by AprilTags, returning the current pose of the robot. The auto alignment sets different desired positions based on what button the driver chooses, then auto drives or turns to the correct angle to the desired position based on the distance from the robot to the desired position.
 
 #### State Machine Control
+- State Machine Diagram
 ![State Machine](assets\2025_statemachine.png)
 
+- Controller Map
 ![Controller Map](assets\2025_controllermap.png)
 
 - State Machine link: https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz
