@@ -17,11 +17,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.Constants.constField;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -72,8 +71,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    constField.ALLIANCE = DriverStation.getAlliance();
-    SmartDashboard.putString("ALLIANCE", constField.ALLIANCE.toString());
+
   }
 
   @Override

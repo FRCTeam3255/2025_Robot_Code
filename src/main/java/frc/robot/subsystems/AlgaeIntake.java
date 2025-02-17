@@ -10,7 +10,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -132,14 +132,6 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Algae Intake/Roller/Stator Current",
-        intakeRollerMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("Algae Intake/Pivot/Stator Current",
-        intakePivotMotor.getStatorCurrent().getValueAsDouble());
-
-    SmartDashboard.putBoolean("Has Algae", hasAlgae());
   }
 }

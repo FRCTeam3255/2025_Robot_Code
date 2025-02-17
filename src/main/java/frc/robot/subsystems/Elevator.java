@@ -18,7 +18,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
@@ -122,14 +122,5 @@ public class Elevator extends SubsystemBase {
     currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
     currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
 
-    SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
-    SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Current", leftMotorFollower.getSupplyCurrent().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Right/CLO", rightMotorLeader.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Output", rightMotorLeader.get());
-    SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
   }
 }
