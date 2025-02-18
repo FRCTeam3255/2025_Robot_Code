@@ -8,8 +8,6 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapCoralOuttake;
@@ -19,7 +17,7 @@ public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   TalonFX outtakeMotor2;
   CANrange coralSensor;
-  boolean hasCoralOverride;
+  private boolean hasCoral, indexingCoral;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -27,7 +25,7 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
 
-    hasCoralOverride = false;
+    hasCoral = false;
 
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
@@ -39,26 +37,36 @@ public class CoralOuttake extends SubsystemBase {
     outtakeMotor2.set(-speed);
   }
 
-  public void setHasCoralOverride(boolean hasCoral) {
-    this.hasCoralOverride = hasCoral;
+  public void setIndexingCoral(boolean indexing) {
+    this.indexingCoral = indexing;
+  }
+
+  public boolean isIndexingCoral() {
+    return indexingCoral;
+  }
+
+  public void setHasCoral(boolean hasCoral) {
+    this.hasCoral = hasCoral;
   }
 
   public void coralToggle() {
-    this.hasCoralOverride = !hasCoralOverride;
+    this.hasCoral = !hasCoral;
+  }
+
+  public boolean sensorSeesCoral() {
+    return coralSensor.getIsDetected().getValue();
+  }
+
+  public boolean sensorIndexedCoral() {
+    return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
   }
 
   public boolean hasCoral() {
-    if (hasCoralOverride || coralSensor.getDistance().getValue().lt(constCoralOuttake.REQUIRED_CORAL_DISTANCE)) {
-      return true;
-    } else {
-      return false;
-    }
+    return hasCoral;
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("CORAL SENSOR DISTANCE", coralSensor.getDistance().getValue().in(Units.Inches));
-    SmartDashboard.putBoolean("CORAL SENSOR HAS GP", hasCoral());
     // This method will be called once per scheduler run
   }
 }

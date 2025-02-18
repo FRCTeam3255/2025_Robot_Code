@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -39,8 +42,8 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
@@ -88,12 +91,33 @@ public final class Constants {
 
     }
 
+    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
+    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
+    /**
+     * <p>
+     * Observed maximum translational speed while manually driving on the
+     * Competition Robot.
+     * </p>
+     */
+    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(4.5);
+
     // TODO: Convert all applicable fields to MEASUREs (Standard_Swerve_Code)
     public static final SN_SwerveConstants SWERVE_CONSTANTS = new SN_SwerveConstants(
         SN_SwerveConstants.MK4I.FALCON.L2.steerGearRatio,
-        0.09779 * Math.PI,
+        WHEEL_CIRCUMFERENCE,
         SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
-        SN_SwerveConstants.MK4I.FALCON.L2.maxSpeedMeters);
+        OBSERVED_DRIVE_SPEED.in(MetersPerSecond));
+
+    /**
+     * <p>
+     * Theoretical maximum translational speed while manually driving on the
+     * Competition Robot.
+     * </p>
+     * <b>Units:</b> Meters Per Second
+     */
+    public static final double THEORETICAL_MAX_DRIVE_SPEED = SWERVE_CONSTANTS.maxSpeedMeters;
 
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
@@ -114,27 +138,6 @@ public final class Constants {
             mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
     };
 
-    public static final double WHEEL_DIAMETER = 0.09779;
-    public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
-    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
-
-    /**
-     * <p>
-     * Theoretical maximum translational speed while manually driving on the
-     * Competition Robot.
-     * </p>
-     * <b>Units:</b> Meters Per Second
-     */
-    public static final double THEORETICAL_MAX_DRIVE_SPEED = SWERVE_CONSTANTS.maxSpeedMeters;
-
-    /**
-     * <p>
-     * Observed maximum translational speed while manually driving on the
-     * Competition Robot.
-     * </p>
-     */
-    // TODO: Find the actual max speed
-    public static final LinearVelocity OBSERVED_DRIVE_SPEED = Units.MetersPerSecond.of(THEORETICAL_MAX_DRIVE_SPEED);
     // Physically measured from center to center of the wheels
     // Distance between Left & Right Wheels
     public static final double TRACK_WIDTH = Units.Meters.convertFrom(23.75, Units.Inches);
@@ -192,6 +195,7 @@ public final class Constants {
 
     public static final double MIN_STEER_PERCENT = 0.01;
     public static final double SLOW_MODE_MULTIPLIER = 0.5;
+    public static final double MINIMUM_ELEVATOR_MULTIPLIER = 0.1;
 
     // Rotational speed (degrees per second) while manually driving
     public static final AngularVelocity TURN_SPEED = Units.DegreesPerSecond.of(360);
@@ -214,23 +218,23 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 6;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 2.5;
+      public static final double AUTO_STEER_P = 5.6; // 5.7 is also pretty good if we begin seeing undershooting
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final double MASS = 115;
+      public static final Mass MASS = Units.Kilograms.of(40);
       // TODO: Calcuate the real vaule
-      public static final double MOI = 6.8;
+      public static final double MOI = 6.0;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
@@ -243,28 +247,33 @@ public final class Constants {
           new Translation2d(-WHEELBASE / 2.0, TRACK_WIDTH / 2.0),
           new Translation2d(-WHEELBASE / 2.0, -TRACK_WIDTH / 2.0) };
 
-      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS, MOI, MODULE_CONFIG, MODULE_OFFSETS);
+      public static final RobotConfig ROBOT_CONFIG = new RobotConfig(MASS.in(Kilograms), MOI, MODULE_CONFIG,
+          MODULE_OFFSETS);
 
     }
 
     public static class TELEOP_AUTO_ALIGN {
       // TODO: Test if this actually works LOL
       public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
-          .of(THEORETICAL_MAX_DRIVE_SPEED / 4);
+          .of(OBSERVED_DRIVE_SPEED.in(MetersPerSecond) / 4);
 
-      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
+      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
-          3,
+          4,
           0,
           0);
-      public static final Distance AT_POINT_TOLERANCE = Units.Meters.of(0.1);
+      public static final Distance AT_POINT_TOLERANCE = Units.Inches.of(0.5);
 
       public static final ProfiledPIDController ROTATION_CONTROLLER = new ProfiledPIDController(
           3, 0, 0, new TrapezoidProfile.Constraints(TURN_SPEED.in(Units.DegreesPerSecond),
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
+
+      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(5);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -281,10 +290,12 @@ public final class Constants {
   }
 
   public static class constAlgaeIntake {
-    public static final double ALGAE_INTAKE_SPEED = 0.8;
-    public static final double ALGAE_OUTTAKE_SPEED = -1;
+    public static final double ALGAE_INTAKE_SPEED = 1;
+    public static final double ALGAE_OUTTAKE_SPEED = -0.6;
 
-    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 6;
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
+
+    public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
     static {
@@ -294,41 +305,45 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = 0.21; // TODO: return to degrees
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(60).in(Units.Rotations);
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0; // TODO: return to degrees
-      //
-      // // Why don't scientists trust atoms? Because they make up everything!
-      // // Why do crabs never share their things? - Because they are shellfish!
-      //
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-33).in(Units.Rotations);
+
+      // Why don't scientists trust atoms? Because they make up everything!
+      // Why do crabs never share their things? - Because they are shellfish!
+
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
-      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.4; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.5; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.45; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.2; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 0.8;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 19;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
-      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
+      ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 8100;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
 
-    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RadiansPerSecond.of(250);
-    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(30);
+    public static final AngularVelocity ALGAE_INTAKE_HAS_GP_VELOCITY = Units.RotationsPerSecond.of(2102 / 60);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(99.5);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(99.5);
+    public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(86);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(130);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(0);
-    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(45);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(55);
+
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
+    public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
+
+    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -341,7 +356,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle ZEROED_POS = Units.Degrees.of(0);
+    public static final Angle ZEROED_POS = Units.Degrees.of(-33);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -361,8 +376,17 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Inches.of(2);
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
+
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
+
+    public static final double CORAL_INTAKE_SPEED = 0.8;
+    public static final double CORAL_INDEXING_SPEED = 0.15;
+
+    public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
+    public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
+
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.3);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -370,15 +394,24 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
+      CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
     }
   }
 
   public static class constClimber {
-    public static final double CLIMBER_MOTOR_VELOCITY = 0.5;
+    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(10).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+          .in(Units.Rotations);
+
     }
   }
 
@@ -401,19 +434,26 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
+      ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
       ELEVATOR_CONFIG.Slot0.kP = 0.5;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 5000;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(7.25);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(33.75);
+
+    public static TalonFXConfiguration COAST_MODE_CONFIGURATION = new TalonFXConfiguration();
+    static {
+      COAST_MODE_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    }
+
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
@@ -423,6 +463,8 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+
+    public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -487,28 +529,46 @@ public final class Constants {
       public static final Pose3d SCORING_ELEMENT_NOT_COLLECTED = new Pose3d(0, 0, -1, Rotation3d.kZero);
 
       // BRANCH POSES
-      public static final Pose2d REEF_A = new Pose2d(2.860, 4.187, Rotation2d.fromDegrees(0));
-      public static final Pose2d REEF_B = new Pose2d(2.860, 3.857, Rotation2d.fromDegrees(0));
-      public static final Pose2d REEF_C = new Pose2d(3.527, 2.694, Rotation2d.fromDegrees(60));
-      public static final Pose2d REEF_D = new Pose2d(3.813, 2.535, Rotation2d.fromDegrees(60));
-      public static final Pose2d REEF_E = new Pose2d(5.160, 2.529, Rotation2d.fromDegrees(120));
-      public static final Pose2d REEF_F = new Pose2d(5.445, 2.694, Rotation2d.fromDegrees(120));
-      public static final Pose2d REEF_G = new Pose2d(6.119, 3.857, Rotation2d.fromDegrees(180));
-      public static final Pose2d REEF_H = new Pose2d(6.119, 4.187, Rotation2d.fromDegrees(180));
-      public static final Pose2d REEF_I = new Pose2d(5.452, 5.343, Rotation2d.fromDegrees(-120));
-      public static final Pose2d REEF_J = new Pose2d(5.166, 5.527, Rotation2d.fromDegrees(-120));
-      public static final Pose2d REEF_K = new Pose2d(3.826, 5.508, Rotation2d.fromDegrees(-60));
-      public static final Pose2d REEF_L = new Pose2d(3.534, 5.368, Rotation2d.fromDegrees(-60));
+      public static final Pose2d REEF_A = new Pose2d(3.171, 4.189, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_B = new Pose2d(3.171, 3.863, Rotation2d.fromDegrees(0));
+      public static final Pose2d REEF_C = new Pose2d(3.688, 2.968, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_D = new Pose2d(3.975, 2.803, Rotation2d.fromDegrees(60));
+      public static final Pose2d REEF_E = new Pose2d(5.001, 2.804, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_F = new Pose2d(5.285, 2.964, Rotation2d.fromDegrees(120));
+      public static final Pose2d REEF_G = new Pose2d(5.805, 3.863, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_H = new Pose2d(5.805, 4.189, Rotation2d.fromDegrees(180));
+      public static final Pose2d REEF_I = new Pose2d(5.288, 5.083, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_J = new Pose2d(5.002, 5.248, Rotation2d.fromDegrees(-120));
+      public static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
+      public static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
+
+      // CORAL STATION POSES
+      public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
+      public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
+      public static final Pose2d RIGHT_CORAL_STATION_FAR = new Pose2d(1.61, 0.70, Rotation2d.fromDegrees(55));
+      public static final Pose2d RIGHT_CORAL_STATION_NEAR = new Pose2d(0.64, 1.37, Rotation2d.fromDegrees(55));
+
+      // processor poses
+      public static final Pose2d PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
 
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F,
-          REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
 
       private static final Pose2d[] RED_POSES = getRedAlliancePoses();
+
+      private static final List<Pose2d> BLUE_CORAL_STATION_POSES = List.of(LEFT_CORAL_STATION_FAR,
+          LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
+      private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
+
+      private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
+      private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
+
+      private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
+
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -536,6 +596,24 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
+    }
+
+    private static List<Pose2d> getRedCoralStationPoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CORAL_STATION_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_CORAL_STATION_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CORAL_STATION_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
+    }
+
+    private static Pose2d getRedProcessorPose() {
+      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
+
+      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
+
+      return returnedPose;
     }
 
     /**
@@ -571,9 +649,23 @@ public final class Constants {
       }
       return () -> POSES.BLUE_REEF_POSES;
     }
+
+    public static Supplier<List<Pose2d>> getCoralStationPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_CORAL_STATION_POSES;
+      }
+      return () -> POSES.BLUE_CORAL_STATION_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getProcessorPositions() {
+      return () -> POSES.PROCESSOR_POSES;
+    }
+
   }
 
   public static class constVision {
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
+
     /**
      * <p>
      * Pose estimator standard deviation for vision data
@@ -610,26 +702,39 @@ public final class Constants {
      * The area that one tag (if its the only tag in the update) needs to exceed
      * before being accepted
      */
-    public static final double AREA_THRESHOLD = 0.1;
+    public static final double AREA_THRESHOLD = 0.2;
 
     // The below values are accounted for in the limelight interface, NOT in code
-    public static final Distance LL_FORWARD = Units.Meters.of(0.3302);
-    public static final Distance LL_RIGHT = Units.Meters.of(-0.2921);
-    public static final Distance LL_UP = Units.Meters.of(0.2286);
+    public static class LIMELIGHT_RIGHT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
+      public static final Distance LL_RIGHT = Units.Meters.of(0.307594);
+      public static final Distance LL_UP = Units.Meters.of(0.211328);
 
-    public static final Angle LL_ROLL = Units.Degrees.of(0);
-    public static final Angle LL_PITCH = Units.Degrees.of(15.92);
-    public static final Angle LL_YAW = Units.Degrees.of(-20);
+      public static final Angle LL_ROLL = Units.Degrees.of(180);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(51.25);
+    }
 
+    public static class LIMELIGHT_LEFT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.307594);
+      public static final Distance LL_UP = Units.Meters.of(0.211328);
+
+      public static final Angle LL_ROLL = Units.Degrees.of(180);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(-51.25);
+
+    }
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_SPEED = .75;
+    public static final double HOPPER_INDEXING_SPEED = .75;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {
-      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
   }
 
@@ -656,7 +761,7 @@ public final class Constants {
     public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
     public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
     public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
-    public static final int[] LED_CLIMB = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
   }

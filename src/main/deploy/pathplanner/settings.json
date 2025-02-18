@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.876,
-  "robotLength": 0.8762995267982555,
+  "robotWidth": 0.9017,
+  "robotLength": 0.9017,
   "holonomicMode": true,
   "pathFolders": [
     "CSBottom-Score",
@@ -10,19 +10,21 @@
     "Tickle Monster",
     "Tuning"
   ],
-  "autoFolders": [],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 5.0,
+  "autoFolders": [
+    "DEBUG"
+  ],
+  "defaultMaxVel": 4.5,
+  "defaultMaxAccel": 10.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 115.0,
-  "robotMOI": 6.883,
+  "robotMass": 40.0,
+  "robotMOI": 6.0,
   "robotTrackwidth": 0.546,
-  "driveWheelRadius": 0.049,
+  "driveWheelRadius": 0.05,
   "driveGearing": 6.75,
   "maxDriveSpeed": 5.0292,
-  "driveMotorType": "falcon500",
+  "driveMotorType": "krakenX60",
   "driveCurrentLimit": 99999.0,
   "wheelCOF": 1.0,
   "flModuleX": 0.301,

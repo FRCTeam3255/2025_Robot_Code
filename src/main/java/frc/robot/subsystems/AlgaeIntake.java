@@ -10,7 +10,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -26,9 +25,6 @@ public class AlgaeIntake extends SubsystemBase {
   TalonFX intakeRollerMotor;
   TalonFX intakePivotMotor;
 
-  AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
-  Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-
   private Angle lastDesiredAngle = Degrees.zero();
 
   PositionVoltage positionRequest = new PositionVoltage(0);
@@ -37,7 +33,7 @@ public class AlgaeIntake extends SubsystemBase {
 
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
-  public boolean hasGamePiece = false;
+  public boolean hasAlgaeOverride = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
@@ -53,7 +49,7 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Degrees)));
+    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Rotation)));
     lastDesiredAngle = setpoint;
   }
 
@@ -94,25 +90,28 @@ public class AlgaeIntake extends SubsystemBase {
     AngularVelocity intakeVelocity = intakeRollerMotor.getVelocity().getValue();
     double intakeAcceleration = intakeRollerMotor.getAcceleration().getValueAsDouble();
 
-    intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
-    intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
+    Current intakeHasGamePieceCurrent = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_CURRENT;
+    AngularVelocity intakeHasGamePieceVelocity = constAlgaeIntake.ALGAE_INTAKE_HAS_GP_VELOCITY;
 
-    if (hasGamePiece || ((intakeCurrent.gte(intakeHasGamePieceCurrent))
-        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
-        && (intakeAcceleration < 0))) {
-      hasGamePiece = true;
-    } else {
-      hasGamePiece = false;
+    if (hasAlgaeOverride) {
+      return hasAlgaeOverride;
     }
-    return hasGamePiece;
+
+    if ((intakeCurrent.gte(intakeHasGamePieceCurrent))
+        && (intakeVelocity.lte(intakeHasGamePieceVelocity))
+        && (intakeAcceleration < 0)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void setHasAlgaeOverride(boolean passedHasGamePiece) {
-    hasGamePiece = passedHasGamePiece;
+    hasAlgaeOverride = passedHasGamePiece;
   }
 
   public void algaeToggle() {
-    this.hasGamePiece = !hasGamePiece;
+    this.hasAlgaeOverride = !hasAlgaeOverride;
   }
 
   public double getAlgaeIntakeVoltage() {
@@ -123,7 +122,7 @@ public class AlgaeIntake extends SubsystemBase {
     intakeRollerMotor.setVoltage(voltage);
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetPoint() {
     return (getPivotAngle()
         .compareTo(getLastDesiredPivotAngle().minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
         getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
@@ -131,14 +130,6 @@ public class AlgaeIntake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Algae Intake/Roller/Stator Current",
-        intakeRollerMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("Algae Intake/Pivot/Stator Current",
-        intakePivotMotor.getStatorCurrent().getValueAsDouble());
-
-    SmartDashboard.putBoolean("Has Algae", hasAlgae());
   }
 }
