@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
+import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
@@ -32,7 +33,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar, processor;
+      rightCoralStationFar, processor, algae;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -139,7 +140,8 @@ public class DriveManual extends Command {
     }
 
     // -- Controlling --
-    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    else if (leftReef.getAsBoolean()
+        || rightReef.getAsBoolean() && subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
       // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
@@ -161,6 +163,16 @@ public class DriveManual extends Command {
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine
 
       );
+    }
+
+    else if (leftReef.getAsBoolean()
+        || rightReef.getAsBoolean() && subStateMachine.getRobotState() != RobotState.HAS_CORAL) {
+      Pose2d desiredAlgae = subDrivetrain.getDesiredAlgae();
+      Distance algaeDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredAlgae.getTranslation()));
+      subDrivetrain.autoAlign(algaeDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE,
+          DriverState.ALGAE_AUTO_DRIVING, DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
     }
 
     else {

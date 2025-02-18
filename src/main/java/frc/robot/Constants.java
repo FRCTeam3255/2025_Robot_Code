@@ -260,6 +260,7 @@ public final class Constants {
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
+      public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -542,6 +543,27 @@ public final class Constants {
       public static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
       public static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
 
+      // ALGAE POSES
+      // ALGAE AB = MIDPOINT BETWEEN A & B
+      // public static final Pose2d ALGAE_AB = new Pose2d(3.171, 4.026,
+      // Rotation2d.fromDegrees(0));
+      // public static final Pose2d ALGAE_CD = new Pose2d(3.831, 3.385,
+      // Rotation2d.fromDegrees(60));
+      // public static final Pose2d ALGAE_EF = new Pose2d(5.143, 2.884,
+      // Rotation2d.fromDegrees(120));
+      // public static final Pose2d ALGAE_GH = new Pose2d(5.805, 4.026,
+      // Rotation2d.fromDegrees(180));
+      // public static final Pose2d ALGAE_IJ = new Pose2d(5.143, 5.168,
+      // Rotation2d.fromDegrees(-120));
+      // public static final Pose2d ALGAE_KL = new Pose2d(3.831, 5.669,
+      // Rotation2d.fromDegrees(-60));
+      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
+
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
       public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
@@ -566,6 +588,10 @@ public final class Constants {
 
       private static final List<Pose2d> BLUE_PROCESSOR_POSE = List.of(PROCESSOR);
       private static final List<Pose2d> RED_PROCESSOR_POSE = getRedProcessorPoses();
+
+      private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
+          ALGAE_KL);
+      private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
 
     }
 
@@ -616,6 +642,17 @@ public final class Constants {
       return List.of(returnedPoses[0]);
     }
 
+    private static List<Pose2d> getRedAlgaePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_ALGAE_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_ALGAE_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_ALGAE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5]);
+    }
+
     /**
      * Gets the positions of all of the necessary field elements on the field. All
      * coordinates are in meters and are relative to the blue alliance.
@@ -664,6 +701,12 @@ public final class Constants {
       return () -> POSES.BLUE_PROCESSOR_POSE;
     }
 
+    public static Supplier<List<Pose2d>> getAlgaePositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_ALGAE_POSES;
+      }
+      return () -> POSES.BLUE_ALGAE_POSES;
+    }
   }
 
   public static class constVision {
