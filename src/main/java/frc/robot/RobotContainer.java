@@ -14,6 +14,7 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
@@ -33,11 +34,15 @@ import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Rumbles.AlgaeReadyToPlaceRumble;
+import frc.robot.commands.Rumbles.CoralReadyToPlaceRumble;
+import frc.robot.commands.Rumbles.HasGamePieceRumble;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 @Logged
 public class RobotContainer {
@@ -143,8 +148,25 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
-
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
+
+  Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
+      Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+
+  Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
+      Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
+
+  Command READY_TO_PLACE_CORAL_RUMBLE = new CoralReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subCoralOuttake, subDrivetrain);
+
+  Command READY_TO_PLACE_ALGAE_RUMBLE = new AlgaeReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subAlgaeIntake, subStateMachine);
+
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
+      && subCoralOuttake.hasCoral() && subDrivetrain.isAligned());
+
+  private final BooleanSupplier readytoPlaceAlgae = (() -> subElevator.isAtAnyAlgaeScoringPosition()
+      && subAlgaeIntake.isAtAnyAlgaeScoringPosition());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
@@ -155,7 +177,10 @@ public class RobotContainer {
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
+  private final Trigger seesCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
+  private final Trigger hasAlgaeStateTrigger = new Trigger(
+      () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
@@ -307,6 +332,15 @@ public class RobotContainer {
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
+
+    hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
+
+    seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
+
+    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_CORAL_RUMBLE);
+
+    new Trigger(readytoPlaceAlgae).onTrue(READY_TO_PLACE_ALGAE_RUMBLE);
+
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
