@@ -100,6 +100,7 @@ public class StateMachine extends SubsystemBase {
       case INTAKING_CORAL_HOPPER:
         switch (currentRobotState) {
           case NONE:
+          case HAS_CORAL:
             return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
                 subAlgaeIntake);
         }
@@ -294,6 +295,7 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_AUTO_DRIVING,
     PROCESSOR_ROTATION_SNAPPING,
     PROCESSOR_AUTO_DRIVING,
+
   }
 
   public static enum RobotState {
@@ -318,24 +320,24 @@ public class StateMachine extends SubsystemBase {
     SCORING_ALGAE,
     PREP_ALGAE_ZERO,
 
-    CLIMBER_DEPLOYING,
-    CLIMBER_RETRACTING
-  }
+   
 
-  public static enum TargetState {
-    NONE,
-    PREP_CORAL_L1,
-    PREP_CORAL_L2,
-    PREP_CORAL_L3,
-    PREP_CORAL_L4,
-    PREP_NET,
-    PREP_PROCESSOR,
-    PREP_ALGAE_0,
-    PREP_CORAL_0,
-  }
+    }
+      
+      blic static en
+      NONE,
+      PREP_CORAL_L1,
+      PREP_CORAL_L2,
+      PREP_CORA
+      PREP_CORAL_L4,
+      PREP_NET,
+      PREP_PROCESSO
+     
 
-  @Override
-  public void periodic() {
+    }
+    
+      verride
+    public void periodic() {
     // This method will be called once per scheduler run
   }
 }
