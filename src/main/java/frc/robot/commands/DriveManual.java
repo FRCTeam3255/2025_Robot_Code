@@ -140,8 +140,8 @@ public class DriveManual extends Command {
     }
 
     // -- Controlling --
-    else if (leftReef.getAsBoolean()
-        || rightReef.getAsBoolean() && subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
+    else if ((leftReef.getAsBoolean()
+        || rightReef.getAsBoolean()) && subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
       // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
@@ -165,8 +165,8 @@ public class DriveManual extends Command {
       );
     }
 
-    else if (leftReef.getAsBoolean()
-        || rightReef.getAsBoolean() && subStateMachine.getRobotState() != RobotState.HAS_CORAL) {
+    else if ((leftReef.getAsBoolean()
+        || rightReef.getAsBoolean()) && subStateMachine.getRobotState() != RobotState.HAS_CORAL) {
       Pose2d desiredAlgae = subDrivetrain.getDesiredAlgae();
       Distance algaeDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredAlgae.getTranslation()));
