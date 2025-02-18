@@ -28,7 +28,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar, processor;
+      rightCoralStationFar, processor, cageAlign;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -37,6 +37,7 @@ public class DriveManual extends Command {
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
+      BooleanSupplier cageAlign,
       BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
       BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
     this.subStateMachine = subStateMachine;
@@ -53,6 +54,7 @@ public class DriveManual extends Command {
     this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
     this.processor = processorBtn;
+    this.cageAlign = cageAlign;
 
     isOpenLoop = true;
 
@@ -89,8 +91,18 @@ public class DriveManual extends Command {
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
+    // Cage auto-align
+    if (cageAlign.getAsBoolean()) {
+      Pose2d desiredCage = subDrivetrain.getDesiredCage();
+      Distance cageDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCage.getTranslation()));
+      subDrivetrain.autoAlign(cageDistance, desiredCage, xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CAGE_DISTANCE, DriverState.CAGE_AUTO_DRIVING,
+          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
+    }
+
     // -- Coral Station --
-    if (leftCoralStationFar.getAsBoolean()) {
+    else if (leftCoralStationFar.getAsBoolean()) {
       Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
