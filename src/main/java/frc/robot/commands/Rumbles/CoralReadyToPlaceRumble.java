@@ -9,23 +9,26 @@ import com.frcteam3255.joystick.SN_XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constControllers;
+import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ReadyToPlaceRumble extends Command {
+public class CoralReadyToPlaceRumble extends Command {
   SN_XboxController globalDriver;
   SN_XboxController globalOperator;
-  boolean isAtScoringPosition;
-  boolean hasGamePiece;
-  boolean isDrivetrainAligned;
+  Elevator globalElevator;
+  CoralOuttake globalCoralOuttake;
+  Drivetrain globalDrivetrain;
 
   /** Creates a new ReadyToPlaceCoralRumble. */
-  public ReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator,
-      boolean isAtScoringPosition, boolean hasGamePiece, boolean isDrivetrainAligned) {
+  public CoralReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator, Elevator subElevator,
+      CoralOuttake subCoralOuttake, Drivetrain subDrivetrain) {
     globalDriver = conDriver;
     globalOperator = conOperator;
-    this.isAtScoringPosition = isAtScoringPosition;
-    this.hasGamePiece = hasGamePiece;
-    this.isDrivetrainAligned = isDrivetrainAligned;
+    globalElevator = subElevator;
+    globalCoralOuttake = subCoralOuttake;
+    globalDrivetrain = subDrivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -53,6 +56,7 @@ public class ReadyToPlaceRumble extends Command {
   public boolean isFinished() {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
-    return (!isAtScoringPosition || !hasGamePiece || !isDrivetrainAligned);
+    return (!globalElevator.isAtAnyCoralScoringPosition() || !globalCoralOuttake.hasCoral()
+        || !globalDrivetrain.isAligned());
   }
 }

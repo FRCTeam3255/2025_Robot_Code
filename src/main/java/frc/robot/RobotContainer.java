@@ -33,8 +33,9 @@ import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.states.*;
 import frc.robot.commands.*;
+import frc.robot.commands.Rumbles.AlgaeReadyToPlaceRumble;
+import frc.robot.commands.Rumbles.CoralReadyToPlaceRumble;
 import frc.robot.commands.Rumbles.HasGamePieceRumble;
-import frc.robot.commands.Rumbles.ReadyToPlaceRumble;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
@@ -153,20 +154,17 @@ public class RobotContainer {
   Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
 
-  Command READY_TO_PLACE_CORAL_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
-      subElevator.isAtAnyCoralScoringPosition(), subCoralOuttake.hasCoral(), subDrivetrain.isAligned());
+  Command READY_TO_PLACE_CORAL_RUMBLE = new CoralReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subCoralOuttake, subDrivetrain);
 
-  // Since we don't have an auto align for algae scoring locations yet,
-  // I'm just manually setting the aligned drivetrain condition to true so we're
-  // not checking the drivetrain for if the algae is ready to score
-  Command READY_TO_PLACE_ALGAE_RUMBLE = new ReadyToPlaceRumble(conDriver, conOperator,
-      subElevator.isAtAnyAlgaeScoringPosition(), subAlgaeIntake.hasAlgae(), true);
+  Command READY_TO_PLACE_ALGAE_RUMBLE = new AlgaeReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subAlgaeIntake, subStateMachine);
 
   private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
       && subCoralOuttake.hasCoral() && subDrivetrain.isAligned());
 
   private final BooleanSupplier readytoPlaceAlgae = (() -> subElevator.isAtAnyAlgaeScoringPosition()
-      && subAlgaeIntake.hasAlgae());
+      && subAlgaeIntake.isAtAnyAlgaeScoringPosition());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
