@@ -1,0 +1,98 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.127,
+        "y": 2.0
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.9004314319064655,
+        "y": 2.5547073105012057
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.513644366197183,
+        "y": 3.911619718309858
+      },
+      "prevControl": {
+        "x": 7.981338028169014,
+        "y": 3.443926056338027
+      },
+      "nextControl": {
+        "x": 7.114259076599789,
+        "y": 4.311005007907252
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.513644366197183,
+        "y": 3.911619718309858
+      },
+      "prevControl": {
+        "x": 7.358288852272456,
+        "y": 4.193018385041439
+      },
+      "nextControl": {
+        "x": 8.264788732394367,
+        "y": 2.5510563380281677
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.285,
+        "y": 2.995
+      },
+      "prevControl": {
+        "x": 6.280633802816901,
+        "y": 2.7494718309859136
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8768115942028981,
+      "rotationDegrees": -143.86646056181428
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepPlace",
+      "waypointRelativePos": 2.785074626865673,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": "Tickle Monster",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
