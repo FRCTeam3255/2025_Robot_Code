@@ -117,6 +117,5 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-
   }
 }
