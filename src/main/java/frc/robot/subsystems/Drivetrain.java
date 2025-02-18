@@ -93,7 +93,8 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   public Boolean isAligned() {
-    return desiredAlignmentPose.getTranslation().getDistance(getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
+    return desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
   }
 
   public void addEventToAutoMap(String key, Command command) {
@@ -178,6 +179,15 @@ public class Drivetrain extends SN_SuperSwerve {
       desiredReef = reefPoses.get(closestReefIndex + 1);
     }
     return desiredReef;
+  }
+
+  public Pose2d getDesiredProcessor() {
+    // Get the closest processor
+    List<Pose2d> processorPoses = constField.getProcessorPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredProcessor = currentPose.nearest(processorPoses);
+
+    return desiredProcessor;
   }
 
   /**

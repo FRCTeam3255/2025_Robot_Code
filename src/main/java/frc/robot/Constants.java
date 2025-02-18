@@ -564,8 +564,10 @@ public final class Constants {
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
-      private static final List<Pose2d> BLUE_PROCESSOR_POSE = List.of(PROCESSOR);
-      private static final List<Pose2d> RED_PROCESSOR_POSE = getRedProcessorPoses();
+      private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
+      private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
+
+      private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
 
     }
 
@@ -606,14 +608,12 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
     }
 
-    private static List<Pose2d> getRedProcessorPoses() {
-      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_PROCESSOR_POSE.size()];
+    private static Pose2d getRedProcessorPose() {
+      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
 
-      for (int i = 0; i < POSES.BLUE_PROCESSOR_POSE.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE.get(i));
-      }
+      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
 
-      return List.of(returnedPoses[0]);
+      return returnedPose;
     }
 
     /**
@@ -658,10 +658,7 @@ public final class Constants {
     }
 
     public static Supplier<List<Pose2d>> getProcessorPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> POSES.RED_PROCESSOR_POSE;
-      }
-      return () -> POSES.BLUE_PROCESSOR_POSE;
+      return () -> POSES.PROCESSOR_POSES;
     }
 
   }
