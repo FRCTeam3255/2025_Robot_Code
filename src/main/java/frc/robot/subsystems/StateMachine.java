@@ -319,25 +319,23 @@ public class StateMachine extends SubsystemBase {
     EJECTING_ALGAE,
     SCORING_ALGAE,
     PREP_ALGAE_ZERO,
-
-   
-
-    }
-      
-      blic static en
-      NONE,
-      PREP_CORAL_L1,
-      PREP_CORAL_L2,
-      PREP_CORA
-      PREP_CORAL_L4,
-      PREP_NET,
-      PREP_PROCESSO
-     
-
-    }
-    
-      verride
-    public void periodic() {
-    // This method will be called once per scheduler run
+    CLIMBER_DEPLOYING,
+    CLIMBER_RETRACTING
   }
+
+  public static enum TargetState {
+    NONE,
+    PREP_CORAL_L1,
+    PREP_CORAL_L2,
+    PREP_CORAL_L3,
+    PREP_CORAL_L4,
+    PREP_NET,
+    PREP_PROCESSOR,
+    PREP_ALGAE_0,
+    PREP_CORAL_0,
+  }
+
+  public void periodic() {
+  }
+  // This method will be called once per scheduler run
 }
