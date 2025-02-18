@@ -22,7 +22,7 @@ public class LED extends SubsystemBase {
   }
 
   public void setLED(int[] rgb) {
-    LED.setLEDs(rgb[0], rgb[1], rgb[2]);
+    LED.setLEDs(rgb[0], rgb[1], rgb[2], 0, 0, constLED.LED_NUMBER);
   }
 
   public void setLEDAnimation(Animation animation, int animationSlot) {

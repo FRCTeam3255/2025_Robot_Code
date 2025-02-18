@@ -745,8 +745,8 @@ public final class Constants {
     public static final CANdleConfiguration LED_CONFIG = new CANdleConfiguration();
     static {
       LED_CONFIG.brightnessScalar = 1;
-
     }
+    public static final int LED_NUMBER = 200;
 
     // These are the RGB values for the LEDs (sorry no animation)
     public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
@@ -767,5 +767,6 @@ public final class Constants {
     public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+
   }
 }
