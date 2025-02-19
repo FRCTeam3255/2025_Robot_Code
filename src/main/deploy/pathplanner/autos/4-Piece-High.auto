@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ForceGamePiece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P-F"
+            "pathName": "P-I"
           }
         },
         {
@@ -23,15 +23,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "F-CSBottom"
+            "pathName": "I-CSTop"
           }
         },
         {
@@ -43,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSTop-J"
           }
         },
         {
@@ -53,15 +47,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "C-CSBottom"
+            "pathName": "J-CSTop"
           }
         },
         {
@@ -73,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-D"
+            "pathName": "CSTop-K"
           }
         },
         {
@@ -83,15 +71,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "D-CSBottom"
+            "pathName": "K-CSTop"
           }
         },
         {
@@ -103,19 +85,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-E"
+            "pathName": "CSTop-L"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
           }
         }
       ]
