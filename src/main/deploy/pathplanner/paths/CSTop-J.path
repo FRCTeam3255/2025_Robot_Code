@@ -20,8 +20,8 @@
         "y": 5.213
       },
       "prevControl": {
-        "x": 6.359985915492958,
-        "y": 6.1199401408450695
+        "x": 5.51531690140845,
+        "y": 5.881602112676055
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "PrepPlace",
-      "waypointRelativePos": 0.8149253731343281,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }

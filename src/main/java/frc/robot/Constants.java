@@ -45,6 +45,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -256,11 +257,13 @@ public final class Constants {
       public static final LinearVelocity DESIRED_AUTO_ALIGN_SPEED = Units.MetersPerSecond
           .of(OBSERVED_DRIVE_SPEED.in(MetersPerSecond) / 4);
 
-      public static final Distance MAX_AUTO_DRIVE_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
+      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
-          5,
+          4,
           0,
           0);
       public static final Distance AT_POINT_TOLERANCE = Units.Inches.of(0.5);
@@ -269,6 +272,8 @@ public final class Constants {
           3, 0, 0, new TrapezoidProfile.Constraints(TURN_SPEED.in(Units.DegreesPerSecond),
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
+
+      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(5);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -287,6 +292,8 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -0.6;
+
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
@@ -369,7 +376,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -379,7 +386,7 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
-    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(1);
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.3);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -437,7 +444,14 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
     }
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(8.25);
+
+    public static TalonFXConfiguration COAST_MODE_CONFIGURATION = new TalonFXConfiguration();
+    static {
+      COAST_MODE_CONFIGURATION.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    }
+
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
@@ -528,15 +542,33 @@ public final class Constants {
       public static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
       public static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
 
+      // CORAL STATION POSES
+      public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
+      public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
+      public static final Pose2d RIGHT_CORAL_STATION_FAR = new Pose2d(1.61, 0.70, Rotation2d.fromDegrees(55));
+      public static final Pose2d RIGHT_CORAL_STATION_NEAR = new Pose2d(0.64, 1.37, Rotation2d.fromDegrees(55));
+
+      // processor poses
+      public static final Pose2d PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
+
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F,
-          REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
 
       private static final Pose2d[] RED_POSES = getRedAlliancePoses();
+
+      private static final List<Pose2d> BLUE_CORAL_STATION_POSES = List.of(LEFT_CORAL_STATION_FAR,
+          LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
+      private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
+
+      private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
+      private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
+
+      private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
+
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -564,6 +596,24 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
+    }
+
+    private static List<Pose2d> getRedCoralStationPoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CORAL_STATION_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_CORAL_STATION_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CORAL_STATION_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
+    }
+
+    private static Pose2d getRedProcessorPose() {
+      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
+
+      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
+
+      return returnedPose;
     }
 
     /**
@@ -599,10 +649,22 @@ public final class Constants {
       }
       return () -> POSES.BLUE_REEF_POSES;
     }
+
+    public static Supplier<List<Pose2d>> getCoralStationPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_CORAL_STATION_POSES;
+      }
+      return () -> POSES.BLUE_CORAL_STATION_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getProcessorPositions() {
+      return () -> POSES.PROCESSOR_POSES;
+    }
+
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-front", "limelight-back" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
 
     /**
      * <p>
@@ -643,7 +705,7 @@ public final class Constants {
     public static final double AREA_THRESHOLD = 0.2;
 
     // The below values are accounted for in the limelight interface, NOT in code
-    public static class LIMELIGHT_FRONT {
+    public static class LIMELIGHT_RIGHT {
       public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
       public static final Distance LL_RIGHT = Units.Meters.of(0.307594);
       public static final Distance LL_UP = Units.Meters.of(0.211328);
@@ -653,14 +715,15 @@ public final class Constants {
       public static final Angle LL_YAW = Units.Degrees.of(51.25);
     }
 
-    public static class LIMELIGHT_BACK {
-      public static final Distance LL_FORWARD = Units.Meters.of(-0.3302);
-      public static final Distance LL_RIGHT = Units.Meters.of(0.2921);
-      public static final Distance LL_UP = Units.Meters.of(0.2286);
+    public static class LIMELIGHT_LEFT {
+      public static final Distance LL_FORWARD = Units.Meters.of(0.269494);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.307594);
+      public static final Distance LL_UP = Units.Meters.of(0.211328);
 
-      public static final Angle LL_ROLL = Units.Degrees.of(0);
-      public static final Angle LL_PITCH = Units.Degrees.of(15.92);
-      public static final Angle LL_YAW = Units.Degrees.of(160);
+      public static final Angle LL_ROLL = Units.Degrees.of(180);
+      public static final Angle LL_PITCH = Units.Degrees.of(23.17);
+      public static final Angle LL_YAW = Units.Degrees.of(-51.25);
+
     }
   }
 

@@ -8,13 +8,20 @@ import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
+
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.Set;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +35,15 @@ import frc.robot.commands.states.*;
 import frc.robot.commands.*;
 import frc.robot.commands.Zeroing.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import edu.wpi.first.wpilibj.RobotController;
 
 @Logged
 public class RobotContainer {
+  private final String LEFT_LABEL = "Left";
+  private final String RIGHT_LABEL = "Right";
+
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -52,11 +63,11 @@ public class RobotContainer {
       subDrivetrain, subElevator, subHopper, subLED, conOperator);
   private final IntakeCoralHopper comIntakeCoralHopper = new IntakeCoralHopper(subStateMachine, subHopper,
       subCoralOuttake, subLED, subElevator, subAlgaeIntake);
+  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
   private final ClimberDeploying comClimb = new ClimberDeploying(subStateMachine, subClimber, subElevator,
       subAlgaeIntake, subLED);
   private final ScoringCoral comScoringCoral = new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED,
       conOperator, subStateMachine.getRobotState());
-  private final ScoringAlgae comScoringAlgae = new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
   private final PrepProcessor comPrepProcessor = new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake,
       subLED);
   private final PrepNet comPrepNet = new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
@@ -68,6 +79,7 @@ public class RobotContainer {
       subAlgaeIntake, subLED);
   private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
 
+  @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
@@ -153,9 +165,10 @@ public class RobotContainer {
 
     subDrivetrain
         .setDefaultCommand(
-            new DriveManual(subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
+            new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
                 conDriver.axis_RightX,
-                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger));
+                conDriver.btn_LeftBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger, conDriver.btn_A,
+                conDriver.btn_B, conDriver.btn_X, conDriver.btn_Y, conDriver.btn_South));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -188,34 +201,48 @@ public class RobotContainer {
 
   private void configureAutoBindings() {
     // -- Named Commands --
+    Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
+        subDrivetrain.getPose().nearest(constField.getReefPositions().get()), MetersPerSecond.of(0),
+        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
+        DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
+
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            TRY_SCORING_CORAL.asProxy().until(() -> !hasCoralTrigger.getAsBoolean()),
-            Commands.waitSeconds(1.5),
-            TRY_NONE.asProxy().until(() -> !hasCoralTrigger.getAsBoolean())));
+            driveAutoAlign.asProxy().until(() -> subDrivetrain
+                .isAtPosition(subDrivetrain.getPose().nearest(constField.getReefPositions().get()))),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_SCORING_CORAL.asProxy()).until(() -> subStateMachine.getRobotState() == RobotState.NONE));
+
+    NamedCommands.registerCommand("PrepPlace",
+        Commands.sequence(
+            Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)).asProxy()));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(hasCoralTrigger),
-            TRY_PREP_CORAL_L3.asProxy()));
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
+            TRY_NONE.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE))
+            .withName("GetCoralStationPiece"));
+
+    NamedCommands.registerCommand("ForceGamePiece",
+        TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL));
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
     prepPlace.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
         Set.of(subStateMachine)));
-    EventTrigger prepCoralStation = new EventTrigger("PrepCoralStation");
-    prepCoralStation.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER),
+    EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
+    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER),
         Set.of(subStateMachine)));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_A
-        .whileTrue(TRY_CLIMBER_DEPLOYING)
-        .onFalse(TRY_NONE);
+    // controller.btn_A
+    // .whileTrue(TRY_CLIMBER_DEPLOYING)
+    // .onFalse(TRY_NONE);
 
-    controller.btn_Y
-        .whileTrue(TRY_CLIMBER_RETRACTING)
-        .onFalse(TRY_NONE);
+    // controller.btn_Y
+    // .whileTrue(TRY_CLIMBER_RETRACTING)
+    // .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
@@ -354,6 +381,14 @@ public class RobotContainer {
 
   public boolean allZeroed() {
     return subElevator.hasZeroed && subAlgaeIntake.hasZeroed;
+  }
+
+  public boolean isAligned() {
+    return subDrivetrain.isAligned();
+  }
+
+  public boolean elevatorAndAlgaeAtSetPoint() {
+    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**

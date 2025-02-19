@@ -38,8 +38,14 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "PrepPlace",
-      "waypointRelativePos": 0.8019753086419719,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }

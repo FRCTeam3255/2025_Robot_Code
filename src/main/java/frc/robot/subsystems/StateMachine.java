@@ -14,6 +14,7 @@ import frc.robot.commands.states.*;
 
 @Logged
 public class StateMachine extends SubsystemBase {
+  public static DriverState currentDriverState;
   public static RobotState currentRobotState;
   public static TargetState currentTargetState;
   @NotLogged
@@ -40,6 +41,7 @@ public class StateMachine extends SubsystemBase {
       Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED, SN_XboxController conOperator) {
     currentRobotState = RobotState.NONE;
     currentTargetState = TargetState.NONE;
+    currentDriverState = DriverState.MANUAL;
 
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;
@@ -51,12 +53,20 @@ public class StateMachine extends SubsystemBase {
     this.conOperator = conOperator;
   }
 
+  public void setDriverState(DriverState driverState) {
+    currentDriverState = driverState;
+  }
+
   public void setRobotState(RobotState robotState) {
     currentRobotState = robotState;
   }
 
   public void setTargetState(TargetState targetState) {
     currentTargetState = targetState;
+  }
+
+  public DriverState getDriverState() {
+    return currentDriverState;
   }
 
   public RobotState getRobotState() {
@@ -253,7 +263,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_NET:
           case PREP_PROCESSOR:
           case PREP_ALGAE_ZERO:
-            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
         }
         break;
 
@@ -274,6 +284,16 @@ public class StateMachine extends SubsystemBase {
 
     }
     return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
+  }
+
+  public static enum DriverState {
+    MANUAL,
+    REEF_ROTATION_SNAPPING,
+    CORAL_STATION_ROTATION_SNAPPING,
+    REEF_AUTO_DRIVING,
+    CORAL_STATION_AUTO_DRIVING,
+    PROCESSOR_ROTATION_SNAPPING,
+    PROCESSOR_AUTO_DRIVING,
   }
 
   public static enum RobotState {
