@@ -33,6 +33,8 @@ public class DriveManual extends Command {
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
+  boolean hasAttemptedReefAlign = false;
+  Pose2d desiredReef = Pose2d.kZero;
 
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
@@ -99,6 +101,8 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+      hasAttemptedReefAlign = false;
+
     }
 
     else if (leftCoralStationNear.getAsBoolean()) {
@@ -110,6 +114,8 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+      hasAttemptedReefAlign = false;
+
     }
 
     else if (rightCoralStationFar.getAsBoolean()) {
@@ -121,6 +127,8 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+      hasAttemptedReefAlign = false;
+
     }
 
     else if (rightCoralStationNear.getAsBoolean()) {
@@ -132,12 +140,17 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+      hasAttemptedReefAlign = false;
     }
 
     // -- Controlling --
     else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Reef auto-align is requested
-      Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
+      if (!hasAttemptedReefAlign) {
+        desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
+        hasAttemptedReefAlign = true;
+      }
+
       Distance reefDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredReef.getTranslation()));
 
@@ -158,6 +171,7 @@ public class DriveManual extends Command {
       subDrivetrain.autoAlign(processorDistance, desiredProcessor, xVelocity, yVelocity, rVelocity, transMultiplier,
           isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine);
+      hasAttemptedReefAlign = false;
     }
 
     else {
@@ -165,6 +179,7 @@ public class DriveManual extends Command {
       subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(DriverState.MANUAL);
+      hasAttemptedReefAlign = false;
     }
   }
 
