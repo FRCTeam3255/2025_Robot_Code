@@ -53,6 +53,8 @@ public class Drivetrain extends SN_SuperSwerve {
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
 
+  List<Rotation2d> reefRotations = constField.getReefRotations().get();
+
   public Drivetrain() {
     super(
         (RobotContainer.isPracticeBot()) ? constDrivetrain.PRACTICE_BOT.SWERVE_CONSTANTS
@@ -187,24 +189,25 @@ public class Drivetrain extends SN_SuperSwerve {
     List<Rotation2d> reefRotations = constField.getReefRotations().get();
     List<Pose2d> reefPoses = constField.getReefPositions().get();
     Rotation2d currentPoseRotation = getRotation();
-    Pose2d desiredReef = Pose2d.kZero;
+    Rotation2d desiredRotation = Rotation2d.kZero;
     Rotation2d differenceIRotation2d = Rotation2d.fromDegrees(0);
 
-    for (Rotation2d desiredRotation : reefRotations) {
-      double currDistance = Math.abs(currentPoseRotation.minus(desiredRotation).getDegrees());
+    for (Rotation2d rotation : reefRotations) {
+      double currDistance = currentPoseRotation.minus(rotation).getDegrees();
       if (currDistance < differenceIRotation2d.getDegrees()) {
         differenceIRotation2d = Rotation2d.fromDegrees(currDistance);
-        desiredReef = reefPoses.get(reefPoses.indexOf(desiredRotation));
+        desiredRotation = rotation;
       }
     }
 
-    int closestReefIndex = reefPoses.indexOf(desiredReef);
+    int closestReefIndex = reefRotations.indexOf(desiredRotation);
 
     // Invert faces on the back of the reef so they're always relative to the driver
     if (closestReefIndex > 3 && closestReefIndex < 10) {
       leftBranchRequested = !leftBranchRequested;
     }
 
+    Pose2d desiredReef = reefPoses.get(closestReefIndex);
     // If we were closer to the left branch but selected the right branch (or
     // vice-versa), switch to our desired branch
     if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
