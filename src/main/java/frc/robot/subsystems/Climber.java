@@ -23,20 +23,17 @@ import frc.robot.Constants.constClimber;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
-  TalonFX climberMotor2;
   Angle lastDesiredPosition;
 
   public Climber() {
     lastDesiredPosition = Units.Degrees.of(0);
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
-    climberMotor2 = new TalonFX(RobotMap.mapClimber.CLIMBER_RIGHT_CAN);
 
     climberMotor.getConfigurator().apply(constClimber.CLIMBER_CONFIG);
   }
 
   public void setClimberMotorVelocity(double velocity) {
     climberMotor.set(velocity);
-    climberMotor2.set(-velocity);
   }
 
   public Distance getClimberPosition() {
@@ -45,18 +42,15 @@ public class Climber extends SubsystemBase {
 
   public void setPosition(Angle angle) {
     climberMotor.setControl(new PositionVoltage(angle.in(Units.Rotations)));
-    climberMotor2.setControl(new Follower(climberMotor.getDeviceID(), true));
     lastDesiredPosition = angle;
   }
 
   public void setNeutral() {
     climberMotor.setControl(new NeutralOut());
-    climberMotor2.setControl(new NeutralOut());
   }
 
   public void resetSensorPosition(Angle setpoint) {
     climberMotor.setPosition(setpoint.in(Rotations));
-    climberMotor2.setPosition(setpoint.in(Rotations));
   }
 
   @Override
