@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "P-SingleTickle-F"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -25,13 +37,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -49,13 +67,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -73,13 +97,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Get Coral Station Piece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "CSBottom-C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {

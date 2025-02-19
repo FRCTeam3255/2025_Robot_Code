@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "ForceGamePiece"
           }
         },
         {
@@ -20,6 +20,12 @@
           "type": "named",
           "data": {
             "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         },
         {
@@ -47,6 +53,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "J-CSTop"
@@ -71,6 +83,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "K-CSTop"
@@ -92,6 +110,12 @@
           "type": "named",
           "data": {
             "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         }
       ]
