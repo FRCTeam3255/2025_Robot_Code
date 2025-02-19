@@ -159,11 +159,45 @@ public class Drivetrain extends SN_SuperSwerve {
    *                            branch
    * @return The desired reef branch face to align to
    */
+  // public Pose2d getDesiredReef(boolean leftBranchRequested) {
+  // // Get the closest reef branch face using either branch on the face
+  // List<Pose2d> reefPoses = constField.getReefPositions().get();
+  // Pose2d currentPose = getPose();
+  // Pose2d desiredReef = currentPose.nearest(reefPoses);
+  // int closestReefIndex = reefPoses.indexOf(desiredReef);
+
+  // // Invert faces on the back of the reef so they're always relative to the
+  // driver
+  // if (closestReefIndex > 3 && closestReefIndex < 10) {
+  // leftBranchRequested = !leftBranchRequested;
+  // }
+
+  // // If we were closer to the left branch but selected the right branch (or
+  // // vice-versa), switch to our desired branch
+  // if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
+  // desiredReef = reefPoses.get(closestReefIndex - 1);
+  // } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
+  // desiredReef = reefPoses.get(closestReefIndex + 1);
+  // }
+  // return desiredReef;
+  // }
+
   public Pose2d getDesiredReef(boolean leftBranchRequested) {
     // Get the closest reef branch face using either branch on the face
+    List<Rotation2d> reefRotations = constField.getReefRotations().get();
     List<Pose2d> reefPoses = constField.getReefPositions().get();
-    Pose2d currentPose = getPose();
-    Pose2d desiredReef = currentPose.nearest(reefPoses);
+    Rotation2d currentPoseRotation = getRotation();
+    Pose2d desiredReef = Pose2d.kZero;
+    Rotation2d differenceIRotation2d = Rotation2d.fromDegrees(0);
+
+    for (Rotation2d desiredRotation : reefRotations) {
+      double currDistance = Math.abs(currentPoseRotation.minus(desiredRotation).getDegrees());
+      if (currDistance < differenceIRotation2d.getDegrees()) {
+        differenceIRotation2d = Rotation2d.fromDegrees(currDistance);
+        desiredReef = reefPoses.get(reefPoses.indexOf(desiredRotation));
+      }
+    }
+
     int closestReefIndex = reefPoses.indexOf(desiredReef);
 
     // Invert faces on the back of the reef so they're always relative to the driver

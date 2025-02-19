@@ -555,6 +555,13 @@ public final class Constants {
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
+      private static final List<Rotation2d> BLUE_REEF_ROTATIONS = List.of(REEF_A.getRotation(), REEF_B.getRotation(),
+          REEF_C.getRotation(), REEF_D.getRotation(), REEF_E.getRotation(),
+          REEF_F.getRotation(), REEF_G.getRotation(), REEF_H.getRotation(), REEF_I.getRotation(), REEF_J.getRotation(),
+          REEF_K.getRotation(), REEF_L.getRotation());
+
+      private static final List<Rotation2d> RED_REEF_ROTATIONS = getRedReefRotations();
+
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
 
@@ -596,6 +603,20 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
+    }
+
+    private static List<Rotation2d> getRedReefRotations() {
+      Rotation2d[] returnedRotations = new Rotation2d[POSES.BLUE_REEF_ROTATIONS.size()];
+
+      for (int i = 0; i < POSES.BLUE_REEF_ROTATIONS.size(); i++) {
+        returnedRotations[i] = POSES.BLUE_REEF_ROTATIONS.get(i).plus(Rotation2d.k180deg);
+      }
+
+      return List.of(returnedRotations[0], returnedRotations[1], returnedRotations[2], returnedRotations[3],
+          returnedRotations[4],
+          returnedRotations[5], returnedRotations[6], returnedRotations[7], returnedRotations[8], returnedRotations[9],
+          returnedRotations[10],
+          returnedRotations[11]);
     }
 
     private static List<Pose2d> getRedCoralStationPoses() {
@@ -648,6 +669,14 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    public static Supplier<List<Rotation2d>> getReefRotations() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_REEF_ROTATIONS;
+
+      }
+      return () -> POSES.BLUE_REEF_ROTATIONS;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
