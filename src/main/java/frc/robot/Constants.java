@@ -259,6 +259,7 @@ public final class Constants {
 
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -292,7 +293,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_SPEED = -0.6;
 
-    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); //TODO: Tune this
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
@@ -385,7 +386,7 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
-    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(1);
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.3);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -547,6 +548,9 @@ public final class Constants {
       public static final Pose2d RIGHT_CORAL_STATION_FAR = new Pose2d(1.61, 0.70, Rotation2d.fromDegrees(55));
       public static final Pose2d RIGHT_CORAL_STATION_NEAR = new Pose2d(0.64, 1.37, Rotation2d.fromDegrees(55));
 
+      // processor poses
+      public static final Pose2d PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
+
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
@@ -559,6 +563,12 @@ public final class Constants {
       private static final List<Pose2d> BLUE_CORAL_STATION_POSES = List.of(LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
+
+      private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
+      private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
+
+      private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
+
     }
 
     public static Pose2d getRedAlliancePose(Pose2d bluePose) {
@@ -596,6 +606,14 @@ public final class Constants {
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
+    }
+
+    private static Pose2d getRedProcessorPose() {
+      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
+
+      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
+
+      return returnedPose;
     }
 
     /**
@@ -638,6 +656,11 @@ public final class Constants {
       }
       return () -> POSES.BLUE_CORAL_STATION_POSES;
     }
+
+    public static Supplier<List<Pose2d>> getProcessorPositions() {
+      return () -> POSES.PROCESSOR_POSES;
+    }
+
   }
 
   public static class constVision {

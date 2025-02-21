@@ -68,3 +68,4 @@ We have code to allow us to manually zero the Algae Intake Pivot and Elevator in
 
 #### Scoring Elements Indexing
 We have different velocities for coral intake. It goes faster when the coral is in the hopper, and when the sensor in the coral placer senses the coral, it slows down. This helps keep the coral intaked to a constant position.
+

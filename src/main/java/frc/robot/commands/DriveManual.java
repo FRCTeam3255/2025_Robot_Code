@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -13,7 +11,6 @@ import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
@@ -31,7 +28,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar;
+      rightCoralStationFar, processor;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -41,7 +38,7 @@ public class DriveManual extends Command {
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
-      BooleanSupplier rightCoralStationFar) {
+      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -55,6 +52,7 @@ public class DriveManual extends Command {
     this.leftCoralStationFar = leftCoralStationFar;
     this.rightCoralStationFar = rightCoralStationFar;
     this.subElevator = subElevator;
+    this.processor = processorBtn;
 
     isOpenLoop = true;
 
@@ -149,7 +147,17 @@ public class DriveManual extends Command {
           isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
           DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
-      ;
+
+    }
+
+    // -- Processors --
+    else if (processor.getAsBoolean()) {
+      Pose2d desiredProcessor = subDrivetrain.getDesiredProcessor();
+      Distance processorDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredProcessor.getTranslation()));
+      subDrivetrain.autoAlign(processorDistance, desiredProcessor, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
+          DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine);
     }
 
     else {

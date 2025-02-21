@@ -292,6 +292,8 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_ROTATION_SNAPPING,
     REEF_AUTO_DRIVING,
     CORAL_STATION_AUTO_DRIVING,
+    PROCESSOR_ROTATION_SNAPPING,
+    PROCESSOR_AUTO_DRIVING,
   }
 
   public static enum RobotState {

@@ -5,9 +5,6 @@
         "header": {
           "open": true
         }
-      },
-      "window": {
-        "visible": false
       }
     }
   },
@@ -54,6 +51,15 @@
   },
   "NetworkTables": {
     "transitory": {
+      "Robot": {
+        "m_robotContainer": {
+          "open": true,
+          "subStateMachine": {
+            "open": true
+          }
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "Field": {
           "open": true
