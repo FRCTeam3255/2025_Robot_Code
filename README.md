@@ -35,37 +35,65 @@ Coming Soon!
 
 ## Features
 
-### Software
+## Software
 
-#### Automatic Zeroing
-Our Algae Intake Pivot and Elevator automatically zero the encoder when we enable, making us not need an absolute encoder. To do this, the motor slowly runs to hit the mechanism to a hard stop, triggering a current spike and stop in velocity. We detect the current spike and velocity in code to know when the mechanism is at its hard stop in order to zero it correctly.
+### Manual Zeroing
+- We have code to manually zero the `Algae Intake Pivot` and `Elevator`. In disabled mode, a person can quickly zero the `Algae Intake Pivot` and `Elevator` by raising them and then hitting the hard stop. The robot will not run automatic zeroing if the manual zeroing is done to save match time.
 
-#### Manual Zeroing
-We have code to allow us to manually zero the Algae Intake Pivot and Elevator in order to skip automatic zeroing to save match time. In disabled, a person can quickly zero the Algae Intake Pivot and Elevator by raising them, then hitting the hard stop.
+### Automatic Zeroing
+- Our `Algae Intake Pivot` and `Elevator` automatically zero the encoder when we enable it, making us not need an absolute encoder. To do this, the motor slowly runs to hit the mechanism to a hard stop, triggering a current spike and stop in velocity. We detect the current spike and velocity in code to know when the mechanism is at its hard stop to zero it correctly. Automatic zeroing serves as a fallback. If manual zeroing fails or is not completed, the robot will automatically initiate the automatic zeroing process.
 
-#### Vision Aided Alignment
-- Multi-stage system, depending on distance
-- Smart; decides which to do via closest
-- Double limelights
+### Vision Aided Alignment
 
-- **How it works:** Limelights get the robot poses by AprilTags, returning the current pose of the robot. The auto alignment sets different desired positions based on what button the driver chooses, then auto drives or turns to the correct angle to the desired position based on the distance from the robot to the desired position.
+- We have `double Limelights`.
 
-#### State Machine Control
-- State Machine Diagram
-![State Machine](assets\2025_statemachine.png)
+- The multi-stage system, depending on the distance, decides which to do via the closest 
 
-- Controller Map
-![Controller Map](assets\2025_controllermap.png)
+- **How it works:** 
+`Limelights` could get the robot poses by `April tags`; this returns the current pose of the robot. The auto alignment sets different desired positions based on what button the driver chooses. Then, auto drives or turns to the correct angle to the desired position based on the distance from the robot to the desired position.
 
-- State Machine link: https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz
+### State Machine Control
+- **State Machine Diagram**
+![State Machine](assets/2025_statemachine.png)
+
+- **Controller Map**
+![Controller Map](assets/2025_controllermap.png)
+
+- **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
 - The state machine prevents us from going to states before the robot is ready to.
 
-- **State Machine subsystem:** Used to manage different states in the robot. It controls which state transitions between different states. We use enums to control what states we could go to from the current state.
-- **States:** Individual commands representing different operational modes of the robot, controlling the behavior of the robot. We set requirements of the commands to be `subStateMachine`.
-- **tryState method:** This method runs when we try to go from the current state to the desired state. It returns the states based on the current states and executes the state command.
-- **Calling states:** We call the `tryState` method in the `RobotContainer`. We turn whatever it returns into a Deferred Proxy, allowing the `tryState` method to be evaluated multiple times.
+- **State Machine subsystem:** 
+Used to manage different states in the robot. It controls which state the transitions between different states. We use `enum` to control what states we could go to from the current state.
 
-#### Scoring Elements Indexing
-We have different velocities for coral intake. It goes faster when the coral is in the hopper, and when the sensor in the coral placer senses the coral, it slows down. This helps keep the coral intaked to a constant position.
+- **States:**
+Individual commands represent different operational modes of the robot and control the behavior of the robot. We set the requirements of the commands to be `subStateMachine`.
+
+- **`tryState` method:** 
+This method is what we run when we try to go from the current state to the desired state. It will return the `States` based on the current states and execute the state command.
+
+- **Calling states:** 
+We call the `tryState` method in the `robotContainer`. We turn whatever it returns into a `Deferred Proxy`, which makes the `tryState` method could be evaluated multiple times.
+
+- **Blocking invalid transitions through nested switch statements:**
+Only state transitions that meet predefined conditions are permitted, preventing the robot from entering invalid or hazardous states.
+
+### Scoring Elements Indexing
+- **Sensor Feedback:** Real-time detection of the coral's position and status using sensors.
+
+- **State Management:** Using boolean variables to track the status of the coral allows the robot program to adjust based on the current state.
+
+- **Dynamic Speed Adjustment:** The speed of coral transportation is dynamically adjusted based on sensor feedback to ensure that the coral maintains a stable position during the process. It goes faster when the coral is in the hopper, and when the sensor in the coral placer senses the coral, it slows down.
+
+- **Consistency:** Maintaining consistent indexing logic regardless of task details, ensuring high success rates and efficiency in every mission.
+
+### Coral Placing Safety Time
+- A mechanism that sets a safety delay after placing coral to ensure the robot does not immediately perform other operations (such as lowering the elevator), thereby preventing a shallow climb on the reef.
+
+- **How it works:**
+
+  - **Quick Tap:** If the operator performs a quick tap on the trigger button, the robot will wait until the coral has completely exited the scoring mechanism (`CoralOuttake`) before lowering the elevator. This process is achieved through the `Coral Placing Safety Time`, ensuring that the robot does not proceed to the next operation until the coral is fully placed.
+
+  - **Long Press:** If the operator holds the trigger button for longer than the preset delay time, the robot will ignore the safety delay. This means that when the operator releases the trigger button, the robot will immediately proceed to the next operation.
+
 
