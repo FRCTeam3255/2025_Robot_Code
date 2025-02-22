@@ -142,6 +142,9 @@ public class RobotContainer {
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
+  Command EJECTING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
+
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
@@ -297,6 +300,10 @@ public class RobotContainer {
 
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
+
+    controller.btn_RightBumper
+        .whileTrue(EJECTING_CORAL)
+        .onFalse(TRY_NONE);
   }
 
   private void configureSensorBindings() {
@@ -321,7 +328,7 @@ public class RobotContainer {
         .whileTrue(comIntakingAlgaeGround);
 
     // RT: Spit Algae
-    controller.btn_RightBumper
+    controller.btn_RightTrigger
         .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
