@@ -180,6 +180,21 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
+    // Get the closest coral station
+    List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredCoralStation = currentPose.nearest(coralStationPoses);
+    int closestCoralStationIndex = coralStationPoses.indexOf(desiredCoralStation);
+
+    // If we were closer to the left branch but selected the right branch (or
+    // vice-versa), switch to our desired branch
+    if (farCoralStationRequested && (closestCoralStationIndex % 2 == 1)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex - 1);
+    }
+    return desiredCoralStation;
+  }
+
   public Pose2d getDesiredProcessor() {
     // Get the closest processor
     List<Pose2d> processorPoses = constField.getProcessorPositions().get();

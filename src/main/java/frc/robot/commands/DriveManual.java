@@ -27,8 +27,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar, processor;
+  BooleanSupplier leftReef, rightReef, coralStationNear, coralStationFar, processor;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -36,21 +35,18 @@ public class DriveManual extends Command {
 
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
-      BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
-      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
+      DoubleSupplier rotationAxis, BooleanSupplier leftReef, BooleanSupplier rightReef,
+      BooleanSupplier coralStationNear, BooleanSupplier coralStationFar,
+      BooleanSupplier processorBtn) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
-    this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
-    this.leftCoralStationNear = leftCoralStationNear;
-    this.rightCoralStationNear = rightCoralStationNear;
-    this.leftCoralStationFar = leftCoralStationFar;
-    this.rightCoralStationFar = rightCoralStationFar;
+    this.coralStationNear = coralStationNear;
+    this.coralStationFar = coralStationFar;
     this.subElevator = subElevator;
     this.processor = processorBtn;
 
@@ -67,11 +63,11 @@ public class DriveManual extends Command {
   @Override
   public void execute() {
     // -- Multipliers --
-    if (slowMode.getAsBoolean()) {
-      slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
-    } else {
-      slowMultiplier = 1;
-    }
+    // if (slowMode.getAsBoolean()) {
+    // slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
+    // } else {
+    // slowMultiplier = 1;
+    // }
 
     // Get Joystick inputs
     double elevatorHeightMultiplier = SN_Math.interpolate(
