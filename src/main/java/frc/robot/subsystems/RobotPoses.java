@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Robot;
 import frc.robot.Constants.constAlgaeIntake;
-import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
 
