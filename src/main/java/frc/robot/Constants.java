@@ -406,8 +406,10 @@ public final class Constants {
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-      CLIMBER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = false;
-      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = false;
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLimit = 85;
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+
       CLIMBER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;

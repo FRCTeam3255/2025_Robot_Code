@@ -52,6 +52,10 @@ public class Climber extends SubsystemBase {
     climberMotor.setPosition(setpoint.in(Rotations));
   }
 
+  public boolean isClimbDeployed() {
+    return climberMotor.getFault_ForwardSoftLimit().getValue();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
