@@ -98,9 +98,8 @@ public class StateMachine extends SubsystemBase {
 
       case INDEXING:
         switch (currentRobotState) {
-          case SCORING_CORAL:
-          case SCORING_ALGAE:
-            return new Indexing(subStateMachine);
+          case INTAKING_CORAL_HOPPER:
+            return new Indexing(subStateMachine, subHopper);
         }
         break;
 
@@ -115,7 +114,7 @@ public class StateMachine extends SubsystemBase {
 
       case HAS_CORAL:
         switch (currentRobotState) {
-          case INTAKING_CORAL_HOPPER:
+          case INDEXING:
             return new HasCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
