@@ -10,7 +10,24 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import frc.robot.Constants.constElevator;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.commands.states.*;
+import frc.robot.commands.states.None;
+import frc.robot.commands.states.climbing.ClimberDeploying;
+import frc.robot.commands.states.climbing.ClimberRetracting;
+import frc.robot.commands.states.first_scoring_element.CleaningL2Reef;
+import frc.robot.commands.states.first_scoring_element.CleaningL3Reef;
+import frc.robot.commands.states.first_scoring_element.EjectCoral;
+import frc.robot.commands.states.first_scoring_element.IntakeCoralHopper;
+import frc.robot.commands.states.first_scoring_element.IntakingAlgaeGround;
+import frc.robot.commands.states.hold_scoring_elements.HasAlgae;
+import frc.robot.commands.states.hold_scoring_elements.HasCoral;
+import frc.robot.commands.states.hold_scoring_elements.HasCoralAndAlgae;
+import frc.robot.commands.states.prep_algae.PrepAlgaeZero;
+import frc.robot.commands.states.prep_algae.PrepNet;
+import frc.robot.commands.states.prep_algae.PrepProcessor;
+import frc.robot.commands.states.prep_coral.PrepCoralLv;
+import frc.robot.commands.states.prep_coral.PrepCoralZero;
+import frc.robot.commands.states.scoring.ScoringAlgae;
+import frc.robot.commands.states.scoring.ScoringCoral;
 
 @Logged
 public class StateMachine extends SubsystemBase {
@@ -68,8 +85,12 @@ public class StateMachine extends SubsystemBase {
   }
 
   public Command tryState(RobotState desiredState) {
+    // The most elegant solution of all time... nested switch statements :)
+    // haters please refer to this:
+    // https://www.chiefdelphi.com/t/frc-3255-supernurds-2025-build-thread/477499/104
+
     switch (desiredState) {
-      case NONE: // UPDATED
+      case NONE:
         switch (currentRobotState) {
           case INTAKING_CORAL:
           case EJECTING_CORAL:
@@ -122,6 +143,7 @@ public class StateMachine extends SubsystemBase {
 
       case EJECTING_CORAL:
         switch (currentRobotState) {
+          case NONE:
           case HAS_CORAL:
           case INTAKING_CORAL:
             return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
@@ -131,18 +153,35 @@ public class StateMachine extends SubsystemBase {
       // --- Manip. 2nd scoring element ---
       // ------------ Algae -------------
       case CLEANING_L2_WITH_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL:
+          case CLEANING_L3_WITH_CORAL:
+            return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+        }
         break;
 
       case CLEANING_L3_WITH_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL:
+          case CLEANING_L2_WITH_CORAL:
+            return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+        }
         break;
 
       case INTAKING_CORAL_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_ALGAE:
+            return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
+                subAlgaeIntake);
+        }
         break;
 
       // --- Hold 1 Scoring ELement ---
       case HAS_CORAL:
         switch (currentRobotState) {
           case INTAKING_CORAL:
+          case CLEANING_L2_WITH_CORAL:
+          case CLEANING_L3_WITH_CORAL:
             return new HasCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
@@ -152,12 +191,19 @@ public class StateMachine extends SubsystemBase {
           case INTAKING_ALGAE_GROUND:
           case CLEANING_L2:
           case CLEANING_L3:
+          case INTAKING_CORAL_WITH_ALGAE:
             return new HasAlgae(subStateMachine, subAlgaeIntake, subLED);
         }
         break;
 
       // --- Hold 2nd Scoring ELement ---
       case HAS_CORAL_AND_ALGAE:
+        switch (currentRobotState) {
+          case INTAKING_CORAL_WITH_ALGAE:
+          case CLEANING_L2_WITH_CORAL:
+          case CLEANING_L3_WITH_CORAL:
+            return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED);
+        }
         break;
 
       // -- Prep Coral Only --
@@ -246,23 +292,119 @@ public class StateMachine extends SubsystemBase {
 
       // -- Prep Coral with Algae --
       case PREP_CORAL_L1_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+        }
         break;
+
       case PREP_CORAL_L2_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED);
+        }
         break;
+
       case PREP_CORAL_L3_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED);
+        }
         break;
+
       case PREP_CORAL_L4_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED);
+        }
         break;
+
       case PREP_CORAL_ZERO_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralZero(subStateMachine, subElevator, subLED);
+        }
+        break;
 
-        // -- Prep Algae with Coral --
+      // -- Prep Algae with Coral --
       case PREP_NET_WITH_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_PROCESSOR_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+        }
         break;
-      case PREP_PROCESSOR_WITH_CORAL:
-        break;
-      case PREP_ALGAE_ZERO_WITH_CORAL:
 
-        // -- Scoring --
+      case PREP_PROCESSOR_WITH_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_NET_WITH_CORAL:
+          case PREP_ALGAE_ZERO_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+        }
+        break;
+
+      case PREP_ALGAE_ZERO_WITH_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case PREP_CORAL_L1_WITH_ALGAE:
+          case PREP_CORAL_L2_WITH_ALGAE:
+          case PREP_CORAL_L3_WITH_ALGAE:
+          case PREP_CORAL_L4_WITH_ALGAE:
+          case PREP_CORAL_ZERO_WITH_ALGAE:
+          case PREP_NET_WITH_CORAL:
+          case PREP_PROCESSOR_WITH_CORAL:
+            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+        }
+        break;
+
+      // -- Scoring --
       case SCORING_CORAL:
         switch (currentRobotState) {
           case PREP_CORAL_L1:
