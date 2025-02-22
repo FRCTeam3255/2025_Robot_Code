@@ -304,7 +304,8 @@ public class RobotContainer {
         .onTrue(TRY_PREP_CORAL_0);
 
     controller.btn_RightBumper
-        .whileTrue(EJECTING_CORAL);
+        .whileTrue(EJECTING_CORAL)
+        .onFalse(TRY_NONE);
   }
 
   private void configureSensorBindings() {

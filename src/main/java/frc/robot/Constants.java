@@ -376,6 +376,7 @@ public final class Constants {
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
     public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
