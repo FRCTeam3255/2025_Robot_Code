@@ -32,7 +32,7 @@ public class PrepAlgaeZeroWithCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO_WITH_CORAL);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
     globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
 

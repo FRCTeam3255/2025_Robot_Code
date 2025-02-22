@@ -29,7 +29,7 @@ public class PrepNetWithCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_NET);
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_NET_WITH_CORAL);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
