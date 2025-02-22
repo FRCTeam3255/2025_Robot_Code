@@ -300,7 +300,8 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle ZEROED_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MIN_POS = Units.Degrees.of(-33);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -319,9 +320,9 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = ZEROED_POS.in(Units.Rotations);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POS.in(Units.Rotations);
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-33).in(Units.Rotations);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = MIN_POS.in(Units.Rotations);
 
       // Why don't scientists trust atoms? Because they make up everything!
       // Why do crabs never share their things? - Because they are shellfish!
@@ -353,11 +354,11 @@ public final class Constants {
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
+    public static final Angle PREP_NET_PIVOT_POSITION = MAX_POS;
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
-    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
+    public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -399,7 +400,7 @@ public final class Constants {
 
   public static class constClimber {
     public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
-    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     static {
