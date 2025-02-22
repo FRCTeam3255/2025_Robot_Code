@@ -26,7 +26,7 @@ public class ZeroAlgaeIntake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subAlgaeIntake.setSoftwareLimits(false, true);
+    subAlgaeIntake.setSoftwareLimits(true, false);
 
     subAlgaeIntake.setVoltage(Units.Volts.zero());
     zeroingTimestamp = Units.Seconds.zero();
@@ -49,7 +49,7 @@ public class ZeroAlgaeIntake extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.ZEROED_POS);
+      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS);
       subAlgaeIntake.hasZeroed = true;
     }
   }
