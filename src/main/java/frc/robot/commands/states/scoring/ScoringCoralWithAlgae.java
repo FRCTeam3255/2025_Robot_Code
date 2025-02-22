@@ -39,7 +39,7 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         // Set state and LEDs
-        Commands.runOnce(() -> subStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL)),
+        Commands.runOnce(() -> subStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL_WITH_ALGAE)),
         Commands.runOnce(() -> globalLED.setLED(constLED.LED_PLACE_CORAL)),
 
         // Shoot coral when elevator is at the right position

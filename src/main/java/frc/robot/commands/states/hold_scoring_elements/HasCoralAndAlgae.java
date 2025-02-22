@@ -12,7 +12,6 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
 public class HasCoralAndAlgae extends Command {
-  // TODO: ALL OF THIS
   /** Creates a new HasCoral. */
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
@@ -29,7 +28,7 @@ public class HasCoralAndAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.HAS_CORAL);
+    globalStateMachine.setRobotState(RobotState.HAS_CORAL_AND_ALGAE);
     globalLED.setLED(constLED.LED_HAS_CORAL);
   }
 

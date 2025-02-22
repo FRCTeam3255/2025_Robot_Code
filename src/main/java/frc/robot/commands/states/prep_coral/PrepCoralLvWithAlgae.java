@@ -32,13 +32,13 @@ public class PrepCoralLvWithAlgae extends Command {
   @Override
   public void initialize() {
     if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1);
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1_WITH_ALGAE);
     else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L2);
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L2_WITH_ALGAE);
     else if (globalDistance.equals(constElevator.CORAL_L3_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L3);
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L3_WITH_ALGAE);
     else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4_WITH_ALGAE);
     globalElevator.setPosition(globalDistance);
     globalLED.setLED(constLED.LED_PREP_CORAL_LV);
   }
