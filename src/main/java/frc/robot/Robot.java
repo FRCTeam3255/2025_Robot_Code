@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import edu.wpi.first.cameraserver.CameraServer;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -35,6 +36,11 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public CommandScheduler commandScheduler = CommandScheduler.getInstance();
+
+  public Robot() {
+    CameraServer.startAutomaticCapture();
+  }
+
 
   @Override
   public void robotInit() {
@@ -106,11 +112,13 @@ public class Robot extends TimedRobot {
     hasAutonomousRun = true;
   }
 
-  @Override
-  public void autonomousPeriodic() {
+
+  public void autonomousPeriodic
+  () {
   }
 
   @Override
+  
   public void autonomousExit() {}
 
   @Override
