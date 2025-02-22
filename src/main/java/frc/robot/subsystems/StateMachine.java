@@ -16,7 +16,6 @@ import frc.robot.commands.states.*;
 public class StateMachine extends SubsystemBase {
   public static DriverState currentDriverState;
   public static RobotState currentRobotState;
-  public static TargetState currentTargetState;
   @NotLogged
   AlgaeIntake subAlgaeIntake;
   @NotLogged
@@ -40,7 +39,6 @@ public class StateMachine extends SubsystemBase {
   public StateMachine(AlgaeIntake subAlgaeIntake, Climber subClimber, CoralOuttake subCoralOuttake,
       Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED, SN_XboxController conOperator) {
     currentRobotState = RobotState.NONE;
-    currentTargetState = TargetState.NONE;
     currentDriverState = DriverState.MANUAL;
 
     this.subAlgaeIntake = subAlgaeIntake;
@@ -61,10 +59,6 @@ public class StateMachine extends SubsystemBase {
     currentRobotState = robotState;
   }
 
-  public void setTargetState(TargetState targetState) {
-    currentTargetState = targetState;
-  }
-
   public DriverState getDriverState() {
     return currentDriverState;
   }
@@ -73,18 +67,13 @@ public class StateMachine extends SubsystemBase {
     return currentRobotState;
   }
 
-  public TargetState getTargetState() {
-    return currentTargetState;
-  }
-
   public Command tryState(RobotState desiredState) {
     switch (desiredState) {
       case NONE:
         switch (currentRobotState) {
-          case INTAKING_CORAL_HOPPER:
+          case INTAKING_CORAL:
           case INTAKING_ALGAE_GROUND:
           case EJECTING_CORAL:
-          case EJECTING_ALGAE:
           case CLEANING_L2:
           case CLEANING_L3:
           case SCORING_CORAL:
@@ -97,7 +86,7 @@ public class StateMachine extends SubsystemBase {
         break;
 
       // ------------ Coral -------------
-      case INTAKING_CORAL_HOPPER:
+      case INTAKING_CORAL:
         switch (currentRobotState) {
           case NONE:
             return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
@@ -107,7 +96,7 @@ public class StateMachine extends SubsystemBase {
 
       case HAS_CORAL:
         switch (currentRobotState) {
-          case INTAKING_CORAL_HOPPER:
+          case INTAKING_CORAL:
             return new HasCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
@@ -170,7 +159,7 @@ public class StateMachine extends SubsystemBase {
       case EJECTING_CORAL:
         switch (currentRobotState) {
           case HAS_CORAL:
-          case INTAKING_CORAL_HOPPER:
+          case INTAKING_CORAL:
             return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
@@ -248,16 +237,6 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
-      case EJECTING_ALGAE:
-        switch (currentRobotState) {
-          case INTAKING_ALGAE_GROUND:
-          case HAS_ALGAE:
-          case CLEANING_L2:
-          case CLEANING_L3:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
-        }
-        break;
-
       case SCORING_ALGAE:
         switch (currentRobotState) {
           case PREP_NET:
@@ -298,42 +277,66 @@ public class StateMachine extends SubsystemBase {
     PROCESSOR_AUTO_DRIVING,
   }
 
+  /**
+   * Represents the various states the robot can be in during operation.
+   * 
+   * @see https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz
+   */
   public static enum RobotState {
     NONE,
-    INTAKING_CORAL_HOPPER,
-    HAS_CORAL,
-    PREP_CORAL_L1,
-    PREP_CORAL_L2,
-    PREP_CORAL_L3,
-    PREP_CORAL_L4,
-    EJECTING_CORAL,
-    SCORING_CORAL,
-    PREP_CORAL_ZERO,
 
-    INTAKING_ALGAE_GROUND,
+    // Manip. 1 Scoring eLement
     CLEANING_L2,
     CLEANING_L3,
+    INTAKING_ALGAE_GROUND,
+    INTAKING_CORAL,
+    EJECTING_CORAL,
+
+    // Manip. 2nd Scoring element
+    INTAKING_CORAL_WITH_ALGAE,
+    CLEANING_L2_WITH_CORAL,
+    CLEANING_L3_WITH_CORAL,
+
+    // Hold 1 Scoring element
+    HAS_CORAL,
     HAS_ALGAE,
-    PREP_NET,
-    PREP_PROCESSOR,
-    EJECTING_ALGAE,
-    SCORING_ALGAE,
-    PREP_ALGAE_ZERO,
 
-    CLIMBER_DEPLOYING,
-    CLIMBER_RETRACTING
-  }
+    // Hold 2 Scoring elements
+    HAS_CORAL_AND_ALGAE,
 
-  public static enum TargetState {
-    NONE,
+    // Prep Coral Only
     PREP_CORAL_L1,
     PREP_CORAL_L2,
     PREP_CORAL_L3,
     PREP_CORAL_L4,
+    PREP_CORAL_ZERO,
+
+    // Prep Algae Only
     PREP_NET,
     PREP_PROCESSOR,
-    PREP_ALGAE_0,
-    PREP_CORAL_0,
+    PREP_ALGAE_ZERO,
+
+    // Prep Coral with Algae
+    PREP_CORAL_L1_WITH_ALGAE,
+    PREP_CORAL_L2_WITH_ALGAE,
+    PREP_CORAL_L3_WITH_ALGAE,
+    PREP_CORAL_L4_WITH_ALGAE,
+    PREP_CORAL_ZERO_WITH_ALGAE,
+
+    // Prep Algae with Coral
+    PREP_NET_WITH_CORAL,
+    PREP_PROCESSOR_WITH_CORAL,
+    PREP_ALGAE_ZERO_WITH_CORAL,
+
+    // Scoring
+    SCORING_CORAL,
+    SCORING_ALGAE,
+    SCORING_CORAL_WITH_ALGAE,
+    SCORING_ALGAE_WITH_CORAL,
+
+    // Climbing
+    CLIMBER_DEPLOYING,
+    CLIMBER_RETRACTING,
   }
 
   @Override

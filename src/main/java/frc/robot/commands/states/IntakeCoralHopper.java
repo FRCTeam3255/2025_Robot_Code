@@ -35,7 +35,7 @@ public class IntakeCoralHopper extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_HOPPER);
+    globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);

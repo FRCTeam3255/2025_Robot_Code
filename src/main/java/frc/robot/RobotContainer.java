@@ -83,16 +83,13 @@ public class RobotContainer {
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER));
+      () -> subStateMachine.tryState(RobotState.INTAKING_CORAL));
 
   Command TRY_NONE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.NONE));
 
   Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND));
-
-  Command TRY_EJECTING_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.EJECTING_ALGAE));
 
   Command TRY_SCORING_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
@@ -231,7 +228,7 @@ public class RobotContainer {
     prepPlace.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
         Set.of(subStateMachine)));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
-    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL_HOPPER),
+    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
   }
 
