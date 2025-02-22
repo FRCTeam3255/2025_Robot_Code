@@ -367,6 +367,10 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
+  public RobotState getRobotState() {
+    return subStateMachine.getRobotState();
+  }
+
   private void configureAutoSelector() {
     autoChooser = AutoBuilder.buildAutoChooser("4-Piece-Low");
     SmartDashboard.putData(autoChooser);
