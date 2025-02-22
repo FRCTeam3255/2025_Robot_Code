@@ -263,55 +263,79 @@ public class RobotContainer {
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
+    // Intake Coral
     controller.btn_LeftTrigger
         .whileTrue(TRY_INTAKING_CORAL_HOPPER)
-        .onFalse(TRY_NONE);
+        .whileTrue(TRY_INTAKING_CORAL_WITH_ALGAE)
+        .onFalse(TRY_NONE)
+        .onFalse(TRY_HAS_ALGAE);
 
+    // Score
     controller.btn_RightTrigger
-        .onTrue(TRY_SCORING_CORAL);
+        .onTrue(TRY_SCORING_CORAL)
+        .onTrue(TRY_SCORING_ALGAE)
+        .onTrue(TRY_SCORING_ALGAE_WITH_CORAL)
+        .onTrue(TRY_SCORING_CORAL_WITH_ALGAE);
 
+    // Intake Algae
     controller.btn_LeftBumper
         .whileTrue(TRY_INTAKING_ALGAE_GROUND)
         .onFalse(TRY_NONE);
 
+    // Eject Coral
     controller.btn_RightBumper
-        .whileTrue(TRY_SCORING_ALGAE)
+        .whileTrue(TRY_EJECTING_CORAL)
         .onFalse(TRY_NONE);
 
     controller.btn_Back.onTrue(HAS_CORAL_OVERRIDE);
-
     controller.btn_Start.onTrue(HAS_ALGAE_OVERRIDE);
 
+    // Net
     controller.btn_North
-        .onTrue(TRY_PREP_NET);
+        .onTrue(TRY_PREP_NET)
+        .onTrue(TRY_PREP_NET_WITH_CORAL);
 
+    // L3
     controller.btn_East
         .whileTrue(TRY_CLEANING_L3)
+        .whileFalse(TRY_CLEANING_L3_WITH_CORAL)
+        .onFalse(TRY_HAS_CORAL)
         .onFalse(TRY_NONE);
 
+    // L2
     controller.btn_West
         .whileTrue(TRY_CLEANING_L2)
+        .whileTrue(TRY_CLEANING_L2_WITH_CORAL)
+        .onFalse(TRY_HAS_CORAL)
         .onFalse(TRY_NONE);
 
+    // Processor
     controller.btn_South
+        .whileTrue(TRY_PREP_PROCESSOR_WITH_CORAL)
         .whileTrue(TRY_PREP_PROCESSOR);
 
     controller.btn_A
+        .onTrue(TRY_PREP_CORAL_L1_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_L1);
 
     controller.btn_B
+        .onTrue(TRY_PREP_CORAL_L3_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_L3);
 
     controller.btn_X
+        .onTrue(TRY_PREP_CORAL_L2_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_L2);
 
     controller.btn_Y
+        .onTrue(TRY_PREP_CORAL_L4_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_L4);
 
     controller.btn_LeftStick
+        .onTrue(TRY_PREP_ALGAE_0_WITH_CORAL)
         .onTrue(TRY_PREP_ALGAE_0);
 
     controller.btn_RightStick
+        .onTrue(TRY_PREP_CORAL_0_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_0);
   }
 
