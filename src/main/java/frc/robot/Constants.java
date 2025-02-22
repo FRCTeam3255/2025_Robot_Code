@@ -403,6 +403,9 @@ public final class Constants {
     public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
+    public static Angle MAX_POSITION = Units.Rotations.of(166.69);
+    public static Angle AT_POSITION_TOLERANCE = Units.Rotations.of(10);
+
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
@@ -413,7 +416,7 @@ public final class Constants {
       CLIMBER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(166.69).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POSITION.in(Units.Rotations);
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
           .in(Units.Rotations);
