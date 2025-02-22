@@ -152,7 +152,7 @@ public class RobotContainer {
           .withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
       .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
   Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
-      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake).onlyIf(() -> !subAlgaeIntake.hasZeroed))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);

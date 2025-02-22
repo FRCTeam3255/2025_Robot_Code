@@ -300,7 +300,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(57); // should be 60 when mechanical does their thing
     public static final Angle MIN_POS = Units.Degrees.of(-33);
 
     /**
