@@ -294,6 +294,21 @@ public final class Constants {
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
+    /**
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     */
+    public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
+
+    public static final Angle ZEROED_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+
+    /**
+     * The elapsed time required to consider the motor as zeroed
+     */
+    public static final Time ZEROED_TIME = Units.Seconds.of(1);
+
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(1);
+
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
@@ -304,7 +319,7 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(60).in(Units.Rotations);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = ZEROED_POS.in(Units.Rotations);
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-33).in(Units.Rotations);
 
@@ -348,21 +363,6 @@ public final class Constants {
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
-
-    /**
-     * The velocity that the motor goes at once it has zeroed (and can no longer
-     * continue in that direction)
-     */
-    public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
-
-    public static final Angle ZEROED_POS = Units.Degrees.of(60);
-
-    /**
-     * The elapsed time required to consider the motor as zeroed
-     */
-    public static final Time ZEROED_TIME = Units.Seconds.of(1);
-
-    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(1);
 
     public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(
         Units.Meters.convertFrom(450, Units.Millimeters), 0,
