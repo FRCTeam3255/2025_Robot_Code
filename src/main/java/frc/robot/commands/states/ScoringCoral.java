@@ -47,7 +47,7 @@ public class ScoringCoral extends SequentialCommandGroup {
         Commands.runOnce(() -> globalLED.setLED(constLED.LED_PLACE_CORAL)),
 
         // Shoot coral when elevator is at the right position
-        Commands.waitUntil(() -> globalElevator.isAtSetpoint()),
+        Commands.waitUntil(() -> globalElevator.isAtSetPoint()),
         Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(getCoralOuttakeSpeed())),
         Commands.runOnce(() -> globalCoralOuttake.setHasCoral(false)),
 
