@@ -99,7 +99,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING:
         switch (currentRobotState) {
           case INTAKING_CORAL_HOPPER:
-            return new Indexing(subStateMachine, subHopper);
+            return new Indexing(subStateMachine);
         }
         break;
 

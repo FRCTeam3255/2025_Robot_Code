@@ -6,7 +6,7 @@ import frc.robot.subsystems.StateMachine;
 
 public class Indexing extends Command {
 
-  public Indexing(StateMachine subStateMachine, Hopper subHopper) {
+  public Indexing(StateMachine subStateMachine) {
     // TODO Auto-generated constructor stub
   }
 
