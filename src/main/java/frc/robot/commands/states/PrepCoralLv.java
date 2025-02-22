@@ -6,8 +6,10 @@ package frc.robot.commands.states;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -15,14 +17,17 @@ import frc.robot.subsystems.StateMachine;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PrepCoralLv extends Command {
   StateMachine globalStateMachine;
+  AlgaeIntake globalAlgaeIntake;
   Elevator globalElevator;
   Distance globalDistance;
   LED globalLED;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, Distance height, LED subLED) {
+  public PrepCoralLv(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, Elevator subElevator, Distance height,
+      LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
+    globalAlgaeIntake = subAlgaeIntake;
     this.globalElevator = subElevator;
     this.globalDistance = height;
     globalLED = subLED;
@@ -33,6 +38,7 @@ public class PrepCoralLv extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_INTAKE_SPEED);
     if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1);
     else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))
