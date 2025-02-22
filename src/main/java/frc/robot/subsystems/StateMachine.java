@@ -100,7 +100,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case SCORING_CORAL:
           case SCORING_ALGAE:
-            return new Indexing();
+            return new Indexing(subStateMachine);
         }
         break;
 
