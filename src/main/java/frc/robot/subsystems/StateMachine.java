@@ -271,6 +271,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLIMBER_RETRACTING:
+          case CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
@@ -278,6 +279,7 @@ public class StateMachine extends SubsystemBase {
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
           case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;
