@@ -34,7 +34,7 @@ public class EjectCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_OUTTAKE_SPEED);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
