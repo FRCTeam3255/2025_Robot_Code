@@ -89,65 +89,77 @@ public class RobotContainer {
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+  // -- STATES! --
+  Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+  Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
+  Command TRY_CLEANING_L3 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L3));
+  Command TRY_CLEANING_L2 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L2));
+  Command TRY_CLEANING_L3_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L3_WITH_CORAL));
+  Command TRY_CLEANING_L2_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.CLEANING_L2_WITH_CORAL));
+  Command TRY_EJECTING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL));
-
+  Command TRY_INTAKING_CORAL_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_WITH_ALGAE));
+  Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND));
+  Command TRY_HAS_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_CORAL));
+  Command TRY_HAS_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
+  Command TRY_HAS_CORAL_AND_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_CORAL_AND_ALGAE));
+  Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
+  Command TRY_PREP_ALGAE_0_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO_WITH_CORAL));
+  Command TRY_PREP_NET = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_NET));
+  Command TRY_PREP_NET_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_NET_WITH_CORAL));
+  Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
+  Command TRY_PREP_PROCESSOR_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR_WITH_CORAL));
+  Command TRY_PREP_CORAL_L1 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1));
+  Command TRY_PREP_CORAL_L2 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2));
+  Command TRY_PREP_CORAL_L3 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3));
+  Command TRY_PREP_CORAL_L4 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4));
+  Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
+  Command TRY_PREP_CORAL_L1_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1_WITH_ALGAE));
+  Command TRY_PREP_CORAL_L2_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2_WITH_ALGAE));
+  Command TRY_PREP_CORAL_L3_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3_WITH_ALGAE));
+  Command TRY_PREP_CORAL_L4_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE));
+  Command TRY_PREP_CORAL_0_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO_WITH_ALGAE));
+  Command TRY_SCORING_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
+  Command TRY_SCORING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
+  Command TRY_SCORING_ALGAE_WITH_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE_WITH_CORAL));
+  Command TRY_SCORING_CORAL_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.SCORING_CORAL_WITH_ALGAE));
   Command TRY_NONE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.NONE));
 
-  Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND));
-
-  Command TRY_SCORING_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
-
-  Command TRY_SCORING_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.SCORING_CORAL));
-
-  Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
-
-  Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
-
-  Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
-
-  Command TRY_CLEANING_L3 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L3));
-
-  Command TRY_CLEANING_L2 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L2));
-
-  Command TRY_PREP_NET = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_NET));
-
-  Command TRY_PREP_CORAL_L1 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1));
-
-  Command TRY_PREP_CORAL_L2 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2));
-
-  Command TRY_PREP_CORAL_L3 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3));
-
-  Command TRY_PREP_CORAL_L4 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4));
-
-  Command TRY_HAS_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.HAS_CORAL));
-
-  Command TRY_HAS_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
-
-  Command TRY_PREP_ALGAE_0 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO));
-
-  Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
-
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
-
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Command zeroSubsystems = new ParallelCommandGroup(

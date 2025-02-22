@@ -35,6 +35,9 @@ import frc.robot.commands.states.scoring.ScoringAlgae;
 import frc.robot.commands.states.scoring.ScoringAlgaeWithCoral;
 import frc.robot.commands.states.scoring.ScoringCoral;
 import frc.robot.commands.states.scoring.ScoringCoralWithAlgae;
+import frc.robot.commands.states.second_scoring_element.CleaningL2ReefWithCoral;
+import frc.robot.commands.states.second_scoring_element.CleaningL3ReefWithCoral;
+import frc.robot.commands.states.second_scoring_element.IntakeCoralWithAlgae;
 
 @Logged
 public class StateMachine extends SubsystemBase {
@@ -163,7 +166,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_CORAL:
           case CLEANING_L3_WITH_CORAL:
-            return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return new CleaningL2ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 
@@ -171,14 +174,14 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_CORAL:
           case CLEANING_L2_WITH_CORAL:
-            return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return new CleaningL3ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 
       case INTAKING_CORAL_WITH_ALGAE:
         switch (currentRobotState) {
           case HAS_ALGAE:
-            return new IntakeCoralHopper(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
+            return new IntakeCoralWithAlgae(subStateMachine, subHopper, subCoralOuttake, subLED, subElevator,
                 subAlgaeIntake);
         }
         break;
