@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.subsystems.StateMachine;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -139,6 +140,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if (m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_DEPLOYING || m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_RETRACTING) {
+      Elastic.selectTab("Climbing");;
+    } else if (m_robotContainer.getRobotState() != StateMachine.RobotState.NONE) {
+      Elastic.selectTab("Teleoperated");;
+    }
   }
 
   @Override
