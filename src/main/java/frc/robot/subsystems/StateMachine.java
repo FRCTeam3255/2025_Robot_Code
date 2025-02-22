@@ -69,11 +69,11 @@ public class StateMachine extends SubsystemBase {
 
   public Command tryState(RobotState desiredState) {
     switch (desiredState) {
-      case NONE:
+      case NONE: // UPDATED
         switch (currentRobotState) {
           case INTAKING_CORAL:
-          case INTAKING_ALGAE_GROUND:
           case EJECTING_CORAL:
+          case INTAKING_ALGAE_GROUND:
           case CLEANING_L2:
           case CLEANING_L3:
           case SCORING_CORAL:
@@ -82,6 +82,32 @@ public class StateMachine extends SubsystemBase {
           case CLIMBER_RETRACTING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
+        }
+        break;
+
+      // --- Manip. 1 scoring element ---
+      // ------------ Algae -------------
+      case INTAKING_ALGAE_GROUND:
+        switch (currentRobotState) {
+          case NONE:
+          case HAS_ALGAE:
+            return new IntakingAlgaeGround(subStateMachine, subElevator, subAlgaeIntake, subLED);
+        }
+        break;
+
+      case CLEANING_L2:
+        switch (currentRobotState) {
+          case NONE:
+          case CLEANING_L3:
+            return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+        }
+        break;
+
+      case CLEANING_L3:
+        switch (currentRobotState) {
+          case NONE:
+          case CLEANING_L2:
+            return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
         }
         break;
 
@@ -94,6 +120,26 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case EJECTING_CORAL:
+        switch (currentRobotState) {
+          case HAS_CORAL:
+          case INTAKING_CORAL:
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+        }
+        break;
+
+      // --- Manip. 2nd scoring element ---
+      // ------------ Algae -------------
+      case CLEANING_L2_WITH_CORAL:
+        break;
+
+      case CLEANING_L3_WITH_CORAL:
+        break;
+
+      case INTAKING_CORAL_WITH_ALGAE:
+        break;
+
+      // --- Hold 1 Scoring ELement ---
       case HAS_CORAL:
         switch (currentRobotState) {
           case INTAKING_CORAL:
@@ -101,6 +147,20 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case HAS_ALGAE:
+        switch (currentRobotState) {
+          case INTAKING_ALGAE_GROUND:
+          case CLEANING_L2:
+          case CLEANING_L3:
+            return new HasAlgae(subStateMachine, subAlgaeIntake, subLED);
+        }
+        break;
+
+      // --- Hold 2nd Scoring ELement ---
+      case HAS_CORAL_AND_ALGAE:
+        break;
+
+      // -- Prep Coral Only --
       case PREP_CORAL_L1:
         switch (currentRobotState) {
           case HAS_CORAL:
@@ -156,60 +216,7 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
-      case EJECTING_CORAL:
-        switch (currentRobotState) {
-          case HAS_CORAL:
-          case INTAKING_CORAL:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
-        }
-        break;
-
-      case SCORING_CORAL:
-        switch (currentRobotState) {
-          case PREP_CORAL_L1:
-          case PREP_CORAL_L2:
-          case PREP_CORAL_L3:
-          case PREP_CORAL_L4:
-          case PREP_CORAL_ZERO:
-            return new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
-                getRobotState());
-        }
-        break;
-
-      // ---------- Algae ------------
-      case INTAKING_ALGAE_GROUND:
-        switch (currentRobotState) {
-          case NONE:
-          case HAS_ALGAE:
-            return new IntakingAlgaeGround(subStateMachine, subElevator, subAlgaeIntake, subLED);
-        }
-        break;
-
-      case CLEANING_L2:
-        switch (currentRobotState) {
-          case NONE:
-          case CLEANING_L3:
-            return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
-        }
-        break;
-
-      case CLEANING_L3:
-        switch (currentRobotState) {
-          case NONE:
-          case CLEANING_L2:
-            return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
-        }
-        break;
-
-      case HAS_ALGAE:
-        switch (currentRobotState) {
-          case INTAKING_ALGAE_GROUND:
-          case CLEANING_L2:
-          case CLEANING_L3:
-            return new HasAlgae(subStateMachine, subAlgaeIntake, subLED);
-        }
-        break;
-
+      // -- Prep Algae Only --
       case PREP_NET:
         switch (currentRobotState) {
           case HAS_ALGAE:
@@ -237,6 +244,37 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      // -- Prep Coral with Algae --
+      case PREP_CORAL_L1_WITH_ALGAE:
+        break;
+      case PREP_CORAL_L2_WITH_ALGAE:
+        break;
+      case PREP_CORAL_L3_WITH_ALGAE:
+        break;
+      case PREP_CORAL_L4_WITH_ALGAE:
+        break;
+      case PREP_CORAL_ZERO_WITH_ALGAE:
+
+        // -- Prep Algae with Coral --
+      case PREP_NET_WITH_CORAL:
+        break;
+      case PREP_PROCESSOR_WITH_CORAL:
+        break;
+      case PREP_ALGAE_ZERO_WITH_CORAL:
+
+        // -- Scoring --
+      case SCORING_CORAL:
+        switch (currentRobotState) {
+          case PREP_CORAL_L1:
+          case PREP_CORAL_L2:
+          case PREP_CORAL_L3:
+          case PREP_CORAL_L4:
+          case PREP_CORAL_ZERO:
+            return new ScoringCoral(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
+                getRobotState());
+        }
+        break;
+
       case SCORING_ALGAE:
         switch (currentRobotState) {
           case PREP_NET:
@@ -246,6 +284,12 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case SCORING_ALGAE_WITH_CORAL:
+        break;
+      case SCORING_CORAL_WITH_ALGAE:
+        break;
+
+      // -- Climbing --
       case CLIMBER_DEPLOYING:
         switch (currentRobotState) {
           case NONE:
@@ -293,9 +337,9 @@ public class StateMachine extends SubsystemBase {
     EJECTING_CORAL,
 
     // Manip. 2nd Scoring element
-    INTAKING_CORAL_WITH_ALGAE,
     CLEANING_L2_WITH_CORAL,
     CLEANING_L3_WITH_CORAL,
+    INTAKING_CORAL_WITH_ALGAE,
 
     // Hold 1 Scoring element
     HAS_CORAL,

@@ -77,7 +77,6 @@ public class RobotContainer {
       subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
-  private final EjectingAlgae comEjectingAlgae = new EjectingAlgae(subStateMachine, subAlgaeIntake, subLED);
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
