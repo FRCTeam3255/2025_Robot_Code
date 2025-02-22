@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "PrepCoralStation",
-      "waypointRelativePos": 0.6925373134328354,
+      "waypointRelativePos": 0.8000000000000017,
       "endWaypointRelativePos": null,
       "command": null
     }

@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.876,
-  "robotLength": 0.8762995267982555,
+  "robotWidth": 0.9017,
+  "robotLength": 0.9017,
   "holonomicMode": true,
   "pathFolders": [
     "CSBottom-Score",
@@ -10,7 +10,9 @@
     "Tickle Monster",
     "Tuning"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "DEBUG"
+  ],
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 10.0,
   "defaultMaxAngVel": 540.0,

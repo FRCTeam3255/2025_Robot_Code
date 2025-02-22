@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 1.612,
+        "y": 0.673
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8122621550697446,
-        "y": 7.182884521946925
+        "x": 2.4524216014434614,
+        "y": 1.1642053560760541
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.196,
-        "y": 4.192
+        "x": 5.285,
+        "y": 2.995
       },
       "prevControl": {
-        "x": 2.546152666230537,
-        "y": 4.801895164567919
+        "x": 5.6305000000000005,
+        "y": 2.396576445984953
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4571428571428571,
-      "rotationDegrees": -53.0
+      "waypointRelativePos": 0.661835748792271,
+      "rotationDegrees": 119.99999999999999
     }
   ],
   "constraintZones": [],
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "PrepPlace",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.7940740740740742,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -54,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "CSTop-Score",
+  "folder": "CSBottom-Score",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": 55.0
   },
   "useDefaultConstraints": true
 }

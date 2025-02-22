@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
@@ -90,6 +89,11 @@ public class Drivetrain extends SN_SuperSwerve {
     SN_SwerveModule.steerConfiguration = constDrivetrain.STEER_CONFIG;
     SN_SwerveModule.cancoderConfiguration = constDrivetrain.CANCODER_CONFIG;
     super.configure();
+  }
+
+  public Boolean isAligned() {
+    return desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
   }
 
   public void addEventToAutoMap(String key, Command command) {
@@ -176,6 +180,15 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  public Pose2d getDesiredProcessor() {
+    // Get the closest processor
+    List<Pose2d> processorPoses = constField.getProcessorPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredProcessor = currentPose.nearest(processorPoses);
+
+    return desiredProcessor;
+  }
+
   /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
@@ -232,6 +245,23 @@ public class Drivetrain extends SN_SuperSwerve {
 
       drive(desiredChassisSpeeds, isOpenLoop);
     }
+  }
+
+  public boolean isAtRotation(Rotation2d desiredRotation) {
+    return (getRotation().getMeasure()
+        .compareTo(desiredRotation.getMeasure().minus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) > 0) &&
+        getRotation().getMeasure()
+            .compareTo(desiredRotation.getMeasure().plus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) < 0;
+  }
+
+  public boolean isAtPosition(Pose2d desiredPose2d) {
+    return Units.Meters
+        .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
+        .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+  }
+
+  public boolean atPose(Pose2d desiredPose) {
+    return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
   }
 
   @Override

@@ -263,7 +263,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_NET:
           case PREP_PROCESSOR:
           case PREP_ALGAE_ZERO:
-            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED);
+            return new ScoringAlgae(subStateMachine, subAlgaeIntake, subLED, subElevator);
         }
         break;
 
@@ -271,6 +271,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLIMBER_RETRACTING:
+          case CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
@@ -278,6 +279,7 @@ public class StateMachine extends SubsystemBase {
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
           case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;
@@ -292,6 +294,8 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_ROTATION_SNAPPING,
     REEF_AUTO_DRIVING,
     CORAL_STATION_AUTO_DRIVING,
+    PROCESSOR_ROTATION_SNAPPING,
+    PROCESSOR_AUTO_DRIVING,
   }
 
   public static enum RobotState {
