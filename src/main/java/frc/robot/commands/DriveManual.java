@@ -88,10 +88,10 @@ public class DriveManual extends Command {
 
     // -- Coral Station --
     if (coralStationFar.getAsBoolean() || coralStationNear.getAsBoolean()) {
-      Pose2d desiredCorastation = subDrivetrain.getDesiredCoralStation(coralStationNear.getAsBoolean());
+      Pose2d desiredCoralStation = subDrivetrain.getDesiredCoralStation(coralStationNear.getAsBoolean());
       Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCorastation.getTranslation()));
-      subDrivetrain.autoAlign(coralStationDistance, desiredCorastation, xVelocity, yVelocity, rVelocity,
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
