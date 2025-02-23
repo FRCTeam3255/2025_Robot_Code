@@ -269,7 +269,7 @@ public class RobotContainer {
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_Y
-        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
         .onFalse(TRY_NONE);
 
     controller.btn_A

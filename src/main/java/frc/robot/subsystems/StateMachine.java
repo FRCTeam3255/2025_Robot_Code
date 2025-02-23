@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.states.None;
 import frc.robot.commands.states.climbing.ClimberDeploying;
 import frc.robot.commands.states.climbing.ClimberRetracting;
+import frc.robot.commands.states.climbing.ManualClimberDeploying;
 import frc.robot.commands.states.first_scoring_element.CleaningL2Reef;
 import frc.robot.commands.states.first_scoring_element.CleaningL3Reef;
 import frc.robot.commands.states.first_scoring_element.EjectCoral;
@@ -118,6 +119,7 @@ public class StateMachine extends SubsystemBase {
                 subLED);
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+          case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
@@ -496,6 +498,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case MANUAL_CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
@@ -505,6 +508,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+          case MANUAL_CLIMBER_DEPLOYING:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;
@@ -514,7 +518,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
-            return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
+            return new ManualClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
 

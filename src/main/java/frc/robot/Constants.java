@@ -416,7 +416,7 @@ public final class Constants {
   }
 
   public static class constClimber {
-    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.7;
+    public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 1;
     public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
     public static final double MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
     public static final Angle VALID_NONE_STATE_THRESHOLD = Units.Rotations.of(50);
