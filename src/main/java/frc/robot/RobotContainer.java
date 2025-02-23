@@ -182,7 +182,8 @@ public class RobotContainer {
 
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
-      && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE);
+      && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
+      && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);
   private final Trigger hasBothTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae());
 
   public RobotContainer() {
@@ -268,10 +269,12 @@ public class RobotContainer {
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_Y
-        .whileTrue(TRY_CLIMBER_DEPLOYING);
+        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .onFalse(TRY_NONE);
 
     controller.btn_A
-        .whileTrue(TRY_CLIMBER_RETRACTING);
+        .whileTrue(TRY_CLIMBER_RETRACTING)
+        .onFalse(TRY_NONE);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
