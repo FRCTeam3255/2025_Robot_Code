@@ -167,6 +167,7 @@ public class StateMachine extends SubsystemBase {
       case CLEANING_L2_WITH_CORAL:
         switch (currentRobotState) {
           case HAS_CORAL:
+          case HAS_CORAL_AND_ALGAE:
           case CLEANING_L3_WITH_CORAL:
           case PREP_CORAL_L1:
           case PREP_CORAL_L2:
@@ -180,6 +181,7 @@ public class StateMachine extends SubsystemBase {
       case CLEANING_L3_WITH_CORAL:
         switch (currentRobotState) {
           case HAS_CORAL:
+          case HAS_CORAL_AND_ALGAE:
           case CLEANING_L2_WITH_CORAL:
           case PREP_CORAL_L1:
           case PREP_CORAL_L2:

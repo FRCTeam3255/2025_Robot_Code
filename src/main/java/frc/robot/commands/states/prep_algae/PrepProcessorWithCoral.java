@@ -34,7 +34,7 @@ public class PrepProcessorWithCoral extends Command {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR_WITH_CORAL);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
-    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_POS_WITH_CORAL);
     globalLED.setLED(constLED.LED_PREP_PROCESSOR);
   }
 

@@ -180,7 +180,8 @@ public class RobotContainer {
 
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
-      && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE);
+      && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
+      && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);
   private final Trigger hasBothTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae());
 
   public RobotContainer() {
