@@ -89,53 +89,75 @@ public class DriveManual extends Command {
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
-    // -- Coral Station --
-    if (leftCoralStationFar.getAsBoolean()) {
-      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
-
-      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-    }
-
-    else if (leftCoralStationNear.getAsBoolean()) {
-      Pose2d desiredCoralStation = Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
-
-      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-    }
-
-    else if (rightCoralStationFar.getAsBoolean()) {
-      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
-
-      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-    }
-
-    else if (rightCoralStationNear.getAsBoolean()) {
-      Pose2d desiredCoralStation = Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
-
-      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-    }
+    /*
+     * // -- Coral Station --
+     * if (leftCoralStationFar.getAsBoolean()) {
+     * Pose2d desiredCoralStation =
+     * Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
+     * Distance coralStationDistance = Units.Meters
+     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
+     * getTranslation()));
+     * 
+     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
+     * yVelocity, rVelocity,
+     * transMultiplier, isOpenLoop,
+     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
+     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+     * DriverState.CORAL_STATION_AUTO_DRIVING,
+     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+     * }
+     * 
+     * else if (leftCoralStationNear.getAsBoolean()) {
+     * Pose2d desiredCoralStation =
+     * Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
+     * Distance coralStationDistance = Units.Meters
+     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
+     * getTranslation()));
+     * 
+     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
+     * yVelocity, rVelocity,
+     * transMultiplier, isOpenLoop,
+     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
+     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+     * DriverState.CORAL_STATION_AUTO_DRIVING,
+     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+     * }
+     * 
+     * else if (rightCoralStationFar.getAsBoolean()) {
+     * Pose2d desiredCoralStation =
+     * Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
+     * Distance coralStationDistance = Units.Meters
+     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
+     * getTranslation()));
+     * 
+     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
+     * yVelocity, rVelocity,
+     * transMultiplier, isOpenLoop,
+     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
+     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+     * DriverState.CORAL_STATION_AUTO_DRIVING,
+     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+     * }
+     * 
+     * else if (rightCoralStationNear.getAsBoolean()) {
+     * Pose2d desiredCoralStation =
+     * Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
+     * Distance coralStationDistance = Units.Meters
+     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
+     * getTranslation()));
+     * 
+     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
+     * yVelocity, rVelocity,
+     * transMultiplier, isOpenLoop,
+     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
+     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+     * DriverState.CORAL_STATION_AUTO_DRIVING,
+     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+     * }
+     */
 
     // -- Controlling --
-    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters

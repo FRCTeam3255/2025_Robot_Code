@@ -35,8 +35,8 @@ public class Climber extends SubsystemBase {
     climberMotor.set(velocity);
   }
 
-  public Distance getClimberPosition() {
-    return Units.Inches.of(climberMotor.get());
+  public Angle getClimberPosition() {
+    return climberMotor.getPosition().getValue();
   }
 
   public void setPosition(Angle angle) {
@@ -50,6 +50,10 @@ public class Climber extends SubsystemBase {
 
   public void resetSensorPosition(Angle setpoint) {
     climberMotor.setPosition(setpoint.in(Rotations));
+  }
+
+  public boolean isClimbDeployed() {
+    return getClimberPosition().gte(constClimber.MAX_POSITION.minus(constClimber.AT_POSITION_TOLERANCE));
   }
 
   @Override
