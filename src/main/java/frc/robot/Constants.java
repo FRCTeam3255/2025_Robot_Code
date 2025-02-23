@@ -417,6 +417,7 @@ public final class Constants {
   public static class constClimber {
     public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.7;
     public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
+    public static final double MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
     public static Angle MAX_POSITION = Units.Rotations.of(166.69);
