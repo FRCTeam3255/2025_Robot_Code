@@ -31,7 +31,7 @@ public class PrepProcessorWithCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR);
+    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_PROCESSOR_WITH_CORAL);
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);

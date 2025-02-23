@@ -4,9 +4,14 @@
 
 package frc.robot.commands.states.hold_scoring_elements;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -16,11 +21,19 @@ public class HasCoralAndAlgae extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   LED globalLED;
+  AlgaeIntake globalAlgaeIntake;
+  Elevator globalElevator;
+  Hopper globalHopper;
 
-  public HasCoralAndAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED) {
+  public HasCoralAndAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED,
+      AlgaeIntake subAlgaeIntake,
+      Elevator subElevator, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
+    globalAlgaeIntake = subAlgaeIntake;
+    globalHopper = subHopper;
+    globalElevator = subElevator;
     globalLED = subLED;
     addRequirements(globalStateMachine);
   }
@@ -29,7 +42,12 @@ public class HasCoralAndAlgae extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL_AND_ALGAE);
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
+    globalElevator.setPosition(Units.Inches.zero());
     globalLED.setLED(constLED.LED_HAS_CORAL);
+    globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

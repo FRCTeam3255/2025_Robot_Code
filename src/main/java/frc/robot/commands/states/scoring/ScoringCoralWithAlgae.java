@@ -53,7 +53,7 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
 
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button
-        Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.NONE)));
+        Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.HAS_ALGAE)));
   }
 
   public double getCoralOuttakeSpeed() {

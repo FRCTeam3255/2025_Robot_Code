@@ -6,8 +6,10 @@ package frc.robot.commands.states.prep_coral;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -16,13 +18,16 @@ public class PrepCoralLvWithAlgae extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   Distance globalDistance;
+  AlgaeIntake globalAlgaeIntake;
   LED globalLED;
 
-  public PrepCoralLvWithAlgae(StateMachine subStateMachine, Elevator subElevator, Distance height, LED subLED) {
+  public PrepCoralLvWithAlgae(StateMachine subStateMachine, Elevator subElevator, Distance height, LED subLED,
+      AlgaeIntake subAlgaeIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.globalElevator = subElevator;
     this.globalDistance = height;
+    this.globalAlgaeIntake = subAlgaeIntake;
     globalLED = subLED;
     addRequirements(subElevator);
     addRequirements(globalStateMachine);
@@ -31,6 +36,7 @@ public class PrepCoralLvWithAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1_WITH_ALGAE);
     else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))

@@ -158,6 +158,10 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.SCORING_CORAL_WITH_ALGAE));
   Command TRY_NONE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.NONE));
+  Command TRY_NONE_FROM_SCORING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.NONE)
+          .unless(() -> (subStateMachine.getRobotState() == RobotState.SCORING_CORAL
+              || subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE)));
 
   Command EJECTING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
@@ -174,8 +178,10 @@ public class RobotContainer {
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
-  private final Trigger hasCoralTrigger = new Trigger(subCoralOuttake::hasCoral);
-  private final Trigger hasAlgaeTrigger = new Trigger(subAlgaeIntake::hasAlgae);
+  private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
+  private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
+      && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE);
+  private final Trigger hasBothTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae());
 
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
@@ -279,7 +285,9 @@ public class RobotContainer {
         .onTrue(TRY_SCORING_CORAL)
         .onTrue(TRY_SCORING_ALGAE)
         .onTrue(TRY_SCORING_ALGAE_WITH_CORAL)
-        .onTrue(TRY_SCORING_CORAL_WITH_ALGAE);
+        .onTrue(TRY_SCORING_CORAL_WITH_ALGAE)
+        .onFalse(TRY_NONE_FROM_SCORING)
+        .onFalse(TRY_HAS_CORAL);
 
     // Intake Algae
     controller.btn_LeftBumper
@@ -302,7 +310,7 @@ public class RobotContainer {
     // L3
     controller.btn_East
         .whileTrue(TRY_CLEANING_L3)
-        .whileFalse(TRY_CLEANING_L3_WITH_CORAL)
+        .whileTrue(TRY_CLEANING_L3_WITH_CORAL)
         .onFalse(TRY_HAS_CORAL)
         .onFalse(TRY_NONE);
 
@@ -353,6 +361,8 @@ public class RobotContainer {
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
+
+    hasBothTrigger.whileTrue(TRY_HAS_CORAL_AND_ALGAE);
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
