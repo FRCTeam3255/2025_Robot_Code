@@ -497,6 +497,15 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case MANUAL_CLIMBER_DEPLOYING:
+        switch (currentRobotState) {
+          case NONE:
+          case CLIMBER_RETRACTING:
+          case CLIMBER_DEPLOYING:
+            return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
+        }
+        break;
+
     }
     return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
   }
@@ -571,6 +580,7 @@ public class StateMachine extends SubsystemBase {
     // Climbing
     CLIMBER_DEPLOYING,
     CLIMBER_RETRACTING,
+    MANUAL_CLIMBER_DEPLOYING,
   }
 
   @Override

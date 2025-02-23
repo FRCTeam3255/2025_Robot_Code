@@ -38,7 +38,7 @@ public class ManualClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
+    globalStateMachine.setRobotState(RobotState.MANUAL_CLIMBER_DEPLOYING);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
     globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
     globalClimber.setClimberMotorVelocity(Constants.constClimber.MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY);

@@ -93,7 +93,7 @@ public class RobotContainer {
   Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
   Command TRY_MANUAL_CLIMBER_DEPLOYING = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+      () -> subStateMachine.tryState(RobotState.MANUAL_CLIMBER_DEPLOYING));
   Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
   Command TRY_CLEANING_L3 = Commands.deferredProxy(
