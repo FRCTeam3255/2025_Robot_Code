@@ -117,6 +117,7 @@ public class StateMachine extends SubsystemBase {
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
           case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
@@ -499,6 +500,7 @@ public class StateMachine extends SubsystemBase {
 
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
+          case NONE:
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
