@@ -799,5 +799,8 @@ public final class Constants {
     public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+    public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 };// red
+    public static final int[] ALGAE_ZERO_SUCCESS = { 0, 255, 0 };// green
+
   }
 }

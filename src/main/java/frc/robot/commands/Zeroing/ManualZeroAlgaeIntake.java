@@ -10,19 +10,22 @@ import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.LED;
 
 public class ManualZeroAlgaeIntake extends Command {
   AlgaeIntake globalAlgaeIntake;
+  LED globalLED;
 
   boolean zeroingSuccess = false;
   Time zeroingTimestamp = Units.Seconds.of(0);
 
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
-  public ManualZeroAlgaeIntake(AlgaeIntake subAlgaeIntake) {
+  public ManualZeroAlgaeIntake(AlgaeIntake subAlgaeIntake, LED subLED) {
     this.globalAlgaeIntake = subAlgaeIntake;
-
+    this.globalLED = subLED;
     addRequirements(subAlgaeIntake);
   }
 
@@ -68,8 +71,10 @@ public class ManualZeroAlgaeIntake extends Command {
       globalAlgaeIntake.hasZeroed = true;
       globalAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS);
       System.out.println("Algae Intake Zeroing Successful!!!! Yippee and hooray!!! :3");
+      globalLED.setLED(constLED.ALGAE_ZERO_SUCCESS);
     } else {
       System.out.println("Algae Intake was never zeroed :((( blame eli");
+      globalLED.setLED(constLED.ALGAE_ZERO_FAILED);
     }
   }
 
