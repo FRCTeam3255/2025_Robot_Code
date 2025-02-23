@@ -290,7 +290,7 @@ public final class Constants {
 
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
-    public static final double ALGAE_OUTTAKE_SPEED = -0.6;
+    public static final double ALGAE_OUTTAKE_SPEED = -0.5;
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
@@ -362,10 +362,11 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(40);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-30);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-31);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(2);
+    public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
     public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
