@@ -96,6 +96,13 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case INDEXING:
+        switch (currentRobotState) {
+          case INTAKING_CORAL_HOPPER:
+            return new Indexing(subStateMachine);
+        }
+        break;
+
       // ------------ Coral -------------
       case INTAKING_CORAL_HOPPER:
         switch (currentRobotState) {
@@ -107,7 +114,7 @@ public class StateMachine extends SubsystemBase {
 
       case HAS_CORAL:
         switch (currentRobotState) {
-          case INTAKING_CORAL_HOPPER:
+          case INDEXING:
             return new HasCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
@@ -321,7 +328,8 @@ public class StateMachine extends SubsystemBase {
     PREP_ALGAE_ZERO,
 
     CLIMBER_DEPLOYING,
-    CLIMBER_RETRACTING
+    CLIMBER_RETRACTING,
+    INDEXING,
   }
 
   public static enum TargetState {
