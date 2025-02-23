@@ -95,7 +95,6 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-
     }
 
     // -- Controlling --
