@@ -233,7 +233,7 @@ public final class Constants {
 
       public static final Mass MASS = Units.Kilograms.of(40);
       // TODO: Calcuate the real vaule
-      public static final double MOI = 6.0;
+      public static final double MOI = 8.0;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
