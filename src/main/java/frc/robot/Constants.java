@@ -300,7 +300,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(57); // should be 60 when mechanical does their thing
     public static final Angle MIN_POS = Units.Degrees.of(-33);
 
     /**
@@ -359,12 +359,12 @@ public final class Constants {
 
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(40);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-30);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = MAX_POS;
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
