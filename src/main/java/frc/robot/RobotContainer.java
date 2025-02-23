@@ -92,6 +92,8 @@ public class RobotContainer {
   // -- STATES! --
   Command TRY_CLIMBER_DEPLOYING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.CLIMBER_DEPLOYING));
+  Command TRY_MANUAL_CLIMBER_DEPLOYING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.MANUAL_CLIMBER_DEPLOYING));
   Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
   Command TRY_CLEANING_L3 = Commands.deferredProxy(
@@ -263,8 +265,11 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
+    controller.btn_X
+        .onTrue(TRY_CLIMBER_DEPLOYING);
+
     controller.btn_Y
-        .whileTrue(TRY_CLIMBER_DEPLOYING)
+        .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
         .onFalse(TRY_NONE);
 
     controller.btn_A

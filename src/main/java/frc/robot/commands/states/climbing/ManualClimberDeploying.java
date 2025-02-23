@@ -5,25 +5,25 @@
 package frc.robot.commands.states.climbing;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
-import frc.robot.Constants;
-import frc.robot.Constants.constLED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClimberDeploying extends Command {
+public class ManualClimberDeploying extends Command {
+  /** Creates a new ManualClimberDeploying. */
   StateMachine globalStateMachine;
   Climber globalClimber;
   LED globalLED;
   AlgaeIntake globalAlgaeIntake;
   Elevator globalElevator;
 
-  /** Creates a new Climb. */
-  public ClimberDeploying(StateMachine subStateMachine, Climber subClimber, Elevator subElevator,
+  public ManualClimberDeploying(StateMachine subStateMachine, Climber subClimber, Elevator subElevator,
       AlgaeIntake subAlgaeIntake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
@@ -38,10 +38,10 @@ public class ClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
+    globalStateMachine.setRobotState(RobotState.MANUAL_CLIMBER_DEPLOYING);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
     globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
-    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
+    globalClimber.setClimberMotorVelocity(Constants.constClimber.MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY);
     globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
   }
 
@@ -54,11 +54,12 @@ public class ClimberDeploying extends Command {
   @Override
   public void end(boolean interrupted) {
     globalClimber.setClimberMotorVelocity(0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalClimber.isClimbDeployed() == true;
+    return false;
   }
 }
