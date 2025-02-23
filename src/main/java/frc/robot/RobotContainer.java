@@ -263,7 +263,7 @@ public class RobotContainer {
 
   private void configureDriverBindings(SN_XboxController controller) {
     controller.btn_Y
-        .whileTrue(TRY_CLIMBER_DEPLOYING);
+        .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_A
         .whileTrue(TRY_CLIMBER_RETRACTING);
