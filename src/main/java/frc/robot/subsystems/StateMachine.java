@@ -171,7 +171,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_CORAL:
           case INTAKING_CORAL_HOPPER:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
         }
         break;
 
@@ -254,7 +254,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case CLEANING_L2:
           case CLEANING_L3:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
         }
         break;
 

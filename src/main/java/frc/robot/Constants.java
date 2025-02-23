@@ -387,6 +387,7 @@ public final class Constants {
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
     public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -760,6 +761,7 @@ public final class Constants {
   public static class constHopper {
     public static final double HOPPER_SPEED = .75;
     public static final double HOPPER_INDEXING_SPEED = .75;
+    public static final double HOPPER_EJECTING_SPEED = -1.0;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
