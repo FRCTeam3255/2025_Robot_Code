@@ -159,12 +159,16 @@ public class RobotContainer {
   Command TRY_NONE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.NONE));
 
+  Command EJECTING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
+
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
-      new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
+      new ZeroAlgaeIntake(subAlgaeIntake).onlyIf(() -> !subAlgaeIntake.hasZeroed)
+          .withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
       .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
   Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
@@ -337,6 +341,10 @@ public class RobotContainer {
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0_WITH_ALGAE)
         .onTrue(TRY_PREP_CORAL_0);
+
+    controller.btn_RightBumper
+        .whileTrue(EJECTING_CORAL)
+        .onFalse(TRY_NONE);
   }
 
   private void configureSensorBindings() {
@@ -361,7 +369,7 @@ public class RobotContainer {
         .whileTrue(comIntakingAlgaeGround);
 
     // RT: Spit Algae
-    controller.btn_RightBumper
+    controller.btn_RightTrigger
         .whileTrue(comScoringAlgae);
 
     // RB: Score Coral

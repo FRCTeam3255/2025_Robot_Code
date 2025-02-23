@@ -300,7 +300,7 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(57); // should be 60 when mechanical does their thing
     public static final Angle MIN_POS = Units.Degrees.of(-33);
 
     /**
@@ -318,6 +318,11 @@ public final class Constants {
       ALGAE_ROLLER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
 
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POS.in(Units.Rotations);
@@ -341,6 +346,11 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
+
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimit = 45;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
@@ -349,12 +359,12 @@ public final class Constants {
 
     public static final Current ALGAE_INTAKE_HAS_GP_CURRENT = Units.Amps.of(15);
 
-    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(40);
+    public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-30);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = MAX_POS;
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
@@ -377,6 +387,7 @@ public final class Constants {
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
     public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -395,6 +406,11 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
       CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
+
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
     }
   }
 
@@ -452,6 +468,12 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 1;
+
     }
 
     public static TalonFXConfiguration COAST_MODE_CONFIGURATION = new TalonFXConfiguration();
@@ -739,11 +761,15 @@ public final class Constants {
   public static class constHopper {
     public static final double HOPPER_SPEED = .75;
     public static final double HOPPER_INDEXING_SPEED = .75;
+    public static final double HOPPER_EJECTING_SPEED = -1.0;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {
       HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
     }
   }
 

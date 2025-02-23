@@ -28,6 +28,7 @@ public class ManualZeroAlgaeIntake extends Command {
 
   @Override
   public void initialize() {
+    zeroingSuccess = false;
     globalAlgaeIntake.hasZeroed = false;
   }
 
@@ -64,7 +65,7 @@ public class ManualZeroAlgaeIntake extends Command {
   public void end(boolean interrupted) {
     globalAlgaeIntake.setSoftwareLimits(true, true);
 
-    if (!interrupted) {
+    if (!interrupted && zeroingSuccess) {
       globalAlgaeIntake.hasZeroed = true;
       globalAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS);
       System.out.println("Algae Intake Zeroing Successful!!!! Yippee and hooray!!! :3");
