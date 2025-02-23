@@ -779,7 +779,8 @@ public final class Constants {
       LED_CONFIG.brightnessScalar = 1;
 
     }
-
+    public static final int LED_NUMBER = 8;
+    public static final int LED_STRIP_START_INDEX = 1;
     // These are the RGB values for the LEDs (sorry no animation)
     // also these are just placeholders for the values
     public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
