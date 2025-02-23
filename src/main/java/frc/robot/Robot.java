@@ -10,10 +10,12 @@ import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.net.WebServer;
 import edu.wpi.first.units.measure.MutCurrent;
 import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.subsystems.StateMachine;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -34,8 +38,13 @@ public class Robot extends TimedRobot {
 
   public CommandScheduler commandScheduler = CommandScheduler.getInstance();
 
+  public Robot() {
+    CameraServer.startAutomaticCapture();
+  }
+
   @Override
   public void robotInit() {
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
     Epilogue.bind(this);
     m_robotContainer = new RobotContainer();
 
@@ -62,6 +71,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    Elastic.selectTab("Disabled");
+
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(false);
 
@@ -84,6 +95,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Elastic.selectTab("Autonomous");
+
     m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
@@ -99,16 +112,18 @@ public class Robot extends TimedRobot {
     hasAutonomousRun = true;
   }
 
-  @Override
   public void autonomousPeriodic() {
   }
 
   @Override
+
   public void autonomousExit() {
   }
 
   @Override
   public void teleopInit() {
+    Elastic.selectTab("Teleoperated");
+
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
     m_robotContainer.setMegaTag2(true);
 
@@ -123,6 +138,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    if (m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_DEPLOYING
+        || m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_RETRACTING) {
+      Elastic.selectTab("Climbing");
+    } else if (m_robotContainer.getRobotState() != StateMachine.RobotState.NONE) {
+      Elastic.selectTab("Teleoperated");
+    }
   }
 
   @Override
@@ -151,7 +172,7 @@ public class Robot extends TimedRobot {
     MutCurrent BACK_RIGHT_DRIVE = Amps.mutable(PDH.getCurrent(1));
     MutCurrent RIGHT_ELEVATOR = Amps.mutable(PDH.getCurrent(2));
     MutCurrent PORT3 = Amps.mutable(PDH.getCurrent(3));
-    MutCurrent PORT4 = Amps.mutable(PDH.getCurrent(4));
+    MutCurrent CLIMBER = Amps.mutable(PDH.getCurrent(4));
     MutCurrent PORT5 = Amps.mutable(PDH.getCurrent(5));
     MutCurrent HOPPER_ROLLER = Amps.mutable(PDH.getCurrent(6));
     MutCurrent LEFT_ELEVATOR = Amps.mutable(PDH.getCurrent(7));
@@ -178,7 +199,7 @@ public class Robot extends TimedRobot {
       BACK_RIGHT_DRIVE.mut_replace(PDH.getCurrent(1), Amps);
       RIGHT_ELEVATOR.mut_replace(PDH.getCurrent(2), Amps);
       PORT3.mut_replace(PDH.getCurrent(3), Amps);
-      PORT4.mut_replace(PDH.getCurrent(4), Amps);
+      CLIMBER.mut_replace(PDH.getCurrent(4), Amps);
       PORT5.mut_replace(PDH.getCurrent(5), Amps);
       HOPPER_ROLLER.mut_replace(PDH.getCurrent(6), Amps);
       LEFT_ELEVATOR.mut_replace(PDH.getCurrent(7), Amps);
@@ -200,6 +221,10 @@ public class Robot extends TimedRobot {
       PORT23.mut_replace(PDH.getCurrent(23), Amps);
     }
 
+  }
+
+  public double getMatchTime() {
+    return DriverStation.getMatchTime();
   }
 
   PDHValues pdhValues = new PDHValues();
