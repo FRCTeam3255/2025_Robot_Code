@@ -10,22 +10,23 @@ import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.constElevator;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LED;
 
 public class ManualZeroElevator extends Command {
   Elevator globalElevator;
-
+  LED globalLED;
   boolean zeroingSuccess = false;
   Time zeroingTimestamp = Units.Seconds.of(0);
 
   public static boolean hasSetCoastMode = false;
 
-
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
-  public ManualZeroElevator(Elevator subElevator) {
+  public ManualZeroElevator(Elevator subElevator, LED subLED) {
     this.globalElevator = subElevator;
-
+    this.globalLED = subLED;
     addRequirements(subElevator);
   }
 
@@ -57,6 +58,7 @@ public class ManualZeroElevator extends Command {
       if (Units.Seconds.of(Timer.getFPGATimestamp()).minus(zeroingTimestamp).gte(constElevator.ZEROING_TIMEOUT)) {
         globalElevator.attemptingZeroing = false;
         System.out.println("Elevator Zeroing Failed :(");
+        globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
       } else {
         boolean deltaRotorVelocity = globalElevator.getRotorVelocity().minus(lastRotorVelocity)
             .lte(constElevator.MANUAL_ZEROING_DELTA_VELOCITY);
@@ -79,8 +81,11 @@ public class ManualZeroElevator extends Command {
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
+      globalLED.setLED(constLED.ELEVATOR_ZERO_SUCCESS);
+
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
+      globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
     }
   }
 

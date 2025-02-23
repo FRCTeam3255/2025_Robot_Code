@@ -781,6 +781,7 @@ public final class Constants {
     }
 
     // These are the RGB values for the LEDs (sorry no animation)
+    // also these are just placeholders for the values
     public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
 
     public static final int[] LED_PREP_PROCESSOR = { 255, 150, 0 };// orange
@@ -801,6 +802,8 @@ public final class Constants {
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
     public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 };// red
     public static final int[] ALGAE_ZERO_SUCCESS = { 0, 255, 0 };// green
+    public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 };// red
+    public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 255, 0 };// green
 
   }
 }

@@ -153,7 +153,7 @@ public class RobotContainer {
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
       new ZeroAlgaeIntake(subAlgaeIntake).withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
       .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
-  Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
+  Command manualZeroSubsystems = new ManualZeroElevator(subElevator, subLED)
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake, subLED))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
