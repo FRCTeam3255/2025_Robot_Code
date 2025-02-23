@@ -156,7 +156,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case HAS_CORAL:
           case INTAKING_CORAL:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
         }
         break;
 
