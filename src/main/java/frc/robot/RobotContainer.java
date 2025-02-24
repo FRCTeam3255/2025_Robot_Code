@@ -16,6 +16,8 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
@@ -174,6 +176,11 @@ public class RobotContainer {
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Map<String, DeferredCommand[]> AUTO_PREP_MAPS = new HashMap<>();
+  DeferredCommand[] SELECTED_AUTO_PREP_MAP = {};
+  String SELECTED_AUTO_PREP_MAP_NAME = "none :(";
+  int AUTO_PREP_NUM = 0;
+
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
       new ZeroAlgaeIntake(subAlgaeIntake).onlyIf(() -> !subAlgaeIntake.hasZeroed)
@@ -205,6 +212,7 @@ public class RobotContainer {
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
     configureSensorBindings();
+    configureAutoPrepMaps();
     configureAutoBindings();
     configureAutoSelector();
     configureTesterBindings(conTester);
@@ -229,6 +237,36 @@ public class RobotContainer {
           constVision.MEGA_TAG1_STD_DEVS_HEADING));
     }
     subVision.setMegaTag2(setMegaTag2);
+  }
+
+  private void configureAutoPrepMaps() {
+    DeferredCommand AUTO_PREP_CORAL_4 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
+        Set.of(subStateMachine));
+    DeferredCommand AUTO_PREP_CORAL_1 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L1),
+        Set.of(subStateMachine));
+
+    AUTO_PREP_MAPS.put("Four_Piece_Low",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4 });
+
+    AUTO_PREP_MAPS.put("Clockwork_Nine_Piece",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4 });
+
+    AUTO_PREP_MAPS.put("One_Piece_Low",
+        new DeferredCommand[] { AUTO_PREP_CORAL_1 });
+
+    AUTO_PREP_MAPS.put("Six_Piece_High",
+        new DeferredCommand[] { AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4,
+            AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4, AUTO_PREP_CORAL_4 });
+
+    SELECTED_AUTO_PREP_MAP = AUTO_PREP_MAPS.get("Four_Piece_Low");
+  }
+
+  private void selectAutoMap() {
+    SELECTED_AUTO_PREP_MAP = AUTO_PREP_MAPS.get(autoChooser.getSelected().getName());
+    SELECTED_AUTO_PREP_MAP_NAME = autoChooser.getSelected().getName();
   }
 
   private void configureAutoBindings() {
@@ -433,6 +471,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    selectAutoMap();
     return autoChooser.getSelected();
   }
 
