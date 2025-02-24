@@ -179,7 +179,7 @@ public class RobotContainer {
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Pair<DeferredCommand, Pose2d>[] SELECTED_AUTO_PREP_MAP;
-  String SELECTED_AUTO_PREP_MAP_NAME = "none :(";
+  String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
   int AUTO_PREP_NUM = 0;
 
   Command zeroSubsystems = new ParallelCommandGroup(
@@ -472,13 +472,15 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             driveAutoAlign.asProxy().until(() -> subDrivetrain
-                .isAtPosition(subDrivetrain.getPose().nearest(constField.getReefPositions().get()))),
+                .isAtPosition(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond())),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
-            TRY_SCORING_CORAL.asProxy()).until(() -> subStateMachine.getRobotState() == RobotState.NONE));
+            TRY_SCORING_CORAL.asProxy(),
+            Commands.runOnce(() -> AUTO_PREP_NUM++)).until(() -> subStateMachine.getRobotState() == RobotState.NONE));
 
     NamedCommands.registerCommand("PrepPlace",
         Commands.sequence(
-            Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)).asProxy()));
+            Commands.runOnce(() -> SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())
+                .asProxy()));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
@@ -491,7 +493,7 @@ public class RobotContainer {
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
-    prepPlace.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
+    prepPlace.onTrue(new DeferredCommand(() -> SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst(),
         Set.of(subStateMachine)));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
