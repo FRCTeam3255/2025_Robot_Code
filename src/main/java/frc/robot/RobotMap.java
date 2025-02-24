@@ -38,7 +38,6 @@ public class RobotMap {
 
   public static class mapClimber {
     public static final int CLIMBER_LEFT_CAN = 20;
-    public static final int CLIMBER_RIGHT_CAN = 21;
   }
 
   public static class mapAlgaeIntake {
