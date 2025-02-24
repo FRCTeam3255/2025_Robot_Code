@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-F"
+            "pathName": "P-E"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F-CSBottom"
+            "pathName": "E-CSBottom"
           }
         },
         {
@@ -103,7 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-E"
+            "pathName": "CSBottom-F"
           }
         },
         {
@@ -121,7 +121,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
