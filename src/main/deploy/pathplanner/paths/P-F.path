@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.29856702598996,
-        "y": 1.9391848371767568
+        "x": 6.052273175487912,
+        "y": 2.2506063645890975
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.5025614754098364
       },
       "prevControl": {
-        "x": 5.833717698903578,
-        "y": 2.4669261039614896
+        "x": 5.921113357879751,
+        "y": 2.369734482432832
       },
       "nextControl": null,
       "isLocked": false,
@@ -37,12 +37,6 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
-    {
-      "name": "GetCoralStationPiece",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
     {
       "name": "PrepPlace",
       "waypointRelativePos": 1.0,
@@ -66,7 +60,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

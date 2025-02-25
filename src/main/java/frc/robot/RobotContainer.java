@@ -476,7 +476,9 @@ public class RobotContainer {
             Commands.runOnce(() -> AUTO_PREP_NUM++)));
 
     NamedCommands.registerCommand("PrepPlace",
-        Commands.runOnce(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())).asProxy());
+        Commands.runOnce(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()))
+            .until(() -> subStateMachine.getRobotState() == SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())
+            .asProxy());
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
@@ -485,13 +487,17 @@ public class RobotContainer {
             .withName("GetCoralStationPiece"));
 
     NamedCommands.registerCommand("ForceGamePiece",
-        TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL));
+        Commands.either(
+            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
+            subCoralOuttake.sensorSeesCoralSupplier()));
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
     prepPlace
         .onTrue(new DeferredCommand(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()),
-            Set.of(subStateMachine)));
+            Set.of(subStateMachine)).repeatedly()
+            .until(() -> subStateMachine.getRobotState() == SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
