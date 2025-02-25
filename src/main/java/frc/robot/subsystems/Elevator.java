@@ -18,7 +18,6 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
@@ -59,7 +58,7 @@ public class Elevator extends SubsystemBase {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetPoint() {
     return (getElevatorPosition()
         .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
@@ -71,6 +70,16 @@ public class Elevator extends SubsystemBase {
 
   public Distance getLastDesiredPosition() {
     return lastDesiredPosition;
+  }
+
+  public void setCoastMode(Boolean coastMode) {
+    if (coastMode) {
+      rightMotorLeader.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+      leftMotorFollower.getConfigurator().apply(constElevator.COAST_MODE_CONFIGURATION);
+    } else {
+      rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+      leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    }
   }
 
   public boolean isRotorVelocityZero() {
@@ -108,18 +117,5 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
-    currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
-    SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Current", leftMotorFollower.getSupplyCurrent().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Right/CLO", rightMotorLeader.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Output", rightMotorLeader.get());
-    SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
   }
 }

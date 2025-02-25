@@ -7,13 +7,19 @@
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "ForceGamePiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P-F"
+            "pathName": "P-L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -25,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F-CSBottom"
+            "pathName": "L-CSTop"
           }
         },
         {
@@ -37,7 +43,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-E"
+            "pathName": "CSTop-K"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -49,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E-CSBottom"
+            "pathName": "K-CSTop"
           }
         },
         {
@@ -61,7 +73,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-D"
+            "pathName": "CSTop-A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -73,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "D-CSBottom"
+            "pathName": "A-CSTop"
           }
         },
         {
@@ -85,7 +103,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSTop-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -98,6 +122,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }
