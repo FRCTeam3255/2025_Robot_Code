@@ -4,31 +4,29 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import java.util.List;
+import java.util.Set;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.PathPlannerPath;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
-import java.util.Set;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,8 +34,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.*;
+import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constElevator;
+import frc.robot.Constants.constField;
+import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.DriveManual;
+import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ZeroElevator;
 import frc.robot.commands.states.climbing.ClimberDeploying;
 import frc.robot.commands.states.first_scoring_element.CleaningL2Reef;
 import frc.robot.commands.states.first_scoring_element.CleaningL3Reef;
@@ -47,12 +55,18 @@ import frc.robot.commands.states.prep_algae.PrepNet;
 import frc.robot.commands.states.prep_algae.PrepProcessor;
 import frc.robot.commands.states.scoring.ScoringAlgae;
 import frc.robot.commands.states.scoring.ScoringCoral;
-import frc.robot.commands.*;
-import frc.robot.commands.Zeroing.*;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.RobotPoses;
+import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
-import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.subsystems.Vision;
 
 @Logged
 public class RobotContainer {
@@ -463,6 +477,7 @@ public class RobotContainer {
   }
 
   private void configureAutoBindings() {
+    // i decorate my commands like a christmas tree
     // -- Named Commands --
     Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
         SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond(), MetersPerSecond.of(0),
@@ -472,14 +487,17 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
-            TRY_SCORING_CORAL.asProxy().repeatedly().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
-            Commands.runOnce(() -> AUTO_PREP_NUM++)));
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
+            TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
+            Commands.runOnce(() -> AUTO_PREP_NUM++)).withName("PlaceSequence"));
 
     NamedCommands.registerCommand("PrepPlace",
-        Commands.runOnce(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()))
-            .until(() -> subStateMachine.getRobotState() == SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())
-            .asProxy());
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4))
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4)
+            .asProxy().withName("PrepPlace"));
 
+    // I FORGOT WHAT THIS NONE DOES BUT IT SEEMS ESSENTIAL
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
@@ -490,14 +508,14 @@ public class RobotContainer {
         Commands.either(
             Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
-            subCoralOuttake.sensorSeesCoralSupplier()));
+            subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
     prepPlace
-        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()),
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
             Set.of(subStateMachine)).repeatedly()
-            .until(() -> subStateMachine.getRobotState() == SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()));
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
@@ -527,10 +545,10 @@ public class RobotContainer {
 
       case "Four_Piece_Low":
         Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
-        fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
-        fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
-        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
-        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
         return fourPieceLow;
 
       case "Clockwork_Nine_Piece":

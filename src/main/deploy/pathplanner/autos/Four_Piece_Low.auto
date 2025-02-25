@@ -13,37 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-F"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "F-CSBottom"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "P-C"
           }
         },
         {
@@ -104,6 +74,36 @@
           "type": "path",
           "data": {
             "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-F"
           }
         },
         {
