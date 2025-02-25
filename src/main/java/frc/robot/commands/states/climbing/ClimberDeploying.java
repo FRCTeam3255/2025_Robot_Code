@@ -67,6 +67,6 @@ public class ClimberDeploying extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalClimber.isClimbDeployed() || DriverStation.getMatchTime() <= 30;
+    return globalClimber.isClimbDeployed() || DriverStation.getMatchTime() <= constClimber.MATCH_CLIMBING_TIME;
   }
 }
