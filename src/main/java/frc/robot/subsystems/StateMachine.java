@@ -114,7 +114,7 @@ public class StateMachine extends SubsystemBase {
 
       case HAS_CORAL:
         switch (currentRobotState) {
-          case INTAKING_CORAL_HOPPER:
+          case INDEXING:
             return new HasCoral(subStateMachine, subCoralOuttake, subLED);
         }
         break;
@@ -178,7 +178,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case HAS_CORAL:
           case INTAKING_CORAL_HOPPER:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
         }
         break;
 
@@ -261,7 +261,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case CLEANING_L2:
           case CLEANING_L3:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
         }
         break;
 
@@ -278,6 +278,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLIMBER_RETRACTING:
+          case CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
@@ -285,6 +286,7 @@ public class StateMachine extends SubsystemBase {
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
           case CLIMBER_DEPLOYING:
+          case CLIMBER_RETRACTING:
             return new ClimberRetracting(subStateMachine, subClimber, subAlgaeIntake, subLED);
         }
         break;

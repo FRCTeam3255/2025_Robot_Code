@@ -142,6 +142,9 @@ public class RobotContainer {
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
 
+  Command EJECTING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
+
   Command TRY_INDEXING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INDEXING));
 
@@ -239,13 +242,11 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    // controller.btn_A
-    // .whileTrue(TRY_CLIMBER_DEPLOYING)
-    // .onFalse(TRY_NONE);
+    controller.btn_Y
+        .whileTrue(TRY_CLIMBER_DEPLOYING);
 
-    // controller.btn_Y
-    // .whileTrue(TRY_CLIMBER_RETRACTING)
-    // .onFalse(TRY_NONE);
+    controller.btn_A
+        .whileTrue(TRY_CLIMBER_RETRACTING);
 
     controller.btn_North
         .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
@@ -302,6 +303,10 @@ public class RobotContainer {
 
     controller.btn_RightStick
         .onTrue(TRY_PREP_CORAL_0);
+
+    controller.btn_RightBumper
+        .whileTrue(EJECTING_CORAL)
+        .onFalse(TRY_NONE);
   }
 
   private void configureSensorBindings() {
@@ -326,7 +331,7 @@ public class RobotContainer {
         .whileTrue(comIntakingAlgaeGround);
 
     // RT: Spit Algae
-    controller.btn_RightBumper
+    controller.btn_RightTrigger
         .whileTrue(comScoringAlgae);
 
     // RB: Score Coral
@@ -370,6 +375,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  public RobotState getRobotState() {
+    return subStateMachine.getRobotState();
   }
 
   private void configureAutoSelector() {

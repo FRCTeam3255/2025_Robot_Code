@@ -294,6 +294,22 @@ public final class Constants {
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
+    /**
+     * The velocity that the motor goes at once it has zeroed (and can no longer
+     * continue in that direction)
+     */
+    public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
+
+    public static final Angle MAX_POS = Units.Degrees.of(45); // should be 60 when mechanical does their thing
+    public static final Angle MIN_POS = Units.Degrees.of(-33);
+
+    /**
+     * The elapsed time required to consider the motor as zeroed
+     */
+    public static final Time ZEROED_TIME = Units.Seconds.of(1);
+
+    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(1);
+
     public static final double HOLD_ALGAE_INTAKE_VOLTAGE = 1;
     public static final TalonFXConfiguration ALGAE_ROLLER_CONFIG = new TalonFXConfiguration();
     public static final TalonFXConfiguration ALGAE_PIVOT_CONFIG = new TalonFXConfiguration();
@@ -303,10 +319,15 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ALGAE_PIVOT_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      ALGAE_ROLLER_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
+
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Degrees.of(60).in(Units.Rotations);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POS.in(Units.Rotations);
       ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Degrees.of(-33).in(Units.Rotations);
+      ALGAE_PIVOT_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = MIN_POS.in(Units.Rotations);
 
       // Why don't scientists trust atoms? Because they make up everything!
       // Why do crabs never share their things? - Because they are shellfish!
@@ -325,6 +346,11 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
       ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
+
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimit = 45;
+      ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
     }
 
     public static final Distance REQUIRED_ALGAE_DISTANCE = Units.Inches.of(2);
@@ -338,31 +364,16 @@ public final class Constants {
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-27);
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(60);
+    public static final Angle PREP_NET_PIVOT_POSITION = MAX_POS;
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(5);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
-    public static final Angle CLIMB_DEPLOY_POSITION = Units.Degrees.of(0);
+    public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
     public static final AngularVelocity MANUAL_ZEROING_START_VELOCITY = Units.RotationsPerSecond.of(5);
     public static final AngularVelocity MANUAL_ZEROING_DELTA_VELOCITY = Units.RotationsPerSecond.of(5);
-
-    /**
-     * The velocity that the motor goes at once it has zeroed (and can no longer
-     * continue in that direction)
-     */
-    public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
-
-    public static final Angle ZEROED_POS = Units.Degrees.of(-33);
-
-    /**
-     * The elapsed time required to consider the motor as zeroed
-     */
-    public static final Time ZEROED_TIME = Units.Seconds.of(1);
-
-    public static final Voltage ZEROING_VOLTAGE = Units.Volts.of(-1);
 
     public static final Transform3d ALGAE_INTAKE_TO_ALGAE = new Transform3d(
         Units.Meters.convertFrom(450, Units.Millimeters), 0,
@@ -376,6 +387,7 @@ public final class Constants {
   public static class constCoralOuttake {
     public static final double CORAL_OUTTAKE_SPEED = 0.7;
     public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
 
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
 
@@ -394,19 +406,33 @@ public final class Constants {
       CORAL_OUTTAKE_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       CORAL_SENSOR_CONFIG.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
       CORAL_SENSOR_CONFIG.ProximityParams.ProximityThreshold = REQUIRED_CORAL_DISTANCE.in(Units.Meters);
+
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      CORAL_OUTTAKE_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 0.5;
     }
   }
 
   public static class constClimber {
     public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
-    public static final double CLIMBER_RETRACT_VELOCITY = -0.1;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();
+    public static Angle MAX_POSITION = Units.Rotations.of(166.69);
+    public static Angle AT_POSITION_TOLERANCE = Units.Rotations.of(10);
+
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLimit = 85;
+      CLIMBER_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 60;
+
+      CLIMBER_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Rotations.of(10).in(Units.Rotations);
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POSITION.in(Units.Rotations);
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
           .in(Units.Rotations);
@@ -442,6 +468,12 @@ public final class Constants {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimit = 60;
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerTime = 1;
+
     }
 
     public static TalonFXConfiguration COAST_MODE_CONFIGURATION = new TalonFXConfiguration();
@@ -729,11 +761,15 @@ public final class Constants {
   public static class constHopper {
     public static final double HOPPER_SPEED = .75;
     public static final double HOPPER_INDEXING_SPEED = .75;
+    public static final double HOPPER_EJECTING_SPEED = -1.0;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {
       HOPPER_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      HOPPER_CONFIG.CurrentLimits.StatorCurrentLimit = 60;
     }
   }
 
