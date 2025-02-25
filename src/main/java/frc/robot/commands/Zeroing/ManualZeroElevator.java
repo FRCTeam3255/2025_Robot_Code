@@ -18,6 +18,9 @@ public class ManualZeroElevator extends Command {
   boolean zeroingSuccess = false;
   Time zeroingTimestamp = Units.Seconds.of(0);
 
+  public static boolean hasSetCoastMode = false;
+
+
   AngularVelocity lastRotorVelocity = Units.RotationsPerSecond.of(0);
 
   public ManualZeroElevator(Elevator subElevator) {
@@ -29,10 +32,17 @@ public class ManualZeroElevator extends Command {
   @Override
   public void initialize() {
     globalElevator.setSoftwareLimits(false, true);
+    globalElevator.hasZeroed = false;
   }
 
   @Override
   public void execute() {
+
+    if (!hasSetCoastMode) {
+      globalElevator.setCoastMode(true);
+      hasSetCoastMode = true;
+    }
+
     // Check if we have raised the elevator above a certain speed
     if (globalElevator.getRotorVelocity().gte(constElevator.MANUAL_ZEROING_START_VELOCITY)
         || globalElevator.attemptingZeroing) {
@@ -67,6 +77,7 @@ public class ManualZeroElevator extends Command {
     if (!interrupted) {
       globalElevator.hasZeroed = true;
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
+      globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");

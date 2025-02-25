@@ -41,11 +41,25 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/SendableChooser[1]": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
   "NetworkTables": {
     "transitory": {
+      "Robot": {
+        "m_robotContainer": {
+          "open": true,
+          "subStateMachine": {
+            "open": true
+          }
+        },
+        "open": true
+      },
       "SmartDashboard": {
         "Field": {
           "open": true

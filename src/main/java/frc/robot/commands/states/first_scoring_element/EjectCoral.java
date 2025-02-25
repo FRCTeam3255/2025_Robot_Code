@@ -2,44 +2,41 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.states;
+package frc.robot.commands.states.first_scoring_element;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
-import frc.robot.subsystems.AlgaeIntake;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class CleaningL2Reef extends Command {
+public class EjectCoral extends Command {
   StateMachine globalStateMachine;
-  Elevator globalElevator;
-  AlgaeIntake globalAlgaeIntake;
+  CoralOuttake globalCoralOuttake;
   LED globalLED;
+  Hopper globalHopper;
 
-  /** Creates a new CleaningL2Reef. */
-  public CleaningL2Reef(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, LED subLED) {
+  /** Creates a new CoralOuttake. */
+  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
-    globalElevator = subElevator;
-    globalAlgaeIntake = subAlgaeIntake;
+    globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
+    globalHopper = subHopper;
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.CLEANING_L2);
-    globalElevator.setPosition(Constants.constElevator.ALGAE_L2_CLEANING);
-    globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
-    globalLED.setLED(constLED.LED_CLEANING_L2_REEF);
-
-    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLEANING_REEF_L2_PIVOT_POSITION);
+    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
+    globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
+    globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,10 +47,8 @@ public class CleaningL2Reef extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!globalAlgaeIntake.hasAlgae()) {
-      globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
-      globalElevator.setPosition(Constants.constElevator.PREP_0);
-    }
+    globalCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.setHasCoral(false);
   }
 
   // Returns true when the command should end.
