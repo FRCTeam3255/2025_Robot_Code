@@ -497,6 +497,7 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+    public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
 
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 

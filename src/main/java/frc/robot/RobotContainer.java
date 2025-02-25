@@ -209,7 +209,6 @@ public class RobotContainer {
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
-
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
       && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
@@ -452,33 +451,6 @@ public class RobotContainer {
     return !isPracticeBot.get();
   }
 
-  public void updateLoggedPoses() {
-    double elevatorPos, algaeAngle;
-
-    // If we're in simulation, we can't log real mechanism data because they don't
-    // exist. Instead, we'll log where we *want* the mechanisms to be and assume
-    // they get there instantly.
-    if (Robot.isSimulation()) {
-      elevatorPos = subElevator.getLastDesiredPosition().in(Units.Meters) / 2;
-      algaeAngle = subAlgaeIntake.getLastDesiredPivotAngle().in(Units.Degrees);
-    } else {
-      // Use real positions
-      elevatorPos = (subElevator.getElevatorPosition().in(Units.Meters) / 2);
-      algaeAngle = subAlgaeIntake.getPivotAngle().in(Units.Degrees);
-    }
-
-    elevatorStageOne = new Pose3d(new Translation3d(0.0889,
-        0,
-        0.109474 + elevatorPos), Rotation3d.kZero);
-
-    elevatorCarriage = elevatorStageOne
-        .transformBy(new Transform3d(new Translation3d(0, 0, Units.Inches.of(1).in(Units.Meters) + elevatorPos),
-            Rotation3d.kZero));
-
-    algaeIntake = elevatorCarriage
-        .transformBy(new Transform3d(new Translation3d(0.075438, 0, 0.292354), new Rotation3d(0, algaeAngle, 0)));
-   }
-
   public void checkForCoral() {
     if (subCoralOuttake.sensorSeesCoral()) {
       subStateMachine.setRobotState(RobotState.HAS_CORAL);
@@ -552,17 +524,28 @@ public class RobotContainer {
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
-    
-    
-    // -- FOR ALICE TO LOOK AT --
-    NamedCommands.registerCommand("CleanL3Reef", TRY_CLEANING_L3.asProxy().until(hasAlgaeTrigger));
 
-    NamedCommands.registerCommand("PrepNet", TRY_PREP_NET.asProxy());
+    // -- FOR ALICE TO LOOK AT --
+    NamedCommands.registerCommand("CleanL3Reef",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L3))
+            .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+            .asProxy().withName("PrepNet"));
+
+    NamedCommands.registerCommand("CleanL2Reef",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L2))
+            .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+            .asProxy().withName("PrepNet"));
+
+    NamedCommands.registerCommand("PrepNet",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_NET))
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET)
+            .asProxy().withName("PrepNet"));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         TRY_SCORING_ALGAE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean()),
         Commands.waitSeconds(1.5),
-        TRY_NONE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean())));
+        TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
+
   }
 
   /**
