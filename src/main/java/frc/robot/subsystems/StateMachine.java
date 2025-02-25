@@ -115,6 +115,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL:
           case SCORING_ALGAE:
+          case INDEXING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
           case CLIMBER_DEPLOYING:
