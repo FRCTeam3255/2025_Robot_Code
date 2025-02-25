@@ -160,7 +160,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING:
         switch (currentRobotState) {
           case SCORING_CORAL:
-            return new Indexing(subStateMachine, subCoralOuttake, subElevator, conOperator, getRobotState());
+            return new Indexing(subStateMachine, subCoralOuttake, subElevator);
         }
         break;
 
