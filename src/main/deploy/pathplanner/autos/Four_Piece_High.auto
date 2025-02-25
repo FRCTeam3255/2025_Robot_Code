@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "ForceGamePiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P-I"
+            "pathName": "P-L"
           }
         },
         {
@@ -23,27 +23,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "I-CSTop"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-L"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
+            "name": "PlaceSequence"
           }
         },
         {
@@ -71,9 +53,45 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "K-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-CSTop"
           }
         },
         {
@@ -93,11 +111,17 @@
           "data": {
             "name": "PrepPlace"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }

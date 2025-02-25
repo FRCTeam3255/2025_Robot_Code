@@ -122,6 +122,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }

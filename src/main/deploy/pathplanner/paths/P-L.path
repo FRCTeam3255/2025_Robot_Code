@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 7.108,
+        "y": 6.199249999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2256591654035596,
-        "y": 7.083483477660028
+        "x": 6.2121110620186935,
+        "y": 6.392363227271518
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.31375,
-        "y": 5.78
+        "x": 3.3832500000000003,
+        "y": 5.604500000000001
       },
       "prevControl": {
-        "x": 3.6135638970526074,
-        "y": 6.547839890296761
+        "x": 3.4679835581454066,
+        "y": 5.84865945425409
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,18 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 0.75,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "GetCoralStationPiece",
@@ -40,7 +51,7 @@
     },
     {
       "name": "PrepPlace",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.9777777777777771,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -55,13 +66,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "CSTop-Score",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
