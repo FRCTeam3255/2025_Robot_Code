@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.units.measure.MutCurrent;
 import edu.wpi.first.units.measure.MutVoltage;
@@ -85,6 +86,9 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     constField.ALLIANCE = DriverStation.getAlliance();
     SmartDashboard.putString("ALLIANCE", constField.ALLIANCE.toString());
+    if (!hasAutonomousRun) {
+      m_robotContainer.resetToAutoPose();
+    }
   }
 
   @Override
@@ -138,12 +142,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if (m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_DEPLOYING
-        || m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_RETRACTING) {
-      Elastic.selectTab("Climbing");
-    } else if (m_robotContainer.getRobotState() != StateMachine.RobotState.NONE) {
-      Elastic.selectTab("Teleoperated");
-    }
   }
 
   @Override

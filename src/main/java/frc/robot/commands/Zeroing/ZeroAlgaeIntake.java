@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Zeroing;
 
+import static edu.wpi.first.units.Units.Degrees;
+
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
@@ -49,7 +51,7 @@ public class ZeroAlgaeIntake extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS);
+      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS.plus(Degrees.of(1)));
       subAlgaeIntake.hasZeroed = true;
     }
   }
