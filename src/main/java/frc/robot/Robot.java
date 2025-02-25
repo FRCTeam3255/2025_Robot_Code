@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -127,6 +129,8 @@ public class Robot extends TimedRobot {
     if (!hasAutonomousRun || !bothSubsystemsZeroed) {
       m_robotContainer.zeroSubsystems.schedule();
     }
+
+    m_robotContainer.TRY_INDEXING.schedule();
   }
 
   @Override
