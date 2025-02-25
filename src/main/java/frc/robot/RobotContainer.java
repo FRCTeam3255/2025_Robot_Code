@@ -280,7 +280,8 @@ public class RobotContainer {
         .onFalse(TRY_NONE);
 
     controller.btn_North
-        .onTrue(Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Pose2d.kZero)));
+        .onTrue(
+            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
