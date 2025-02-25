@@ -11,6 +11,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
+import frc.robot.Elastic;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
@@ -38,6 +39,7 @@ public class ClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Elastic.selectTab("Climbing");
     globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
     globalElevator.setPosition(Constants.constElevator.ZEROED_POS);

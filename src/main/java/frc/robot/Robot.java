@@ -142,12 +142,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if (m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_DEPLOYING
-        || m_robotContainer.getRobotState() == StateMachine.RobotState.CLIMBER_RETRACTING) {
-      Elastic.selectTab("Climbing");
-    } else if (m_robotContainer.getRobotState() != StateMachine.RobotState.NONE) {
-      Elastic.selectTab("Teleoperated");
-    }
   }
 
   @Override
