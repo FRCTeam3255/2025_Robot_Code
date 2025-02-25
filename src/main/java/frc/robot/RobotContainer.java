@@ -471,9 +471,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            driveAutoAlign.asProxy().until(() -> subDrivetrain
-                .isAtPosition(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond())),
-            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
             TRY_SCORING_CORAL.asProxy().repeatedly().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
             Commands.runOnce(() -> AUTO_PREP_NUM++)));
 
