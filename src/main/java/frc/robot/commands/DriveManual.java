@@ -76,7 +76,7 @@ public class DriveManual extends Command {
         0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
         1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
 
-    double transMultiplier = slowMultiplier * redAllianceMultiplier
+    double transMultiplier = slowMultiplier
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
 
     // -- Velocities --
@@ -125,7 +125,9 @@ public class DriveManual extends Command {
 
     else {
       // Regular driving
-      subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+      subDrivetrain.drive(
+          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(DriverState.MANUAL);
     }
