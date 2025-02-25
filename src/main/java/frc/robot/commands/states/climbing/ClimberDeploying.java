@@ -11,6 +11,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.Constants;
+import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constLED;
 import frc.robot.Elastic;
 import frc.robot.subsystems.StateMachine;
@@ -40,7 +41,7 @@ public class ClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getMatchTime() <= 30) {
+    if (DriverStation.getMatchTime() <= constClimber.MATCH_CLIMBING_TIME) {
       Elastic.selectTab("Climbing");
       globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
       globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
@@ -48,7 +49,7 @@ public class ClimberDeploying extends Command {
       globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
       globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
     } else {
-      System.out.println("ClimberDeploying: Match time is not 30 seconds or less Eli rn -_-");
+      System.out.println("ClimberDeploying: Match time is not low enough  Eli rn -_-");
     }
   }
 
