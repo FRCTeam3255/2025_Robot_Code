@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.epilogue.Logged;
