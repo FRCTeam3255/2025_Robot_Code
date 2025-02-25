@@ -178,7 +178,7 @@ public class RobotContainer {
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
-  Pair<DeferredCommand, Pose2d>[] SELECTED_AUTO_PREP_MAP;
+  Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
   int AUTO_PREP_NUM = 0;
 
@@ -458,14 +458,14 @@ public class RobotContainer {
   }
 
   private void configureAutoSelector() {
-    autoChooser = AutoBuilder.buildAutoChooser("4-Piece-Low");
+    autoChooser = AutoBuilder.buildAutoChooser("Four-Piece-Low");
     SmartDashboard.putData(autoChooser);
   }
 
   private void configureAutoBindings() {
     // -- Named Commands --
     Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
-        subDrivetrain.getPose().nearest(constField.getReefPositions().get()), MetersPerSecond.of(0),
+        SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond(), MetersPerSecond.of(0),
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
         DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
 
@@ -474,13 +474,11 @@ public class RobotContainer {
             driveAutoAlign.asProxy().until(() -> subDrivetrain
                 .isAtPosition(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond())),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
-            TRY_SCORING_CORAL.asProxy(),
-            Commands.runOnce(() -> AUTO_PREP_NUM++)).until(() -> subStateMachine.getRobotState() == RobotState.NONE));
+            TRY_SCORING_CORAL.asProxy().repeatedly().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
+            Commands.runOnce(() -> AUTO_PREP_NUM++)));
 
     NamedCommands.registerCommand("PrepPlace",
-        Commands.sequence(
-            Commands.runOnce(() -> SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())
-                .asProxy()));
+        Commands.runOnce(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst())).asProxy());
 
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
@@ -493,8 +491,9 @@ public class RobotContainer {
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
-    prepPlace.onTrue(new DeferredCommand(() -> SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst(),
-        Set.of(subStateMachine)));
+    prepPlace
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getFirst()),
+            Set.of(subStateMachine)));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
@@ -508,61 +507,59 @@ public class RobotContainer {
     SELECTED_AUTO_PREP_MAP_NAME = autoChooser.getSelected().getName();
   }
 
-  private Pair<DeferredCommand, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
-    DeferredCommand AUTO_PREP_CORAL_4 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
-        Set.of(subStateMachine));
-    DeferredCommand AUTO_PREP_CORAL_2 = new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L2),
-        Set.of(subStateMachine));
+  private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
+    RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
+    RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
     List<Pose2d> fieldPositions = constField.getReefPositions().get();
 
     switch (selectedAuto) {
       case "Four_Piece_High":
-        Pair<DeferredCommand, Pose2d>[] fourPieceHigh = new Pair[4];
-        fourPieceHigh[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
-        fourPieceHigh[1] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
-        fourPieceHigh[2] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
-        fourPieceHigh[3] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        Pair<RobotState, Pose2d>[] fourPieceHigh = new Pair[4];
+        fourPieceHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        fourPieceHigh[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        fourPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        fourPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
         return fourPieceHigh;
 
       case "Four_Piece_Low":
-        Pair<DeferredCommand, Pose2d>[] fourPieceLow = new Pair[4];
-        fourPieceLow[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
-        fourPieceLow[1] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
-        fourPieceLow[2] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
-        fourPieceLow[3] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
+        fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         return fourPieceLow;
 
       case "Clockwork_Nine_Piece":
-        Pair<DeferredCommand, Pose2d>[] clwkNinePiece = new Pair[9];
-        clwkNinePiece[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
-        clwkNinePiece[1] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
-        clwkNinePiece[2] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
-        clwkNinePiece[3] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
-        clwkNinePiece[4] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
-        clwkNinePiece[5] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
-        clwkNinePiece[6] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
-        clwkNinePiece[7] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
-        clwkNinePiece[8] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        Pair<RobotState, Pose2d>[] clwkNinePiece = new Pair[9];
+        clwkNinePiece[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        clwkNinePiece[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        clwkNinePiece[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        clwkNinePiece[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        clwkNinePiece[4] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
+        clwkNinePiece[5] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        clwkNinePiece[6] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        clwkNinePiece[7] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        clwkNinePiece[8] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         return clwkNinePiece;
 
       case "One_Piece_Low":
-        Pair<DeferredCommand, Pose2d>[] onePieceLow = new Pair[1];
-        onePieceLow[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_2, fieldPositions.get(5)); // F
+        Pair<RobotState, Pose2d>[] onePieceLow = new Pair[1];
+        onePieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_2, fieldPositions.get(5)); // F
         return onePieceLow;
 
       case "Six_Piece_High":
-        Pair<DeferredCommand, Pose2d>[] sixPieceHigh = new Pair[6];
-        sixPieceHigh[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
-        sixPieceHigh[1] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
-        sixPieceHigh[2] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
-        sixPieceHigh[3] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
-        sixPieceHigh[4] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
-        sixPieceHigh[5] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        Pair<RobotState, Pose2d>[] sixPieceHigh = new Pair[6];
+        sixPieceHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        sixPieceHigh[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        sixPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        sixPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        sixPieceHigh[4] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
+        sixPieceHigh[5] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
         return sixPieceHigh;
 
       default:
-        Pair<DeferredCommand, Pose2d>[] noAutoSelected = new Pair[1];
-        noAutoSelected[0] = new Pair<DeferredCommand, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
+        Pair<RobotState, Pose2d>[] noAutoSelected = new Pair[1];
+        noAutoSelected[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
         return noAutoSelected;
     }
   }
