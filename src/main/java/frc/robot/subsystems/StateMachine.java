@@ -14,6 +14,7 @@ import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constElevator;
 import frc.robot.Elastic;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.states.Indexing;
 import frc.robot.commands.states.None;
 import frc.robot.commands.states.climbing.ClimberDeploying;
 import frc.robot.commands.states.climbing.ClimberRetracting;
@@ -160,7 +161,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING:
         switch (currentRobotState) {
           case SCORING_CORAL:
-            return new Indexing(subStateMachine, subCoralOuttake, subElevator);
+            return new Indexing(subStateMachine, subCoralOuttake, subElevator, conOperator, desiredState);
         }
         break;
 
@@ -569,12 +570,10 @@ public class StateMachine extends SubsystemBase {
     // Hold 1 Scoring element
     HAS_CORAL,
     HAS_ALGAE,
-    CLIMBER_DEPLOYING,
-    CLIMBER_RETRACTING,
     INDEXING,
-        // Hold 2 Scoring elements
+
+    // Hold 2 Scoring elements
     HAS_CORAL_AND_ALGAE,
-  }
 
     // Prep Coral Only
     PREP_CORAL_L1,
