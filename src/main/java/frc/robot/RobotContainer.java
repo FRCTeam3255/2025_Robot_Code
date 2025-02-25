@@ -4,27 +4,29 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import java.util.List;
+import java.util.Set;
+
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.events.EventTrigger;
-import com.pathplanner.lib.path.PathPlannerPath;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
-import java.util.Set;
-
-import edu.wpi.first.units.Units;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,8 +34,18 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.*;
+import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constElevator;
+import frc.robot.Constants.constField;
+import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.DriveManual;
+import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ManualZeroElevator;
+import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
+import frc.robot.commands.Zeroing.ZeroElevator;
 import frc.robot.commands.states.climbing.ClimberDeploying;
 import frc.robot.commands.states.first_scoring_element.CleaningL2Reef;
 import frc.robot.commands.states.first_scoring_element.CleaningL3Reef;
@@ -43,12 +55,18 @@ import frc.robot.commands.states.prep_algae.PrepNet;
 import frc.robot.commands.states.prep_algae.PrepProcessor;
 import frc.robot.commands.states.scoring.ScoringAlgae;
 import frc.robot.commands.states.scoring.ScoringCoral;
-import frc.robot.commands.*;
-import frc.robot.commands.Zeroing.*;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.RobotPoses;
+import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
-import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.subsystems.Vision;
 
 @Logged
 public class RobotContainer {
@@ -174,6 +192,10 @@ public class RobotContainer {
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
+  Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
+  String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
+  int AUTO_PREP_NUM = 0;
+
   Command zeroSubsystems = new ParallelCommandGroup(
       new ZeroElevator(subElevator).withTimeout(constElevator.ZEROING_TIMEOUT.in(Units.Seconds)),
       new ZeroAlgaeIntake(subAlgaeIntake).onlyIf(() -> !subAlgaeIntake.hasZeroed)
@@ -229,42 +251,6 @@ public class RobotContainer {
           constVision.MEGA_TAG1_STD_DEVS_HEADING));
     }
     subVision.setMegaTag2(setMegaTag2);
-  }
-
-  private void configureAutoBindings() {
-    // -- Named Commands --
-    Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
-        subDrivetrain.getPose().nearest(constField.getReefPositions().get()), MetersPerSecond.of(0),
-        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
-        DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
-
-    NamedCommands.registerCommand("PlaceSequence",
-        Commands.sequence(
-            driveAutoAlign.asProxy().until(() -> subDrivetrain
-                .isAtPosition(subDrivetrain.getPose().nearest(constField.getReefPositions().get()))),
-            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
-            TRY_SCORING_CORAL.asProxy()).until(() -> subStateMachine.getRobotState() == RobotState.NONE));
-
-    NamedCommands.registerCommand("PrepPlace",
-        Commands.sequence(
-            Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)).asProxy()));
-
-    NamedCommands.registerCommand("GetCoralStationPiece",
-        Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
-            TRY_NONE.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE))
-            .withName("GetCoralStationPiece"));
-
-    NamedCommands.registerCommand("ForceGamePiece",
-        TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL));
-
-    // -- Event Markers --
-    EventTrigger prepPlace = new EventTrigger("PrepPlace");
-    prepPlace.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
-        Set.of(subStateMachine)));
-    EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
-    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
-        Set.of(subStateMachine)));
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
@@ -433,17 +419,8 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
   }
 
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
-  }
-
   public RobotState getRobotState() {
     return subStateMachine.getRobotState();
-  }
-
-  private void configureAutoSelector() {
-    autoChooser = AutoBuilder.buildAutoChooser("4-Piece-Low");
-    SmartDashboard.putData(autoChooser);
   }
 
   public Command AddVisionMeasurement() {
@@ -477,6 +454,12 @@ public class RobotContainer {
     }
   }
 
+  // ------ Autos ------
+  public Command getAutonomousCommand() {
+    selectAutoMap();
+    return autoChooser.getSelected();
+  }
+
   public void resetToAutoPose() {
     Rotation2d desiredRotation = Rotation2d.kZero;
 
@@ -487,5 +470,120 @@ public class RobotContainer {
     }
 
     subDrivetrain.resetPoseToPose(new Pose2d(subDrivetrain.getPose().getTranslation(), desiredRotation));
+  }
+
+  private void configureAutoSelector() {
+    autoChooser = AutoBuilder.buildAutoChooser("Four-Piece-Low");
+    SmartDashboard.putData(autoChooser);
+  }
+
+  private void configureAutoBindings() {
+    // i decorate my commands like a christmas tree
+    // -- Named Commands --
+    Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
+        SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond(), MetersPerSecond.of(0),
+        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
+        DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
+
+    NamedCommands.registerCommand("PlaceSequence",
+        Commands.sequence(
+            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
+            TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
+            Commands.runOnce(() -> AUTO_PREP_NUM++)).withName("PlaceSequence"));
+
+    NamedCommands.registerCommand("PrepPlace",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4))
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4)
+            .asProxy().withName("PrepPlace"));
+
+    // I FORGOT WHAT THIS NONE DOES BUT IT SEEMS ESSENTIAL
+    NamedCommands.registerCommand("GetCoralStationPiece",
+        Commands.sequence(
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
+            TRY_NONE.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE))
+            .withName("GetCoralStationPiece"));
+
+    NamedCommands.registerCommand("ForceGamePiece",
+        Commands.either(
+            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
+            subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
+
+    // -- Event Markers --
+    EventTrigger prepPlace = new EventTrigger("PrepPlace");
+    prepPlace
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
+            Set.of(subStateMachine)).repeatedly()
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
+    EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
+    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
+        Set.of(subStateMachine)));
+  }
+
+  /**
+   * Populates the selected AutoMap for your autonomous command.
+   */
+  private void selectAutoMap() {
+    SELECTED_AUTO_PREP_MAP = configureAutoPrepMaps(autoChooser.getSelected().getName());
+    SELECTED_AUTO_PREP_MAP_NAME = autoChooser.getSelected().getName();
+  }
+
+  private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
+    RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
+    RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
+    List<Pose2d> fieldPositions = constField.getReefPositions().get();
+
+    switch (selectedAuto) {
+      case "Four_Piece_High":
+        Pair<RobotState, Pose2d>[] fourPieceHigh = new Pair[4];
+        fourPieceHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        fourPieceHigh[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        fourPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        fourPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        return fourPieceHigh;
+
+      case "Four_Piece_Low":
+        Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
+        fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        return fourPieceLow;
+
+      case "Clockwork_Nine_Piece":
+        Pair<RobotState, Pose2d>[] clwkNinePiece = new Pair[9];
+        clwkNinePiece[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        clwkNinePiece[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        clwkNinePiece[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        clwkNinePiece[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        clwkNinePiece[4] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
+        clwkNinePiece[5] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        clwkNinePiece[6] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        clwkNinePiece[7] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        clwkNinePiece[8] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        return clwkNinePiece;
+
+      case "One_Piece_Low":
+        Pair<RobotState, Pose2d>[] onePieceLow = new Pair[1];
+        onePieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_2, fieldPositions.get(5)); // F
+        return onePieceLow;
+
+      case "Six_Piece_High":
+        Pair<RobotState, Pose2d>[] sixPieceHigh = new Pair[6];
+        sixPieceHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // I
+        sixPieceHigh[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        sixPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        sixPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        sixPieceHigh[4] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
+        sixPieceHigh[5] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        return sixPieceHigh;
+
+      default:
+        Pair<RobotState, Pose2d>[] noAutoSelected = new Pair[1];
+        noAutoSelected[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
+        return noAutoSelected;
+    }
   }
 }

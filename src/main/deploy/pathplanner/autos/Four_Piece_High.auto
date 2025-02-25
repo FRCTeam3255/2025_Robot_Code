@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ForceGamePiece"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P-E"
+            "pathName": "P-I"
           }
         },
         {
@@ -23,15 +23,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "E-CSBottom"
+            "pathName": "I-CSTop"
           }
         },
         {
@@ -43,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSTop-L"
           }
         },
         {
@@ -53,15 +47,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "C-CSBottom"
+            "pathName": "L-CSTop"
           }
         },
         {
@@ -73,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-D"
+            "pathName": "CSTop-K"
           }
         },
         {
@@ -83,15 +71,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "D-CSBottom"
+            "pathName": "K-CSTop"
           }
         },
         {
@@ -103,25 +85,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-F"
+            "pathName": "CSTop-J"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }
