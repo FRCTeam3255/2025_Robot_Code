@@ -92,11 +92,6 @@ public class Drivetrain extends SN_SuperSwerve {
     super.configure();
   }
 
-  public Boolean isAligned() {
-    return desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
-  }
-
   public void addEventToAutoMap(String key, Command command) {
     super.autoEventMap.put(key, command);
   }
@@ -261,6 +256,12 @@ public class Drivetrain extends SN_SuperSwerve {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
         .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+  }
+
+  public Boolean isAligned() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation());
   }
 
   public boolean atPose(Pose2d desiredPose) {

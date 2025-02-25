@@ -272,7 +272,7 @@ public final class Constants {
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
-      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(5);
+      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(1);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -736,7 +736,7 @@ public final class Constants {
      * The area that one tag (if its the only tag in the update) needs to exceed
      * before being accepted
      */
-    public static final double AREA_THRESHOLD = 0.2;
+    public static final double AREA_THRESHOLD = 0.1;
 
     // The below values are accounted for in the limelight interface, NOT in code
     public static class LIMELIGHT_RIGHT {

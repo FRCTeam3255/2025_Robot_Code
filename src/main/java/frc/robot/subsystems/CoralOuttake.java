@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -55,6 +57,10 @@ public class CoralOuttake extends SubsystemBase {
 
   public boolean sensorSeesCoral() {
     return coralSensor.getIsDetected().getValue();
+  }
+
+  public BooleanSupplier sensorSeesCoralSupplier() {
+    return () -> coralSensor.getIsDetected().getValue();
   }
 
   public boolean sensorIndexedCoral() {
