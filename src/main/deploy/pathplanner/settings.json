@@ -11,7 +11,8 @@
     "Tuning"
   ],
   "autoFolders": [
-    "DEBUG"
+    "DEBUG",
+    "COMP_READY"
   ],
   "defaultMaxVel": 4.5,
   "defaultMaxAccel": 10.0,
