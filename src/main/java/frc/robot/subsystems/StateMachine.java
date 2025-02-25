@@ -12,6 +12,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constElevator;
+import frc.robot.Elastic;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.states.None;
 import frc.robot.commands.states.climbing.ClimberDeploying;
@@ -121,6 +122,7 @@ public class StateMachine extends SubsystemBase {
           case CLIMBER_RETRACTING:
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
+              Elastic.selectTab("Teleoperated");
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
             } else {
