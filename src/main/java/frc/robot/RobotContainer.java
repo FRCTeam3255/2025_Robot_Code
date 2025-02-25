@@ -515,17 +515,6 @@ public class RobotContainer {
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
             subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
 
-    // -- Event Markers --
-    EventTrigger prepPlace = new EventTrigger("PrepPlace");
-    prepPlace
-        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
-            Set.of(subStateMachine)).repeatedly()
-            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
-    EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
-    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
-        Set.of(subStateMachine)));
-
-    // -- FOR ALICE TO LOOK AT --
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L3))
             .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
@@ -546,6 +535,15 @@ public class RobotContainer {
         Commands.waitSeconds(1.5),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
+    // -- Event Markers --
+    EventTrigger prepPlace = new EventTrigger("PrepPlace");
+    prepPlace
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
+            Set.of(subStateMachine)).repeatedly()
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
+    EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
+    getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
+        Set.of(subStateMachine)));
   }
 
   /**
