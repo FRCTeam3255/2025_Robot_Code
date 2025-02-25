@@ -575,6 +575,10 @@ public class RobotContainer {
         fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
         return fourPieceLow;
+      case "Algae_Net":
+        Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
+        algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeNet;
       default:
         Pair<RobotState, Pose2d>[] noAutoSelected = new Pair[1];
         noAutoSelected[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
