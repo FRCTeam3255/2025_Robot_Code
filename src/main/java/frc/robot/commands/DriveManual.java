@@ -27,8 +27,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, leftCoralStationNear, rightCoralStationNear, leftCoralStationFar,
-      rightCoralStationFar, processor;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationNear, coralStationFar, processor;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -37,8 +36,8 @@ public class DriveManual extends Command {
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
-      BooleanSupplier leftCoralStationNear, BooleanSupplier rightCoralStationNear, BooleanSupplier leftCoralStationFar,
-      BooleanSupplier rightCoralStationFar, BooleanSupplier processorBtn) {
+      BooleanSupplier coralStationNear, BooleanSupplier coralStationFar,
+      BooleanSupplier processorBtn) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -47,10 +46,8 @@ public class DriveManual extends Command {
     this.slowMode = slowMode;
     this.leftReef = leftReef;
     this.rightReef = rightReef;
-    this.leftCoralStationNear = leftCoralStationNear;
-    this.rightCoralStationNear = rightCoralStationNear;
-    this.leftCoralStationFar = leftCoralStationFar;
-    this.rightCoralStationFar = rightCoralStationFar;
+    this.coralStationNear = coralStationNear;
+    this.coralStationFar = coralStationFar;
     this.subElevator = subElevator;
     this.processor = processorBtn;
 
@@ -79,7 +76,7 @@ public class DriveManual extends Command {
         0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
         1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
 
-    double transMultiplier = slowMultiplier * redAllianceMultiplier
+    double transMultiplier = slowMultiplier
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
 
     // -- Velocities --
@@ -88,73 +85,6 @@ public class DriveManual extends Command {
     AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
-
-    /*
-     * // -- Coral Station --
-     * if (leftCoralStationFar.getAsBoolean()) {
-     * Pose2d desiredCoralStation =
-     * Constants.constField.POSES.LEFT_CORAL_STATION_FAR;
-     * Distance coralStationDistance = Units.Meters
-     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
-     * getTranslation()));
-     * 
-     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
-     * yVelocity, rVelocity,
-     * transMultiplier, isOpenLoop,
-     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
-     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-     * DriverState.CORAL_STATION_AUTO_DRIVING,
-     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-     * }
-     * 
-     * else if (leftCoralStationNear.getAsBoolean()) {
-     * Pose2d desiredCoralStation =
-     * Constants.constField.POSES.LEFT_CORAL_STATION_NEAR;
-     * Distance coralStationDistance = Units.Meters
-     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
-     * getTranslation()));
-     * 
-     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
-     * yVelocity, rVelocity,
-     * transMultiplier, isOpenLoop,
-     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
-     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-     * DriverState.CORAL_STATION_AUTO_DRIVING,
-     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-     * }
-     * 
-     * else if (rightCoralStationFar.getAsBoolean()) {
-     * Pose2d desiredCoralStation =
-     * Constants.constField.POSES.RIGHT_CORAL_STATION_FAR;
-     * Distance coralStationDistance = Units.Meters
-     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
-     * getTranslation()));
-     * 
-     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
-     * yVelocity, rVelocity,
-     * transMultiplier, isOpenLoop,
-     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
-     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-     * DriverState.CORAL_STATION_AUTO_DRIVING,
-     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-     * }
-     * 
-     * else if (rightCoralStationNear.getAsBoolean()) {
-     * Pose2d desiredCoralStation =
-     * Constants.constField.POSES.RIGHT_CORAL_STATION_NEAR;
-     * Distance coralStationDistance = Units.Meters
-     * .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.
-     * getTranslation()));
-     * 
-     * subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity,
-     * yVelocity, rVelocity,
-     * transMultiplier, isOpenLoop,
-     * Constants.constDrivetrain.TELEOP_AUTO_ALIGN.
-     * MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-     * DriverState.CORAL_STATION_AUTO_DRIVING,
-     * DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
-     * }
-     */
 
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
@@ -172,6 +102,17 @@ public class DriveManual extends Command {
 
     }
 
+    // -- Coral Station --
+    else if (coralStationFar.getAsBoolean() || coralStationNear.getAsBoolean()) {
+      Pose2d desiredCoralStation = subDrivetrain.getDesiredCoralStation(coralStationNear.getAsBoolean());
+      Distance coralStationDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+      subDrivetrain.autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
+          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
     // -- Processors --
     else if (processor.getAsBoolean()) {
       Pose2d desiredProcessor = subDrivetrain.getDesiredProcessor();
@@ -184,7 +125,9 @@ public class DriveManual extends Command {
 
     else {
       // Regular driving
-      subDrivetrain.drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+      subDrivetrain.drive(
+          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
           rVelocity.in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(DriverState.MANUAL);
     }
