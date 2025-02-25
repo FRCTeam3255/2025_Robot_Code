@@ -4,6 +4,7 @@
 
 package frc.robot.commands.states.climbing;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
@@ -38,11 +39,15 @@ public class ClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
-    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
-    globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
-    globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
-    globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+    if (DriverStation.getMatchTime() <= 30) {
+      globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
+      globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
+      globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
+      globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
+      globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+    } else {
+      System.out.println("ClimberDeploying: Match time is not 30 seconds or less");
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,6 +64,6 @@ public class ClimberDeploying extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalClimber.isClimbDeployed() == true;
+    return globalClimber.isClimbDeployed() || DriverStation.getMatchTime() <= 30;
   }
 }
