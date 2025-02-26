@@ -90,7 +90,7 @@ public final class Constants {
 
     }
 
-    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final double WHEEL_DIAMETER = Units.Inches.of(3.87).in(Units.Meters);
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 

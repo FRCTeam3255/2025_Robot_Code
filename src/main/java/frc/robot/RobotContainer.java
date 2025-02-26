@@ -516,19 +516,21 @@ public class RobotContainer {
             subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
 
     NamedCommands.registerCommand("CleanL3Reef",
-        Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L3))
-            .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-            .asProxy().withName("PrepNet"));
+        Commands.sequence(
+            TRY_CLEANING_L3.repeatedly()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+                .asProxy(),
+            TRY_PREP_ALGAE_0.asProxy()));
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L2))
             .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-            .asProxy().withName("PrepNet"));
+            .asProxy());
 
     NamedCommands.registerCommand("PrepNet",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_NET))
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET)
-            .asProxy().withName("PrepNet"));
+            .asProxy());
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         TRY_SCORING_ALGAE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean()),
