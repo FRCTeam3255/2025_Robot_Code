@@ -523,9 +523,11 @@ public class RobotContainer {
             TRY_PREP_ALGAE_0.asProxy()));
 
     NamedCommands.registerCommand("CleanL2Reef",
-        Commands.runOnce(() -> subStateMachine.tryState(RobotState.CLEANING_L2))
-            .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-            .asProxy());
+        Commands.sequence(
+            TRY_CLEANING_L2.repeatedly()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+                .asProxy(),
+            TRY_PREP_ALGAE_0.asProxy()));
 
     NamedCommands.registerCommand("PrepNet",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_NET))
