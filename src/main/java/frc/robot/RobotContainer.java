@@ -224,7 +224,7 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
-                conDriver.axis_RightX, conDriver.btn_East, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
+                conDriver.axis_RightX, conDriver.btn_RightStick, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
                 conDriver.btn_LeftBumper,
                 conDriver.btn_RightBumper, conDriver.btn_B));
 
