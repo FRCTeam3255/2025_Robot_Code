@@ -81,11 +81,11 @@ public class ManualZeroElevator extends Command {
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
-      globalLED.setLED(constLED.ELEVATOR_ZERO_SUCCESS);
+      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_SUCCESS, 1, 0 + 3);
 
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
-      globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
+      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 2, 0 + 3);
     }
   }
 
