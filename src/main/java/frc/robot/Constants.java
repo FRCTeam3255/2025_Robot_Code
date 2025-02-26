@@ -425,6 +425,8 @@ public final class Constants {
     public static Angle MAX_POSITION = Units.Rotations.of(166.69);
     public static Angle AT_POSITION_TOLERANCE = Units.Rotations.of(10);
 
+    public static final double MATCH_CLIMBING_TIME = 30.0;
+
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
