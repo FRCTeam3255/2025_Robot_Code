@@ -4,12 +4,12 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.RobotMap.mapCoralOuttake;
@@ -59,6 +59,10 @@ public class CoralOuttake extends SubsystemBase {
     return coralSensor.getIsDetected().getValue();
   }
 
+  public BooleanSupplier sensorSeesCoralSupplier() {
+    return () -> coralSensor.getIsDetected().getValue();
+  }
+
   public boolean sensorIndexedCoral() {
     return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
   }
@@ -69,8 +73,6 @@ public class CoralOuttake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("CORAL SENSOR DISTANCE", coralSensor.getDistance().getValue().in(Units.Inches));
-    SmartDashboard.putBoolean("CORAL SENSOR HAS GP", hasCoral());
     // This method will be called once per scheduler run
   }
 }
