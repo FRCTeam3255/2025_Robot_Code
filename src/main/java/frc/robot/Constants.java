@@ -784,25 +784,64 @@ public final class Constants {
       LED_CONFIG.brightnessScalar = 1;
 
     }
-
     // These are the RGB values for the LEDs (sorry no animation)
-    public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
 
-    public static final int[] LED_PREP_PROCESSOR = { 255, 150, 0 };// orange
-    public static final int[] LED_PREP_NET = { 255, 0, 200 };// magenta
-    public static final int[] LED_PREP_CORAL_ZERO = { 20, 100, 0 };// forest green
-    public static final int[] LED_PREP_CORAL_LV = { 80, 49, 76 };// grimace purple
-    public static final int[] LED_PREP_ALGAE_ZERO = { 0, 255, 255 };// cyan
-    public static final int[] LED_PLACE_CORAL = { 251, 251, 0 }; // yellow
-    public static final int[] LED_NONE = { 6, 2, 112 }; // indigo
-    public static final int[] LED_INTAKE_ALGAE_GROUND = { 0, 0, 255 }; // blue
-    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 255, 0 };// green
-    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // white
-    public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
-    public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
-    public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
+    // climbing stuff
     public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLIMBER_RETRACTING = { 0, 0, 0 }; // Placeholder values
+    public static final int[] LED_MANUAL_CLIMBER_DEPLOYING = { 0, 0, 0 }; // Placeholder values
+
+    // first scoring element
     public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
     public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+    public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
+    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 255, 0 };// green
+    public static final int[] LED_INTAKE_ALGAE_GROUND = { 0, 0, 255 }; // blue
+
+    // hold scoring elements
+
+    // later possible improvement have it when it has coral make the top red and
+    // when it has algae make the bottem half cyan and when both it does both
+    public static final int[] LED_HAS_ALGAE = { 0, 255, 255 }; // cyan
+    public static final int[] LED_HAS_CORAL = { 255, 0, 0 }; // red
+    public static final int[] LED_HAS_BOTH = { 255, 0, 255 }; // Pinkish purple
+    // prep algae
+
+    public static final int[] LED_PREP_ALGAE_ZERO = { 0, 255, 255 };// cyan
+    public static final int[] LED_PREP_ALGAE_ZERO_WITH_CORAL = { 0, 0, 0 }; // Placeholder values
+    public static final int[] LED_PREP_NET = { 255, 0, 200 };// magenta
+    public static final int[] LED_PREP_NET_WITH_CORAL = { 0, 0, 0 }; // Placeholder values
+    public static final int[] LED_PREP_PROCESSOR = { 255, 150, 0 };// orange
+    public static final int[] LED_PREP_PROCESSOR_WITH_CORAL = { 0, 0, 0 }; // Placeholder values
+
+    // prep coral
+
+    public static final int[] LED_PREP_CORAL_LV = { 80, 49, 76 };// grimace purple
+    public static final int[] LED_PREP_CORAL_LV_WITH_ALGAE = { 0, 0, 0 }; // Placeholder values
+    public static final int[] LED_PREP_CORAL_ZERO = { 20, 100, 0 };// forest green
+    public static final int[] LED_PREP_CORAL_ZERO_WITH_ALGAE = { 0, 0, 0 }; // Placeholder values
+
+    // scoring
+
+    public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
+    public static final int[] LED_SCORING_ALGAE_WITH_CORAL = { 0, 0, 0 }; // Placeholder values
+    public static final int[] LED_PLACE_CORAL = { 251, 251, 0 }; // yellow
+    public static final int[] LED_PLACE_CORAL_WITH_ALGAE = { 0, 0, 0 }; // Placeholder values
+
+    // second scoring element
+
+    public static final int[] LED_CLEANING_L2_REEF_WITH_CORAL = { 0, 0, 0 };
+    public static final int[] LED_CLEANING_L3_REEF_WITH_CORAL = { 0, 0, 0 };
+    public static final int[] LED_INTAKE_CORAL_WITH_ALGAE = { 0, 0, 0 }; // Placeholder values
+
+    // that other guy what a loser
+
+    public static final int[] LED_NONE = { 6, 2, 112 }; // indigo
+
+    // UNUSED
+
+    public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
+
   }
+
 }
