@@ -39,7 +39,7 @@ public class HasCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL);
-    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
     globalElevator.setPosition(Units.Inches.zero());
     globalLED.setLED(constLED.LED_HAS_CORAL);
