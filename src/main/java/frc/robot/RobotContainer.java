@@ -272,6 +272,9 @@ public class RobotContainer {
     controller.btn_North
         .onTrue(
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+
+    controller.btn_West.onTrue(new ZeroAlgaeIntake(subAlgaeIntake));
+    controller.btn_South.onTrue(new ZeroElevator(subElevator));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -301,8 +304,8 @@ public class RobotContainer {
         .whileTrue(TRY_EJECTING_CORAL)
         .onFalse(TRY_NONE);
 
-    controller.btn_Back.onTrue(HAS_CORAL_OVERRIDE);
-    controller.btn_Start.onTrue(HAS_ALGAE_OVERRIDE);
+    controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
+    controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
 
     // Net
     controller.btn_North
