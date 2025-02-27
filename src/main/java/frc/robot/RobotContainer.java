@@ -585,7 +585,6 @@ public class RobotContainer {
         fourPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
         fourPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
         return fourPieceHigh;
-
       case "Four_Piece_Low":
         Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
         fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
@@ -593,6 +592,13 @@ public class RobotContainer {
         fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
         return fourPieceLow;
+      case "Four_Piece_Low+Single_Tickle":
+        Pair<RobotState, Pose2d>[] fourPieceLowSingleTickle = new Pair[4];
+        fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
+        fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        return fourPieceLowSingleTickle;
       case "Algae_Net":
         Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
         algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
