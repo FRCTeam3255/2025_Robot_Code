@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-DoubleTickle-J"
+            "pathName": "P-Tickle-L"
           }
         },
         {
@@ -122,6 +122,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }
