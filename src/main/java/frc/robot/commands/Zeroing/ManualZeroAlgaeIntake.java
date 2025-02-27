@@ -32,6 +32,8 @@ public class ManualZeroAlgaeIntake extends Command {
   @Override
   public void initialize() {
     globalAlgaeIntake.hasZeroed = false;
+    globalLED.setLEDMatrix(constLED.ALGAE_ZERO_FAILED, 0, 4);
+
   }
 
   @Override
@@ -71,10 +73,10 @@ public class ManualZeroAlgaeIntake extends Command {
       globalAlgaeIntake.hasZeroed = true;
       globalAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS);
       System.out.println("Algae Intake Zeroing Successful!!!! Yippee and hooray!!! :3");
-      globalLED.setLEDMatrix(constLED.ALGAE_ZERO_SUCCESS, 1, 0 + 3);
+      globalLED.setLEDMatrix(constLED.ALGAE_ZERO_SUCCESS, 0, 4);
     } else {
       System.out.println("Algae Intake was never zeroed :((( blame eli");
-      globalLED.setLEDMatrix(constLED.ALGAE_ZERO_FAILED, 2, 0 + 3);
+      globalLED.setLEDMatrix(constLED.ALGAE_ZERO_FAILED, 0, 4);
     }
   }
 
