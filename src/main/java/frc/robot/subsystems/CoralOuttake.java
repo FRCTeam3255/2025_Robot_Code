@@ -17,26 +17,22 @@ import frc.robot.RobotMap.mapCoralOuttake;
 @Logged
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
-  TalonFX outtakeMotor2;
   CANrange coralSensor;
   private boolean hasCoral, indexingCoral;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
     outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
-    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
     coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
 
     hasCoral = false;
 
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
-    outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
   public void setCoralOuttake(double speed) {
     outtakeMotor.set(speed);
-    outtakeMotor2.set(-speed);
   }
 
   public void setIndexingCoral(boolean indexing) {

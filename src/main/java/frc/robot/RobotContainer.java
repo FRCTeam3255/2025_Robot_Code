@@ -517,31 +517,61 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ForceGamePiece",
         Commands.either(
-            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
+                .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))),
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
             subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
 
-    NamedCommands.registerCommand("CleanL3Reef",
+    NamedCommands.registerCommand("CleanL3ReefWithCoral",
         Commands.sequence(
-            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
-                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-                .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO).asProxy()));
+            TRY_CLEANING_L3_WITH_CORAL.repeatedly().asProxy()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE),
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO_WITH_CORAL)
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy()));
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
             subStateMachine.tryState(RobotState.CLEANING_L2).asProxy().repeatedly()
                 .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
                 .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO).asProxy()));
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy()));
 
-    NamedCommands.registerCommand("PrepNet",
-        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_NET))
-            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET)
+    NamedCommands.registerCommand("CleanL2ReefWithCoral",
+        Commands.sequence(
+            TRY_CLEANING_L2_WITH_CORAL.repeatedly().asProxy()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE)));
+
+    NamedCommands.registerCommand("CleanL3Reef",
+        Commands.sequence(
+            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+                .asProxy(),
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true)))));
+
+    NamedCommands.registerCommand("PlaceSequenceWithAlgae",
+        Commands.sequence(
+            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_PREP_CORAL_L4_WITH_ALGAE.repeatedly().asProxy(),
+            Commands.waitUntil(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4_WITH_ALGAE),
+            TRY_SCORING_CORAL_WITH_ALGAE.asProxy()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
+            Commands.runOnce(() -> AUTO_PREP_NUM++)));
+
+    NamedCommands.registerCommand("PrepPlaceWithAlgae",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE))
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4_WITH_ALGAE)
             .asProxy());
 
+    NamedCommands.registerCommand("PrepNet",
+        TRY_PREP_NET.asProxy()
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
+
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        TRY_SCORING_ALGAE.asProxy().until(() -> !hasAlgaeTrigger.getAsBoolean()),
+        Commands.waitUntil(() -> subElevator.isAtSetPoint()),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(1),
         Commands.waitSeconds(1.5),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
