@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "CleanL3Reef"
+            "name": "CleanL2Reef"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "named",
           "data": {
-            "name": "CleanL2Reef"
+            "name": "CleanL3Reef"
           }
         },
         {
