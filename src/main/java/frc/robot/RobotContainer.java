@@ -585,6 +585,13 @@ public class RobotContainer {
         fourPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
         fourPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
         return fourPieceHigh;
+      case "Four_Piece_High+Double_Tickle":
+        Pair<RobotState, Pose2d>[] fourPieceHighDoubleTickle = new Pair[4];
+        fourPieceHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(11)); // L
+        fourPieceHigh[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // K
+        fourPieceHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(0)); // A
+        fourPieceHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
+        return fourPieceHighDoubleTickle;
       case "Four_Piece_Low":
         Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
         fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
