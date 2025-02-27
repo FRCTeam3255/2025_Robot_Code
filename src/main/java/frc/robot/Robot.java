@@ -136,6 +136,8 @@ public class Robot extends TimedRobot {
     if (!hasAutonomousRun || !bothSubsystemsZeroed) {
       m_robotContainer.zeroSubsystems.schedule();
     }
+
+    m_robotContainer.TRY_INDEXING.schedule();
   }
 
   @Override

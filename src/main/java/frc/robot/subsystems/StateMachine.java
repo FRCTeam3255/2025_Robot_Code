@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.epilogue.Logged;
@@ -14,6 +12,7 @@ import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constElevator;
 import frc.robot.Elastic;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.commands.states.Indexing;
 import frc.robot.commands.states.None;
 import frc.robot.commands.states.climbing.ClimberDeploying;
 import frc.robot.commands.states.climbing.ClimberRetracting;
@@ -116,6 +115,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL:
           case SCORING_ALGAE:
+          case INDEXING:
             return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                 subLED);
           case CLIMBER_DEPLOYING:
@@ -154,6 +154,13 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLEANING_L2:
             return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+        }
+        break;
+
+      case INDEXING:
+        switch (currentRobotState) {
+          case SCORING_CORAL:
+            return new Indexing(subStateMachine, subCoralOuttake, subElevator, conOperator, desiredState);
         }
         break;
 
@@ -219,6 +226,7 @@ public class StateMachine extends SubsystemBase {
       // --- Hold 1 Scoring ELement ---
       case HAS_CORAL:
         switch (currentRobotState) {
+          case INDEXING:
           case INTAKING_CORAL:
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
@@ -563,6 +571,7 @@ public class StateMachine extends SubsystemBase {
     // Hold 1 Scoring element
     HAS_CORAL,
     HAS_ALGAE,
+    INDEXING,
 
     // Hold 2 Scoring elements
     HAS_CORAL_AND_ALGAE,
