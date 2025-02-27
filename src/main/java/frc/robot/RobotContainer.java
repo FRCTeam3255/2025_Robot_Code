@@ -23,6 +23,10 @@ import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
@@ -202,8 +206,8 @@ public class RobotContainer {
       new ZeroAlgaeIntake(subAlgaeIntake).onlyIf(() -> !subAlgaeIntake.hasZeroed)
           .withTimeout(constAlgaeIntake.ZEROING_TIMEOUT.in(Units.Seconds)))
       .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).withName("ZeroSubsystems");
-  Command manualZeroSubsystems = new ManualZeroElevator(subElevator)
-      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake))
+  Command manualZeroSubsystems = new ManualZeroElevator(subElevator, subLED)
+      .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake, subLED))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
@@ -224,9 +228,9 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
-                conDriver.axis_RightX, conDriver.btn_RightStick, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
-                conDriver.btn_LeftBumper,
-                conDriver.btn_RightBumper, conDriver.btn_B));
+                conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
+                conDriver.btn_B,
+                conDriver.btn_X, conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -258,7 +262,7 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_X
+    controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_Y
@@ -272,6 +276,12 @@ public class RobotContainer {
     controller.btn_North
         .onTrue(
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+
+    controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
+        new ZeroAlgaeIntake(subAlgaeIntake)));
+    controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
+        new ZeroElevator(subElevator)));
+
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
@@ -301,8 +311,8 @@ public class RobotContainer {
         .whileTrue(TRY_EJECTING_CORAL)
         .onFalse(TRY_NONE);
 
-    controller.btn_Back.onTrue(HAS_CORAL_OVERRIDE);
-    controller.btn_Start.onTrue(HAS_ALGAE_OVERRIDE);
+    controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
+    controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
 
     // Net
     controller.btn_North
@@ -520,9 +530,41 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ForceGamePiece",
         Commands.either(
-            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL)),
+            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
+                .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))),
             TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
             subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
+
+    NamedCommands.registerCommand("CleanL2Reef",
+        Commands.sequence(
+            subStateMachine.tryState(RobotState.CLEANING_L2).asProxy().repeatedly()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+                .asProxy(),
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy()));
+
+    NamedCommands.registerCommand("CleanL3Reef",
+        Commands.sequence(
+            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
+                .asProxy(),
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true)))));
+
+    NamedCommands.registerCommand("PrepPlaceWithAlgae",
+        Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE))
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4_WITH_ALGAE)
+            .asProxy());
+
+    NamedCommands.registerCommand("PrepNet",
+        TRY_PREP_NET.asProxy()
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
+
+    NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
+        Commands.waitUntil(() -> subElevator.isAtSetPoint()),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(1),
+        Commands.waitSeconds(0.5),
+        TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
@@ -564,6 +606,10 @@ public class RobotContainer {
         fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
         return fourPieceLow;
+      case "Algae_Net":
+        Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
+        algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeNet;
       default:
         Pair<RobotState, Pose2d>[] noAutoSelected = new Pair[1];
         noAutoSelected[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
