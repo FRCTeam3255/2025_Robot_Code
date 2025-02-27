@@ -90,7 +90,7 @@ public final class Constants {
 
     }
 
-    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final double WHEEL_DIAMETER = Units.Inches.of(3.87).in(Units.Meters);
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -499,6 +499,7 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+    public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
 
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
