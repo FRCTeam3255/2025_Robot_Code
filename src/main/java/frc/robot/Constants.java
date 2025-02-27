@@ -90,7 +90,7 @@ public final class Constants {
 
     }
 
-    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final double WHEEL_DIAMETER = Units.Inches.of(3.87).in(Units.Meters);
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -499,6 +499,7 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+    public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
 
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
@@ -784,7 +785,11 @@ public final class Constants {
       LED_CONFIG.brightnessScalar = 1;
 
     }
+    public static final int LED_NUMBER = 8;
+    public static final int LED_STRIP_START_INDEX = 1;
     // These are the RGB values for the LEDs (sorry no animation)
+    // also these are just placeholders for the values
+    public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
 
     // climbing stuff
     public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
@@ -841,7 +846,14 @@ public final class Constants {
     // UNUSED
 
     public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
-
+    public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
+    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
+    public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
+    public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+    public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 };// red
+    public static final int[] ALGAE_ZERO_SUCCESS = { 0, 255, 0 };// green
+    public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 };// red
+    public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 255, 0 };// green
   }
 
 }
