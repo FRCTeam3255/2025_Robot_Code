@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-I"
+            "pathName": "P-L"
           }
         },
         {
@@ -31,37 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "I-CSTop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-J"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "J-CSTop"
+            "pathName": "L-CSTop"
           }
         },
         {
@@ -103,7 +73,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-L"
+            "pathName": "CSTop-A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-J"
           }
         },
         {
@@ -122,6 +122,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }
