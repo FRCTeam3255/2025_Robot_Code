@@ -525,7 +525,9 @@ public class StateMachine extends SubsystemBase {
         break;
 
     }
-    return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
+    return Commands
+        .print("ITS SO OVER D: Invalid State Provided, Blame Eli. Attempted to go to: " + desiredState.toString()
+            + " while at " + currentRobotState.toString());
   }
 
   public static enum DriverState {
