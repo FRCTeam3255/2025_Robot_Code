@@ -10,6 +10,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
@@ -50,6 +51,8 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
         // Start ze timer
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
+
+        Commands.runOnce(() -> RobotContainer.justScored = true),
 
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button

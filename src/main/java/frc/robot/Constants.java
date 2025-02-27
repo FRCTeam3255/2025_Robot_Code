@@ -60,6 +60,13 @@ public final class Constants {
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+
+    public static final double HAS_CORAL_RUMBLE_INTENSITY = 0.5;
+    public static final double HAS_ALGAE_RUMBLE_INTENSITY = 1;
+    public static final double READY_TO_PLACE_RUMBLE_INTENSITY = 0.5;
+    public static final double READY_TO_RAISE_INTENSITY = 0.6;
+    public static final double READY_TO_LEAVE_INTENSITY = 0.7;
+
   }
 
   public static class constDrivetrain {
@@ -301,8 +308,11 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(57); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(57);
     public static final Angle MIN_POS = Units.Degrees.of(-33);
+
+    public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(57);
 
     /**
      * The elapsed time required to consider the motor as zeroed
