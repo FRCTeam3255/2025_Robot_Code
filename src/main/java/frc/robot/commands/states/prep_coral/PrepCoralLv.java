@@ -23,7 +23,8 @@ public class PrepCoralLv extends Command {
   LED globalLED;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, Distance height, LED subLED) {
+  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, Distance height,
+      LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     this.globalElevator = subElevator;
@@ -46,7 +47,7 @@ public class PrepCoralLv extends Command {
     else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
     globalElevator.setPosition(globalDistance);
-    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalLED.setLED(constLED.LED_PREP_CORAL_LV);
   }
 
