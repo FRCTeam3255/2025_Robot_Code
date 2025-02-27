@@ -219,6 +219,28 @@ public class RobotContainer {
   private final Trigger hasAlgaeStateTrigger = new Trigger(
       () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
+  Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
+      Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+
+  Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
+      Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
+
+  Command READY_TO_PLACE_CORAL_RUMBLE = new CoralReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subCoralOuttake, subDrivetrain);
+
+  Command READY_TO_PLACE_ALGAE_RUMBLE = new AlgaeReadyToPlaceRumble(conDriver, conOperator,
+      subElevator, subAlgaeIntake, subStateMachine);
+
+  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
+      && subDrivetrain.isAligned());
+
+  private final BooleanSupplier readytoPlaceAlgae = (() -> subElevator.isAtAnyAlgaeScoringPosition()
+      && subAlgaeIntake.isAtAnyAlgaeScoringPosition());
+
+  Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
+  String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
+  int AUTO_PREP_NUM = 0;
+
   public RobotContainer() {
     RobotController.setBrownoutVoltage(5.5);
     conDriver.setLeftDeadband(constControllers.DRIVER_LEFT_STICK_DEADBAND);
