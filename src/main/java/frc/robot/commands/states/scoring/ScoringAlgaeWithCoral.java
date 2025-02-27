@@ -33,7 +33,7 @@ public class ScoringAlgaeWithCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE_WITH_CORAL);
-    globalLED.setLED(constLED.LED_SCORING_ALGAE);
+    globalLED.setLED(constLED.LED_SCORING_ALGAE_WITH_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
