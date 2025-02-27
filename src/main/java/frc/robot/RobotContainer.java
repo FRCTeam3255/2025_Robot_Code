@@ -273,8 +273,11 @@ public class RobotContainer {
         .onTrue(
             Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
 
-    controller.btn_West.onTrue(new ZeroAlgaeIntake(subAlgaeIntake));
-    controller.btn_South.onTrue(new ZeroElevator(subElevator));
+    controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
+        new ZeroAlgaeIntake(subAlgaeIntake)));
+    controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
+        new ZeroElevator(subElevator)));
+
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
