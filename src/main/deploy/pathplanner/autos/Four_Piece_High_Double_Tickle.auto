@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-G"
+            "pathName": "P-Tickle-Tickle-L"
           }
         },
         {
@@ -31,61 +31,91 @@
         {
           "type": "path",
           "data": {
-            "pathName": "G-GFAlgae"
+            "pathName": "L-CSTop"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CleanL2Reef"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "GFAlgae-Net"
+            "pathName": "CSTop-K"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepNet"
+            "name": "PrepPlace"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ScoreAlgaeSequence"
+            "name": "PlaceSequence"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Net-IJAlgae"
+            "pathName": "K-CSTop"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CleanL3Reef"
+            "name": "GetCoralStationPiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "IJAlage-Net"
+            "pathName": "CSTop-A"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepNet"
+            "name": "PrepPlace"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ScoreAlgaeSequence"
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
           }
         }
       ]
