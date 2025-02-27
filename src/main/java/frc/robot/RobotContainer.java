@@ -224,9 +224,9 @@ public class RobotContainer {
     subDrivetrain
         .setDefaultCommand(
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
-                conDriver.axis_RightX, conDriver.btn_RightStick, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
-                conDriver.btn_LeftBumper,
-                conDriver.btn_RightBumper, conDriver.btn_B));
+                conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
+                conDriver.btn_B,
+                conDriver.btn_X, conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -258,7 +258,7 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_X
+    controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
     controller.btn_Y
@@ -517,17 +517,17 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.sequence(
-            TRY_CLEANING_L3.repeatedly()
+            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
                 .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
                 .asProxy(),
-            TRY_PREP_ALGAE_0.asProxy()));
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO).asProxy()));
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
-            TRY_CLEANING_L2.repeatedly()
+            subStateMachine.tryState(RobotState.CLEANING_L2).asProxy().repeatedly()
                 .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
                 .asProxy(),
-            TRY_PREP_ALGAE_0.asProxy()));
+            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO).asProxy()));
 
     NamedCommands.registerCommand("PrepNet",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_NET))

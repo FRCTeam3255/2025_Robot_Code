@@ -176,6 +176,7 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  //
   public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
     // Get the closest coral station
     List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
@@ -187,7 +188,10 @@ public class Drivetrain extends SN_SuperSwerve {
     // vice-versa), switch to our desired branch
     if (farCoralStationRequested && (closestCoralStationIndex % 2 == 1)) {
       desiredCoralStation = coralStationPoses.get(closestCoralStationIndex - 1);
+    } else if (!farCoralStationRequested && (closestCoralStationIndex % 2 == 0)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex + 1);
     }
+
     return desiredCoralStation;
   }
 
@@ -212,6 +216,22 @@ public class Drivetrain extends SN_SuperSwerve {
     SwerveModuleState[] desiredModuleStates = swerveKinematics
         .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
     setModuleStates(desiredModuleStates, isOpenLoop);
+  }
+
+  public void rotationalAutoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+
+    // Rotational-only auto-align
+    drive(
+        new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+            yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
+        getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+    subStateMachine.setDriverState(rotating);
   }
 
   /**
