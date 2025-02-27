@@ -221,21 +221,17 @@ public class RobotContainer {
 
   Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+  Command READY_TO_LEAVE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
+      Constants.constControllers.READY_TO_LEAVE_INTENSITY);
 
   Command HAS_ALGAE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kLeftRumble,
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
 
-  Command READY_TO_PLACE_CORAL_RUMBLE = new CoralReadyToPlaceRumble(conDriver, conOperator,
-      subElevator, subCoralOuttake, subDrivetrain);
-
-  Command READY_TO_PLACE_ALGAE_RUMBLE = new AlgaeReadyToPlaceRumble(conDriver, conOperator,
-      subElevator, subAlgaeIntake, subStateMachine);
-
-  private final BooleanSupplier readytoPlaceCoral = (() -> subElevator.isAtAnyCoralScoringPosition()
+  public static boolean justScored = false;
+  private final Trigger justScoredTrigger = new Trigger(() -> justScored);
+  private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAligned());
+  private final Trigger readytoPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
       && subDrivetrain.isAligned());
-
-  private final BooleanSupplier readytoPlaceAlgae = (() -> subElevator.isAtAnyAlgaeScoringPosition()
-      && subAlgaeIntake.isAtAnyAlgaeScoringPosition());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
@@ -397,15 +393,20 @@ public class RobotContainer {
         .whileTrue(TRY_HAS_ALGAE);
 
     hasBothTrigger.whileTrue(TRY_HAS_CORAL_AND_ALGAE);
-
     hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
-
     seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
-    new Trigger(readytoPlaceCoral).onTrue(READY_TO_PLACE_CORAL_RUMBLE);
+    readyToLiftElevator.onTrue(Commands.runOnce(
+        () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        .onFalse(Commands.runOnce(
+            () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
-    new Trigger(readytoPlaceAlgae).onTrue(READY_TO_PLACE_ALGAE_RUMBLE);
+    readytoPlaceCoral.onTrue(Commands.runOnce(
+        () -> conOperator.setRumble(RumbleType.kBothRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        .onFalse(Commands.runOnce(
+            () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
+    justScoredTrigger.onTrue(READY_TO_LEAVE_RUMBLE);
   }
 
   private void configureTesterBindings(SN_XboxController controller) {

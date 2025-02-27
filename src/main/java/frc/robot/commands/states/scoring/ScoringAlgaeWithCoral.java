@@ -5,6 +5,7 @@
 package frc.robot.commands.states.scoring;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
@@ -48,6 +49,7 @@ public class ScoringAlgaeWithCoral extends Command {
   public void end(boolean interrupted) {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setHasAlgaeOverride(false);
+    RobotContainer.justScored = true;
   }
 
   // Returns true when the command should end.

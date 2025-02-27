@@ -20,23 +20,25 @@ public class CoralReadyToPlaceRumble extends Command {
   Elevator globalElevator;
   CoralOuttake globalCoralOuttake;
   Drivetrain globalDrivetrain;
+  double intensity;
 
   /** Creates a new ReadyToPlaceCoralRumble. */
   public CoralReadyToPlaceRumble(SN_XboxController conDriver, SN_XboxController conOperator, Elevator subElevator,
-      CoralOuttake subCoralOuttake, Drivetrain subDrivetrain) {
+      CoralOuttake subCoralOuttake, Drivetrain subDrivetrain, double intensity) {
     globalDriver = conDriver;
     globalOperator = conOperator;
     globalElevator = subElevator;
     globalCoralOuttake = subCoralOuttake;
     globalDrivetrain = subDrivetrain;
+    this.intensity = intensity;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalDriver.setRumble(RumbleType.kBothRumble, constControllers.READY_TO_PLACE_RUMBLE_INTENSITY);
-    globalOperator.setRumble(RumbleType.kBothRumble, constControllers.READY_TO_PLACE_RUMBLE_INTENSITY);
+    globalDriver.setRumble(RumbleType.kBothRumble, intensity);
+    globalOperator.setRumble(RumbleType.kBothRumble, intensity);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
