@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
+import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
@@ -27,7 +28,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationNear, coralStationFar, processor;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationNear, coralStationFar, processor, algae;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -87,7 +88,8 @@ public class DriveManual extends Command {
             * elevatorHeightMultiplier);
 
     // -- Controlling --
-    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    if ((leftReef.getAsBoolean()
+        || rightReef.getAsBoolean()) && subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
       // Reef auto-align is requested
       Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
       Distance reefDistance = Units.Meters
@@ -121,6 +123,16 @@ public class DriveManual extends Command {
       subDrivetrain.autoAlign(processorDistance, desiredProcessor, xVelocity, yVelocity, rVelocity, transMultiplier,
           isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else if ((leftReef.getAsBoolean()
+        || rightReef.getAsBoolean()) && subStateMachine.getRobotState() != RobotState.HAS_CORAL) {
+      Pose2d desiredAlgae = subDrivetrain.getDesiredAlgae();
+      Distance algaeDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredAlgae.getTranslation()));
+      subDrivetrain.autoAlign(algaeDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE,
+          DriverState.ALGAE_AUTO_DRIVING, DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
     }
 
     else {

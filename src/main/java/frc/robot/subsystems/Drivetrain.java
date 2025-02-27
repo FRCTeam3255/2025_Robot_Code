@@ -176,6 +176,15 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  public Pose2d getDesiredAlgae() {
+    // Get closest cage
+    List<Pose2d> AlgaePoses = constField.getAlgaePositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredAlgae = currentPose.nearest(AlgaePoses);
+
+    return desiredAlgae;
+  }
+  
   public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
     // Get the closest coral station
     List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();

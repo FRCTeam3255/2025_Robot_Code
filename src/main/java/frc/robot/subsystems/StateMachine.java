@@ -536,6 +536,8 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_AUTO_DRIVING,
     PROCESSOR_ROTATION_SNAPPING,
     PROCESSOR_AUTO_DRIVING,
+    ALGAE_ROTATION_SNAPPING,
+    ALGAE_AUTO_DRIVING
   }
 
   /**
