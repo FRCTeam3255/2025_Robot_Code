@@ -44,7 +44,6 @@ public class HasCoralAndAlgae extends Command {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL_AND_ALGAE);
     globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
     globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
-    globalElevator.setPosition(Units.Inches.zero());
     globalLED.setLED(constLED.LED_HAS_BOTH);
     globalCoralOuttake.setCoralOuttake(0);
     globalHopper.runHopper(0);
