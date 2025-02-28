@@ -379,7 +379,7 @@ public final class Constants {
     public static final Angle CORAL_ONLY = MAX_POS;
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(2);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
