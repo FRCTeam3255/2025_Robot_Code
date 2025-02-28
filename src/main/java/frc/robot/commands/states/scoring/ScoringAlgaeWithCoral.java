@@ -12,12 +12,14 @@ import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 public class ScoringAlgaeWithCoral extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   AlgaeIntake subAlgaeIntake;
   LED globalLED;
+  double desiredSpeed;
 
   public ScoringAlgaeWithCoral(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED,
       Elevator subElevator) {
@@ -32,6 +34,12 @@ public class ScoringAlgaeWithCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (globalStateMachine.getRobotState() == RobotState.PREP_NET_WITH_CORAL) {
+      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
+    } else {
+      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_PROCESSOR_SPEED;
+    }
+
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE_WITH_CORAL);
     globalLED.setLED(constLED.LED_SCORING_ALGAE_WITH_CORAL);
   }
@@ -40,7 +48,7 @@ public class ScoringAlgaeWithCoral extends Command {
   @Override
   public void execute() {
     if (globalElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint()) {
-      subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+      subAlgaeIntake.setAlgaeIntakeMotor(desiredSpeed);
     }
   }
 
