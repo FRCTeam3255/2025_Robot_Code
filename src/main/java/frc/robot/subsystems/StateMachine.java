@@ -500,6 +500,9 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case HAS_CORAL_AND_ALGAE:
+          case HAS_ALGAE:
+          case HAS_CORAL:
           case MANUAL_CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }

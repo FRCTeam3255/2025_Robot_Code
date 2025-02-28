@@ -42,7 +42,8 @@ public class HasCoral extends Command {
     globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
     globalElevator.setPosition(Units.Inches.zero());
-    globalLED.setLED(constLED.LED_HAS_CORAL);
+    globalLED.setLEDMatrix(constLED.LED_HAS_CORAL, 4, 9);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
