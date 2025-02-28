@@ -401,11 +401,10 @@ public final class Constants {
   }
 
   public static class constCoralOuttake {
-    public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2; // doesnt work :(
+    public static final double CORAL_OUTTAKE_SPEED = 0.5199; // dolphins!
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 0.8;
     public static final double CORAL_INDEXING_SPEED = 0.15;
