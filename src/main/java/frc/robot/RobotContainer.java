@@ -199,6 +199,9 @@ public class RobotContainer {
   Command EJECTING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
 
+  Command TRY_INDEXING = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INDEXING));
+
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
