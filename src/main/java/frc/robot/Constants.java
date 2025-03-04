@@ -300,7 +300,8 @@ public final class Constants {
 
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
-    public static final double ALGAE_OUTTAKE_SPEED = -0.5;
+    public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
+    public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
@@ -379,7 +380,7 @@ public final class Constants {
     public static final Angle CORAL_ONLY = MAX_POS;
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(2);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
@@ -400,11 +401,10 @@ public final class Constants {
   }
 
   public static class constCoralOuttake {
-    public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2; // doesnt work :(
+    public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 0.8;
     public static final double CORAL_INDEXING_SPEED = 0.15;
