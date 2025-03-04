@@ -518,6 +518,9 @@ public class RobotContainer {
     try {
       desiredRotation = PathPlannerAuto.getPathGroupFromAutoFile(autoChooser.getSelected().getName()).get(0)
           .getIdealStartingState().rotation();
+      if (constField.isRedAlliance()) {
+        desiredRotation = desiredRotation.plus(Rotation2d.k180deg);
+      }
     } catch (Exception e) {
     }
 
