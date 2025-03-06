@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-L"
+            "pathName": "P-G"
           }
         },
         {
@@ -31,91 +31,61 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L-CSTop"
+            "pathName": "G-GFAlgae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "CleanL2Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-K"
+            "pathName": "GFAlgae-Net"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepPlace"
+            "name": "PrepNet"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceSequence"
+            "name": "ScoreAlgaeSequence"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "K-CSTop"
+            "pathName": "Net-IJAlgae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "CleanL3Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-A"
+            "pathName": "IJAlage-Net"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepPlace"
+            "name": "PrepNet"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A-CSTop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-J"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
+            "name": "ScoreAlgaeSequence"
           }
         }
       ]

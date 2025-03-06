@@ -44,7 +44,7 @@ public class ManualClimberDeploying extends Command {
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
     globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
     globalClimber.setClimberMotorVelocity(Constants.constClimber.MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY);
-    globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+    globalLED.setLED(constLED.LED_MANUAL_CLIMBER_DEPLOYING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -257,7 +257,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED);
         }
         break;
 
@@ -268,7 +268,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED);
         }
         break;
 
@@ -279,7 +279,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED);
         }
         break;
 
@@ -290,7 +290,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED);
         }
         break;
 
@@ -500,6 +500,9 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case HAS_CORAL_AND_ALGAE:
+          case HAS_ALGAE:
+          case HAS_CORAL:
           case MANUAL_CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
@@ -525,7 +528,9 @@ public class StateMachine extends SubsystemBase {
         break;
 
     }
-    return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
+    return Commands
+        .print("ITS SO OVER D: Invalid State Provided, Blame Eli. Attempted to go to: " + desiredState.toString()
+            + " while at " + currentRobotState.toString());
   }
 
   public static enum DriverState {
