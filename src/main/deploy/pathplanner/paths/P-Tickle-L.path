@@ -1,0 +1,131 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 6.199249999999999
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.50325,
+        "y": 6.27725
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 5.3315
+      },
+      "prevControl": {
+        "x": 6.659249999999999,
+        "y": 5.34125
+      },
+      "nextControl": {
+        "x": 7.401009549655728,
+        "y": 5.325133775801352
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.790250000000001,
+        "y": 5.3315
+      },
+      "prevControl": {
+        "x": 7.540311705542098,
+        "y": 5.337054184321286
+      },
+      "nextControl": {
+        "x": 8.667750000000002,
+        "y": 5.312
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 5.3315
+      },
+      "prevControl": {
+        "x": 7.261132958106969,
+        "y": 5.133888519712515
+      },
+      "nextControl": {
+        "x": 4.82625,
+        "y": 8.276
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.383,
+        "y": 5.605
+      },
+      "prevControl": {
+        "x": 3.4677335581454063,
+        "y": 5.84915945425409
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 3.090456431535252,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 3.1642679900744315,
+      "maxWaypointRelativePos": 5.5,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "PrepPlace",
+      "waypointRelativePos": 3.8,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.803472138399826
+  },
+  "reversed": false,
+  "folder": "Tickle Monster",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}

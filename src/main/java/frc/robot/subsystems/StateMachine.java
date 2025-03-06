@@ -12,6 +12,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import frc.robot.Constants.constClimber;
 import frc.robot.Constants.constElevator;
+import frc.robot.Elastic;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.states.None;
 import frc.robot.commands.states.climbing.ClimberDeploying;
@@ -121,6 +122,7 @@ public class StateMachine extends SubsystemBase {
           case CLIMBER_RETRACTING:
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
+              Elastic.selectTab("Teleoperated");
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
             } else {
@@ -255,7 +257,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED);
         }
         break;
 
@@ -266,7 +268,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED);
         }
         break;
 
@@ -277,7 +279,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED);
         }
         break;
 
@@ -288,7 +290,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED);
         }
         break;
 
@@ -498,6 +500,9 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case HAS_CORAL_AND_ALGAE:
+          case HAS_ALGAE:
+          case HAS_CORAL:
           case MANUAL_CLIMBER_DEPLOYING:
             return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
@@ -523,7 +528,9 @@ public class StateMachine extends SubsystemBase {
         break;
 
     }
-    return Commands.print("ITS SO OVER D: Invalid State Provided, Blame Eli");
+    return Commands
+        .print("ITS SO OVER D: Invalid State Provided, Blame Eli. Attempted to go to: " + desiredState.toString()
+            + " while at " + currentRobotState.toString());
   }
 
   public static enum DriverState {

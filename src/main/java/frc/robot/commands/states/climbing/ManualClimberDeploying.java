@@ -7,6 +7,7 @@ package frc.robot.commands.states.climbing;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+import frc.robot.Elastic;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Elevator;
@@ -38,11 +39,12 @@ public class ManualClimberDeploying extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Elastic.selectTab("Climbing");
     globalStateMachine.setRobotState(RobotState.MANUAL_CLIMBER_DEPLOYING);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
     globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
     globalClimber.setClimberMotorVelocity(Constants.constClimber.MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY);
-    globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+    globalLED.setLED(constLED.LED_MANUAL_CLIMBER_DEPLOYING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

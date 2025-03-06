@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-E"
+            "pathName": "P-Tickle-L"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "E-CSBottom"
+            "pathName": "L-CSTop"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-C"
+            "pathName": "CSTop-K"
           }
         },
         {
@@ -61,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "C-CSBottom"
+            "pathName": "K-CSTop"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-D"
+            "pathName": "CSTop-A"
           }
         },
         {
@@ -91,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "D-CSBottom"
+            "pathName": "A-CSTop"
           }
         },
         {
@@ -103,7 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSBottom-F"
+            "pathName": "CSTop-J"
           }
         },
         {
@@ -122,6 +122,6 @@
     }
   },
   "resetOdom": false,
-  "folder": null,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }

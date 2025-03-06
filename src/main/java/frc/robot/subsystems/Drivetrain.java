@@ -92,11 +92,6 @@ public class Drivetrain extends SN_SuperSwerve {
     super.configure();
   }
 
-  public Boolean isAligned() {
-    return desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
-  }
-
   public void addEventToAutoMap(String key, Command command) {
     super.autoEventMap.put(key, command);
   }
@@ -181,6 +176,25 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  //
+  public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
+    // Get the closest coral station
+    List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredCoralStation = currentPose.nearest(coralStationPoses);
+    int closestCoralStationIndex = coralStationPoses.indexOf(desiredCoralStation);
+
+    // If we were closer to the left branch but selected the right branch (or
+    // vice-versa), switch to our desired branch
+    if (farCoralStationRequested && (closestCoralStationIndex % 2 == 1)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex - 1);
+    } else if (!farCoralStationRequested && (closestCoralStationIndex % 2 == 0)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex + 1);
+    }
+
+    return desiredCoralStation;
+  }
+
   public Pose2d getDesiredProcessor() {
     // Get the closest processor
     List<Pose2d> processorPoses = constField.getProcessorPositions().get();
@@ -204,6 +218,22 @@ public class Drivetrain extends SN_SuperSwerve {
     setModuleStates(desiredModuleStates, isOpenLoop);
   }
 
+  public void rotationalAutoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+
+    // Rotational-only auto-align
+    drive(
+        new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+            yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
+        getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+    subStateMachine.setDriverState(rotating);
+  }
+
   /**
    * Contains logic for automatically aligning & automatically driving to the
    * reef.
@@ -217,10 +247,13 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
       DriverState driving, DriverState rotating, StateMachine subStateMachine) {
     desiredAlignmentPose = desiredTarget;
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
-      drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+      drive(
+          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
           getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(rotating);
     } else {
@@ -261,6 +294,12 @@ public class Drivetrain extends SN_SuperSwerve {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
         .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+  }
+
+  public Boolean isAligned() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation());
   }
 
   public boolean atPose(Pose2d desiredPose) {

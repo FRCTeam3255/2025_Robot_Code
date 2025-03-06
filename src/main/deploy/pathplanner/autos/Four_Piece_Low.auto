@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "P-I"
+            "pathName": "P-C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -19,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "I-CSTop"
+            "pathName": "C-CSBottom"
           }
         },
         {
@@ -31,7 +43,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-J"
+            "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -43,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J-CSTop"
+            "pathName": "D-CSBottom"
           }
         },
         {
@@ -55,7 +73,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-K"
+            "pathName": "CSBottom-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
@@ -67,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "K-CSTop"
+            "pathName": "E-CSBottom"
           }
         },
         {
@@ -79,55 +103,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-L"
+            "pathName": "CSBottom-F"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L-CSTop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-A"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A-CSTop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-B"
+            "name": "PrepPlace"
           }
         },
         {
@@ -139,7 +121,7 @@
       ]
     }
   },
-  "resetOdom": true,
-  "folder": null,
+  "resetOdom": false,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }

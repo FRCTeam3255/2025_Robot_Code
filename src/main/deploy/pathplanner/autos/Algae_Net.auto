@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "ForceGamePiece"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "P-I"
+            "pathName": "P-G"
           }
         },
         {
@@ -23,81 +23,75 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "I-CSTop"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "PlaceSequence"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-J"
+            "pathName": "G-GFAlgae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepPlace"
+            "name": "CleanL2Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "J-CSTop"
+            "pathName": "GFAlgae-Net"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
+            "name": "PrepNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeSequence"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-K"
+            "pathName": "Net-IJAlgae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepPlace"
+            "name": "CleanL3Reef"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "K-CSTop"
+            "pathName": "IJAlage-Net"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-L"
+            "name": "PrepNet"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PrepPlace"
+            "name": "ScoreAlgaeSequence"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
-  "folder": null,
+  "resetOdom": false,
+  "folder": "COMP_READY",
   "choreoAuto": false
 }
