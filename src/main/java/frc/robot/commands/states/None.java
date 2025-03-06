@@ -40,7 +40,7 @@ public class None extends Command {
     subCoralOuttake.setCoralOuttake(0);
     subHopper.runHopper(0);
     subAlgaeIntake.setAlgaeIntakeMotor(0);
-    subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     subClimber.setClimberMotorVelocity(0);
     subElevator.setPosition(Units.Inches.zero());
     globalLED.setLED(constLED.LED_NONE);

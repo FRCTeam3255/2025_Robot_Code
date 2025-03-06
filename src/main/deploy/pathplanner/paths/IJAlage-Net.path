@@ -3,47 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.785,
-        "y": 4.181
+        "x": 5.238627049180328,
+        "y": 5.115881147540984
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.046355633802817,
-        "y": 4.960489436619719
+        "x": 4.796534227127068,
+        "y": 5.238006709165362
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.67827868852459,
-        "y": 7.273668032786885
+        "x": 7.84,
+        "y": 6.122848360655737
       },
       "prevControl": {
-        "x": 3.154885544194885,
-        "y": 6.717135731026228
+        "x": 8.232270128588986,
+        "y": 6.203669354900832
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.46618357487922657,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepCoralStation",
-      "waypointRelativePos": 0.838805970149252,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 10.0,
@@ -54,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -53.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Score-CSTop",
+  "folder": "Algae",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": true
 }

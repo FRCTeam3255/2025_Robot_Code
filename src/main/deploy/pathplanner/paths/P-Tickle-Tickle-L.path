@@ -1,0 +1,163 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 6.199249999999999
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.376500000000001,
+        "y": 6.131
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 5.3315
+      },
+      "prevControl": {
+        "x": 6.834816911211546,
+        "y": 5.3315
+      },
+      "nextControl": {
+        "x": 7.358,
+        "y": 5.3315
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.790250000000001,
+        "y": 5.3315
+      },
+      "prevControl": {
+        "x": 8.040229456838786,
+        "y": 5.328295135168734
+      },
+      "nextControl": {
+        "x": 6.2692499999999995,
+        "y": 5.350999999999999
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.108,
+        "y": 4.346749999999999
+      },
+      "prevControl": {
+        "x": 6.858185070789076,
+        "y": 4.356367751470113
+      },
+      "nextControl": {
+        "x": 7.36125,
+        "y": 4.337
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.790250000000001,
+        "y": 4.346749999999999
+      },
+      "prevControl": {
+        "x": 8.038150102796557,
+        "y": 4.3144152039830574
+      },
+      "nextControl": {
+        "x": 7.5423498972034455,
+        "y": 4.379084796016941
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.54225,
+        "y": 4.346749999999999
+      },
+      "prevControl": {
+        "x": 6.548364378411634,
+        "y": 4.0968247824315425
+      },
+      "nextControl": {
+        "x": 6.464249999997644,
+        "y": 7.535000000005973
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.383,
+        "y": 5.605
+      },
+      "prevControl": {
+        "x": 3.256499999997645,
+        "y": 7.554500000005972
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 5.093775933609946,
+      "rotationDegrees": -90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 5.151364764267978,
+      "maxWaypointRelativePos": 8.5,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "PrepPlace",
+      "waypointRelativePos": 5.2,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -59.803472138399826
+  },
+  "reversed": false,
+  "folder": "Tickle Monster",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}

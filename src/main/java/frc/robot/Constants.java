@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
+import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -45,6 +47,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -59,6 +62,13 @@ public final class Constants {
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
+
+    public static final double HAS_CORAL_RUMBLE_INTENSITY = 1;
+    public static final double HAS_ALGAE_RUMBLE_INTENSITY = 1;
+    public static final double READY_TO_PLACE_RUMBLE_INTENSITY = 0.5;
+    public static final double READY_TO_RAISE_INTENSITY = 0.6;
+    public static final double READY_TO_LEAVE_INTENSITY = 1;
+
   }
 
   public static class constDrivetrain {
@@ -90,7 +100,7 @@ public final class Constants {
 
     }
 
-    public static final double WHEEL_DIAMETER = 0.100203;
+    public static final double WHEEL_DIAMETER = Units.Inches.of(3.87).in(Units.Meters);
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -290,7 +300,8 @@ public final class Constants {
 
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
-    public static final double ALGAE_OUTTAKE_SPEED = -0.5;
+    public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
+    public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
@@ -300,8 +311,11 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(57); // should be 60 when mechanical does their thing
+    public static final Angle MAX_POS = Units.Degrees.of(57);
     public static final Angle MIN_POS = Units.Degrees.of(-33);
+
+    public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(57);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -363,9 +377,10 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-31);
+    public static final Angle CORAL_ONLY = MAX_POS;
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(2);
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
@@ -386,11 +401,10 @@ public final class Constants {
   }
 
   public static class constCoralOuttake {
-    public static final double CORAL_OUTTAKE_SPEED = 0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2;
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4;
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2; // doesnt work :(
+    public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 0.8;
     public static final double CORAL_INDEXING_SPEED = 0.15;
@@ -425,7 +439,7 @@ public final class Constants {
     public static Angle MAX_POSITION = Units.Rotations.of(166.69);
     public static Angle AT_POSITION_TOLERANCE = Units.Rotations.of(10);
 
-    public static final double MATCH_CLIMBING_TIME = 30.0;
+    public static final double MATCH_CLIMBING_TIME = 50.0;
 
     static {
       CLIMBER_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -499,6 +513,7 @@ public final class Constants {
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
+    public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
 
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
@@ -784,25 +799,74 @@ public final class Constants {
       LED_CONFIG.brightnessScalar = 1;
 
     }
+    public static final int LED_NUMBER = 8;
+    public static final int LED_STRIP_START_INDEX = 1;
 
-    // These are the RGB values for the LEDs (sorry no animation)
-    public static final int[] LED_SCORING_ALGAE = { 196, 211, 0 };// Shreck green
+    // Climbing
+    public static final int[] LED_CLIMBER_DEPLOYING = null;
+    public static final int[] LED_CLIMBER_RETRACTING = null;
+    public static final int[] LED_MANUAL_CLIMBER_DEPLOYING = null;
 
-    public static final int[] LED_PREP_PROCESSOR = { 255, 150, 0 };// orange
-    public static final int[] LED_PREP_NET = { 255, 0, 200 };// magenta
-    public static final int[] LED_PREP_CORAL_ZERO = { 20, 100, 0 };// forest green
-    public static final int[] LED_PREP_CORAL_LV = { 80, 49, 76 };// grimace purple
-    public static final int[] LED_PREP_ALGAE_ZERO = { 0, 255, 255 };// cyan
-    public static final int[] LED_PLACE_CORAL = { 251, 251, 0 }; // yellow
-    public static final int[] LED_NONE = { 6, 2, 112 }; // indigo
-    public static final int[] LED_INTAKE_ALGAE_GROUND = { 0, 0, 255 }; // blue
-    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 255, 0 };// green
-    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // white
-    public static final int[] LED_HAS_ALGAE = { 39, 183, 140 }; // aquamarine
-    public static final int[] LED_EJECTING_ALGAE = { 255, 203, 203 }; // pink
-    public static final int[] LED_EJECT_CORAL = { 90, 3, 3 };// maroon
-    public static final int[] LED_CLIMBER_DEPLOYING = { 242, 23, 23 }; // imposter red
-    public static final int[] LED_CLEANING_L2_REEF = { 120, 110, 0 };// camo green
-    public static final int[] LED_CLEANING_L3_REEF = { 210, 225, 72 };// lime
+    // first scoring element
+    public static final int[] LED_CLEANING_L2_REEF = null;
+    public static final int[] LED_CLEANING_L3_REEF = null;
+    public static final int[] LED_EJECT_CORAL = null;
+    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 0, 255 };// blue
+    public static final int[] LED_INTAKE_ALGAE_GROUND = null;
+
+    // hold scoring elements
+
+    // TODO: Implement CANdle being commanded half & half (top half w/ algae, bottom
+    // half w/ coral)
+    public static final int[] LED_HAS_ALGAE = { 89, 252, 236 }; // algae-side teal
+    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // elevator-side white
+    public static final int[] LED_HAS_BOTH = null;
+
+    // prep algae
+    public static final int[] LED_PREP_ALGAE_ZERO = null;
+    public static final int[] LED_PREP_ALGAE_ZERO_WITH_CORAL = null;
+    public static final int[] LED_PREP_NET = null;
+    public static final int[] LED_PREP_NET_WITH_CORAL = null;
+    public static final int[] LED_PREP_PROCESSOR = null;
+    public static final int[] LED_PREP_PROCESSOR_WITH_CORAL = null;
+
+    // prep coral
+    public static final int[] LED_PREP_CORAL_LV = null;
+    public static final int[] LED_PREP_CORAL_LV_WITH_ALGAE = null;
+    public static final int[] LED_PREP_CORAL_ZERO = null;
+    public static final int[] LED_PREP_CORAL_ZERO_WITH_ALGAE = null;
+
+    // scoring
+    public static final int[] LED_SCORING_ALGAE = null;
+    public static final int[] LED_SCORING_ALGAE_WITH_CORAL = null;
+    public static final int[] LED_PLACE_CORAL = null;
+    public static final int[] LED_PLACE_CORAL_WITH_ALGAE = null;
+
+    // second scoring element
+    public static final int[] LED_CLEANING_L2_REEF_WITH_CORAL = { 0, 0, 0 };
+    public static final int[] LED_CLEANING_L3_REEF_WITH_CORAL = { 0, 0, 0 };
+    public static final int[] LED_INTAKE_CORAL_WITH_ALGAE = { 0, 0, 255 };// blue
+    // that other guy what a loser
+    public static final int[] LED_NONE = { 0, 0, 0 }; // no color
+
+    // Zeroing
+    public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 }; // red
+    public static final int[] ALGAE_ZERO_SUCCESS = { 0, 0, 0 }; // no color
+    public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 }; // red
+    public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
+
+    public static final StrobeAnimation READY_TO_LIFT = new StrobeAnimation(252, 179, 89,
+        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // orange
+
+    public static final StrobeAnimation READY_TO_PLACE = new StrobeAnimation(200, 89, 252,
+        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // purple
+
+    public static final StrobeAnimation READY_TO_LEAVE = new StrobeAnimation(0, 255, 0,
+        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // green
+
+    public static final StrobeAnimation ENDGAME_TIMER = new StrobeAnimation(255, 0, 0,
+        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // red
+
   }
+
 }

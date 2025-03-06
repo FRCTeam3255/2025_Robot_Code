@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "P-F"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
           }
         },
         {
