@@ -157,7 +157,7 @@ public class DriveManual extends Command {
       Distance netDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredNet.getTranslation()));
 
-      subDrivetrain.rotationalAutoAlign(netDistance, desiredNet, xVelocity, yVelocity, rVelocity, transMultiplier,
+      subDrivetrain.autoAlign(netDistance, desiredNet, xVelocity, yVelocity, rVelocity, transMultiplier,
           isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine);
     }
