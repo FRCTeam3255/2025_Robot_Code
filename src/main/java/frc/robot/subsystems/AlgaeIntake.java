@@ -128,6 +128,20 @@ public class AlgaeIntake extends SubsystemBase {
         getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
   }
 
+  public boolean isAtSpecificSetpoint(Angle setpoint) {
+    return (getPivotAngle()
+        .compareTo(setpoint.minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
+        getPivotAngle().compareTo(setpoint.plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public boolean isAtAnyAlgaeScoringPosition() {
+    if (isAtSpecificSetpoint(constAlgaeIntake.PREP_NET_PIVOT_POSITION) ||
+        isAtSpecificSetpoint(constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION)) {
+      return true;
+    }
+    return false;
+  }
+
   @Override
   public void periodic() {
 

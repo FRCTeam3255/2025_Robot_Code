@@ -36,18 +36,16 @@ public class AddVisionMeasurement extends Command {
 
   @Override
   public void execute() {
-    if (!RobotState.isDisabled()) {
-      // Tells the limelight where we are on the field
-      LimelightHelpers.SetRobotOrientation(constVision.LIMELIGHT_NAMES[0],
-          subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      LimelightHelpers.SetRobotOrientation(constVision.LIMELIGHT_NAMES[1],
-          subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-      AngularVelocity gyroRate = Units.DegreesPerSecond.of(subDrivetrain.getGyroRate());
+    // Tells the limelight where we are on the field
+    LimelightHelpers.SetRobotOrientation(constVision.LIMELIGHT_NAMES[0],
+        subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.SetRobotOrientation(constVision.LIMELIGHT_NAMES[1],
+        subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    AngularVelocity gyroRate = Units.DegreesPerSecond.of(subDrivetrain.getGyroRate());
 
-      Optional<PoseEstimate> estimatedPose = subVision.determinePoseEstimate(gyroRate);
-      if (estimatedPose.isPresent()) {
-        subDrivetrain.addVisionMeasurement(estimatedPose.get().pose, estimatedPose.get().timestampSeconds);
-      }
+    Optional<PoseEstimate> estimatedPose = subVision.determinePoseEstimate(gyroRate);
+    if (estimatedPose.isPresent()) {
+      subDrivetrain.addVisionMeasurement(estimatedPose.get().pose, estimatedPose.get().timestampSeconds);
     }
   }
 

@@ -1,0 +1,115 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.159330985915493,
+        "y": 1.8849471830985898
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.205250000000001,
+        "y": 2.16275
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.159330985915493,
+        "y": 2.9329999999999994
+      },
+      "prevControl": {
+        "x": 6.912369965756438,
+        "y": 2.8941380067160845
+      },
+      "nextControl": {
+        "x": 7.406292006074548,
+        "y": 2.9718619932839148
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.5,
+        "y": 2.933
+      },
+      "prevControl": {
+        "x": 7.25,
+        "y": 2.9330000000000003
+      },
+      "nextControl": {
+        "x": 7.750000000000001,
+        "y": 2.9329999999999994
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.393,
+        "y": 2.431
+      },
+      "prevControl": {
+        "x": 3.4628467973599912,
+        "y": 2.172758217487542
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 2.2929460580912906,
+      "rotationDegrees": 90.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 2.367245657568229,
+      "maxWaypointRelativePos": 2.7066997518610716,
+      "name": "Point Towards Zone"
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "GetCoralStationPiece",
+      "waypointRelativePos": 0.01791044776119564,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "PrepPlace",
+      "waypointRelativePos": 2.973134328358212,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "reversed": false,
+  "folder": "Tickle Monster",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
