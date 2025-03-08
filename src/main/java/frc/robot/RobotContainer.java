@@ -208,7 +208,7 @@ public class RobotContainer {
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
-  private final Trigger seesCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
+  private final Trigger indexingCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
       && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
       && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);
@@ -227,7 +227,7 @@ public class RobotContainer {
   public static boolean justScored = false;
   private final Trigger justScoredTrigger = new Trigger(() -> justScored);
   private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAligned());
-  private final Trigger readytoPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
+  private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
       && subDrivetrain.isAligned());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
@@ -383,15 +383,15 @@ public class RobotContainer {
   }
 
   private void configureSensorBindings() {
-    hasCoralTrigger
-        .whileTrue(TRY_HAS_CORAL);
+    indexingCoralTrigger.onTrue(HAS_CORAL_RUMBLE).onTrue(TRY_INDEXING_CORAL).onTrue(TRY_INDEXING_CORAL_WITH_ALGAE);
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
+    hasCoralTrigger
+        .whileTrue(TRY_HAS_CORAL);
     hasBothTrigger.whileTrue(TRY_HAS_CORAL_AND_ALGAE);
     hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
-    seesCoralTrigger.onTrue(HAS_CORAL_RUMBLE);
 
     readyToLiftElevator.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
@@ -400,7 +400,7 @@ public class RobotContainer {
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
-    readytoPlaceCoral.onTrue(Commands.runOnce(
+    readyToPlaceCoral.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kBothRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
         .onTrue(Commands.runOnce(
             () -> subLED.setLED(constLED.READY_TO_PLACE, 0)))
