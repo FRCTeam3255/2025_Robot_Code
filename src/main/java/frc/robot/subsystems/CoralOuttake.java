@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapCoralOuttake;
 
 @Logged
@@ -22,8 +23,8 @@ public class CoralOuttake extends SubsystemBase {
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
-    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
-    coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
+    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
 
     hasCoral = false;
 
@@ -60,7 +61,7 @@ public class CoralOuttake extends SubsystemBase {
   }
 
   public boolean sensorIndexedCoral() {
-    return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
+    return !sensorSeesCoral();
   }
 
   public boolean hasCoral() {
