@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
@@ -51,7 +52,8 @@ public class ScoringCoral extends SequentialCommandGroup {
         Commands.waitUntil(() -> globalElevator.isAtSetPoint()),
         Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(getCoralOuttakeSpeed())),
         Commands.runOnce(() -> globalCoralOuttake.setHasCoral(false)),
-
+        Commands.runOnce(() -> globalElevator.setPosition(constElevator.AFTER_L1_HEIGHT))
+            .onlyIf(() -> desiredState.equals(RobotState.PREP_CORAL_L1)),
         // Start ze timer
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),

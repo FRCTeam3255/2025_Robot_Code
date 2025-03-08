@@ -269,6 +269,7 @@ public final class Constants {
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
+      public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -514,6 +515,7 @@ public final class Constants {
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
+    public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
 
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
@@ -598,6 +600,12 @@ public final class Constants {
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
+      // net poses
+      public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(45));
+
+      private static final List<Pose2d> BLUE_NET_POSES = List.of(NET);
+      private static final List<Pose2d> RED_NET_POSES = getRedNetPoses();
+
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
       public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
@@ -647,6 +655,16 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
+    }
+
+    private static List<Pose2d> getRedNetPoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_NET_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_NET_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_NET_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0]);
     }
 
     private static List<Pose2d> getRedCoralStationPoses() {
@@ -699,6 +717,14 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getNetPositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_NET_POSES;
+
+      }
+      return () -> POSES.BLUE_NET_POSES;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
