@@ -269,7 +269,7 @@ public final class Constants {
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
-      public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(5);
+      public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(10);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -600,7 +600,7 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       // net poses
-      public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(0));
+      public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(45));
 
       private static final List<Pose2d> BLUE_NET_POSES = List.of(NET);
       private static final List<Pose2d> RED_NET_POSES = getRedNetPoses();
@@ -663,9 +663,7 @@ public final class Constants {
         returnedPoses[i] = getRedAlliancePose(POSES.BLUE_NET_POSES.get(i));
       }
 
-      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
-          returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
-          returnedPoses[11]);
+      return List.of(returnedPoses[0]);
     }
 
     private static List<Pose2d> getRedCoralStationPoses() {
