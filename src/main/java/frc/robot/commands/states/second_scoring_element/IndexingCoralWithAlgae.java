@@ -10,6 +10,7 @@ import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 public class IndexingCoralWithAlgae extends Command {
   StateMachine globalStateMachine;
@@ -30,6 +31,7 @@ public class IndexingCoralWithAlgae extends Command {
   @Override
   public void initialize() {
     // Begin indexing :)
+    globalStateMachine.setRobotState(RobotState.INDEXING_CORAL_WITH_ALGAE);
     globalCoralOuttake.setIndexingCoral(true);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);

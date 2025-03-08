@@ -31,7 +31,7 @@ public class EjectCoralWithAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
+    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL_WITH_ALGAE);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);

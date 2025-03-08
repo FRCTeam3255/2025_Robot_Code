@@ -101,6 +101,19 @@ public class StateMachine extends SubsystemBase {
     return currentRobotState;
   }
 
+  public Command tryCoralOverride() {
+    RobotState[] goToHasBothStates = { RobotState.HAS_ALGAE, RobotState.PREP_PROCESSOR, RobotState.PREP_NET,
+        RobotState.PREP_PROCESSOR, RobotState.INTAKING_CORAL_WITH_ALGAE, RobotState.EJECTING_CORAL_WITH_ALGAE,
+        RobotState.INDEXING_CORAL_WITH_ALGAE };
+
+    for (RobotState state : goToHasBothStates) {
+      if (currentRobotState == state) {
+        return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
+      }
+    }
+    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator);
+  }
+
   public Command tryState(RobotState desiredState) {
     // The most elegant solution of all time... nested switch statements :)
     // haters please refer to this:

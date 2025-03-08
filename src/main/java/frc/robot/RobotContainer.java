@@ -195,7 +195,9 @@ public class RobotContainer {
           .unless(() -> (subStateMachine.getRobotState() == RobotState.SCORING_CORAL
               || subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE)));
 
-  Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
+  Command HAS_CORAL_OVERRIDE = Commands.deferredProxy(
+      () -> subStateMachine.tryCoralOverride());
+
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
 
   Command zeroSubsystems = new ParallelCommandGroup(
