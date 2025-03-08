@@ -47,6 +47,7 @@ public class EjectCoral extends Command {
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoral(false);
+    globalCoralOuttake.setIndexingCoral(false);
   }
 
   // Returns true when the command should end.

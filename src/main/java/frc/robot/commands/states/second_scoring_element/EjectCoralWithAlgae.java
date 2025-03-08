@@ -19,7 +19,6 @@ public class EjectCoralWithAlgae extends Command {
   LED globalLED;
   Hopper globalHopper;
 
-  /** Creates a new CoralOuttake. */
   public EjectCoralWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
@@ -48,6 +47,7 @@ public class EjectCoralWithAlgae extends Command {
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoral(false);
+    globalCoralOuttake.setIndexingCoral(false);
   }
 
   // Returns true when the command should end.

@@ -21,6 +21,7 @@ import frc.robot.commands.states.climbing.ManualClimberDeploying;
 import frc.robot.commands.states.first_scoring_element.CleaningL2Reef;
 import frc.robot.commands.states.first_scoring_element.CleaningL3Reef;
 import frc.robot.commands.states.first_scoring_element.EjectCoral;
+import frc.robot.commands.states.first_scoring_element.IndexingCoral;
 import frc.robot.commands.states.first_scoring_element.IntakeCoralHopper;
 import frc.robot.commands.states.first_scoring_element.IntakingAlgaeGround;
 import frc.robot.commands.states.hold_scoring_elements.HasAlgae;
@@ -42,6 +43,7 @@ import frc.robot.commands.states.scoring.ScoringCoral;
 import frc.robot.commands.states.scoring.ScoringCoralWithAlgae;
 import frc.robot.commands.states.second_scoring_element.CleaningL2ReefWithCoral;
 import frc.robot.commands.states.second_scoring_element.CleaningL3ReefWithCoral;
+import frc.robot.commands.states.second_scoring_element.EjectCoralWithAlgae;
 import frc.robot.commands.states.second_scoring_element.IntakeCoralWithAlgae;
 
 @Logged
@@ -171,7 +173,15 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case HAS_CORAL:
           case INTAKING_CORAL:
+          case INDEXING_CORAL:
             return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
+        }
+        break;
+
+      case INDEXING_CORAL:
+        switch (currentRobotState) {
+          case INTAKING_CORAL:
+            return new IndexingCoral(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
 
@@ -216,10 +226,27 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case EJECTING_CORAL_WITH_ALGAE:
+        switch (currentRobotState) {
+          case HAS_CORAL_AND_ALGAE:
+          case INTAKING_CORAL_WITH_ALGAE:
+          case INDEXING_CORAL_WITH_ALGAE:
+          case HAS_ALGAE:
+            return new EjectCoralWithAlgae(subStateMachine, subCoralOuttake, subLED, subHopper);
+        }
+        break;
+
+      case INDEXING_CORAL_WITH_ALGAE:
+        switch (currentRobotState) {
+          case INTAKING_CORAL_WITH_ALGAE:
+            return new IndexingCoral(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
+        }
+        break;
+
       // --- Hold 1 Scoring ELement ---
       case HAS_CORAL:
         switch (currentRobotState) {
-          case INTAKING_CORAL:
+          case INDEXING_CORAL:
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
           case SCORING_ALGAE_WITH_CORAL:
@@ -241,7 +268,7 @@ public class StateMachine extends SubsystemBase {
       // --- Hold 2nd Scoring ELement ---
       case HAS_CORAL_AND_ALGAE:
         switch (currentRobotState) {
-          case INTAKING_CORAL_WITH_ALGAE:
+          case INDEXING_CORAL_WITH_ALGAE:
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
             return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator,
@@ -556,11 +583,14 @@ public class StateMachine extends SubsystemBase {
     CLEANING_L3,
     INTAKING_ALGAE_GROUND,
     INTAKING_CORAL,
+    INDEXING_CORAL,
     EJECTING_CORAL,
 
     // Manip. 2nd Scoring element
     CLEANING_L2_WITH_CORAL,
     CLEANING_L3_WITH_CORAL,
+    EJECTING_CORAL_WITH_ALGAE,
+    INDEXING_CORAL_WITH_ALGAE,
     INTAKING_CORAL_WITH_ALGAE,
 
     // Hold 1 Scoring element
