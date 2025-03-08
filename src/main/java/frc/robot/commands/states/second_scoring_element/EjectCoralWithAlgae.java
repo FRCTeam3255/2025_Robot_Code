@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.states.first_scoring_element;
+package frc.robot.commands.states.second_scoring_element;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -13,13 +13,14 @@ import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
-public class EjectCoral extends Command {
+public class EjectCoralWithAlgae extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   LED globalLED;
   Hopper globalHopper;
 
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
+  /** Creates a new CoralOuttake. */
+  public EjectCoralWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
