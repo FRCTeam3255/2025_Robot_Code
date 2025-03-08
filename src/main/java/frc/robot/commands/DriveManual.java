@@ -27,7 +27,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -46,12 +46,13 @@ public class DriveManual extends Command {
    * @param coralStationLeft
    * @param coralStationRight
    * @param processorBtn
+   * @param net
    */
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
-      BooleanSupplier processorBtn) {
+      BooleanSupplier processorBtn, BooleanSupplier net) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -64,6 +65,7 @@ public class DriveManual extends Command {
     this.coralStationRight = coralStationRight;
     this.subElevator = subElevator;
     this.processor = processorBtn;
+    this.net = net;
 
     isOpenLoop = true;
 
@@ -148,6 +150,16 @@ public class DriveManual extends Command {
           transMultiplier,
           isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine);
+    }
+    // -- Net --
+    else if (net.getAsBoolean()) {
+      Pose2d desiredNet = subDrivetrain.getDesiredNet();
+      Distance netDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredNet.getTranslation()));
+
+      subDrivetrain.rotationalAutoAlign(netDistance, desiredNet, xVelocity, yVelocity, rVelocity, transMultiplier,
+          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
+          DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine);
     }
 
     else {

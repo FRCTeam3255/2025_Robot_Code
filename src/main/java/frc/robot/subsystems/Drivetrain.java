@@ -204,6 +204,15 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredProcessor;
   }
 
+  public Pose2d getDesiredNet() {
+    // Get the closest net
+    List<Pose2d> netPoses = constField.getNetPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredNet = currentPose.nearest(netPoses);
+
+    return desiredNet;
+  }
+
   /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
