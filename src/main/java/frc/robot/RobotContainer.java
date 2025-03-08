@@ -10,7 +10,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -23,10 +22,6 @@ import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
@@ -51,8 +46,6 @@ import frc.robot.commands.DriveManual;
 import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
 import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
-import frc.robot.commands.Rumbles.AlgaeReadyToPlaceRumble;
-import frc.robot.commands.Rumbles.CoralReadyToPlaceRumble;
 import frc.robot.commands.Rumbles.HasGamePieceRumble;
 import frc.robot.commands.Zeroing.ZeroElevator;
 import frc.robot.commands.states.climbing.ClimberDeploying;
@@ -137,8 +130,14 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.CLEANING_L2_WITH_CORAL));
   Command TRY_EJECTING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
+  Command TRY_EJECTING_CORAL_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL_WITH_ALGAE));
   Command TRY_INTAKING_CORAL_HOPPER = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL));
+  Command TRY_INDEXING_CORAL = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INDEXING_CORAL));
+  Command TRY_INDEXING_CORAL_WITH_ALGAE = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.INDEXING_CORAL_WITH_ALGAE));
   Command TRY_INTAKING_CORAL_WITH_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_WITH_ALGAE));
   Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
@@ -195,9 +194,6 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.NONE)
           .unless(() -> (subStateMachine.getRobotState() == RobotState.SCORING_CORAL
               || subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE)));
-
-  Command EJECTING_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
 
   Command HAS_CORAL_OVERRIDE = Commands.runOnce(() -> subCoralOuttake.coralToggle());
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
@@ -382,7 +378,7 @@ public class RobotContainer {
         .onTrue(TRY_PREP_CORAL_0);
 
     controller.btn_RightBumper
-        .whileTrue(EJECTING_CORAL)
+        .whileTrue(TRY_EJECTING_CORAL)
         .onFalse(TRY_NONE);
   }
 
