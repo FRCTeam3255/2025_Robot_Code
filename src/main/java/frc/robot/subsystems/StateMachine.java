@@ -106,6 +106,7 @@ public class StateMachine extends SubsystemBase {
         RobotState.PREP_PROCESSOR, RobotState.INTAKING_CORAL_WITH_ALGAE, RobotState.EJECTING_CORAL_WITH_ALGAE,
         RobotState.INDEXING_CORAL_WITH_ALGAE };
 
+    subCoralOuttake.setHasCoral(true);
     for (RobotState state : goToHasBothStates) {
       if (currentRobotState == state) {
         return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
