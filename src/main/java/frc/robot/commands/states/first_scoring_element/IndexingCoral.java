@@ -19,6 +19,11 @@ public class IndexingCoral extends Command {
 
   public IndexingCoral(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
       AlgaeIntake subAlgaeIntake) {
+    globalStateMachine = subStateMachine;
+    globalHopper = subHopper;
+    globalCoralOuttake = subCoralOuttake;
+    globalAlgaeIntake = subAlgaeIntake;
+    addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
