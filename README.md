@@ -4,11 +4,11 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ![Black Manta](assets/robot_name_design_2025.png)
 
+- ![2025 comp bot 1.0](assets\2025_compbot_1.0.jpg)
+
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
 
-- ![2025 Winner](assets/2025Winner.jpg)
-
-- ![Innovation In Control Award](assets/Innovation_In_Control_Award.png)
+- ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
@@ -102,7 +102,7 @@ Our Elevator & Algae Pivot use a motion profiling system from CTRE called Motion
 
 ### Autos
 
-Our autos include 4-coral-auto, 1 clean reef & algae processor, and 1 clean reef & algae net!!!!
+We have 3-L4-coral-auto on both sides of the field.
 - **How it works:**
   - **Driving:**
     - Basic driving: Path planner used to navigate by preset trajectories.
