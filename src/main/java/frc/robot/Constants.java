@@ -383,6 +383,7 @@ public final class Constants {
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
+    public static final Angle SAFE_TO_MOVE_ELEVATOR_PIVOT_POSITION = Units.Degrees.of(50);
 
     public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
 
