@@ -4,39 +4,36 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.units.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapCoralOuttake;
 
 @Logged
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
-  TalonFX outtakeMotor2;
   CANrange coralSensor;
   private boolean hasCoral, indexingCoral;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
-    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN);
-    outtakeMotor2 = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_RIGHT_MOTOR_CAN);
-    coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN);
+    outtakeMotor = new TalonFX(mapCoralOuttake.CORAL_OUTTAKE_LEFT_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    coralSensor = new CANrange(mapCoralOuttake.CORAL_SENSOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
 
     hasCoral = false;
 
     outtakeMotor.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
-    outtakeMotor2.getConfigurator().apply(constCoralOuttake.CORAL_OUTTAKE_CONFIG);
     coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
   public void setCoralOuttake(double speed) {
     outtakeMotor.set(speed);
-    outtakeMotor2.set(-speed);
   }
 
   public void setIndexingCoral(boolean indexing) {
@@ -59,8 +56,12 @@ public class CoralOuttake extends SubsystemBase {
     return coralSensor.getIsDetected().getValue();
   }
 
+  public BooleanSupplier sensorSeesCoralSupplier() {
+    return () -> coralSensor.getIsDetected().getValue();
+  }
+
   public boolean sensorIndexedCoral() {
-    return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
+    return !sensorSeesCoral();
   }
 
   public boolean hasCoral() {
@@ -69,8 +70,6 @@ public class CoralOuttake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("CORAL SENSOR DISTANCE", coralSensor.getDistance().getValue().in(Units.Inches));
-    SmartDashboard.putBoolean("CORAL SENSOR HAS GP", hasCoral());
     // This method will be called once per scheduler run
   }
 }

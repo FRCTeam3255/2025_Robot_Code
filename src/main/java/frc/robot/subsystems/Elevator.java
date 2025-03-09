@@ -18,10 +18,10 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
+import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapElevator;
 
 @Logged
@@ -44,8 +44,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
-    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN, RobotMap.CAN_BUS_MECHANISMS);
 
     lastDesiredPosition = Units.Inches.of(0);
     voltageRequest = new VoltageOut(0);
@@ -63,6 +63,29 @@ public class Elevator extends SubsystemBase {
     return (getElevatorPosition()
         .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
         getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public boolean isAtSpecificSetpoint(Distance setpoint) {
+    return (getElevatorPosition()
+        .compareTo(setpoint.minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
+        getElevatorPosition().compareTo(setpoint.plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public boolean isAtAnyCoralScoringPosition() {
+    if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT)) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isAtAnyAlgaeScoringPosition() {
+    if (isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET)) {
+      return true;
+    }
+    return false;
   }
 
   public AngularVelocity getRotorVelocity() {
@@ -118,18 +141,5 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    currentLeftPosition = Units.Inches.of(leftMotorFollower.getPosition().getValueAsDouble());
-    currentRightPosition = Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Left/CLO", leftMotorFollower.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Output", leftMotorFollower.get());
-    SmartDashboard.putNumber("Elevator/Left/Inverted", leftMotorFollower.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Left/Current", leftMotorFollower.getSupplyCurrent().getValueAsDouble());
-
-    SmartDashboard.putNumber("Elevator/Right/CLO", rightMotorLeader.getClosedLoopOutput().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Output", rightMotorLeader.get());
-    SmartDashboard.putNumber("Elevator/Right/Inverted", rightMotorLeader.getAppliedRotorPolarity().getValueAsDouble());
-    SmartDashboard.putNumber("Elevator/Right/Current", rightMotorLeader.getSupplyCurrent().getValueAsDouble());
   }
 }

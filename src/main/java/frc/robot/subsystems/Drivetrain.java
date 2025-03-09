@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
-import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.MathUtil;
@@ -26,6 +25,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -90,10 +90,6 @@ public class Drivetrain extends SN_SuperSwerve {
     SN_SwerveModule.steerConfiguration = constDrivetrain.STEER_CONFIG;
     SN_SwerveModule.cancoderConfiguration = constDrivetrain.CANCODER_CONFIG;
     super.configure();
-  }
-
-  public Boolean isAligned() {
-    return desiredAlignmentPose.getTranslation().getDistance(getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters);
   }
 
   public void addEventToAutoMap(String key, Command command) {
@@ -180,6 +176,34 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredReef;
   }
 
+  //
+  public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
+    // Get the closest coral station
+    List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredCoralStation = currentPose.nearest(coralStationPoses);
+    int closestCoralStationIndex = coralStationPoses.indexOf(desiredCoralStation);
+
+    // If we were closer to the left branch but selected the right branch (or
+    // vice-versa), switch to our desired branch
+    if (farCoralStationRequested && (closestCoralStationIndex % 2 == 1)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex - 1);
+    } else if (!farCoralStationRequested && (closestCoralStationIndex % 2 == 0)) {
+      desiredCoralStation = coralStationPoses.get(closestCoralStationIndex + 1);
+    }
+
+    return desiredCoralStation;
+  }
+
+  public Pose2d getDesiredProcessor() {
+    // Get the closest processor
+    List<Pose2d> processorPoses = constField.getProcessorPositions().get();
+    Pose2d currentPose = getPose();
+    Pose2d desiredProcessor = currentPose.nearest(processorPoses);
+
+    return desiredProcessor;
+  }
+
   /**
    * @return The closest cage to align to
    */
@@ -206,6 +230,22 @@ public class Drivetrain extends SN_SuperSwerve {
     setModuleStates(desiredModuleStates, isOpenLoop);
   }
 
+  public void rotationalAutoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+
+    // Rotational-only auto-align
+    drive(
+        new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+            yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
+        getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
+    subStateMachine.setDriverState(rotating);
+  }
+
   /**
    * Contains logic for automatically aligning & automatically driving to the
    * reef.
@@ -219,10 +259,13 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
       DriverState driving, DriverState rotating, StateMachine subStateMachine) {
     desiredAlignmentPose = desiredTarget;
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
-      drive(new Translation2d(xVelocity.in(Units.MetersPerSecond), yVelocity.in(Units.MetersPerSecond)),
+      drive(
+          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
+              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
           getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(rotating);
     } else {
@@ -234,16 +277,18 @@ public class Drivetrain extends SN_SuperSwerve {
       LinearVelocity linearSpeedLimit = constDrivetrain.OBSERVED_DRIVE_SPEED.times(elevatorMultiplier);
       AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
 
-      if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-          || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-          || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
+      if (!RobotState.isAutonomous()) {
+        if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
 
-        desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
-            linearSpeedLimit.in(MetersPerSecond));
-        desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
-            linearSpeedLimit.in(MetersPerSecond));
-        desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
-            angularSpeedLimit.in(RadiansPerSecond));
+          desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
+              linearSpeedLimit.in(MetersPerSecond));
+          desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
+              linearSpeedLimit.in(MetersPerSecond));
+          desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
+              angularSpeedLimit.in(RadiansPerSecond));
+        }
       }
 
       drive(desiredChassisSpeeds, isOpenLoop);
@@ -261,6 +306,12 @@ public class Drivetrain extends SN_SuperSwerve {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
         .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+  }
+
+  public Boolean isAligned() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation());
   }
 
   public boolean atPose(Pose2d desiredPose) {

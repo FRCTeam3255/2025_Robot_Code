@@ -4,6 +4,7 @@ package frc.robot;
 
 public class RobotMap {
   public static final int PRAC_BOT_DIO = 0;
+  public static final String CAN_BUS_MECHANISMS = "Mechanisms";
 
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
@@ -38,7 +39,6 @@ public class RobotMap {
 
   public static class mapClimber {
     public static final int CLIMBER_LEFT_CAN = 20;
-    public static final int CLIMBER_RIGHT_CAN = 21;
   }
 
   public static class mapAlgaeIntake {
@@ -49,7 +49,6 @@ public class RobotMap {
 
   public static class mapCoralOuttake {
     public static final int CORAL_OUTTAKE_LEFT_MOTOR_CAN = 30;
-    public static final int CORAL_OUTTAKE_RIGHT_MOTOR_CAN = 31;
     public static final int CORAL_SENSOR_CAN = 32;
   }
 

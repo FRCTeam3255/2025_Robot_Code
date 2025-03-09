@@ -10,7 +10,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -19,7 +18,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
-import frc.robot.Constants;
+import frc.robot.RobotMap;
 import frc.robot.Constants.constAlgaeIntake;
 
 @Logged
@@ -39,8 +38,8 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
-    intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN);
-    intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN);
+    intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
 
     intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_ROLLER_CONFIG);
     intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
@@ -130,16 +129,22 @@ public class AlgaeIntake extends SubsystemBase {
         getPivotAngle().compareTo(getLastDesiredPivotAngle().plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
   }
 
+  public boolean isAtSpecificSetpoint(Angle setpoint) {
+    return (getPivotAngle()
+        .compareTo(setpoint.minus(constAlgaeIntake.DEADZONE_DISTANCE)) > 0) &&
+        getPivotAngle().compareTo(setpoint.plus(constAlgaeIntake.DEADZONE_DISTANCE)) < 0;
+  }
+
+  public boolean isAtAnyAlgaeScoringPosition() {
+    if (isAtSpecificSetpoint(constAlgaeIntake.PREP_NET_PIVOT_POSITION) ||
+        isAtSpecificSetpoint(constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION)) {
+      return true;
+    }
+    return false;
+  }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Algae Intake/Roller/Stator Current",
-        intakeRollerMotor.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Velocity", intakeRollerMotor.getVelocity().getValueAsDouble());
-    SmartDashboard.putNumber("Algae Intake/Roller/Voltage", intakeRollerMotor.getMotorVoltage().getValueAsDouble());
 
-    SmartDashboard.putNumber("Algae Intake/Pivot/Stator Current",
-        intakePivotMotor.getStatorCurrent().getValueAsDouble());
-
-    SmartDashboard.putBoolean("Has Algae", hasAlgae());
   }
 }
