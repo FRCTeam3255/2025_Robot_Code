@@ -204,6 +204,8 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredProcessor;
   }
 
+  public final Double CURRENT_POSE_Y_VALUE = getPose().getY();
+
   public Pose2d getDesiredNet() {
     // Get the closest net
     List<Pose2d> netPoses = constField.getNetPositions().get();
@@ -254,20 +256,22 @@ public class Drivetrain extends SN_SuperSwerve {
       LinearVelocity xVelocity,
       LinearVelocity yVelocity,
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
     desiredAlignmentPose = desiredTarget;
     int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+    double manualXVelocity = xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond);
+    double manualYVelocity = yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond);
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       drive(
-          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
-              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
+          new Translation2d(manualXVelocity,
+              manualYVelocity),
           getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
       subStateMachine.setDriverState(rotating);
     } else {
       // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
+      ChassisSpeeds automatedDTVelocity = getAlignmentSpeeds(desiredTarget);
       subStateMachine.setDriverState(driving);
 
       // Speed limit based on elevator height
@@ -275,20 +279,28 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
 
       if (!RobotState.isAutonomous()) {
-        if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-            || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-            || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
+        if ((automatedDTVelocity.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (automatedDTVelocity.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (automatedDTVelocity.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
 
-          desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
+          // Automated calculated velocity
+          automatedDTVelocity.vxMetersPerSecond = MathUtil.clamp(automatedDTVelocity.vxMetersPerSecond, 0,
               linearSpeedLimit.in(MetersPerSecond));
-          desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
+          automatedDTVelocity.vyMetersPerSecond = MathUtil.clamp(automatedDTVelocity.vyMetersPerSecond, 0,
               linearSpeedLimit.in(MetersPerSecond));
-          desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
+          automatedDTVelocity.omegaRadiansPerSecond = MathUtil.clamp(automatedDTVelocity.omegaRadiansPerSecond, 0,
               angularSpeedLimit.in(RadiansPerSecond));
         }
       }
+      if (lockX) {
 
-      drive(desiredChassisSpeeds, isOpenLoop);
+        automatedDTVelocity.vxMetersPerSecond = manualXVelocity;
+      }
+      if (lockY) {
+        automatedDTVelocity.vyMetersPerSecond = manualYVelocity;
+      }
+
+      drive(automatedDTVelocity, isOpenLoop);
     }
   }
 
