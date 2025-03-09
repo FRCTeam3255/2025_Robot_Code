@@ -403,7 +403,7 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2; // doesnt work :(
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
@@ -502,7 +502,7 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19.1);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
