@@ -2,13 +2,13 @@
 Jump into the code [`here!`](src/main/java/frc/robot)
 
 ## Robot Name: Black Manta
-![Black Manta](assets\robot_name_design_2025.png)
+![Black Manta](assets/robot_name_design_2025.png)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
 
-- ![2025 Winner](assets\2025Winner.jpg)
+- ![2025 Winner](assets/2025Winner.jpg)
 
-- ![Innovation In Control Award](assets\Innovation_In_Control_Award.png)
+- ![Innovation In Control Award](assets/Innovation_In_Control_Award.png)
 
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
@@ -31,14 +31,6 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
-## Code Details
-Coming soon!
-  
-## Controls
-Coming soon!
-
-## Robot Simulation
-Coming Soon!
 
 
 ## Software Features
@@ -74,7 +66,7 @@ The multi-stage system, depending on the distance
 ### State Machine Control
 
 - **State Machine Diagram**
-![State Machine](assets\State_Machine_2.0.png)
+![State Machine](assets/State_Machine_2.0.png)
 
 - **Controller Map**
 ![Controller Map](assets/2025_controllermap.png)
