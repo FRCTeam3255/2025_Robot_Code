@@ -1,7 +1,7 @@
 # 2025_Robot_Code - FRC Team 3255's 2025 Robot
 Jump into the code [`here!`](src/main/java/frc/robot)
 
-## Robot Name: Black Manta
+
 ![Black Manta](assets/robot_name_design_2025.png)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
