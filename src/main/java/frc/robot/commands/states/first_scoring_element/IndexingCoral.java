@@ -49,6 +49,8 @@ public class IndexingCoral extends Command {
     // stop indexing
     globalCoralOuttake.setIndexingCoral(false);
     globalCoralOuttake.setHasCoral(true);
+    globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
   }
 
   // Returns true when the command should end.
