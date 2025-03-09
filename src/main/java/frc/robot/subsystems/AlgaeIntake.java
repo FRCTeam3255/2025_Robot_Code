@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.mapAlgaeIntake;
+import frc.robot.RobotMap;
 import frc.robot.Constants.constAlgaeIntake;
 
 @Logged
@@ -37,8 +38,8 @@ public class AlgaeIntake extends SubsystemBase {
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
-    intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN);
-    intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN);
+    intakeRollerMotor = new TalonFX(mapAlgaeIntake.INTAKE_ROLLER_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    intakePivotMotor = new TalonFX(mapAlgaeIntake.INTAKE_PIVOT_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
 
     intakeRollerMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_ROLLER_CONFIG);
     intakePivotMotor.getConfigurator().apply(constAlgaeIntake.ALGAE_PIVOT_CONFIG);
