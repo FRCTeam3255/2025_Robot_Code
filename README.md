@@ -4,7 +4,7 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ![Black Manta](assets/robot_name_design_2025.png)
 
-- ![2025 comp bot 1.0](assets\2025_compbot_1.0.jpg)
+- ![2025 comp bot 1.0](assets/2025_compbot_1.0.jpg)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
 
