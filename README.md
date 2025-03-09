@@ -8,7 +8,7 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
 
-- ![PHR Team Photo](assets\PHR_Team_Photo.jpg)
+- ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
