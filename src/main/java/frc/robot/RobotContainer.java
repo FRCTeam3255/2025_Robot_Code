@@ -210,7 +210,9 @@ public class RobotContainer {
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
   private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
-  private final Trigger indexingCoralTrigger = new Trigger(subCoralOuttake::sensorSeesCoral);
+  private final Trigger indexingCoralTrigger = new Trigger(
+      () -> subCoralOuttake.sensorSeesCoral() && (subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL)
+          || subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL_WITH_ALGAE)));
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
       && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
       && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);

@@ -44,6 +44,7 @@ import frc.robot.commands.states.scoring.ScoringCoralWithAlgae;
 import frc.robot.commands.states.second_scoring_element.CleaningL2ReefWithCoral;
 import frc.robot.commands.states.second_scoring_element.CleaningL3ReefWithCoral;
 import frc.robot.commands.states.second_scoring_element.EjectCoralWithAlgae;
+import frc.robot.commands.states.second_scoring_element.IndexingCoralWithAlgae;
 import frc.robot.commands.states.second_scoring_element.IntakeCoralWithAlgae;
 
 @Logged
@@ -253,7 +254,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING_CORAL_WITH_ALGAE:
         switch (currentRobotState) {
           case INTAKING_CORAL_WITH_ALGAE:
-            return new IndexingCoral(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
+            return new IndexingCoralWithAlgae(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
 
