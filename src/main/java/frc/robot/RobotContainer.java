@@ -249,7 +249,8 @@ public class RobotContainer {
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
                 conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
                 conDriver.btn_B,
-                conDriver.btn_X, conDriver.btn_LeftBumper));
+                conDriver.btn_X, conDriver.btn_LeftBumper, conDriver.btn_East));
+    // the btn_East is temorary
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -538,7 +539,7 @@ public class RobotContainer {
     Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
         SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond(), MetersPerSecond.of(0),
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
-        DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
+        DriverState.REEF_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
