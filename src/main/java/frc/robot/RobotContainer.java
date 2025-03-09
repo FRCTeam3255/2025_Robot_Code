@@ -553,11 +553,9 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4)
             .asProxy().withName("PrepPlace"));
 
-    // I FORGOT WHAT THIS NONE DOES BUT IT SEEMS ESSENTIAL
     NamedCommands.registerCommand("GetCoralStationPiece",
         Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
-            TRY_NONE.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE))
+            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()))
             .withName("GetCoralStationPiece"));
 
     NamedCommands.registerCommand("ForceGamePiece",
