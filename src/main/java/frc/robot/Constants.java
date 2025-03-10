@@ -262,9 +262,7 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
-      public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2);
-      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(

@@ -267,9 +267,7 @@ public class Drivetrain extends SN_SuperSwerve {
       LinearVelocity xVelocity, LinearVelocity yVelocity, AngularVelocity rVelocity, double elevatorMultiplier,
       boolean isOpenLoop, Distance maxAutoDriveDistance, DriverState driving, DriverState rotating,
       StateMachine subStateMachine) {
-    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
     desiredAlignmentPose = desiredTarget;
-
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       rotationalAlign(desiredTarget, xVelocity, yVelocity, isOpenLoop, rotating, subStateMachine);
