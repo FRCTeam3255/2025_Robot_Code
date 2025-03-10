@@ -148,7 +148,7 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
-   * Returns the closest reef branch to the robot.
+   * Returns the desired reef branch for the robot to auto-align to based on our Pose.
    * 
    * @param leftBranchRequested If we are requesting to align to the left or right
    *                            branch
