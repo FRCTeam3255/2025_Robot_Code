@@ -65,7 +65,7 @@ A multi-stage system, depending on distance
 - **How it works:** Using the current pose of the robot (see Vision), we calculate the closest reef face on the fly. The auto alignment then determines different desired positions based on which face of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. The same process is used for Cage & Processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
 
 ### State Machine Control
-![State Machine](assets/State_Machine_2.0.png)
+![State Machine](assets/2025_statemachine.png)
 - **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
 
