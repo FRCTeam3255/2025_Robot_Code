@@ -148,32 +148,49 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
-   * Returns the desired reef branch for the robot to auto-align to based on our Pose.
+   * Returns the desired reef branch (or branch face) for the robot to auto-align
+   * to based on our Pose.
    * 
    * @param leftBranchRequested If we are requesting to align to the left or right
    *                            branch
    * @return The desired reef branch face to align to
    */
   public Pose2d getDesiredReef(boolean leftBranchRequested) {
-    // Get the closest reef branch face using either branch on the face
+    Distance reefDistance = Units.Meters
+        .of(getPose().getTranslation()
+            .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
+
+    if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
+      // Determine closest reef BRANCH based on our rotation
+      // TODO: ABOVE
+      List<Pose2d> reefPoses = constField.getReefPositions().get();
+      Pose2d currentPose = getPose();
+      Pose2d desiredReef = currentPose.nearest(reefPoses);
+      int closestReefIndex = reefPoses.indexOf(desiredReef);
+      // -- The above code will be different later --
+
+      // Invert faces on the back of the reef so they're always relative to the driver
+      if (closestReefIndex > 3 && closestReefIndex < 10) {
+        leftBranchRequested = !leftBranchRequested;
+      }
+
+      // If we were closer to the left branch but selected the right branch (or
+      // vice-versa), switch to our desired branch
+      if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
+        desiredReef = reefPoses.get(closestReefIndex - 1);
+      } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
+        desiredReef = reefPoses.get(closestReefIndex + 1);
+      }
+      return desiredReef;
+    }
+    // Determine the closest reef FACE based on our position
     List<Pose2d> reefPoses = constField.getReefPositions().get();
     Pose2d currentPose = getPose();
     Pose2d desiredReef = currentPose.nearest(reefPoses);
     int closestReefIndex = reefPoses.indexOf(desiredReef);
 
-    // Invert faces on the back of the reef so they're always relative to the driver
-    if (closestReefIndex > 3 && closestReefIndex < 10) {
-      leftBranchRequested = !leftBranchRequested;
-    }
-
-    // If we were closer to the left branch but selected the right branch (or
-    // vice-versa), switch to our desired branch
-    if (leftBranchRequested && (closestReefIndex % 2 == 1)) {
-      desiredReef = reefPoses.get(closestReefIndex - 1);
-    } else if (!leftBranchRequested && (closestReefIndex % 2 == 0)) {
-      desiredReef = reefPoses.get(closestReefIndex + 1);
-    }
     return desiredReef;
+
   }
 
   //
@@ -200,7 +217,6 @@ public class Drivetrain extends SN_SuperSwerve {
     List<Pose2d> processorPoses = constField.getProcessorPositions().get();
     Pose2d currentPose = getPose();
     Pose2d desiredProcessor = currentPose.nearest(processorPoses);
-
     return desiredProcessor;
   }
 
@@ -218,11 +234,12 @@ public class Drivetrain extends SN_SuperSwerve {
     setModuleStates(desiredModuleStates, isOpenLoop);
   }
 
-  public void rotationalAutoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
-      LinearVelocity xVelocity,
-      LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+  /**
+   * Aligns the drivetrain to a desired rotation.
+   * 
+   */
+  public void rotationalAlign(Pose2d desiredTarget, LinearVelocity xVelocity, LinearVelocity yVelocity,
+      boolean isOpenLoop, DriverState rotating, StateMachine subStateMachine) {
 
     int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
 
@@ -234,20 +251,31 @@ public class Drivetrain extends SN_SuperSwerve {
     subStateMachine.setDriverState(rotating);
   }
 
-  /**
-   * Contains logic for automatically aligning & automatically driving to the
-   * reef.
-   * May align only rotationally, automatically drive to a branch, or be
-   * overridden by the driver
-   */
-
-  public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+  public void reefAutoAlign(boolean leftBranchRequested,
       LinearVelocity xVelocity,
       LinearVelocity yVelocity,
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
       DriverState driving, DriverState rotating, StateMachine subStateMachine) {
-    desiredAlignmentPose = desiredTarget;
+
+    Pose2d desiredReef = getDesiredReef(leftBranchRequested);
+    Distance reefDistance = Units.Meters
+        .of(getPose().getTranslation()
+            .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
+
+    autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
+        maxAutoDriveDistance, driving, rotating, subStateMachine);
+  }
+
+  /**
+   * Contains logic for automatically aligning & automatically driving to a pose.
+   * May align only rotationally or automatically drive to the pose.
+   */
+  public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity, LinearVelocity yVelocity, AngularVelocity rVelocity, double elevatorMultiplier,
+      boolean isOpenLoop, Distance maxAutoDriveDistance, DriverState driving, DriverState rotating,
+      StateMachine subStateMachine) {
     int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+    desiredAlignmentPose = desiredTarget;
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align

@@ -613,7 +613,7 @@ public final class Constants {
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, BLUE_PROCESSOR };
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, BLUE_PROCESSOR };
       private static final Pose2d[] RED_POSES = getRedPosesFromArray(BLUE_POSES);
     }
 
@@ -654,9 +654,13 @@ public final class Constants {
     /**
      * Gets the positions of ALL of the field elements on your alliance. All
      * coordinates are in meters and are relative to the blue alliance.
+     * <li>0 = Reset Pose</li>
+     * <li>1-12 = Reef Branches</li>
+     * <li>13 = Reef Center</li>
+     * <li>14 = Processor</li>
      * 
      * @see <a href=
-     *      https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
+     *      "https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#always-blue-origin">
      *      Robot Coordinate Systems</a>
      * @return An array of field element positions
      */
