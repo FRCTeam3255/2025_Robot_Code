@@ -162,10 +162,8 @@ public class Drivetrain extends SN_SuperSwerve {
 
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
-      // TODO: ABOVE
       List<Pose2d> reefPoses = constField.getReefPositions().get();
-      Pose2d currentPose = getPose();
-      Pose2d desiredReef = currentPose.nearest(reefPoses);
+      Pose2d desiredReef = getClosestPoseByRotation(reefPoses);
       int closestReefIndex = reefPoses.indexOf(desiredReef);
       // -- The above code will be different later --
 
@@ -183,14 +181,11 @@ public class Drivetrain extends SN_SuperSwerve {
       }
       return desiredReef;
     }
-    // Determine the closest reef FACE based on our position
+    // Determine the closest reef FACE based on our position (left vs right doesn't
+    // matter)
     List<Pose2d> reefPoses = constField.getReefPositions().get();
-    Pose2d currentPose = getPose();
-    Pose2d desiredReef = currentPose.nearest(reefPoses);
-    int closestReefIndex = reefPoses.indexOf(desiredReef);
-
+    Pose2d desiredReef = getPose().nearest(reefPoses);
     return desiredReef;
-
   }
 
   //
@@ -240,9 +235,7 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public void rotationalAlign(Pose2d desiredTarget, LinearVelocity xVelocity, LinearVelocity yVelocity,
       boolean isOpenLoop, DriverState rotating, StateMachine subStateMachine) {
-
     int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
-
     // Rotational-only auto-align
     drive(
         new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
@@ -279,11 +272,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
-      drive(
-          new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
-              yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
-          getVelocityToRotate(desiredTarget.getRotation()).in(Units.RadiansPerSecond), isOpenLoop);
-      subStateMachine.setDriverState(rotating);
+      rotationalAlign(desiredTarget, xVelocity, yVelocity, isOpenLoop, rotating, subStateMachine);
     } else {
       // Full auto-align
       ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
@@ -332,6 +321,27 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public boolean atPose(Pose2d desiredPose) {
     return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
+  }
+
+  /**
+   * Calculate which pose from an array has the closest rotation to the robot's
+   * current pose. If multiple poses have the same rotation, the last one in the
+   * list will be returned.
+   * 
+   * @param poses The list of poses to check
+   * @return The last pose in the list with the closest rotation
+   */
+  public Pose2d getClosestPoseByRotation(List<Pose2d> poses) {
+    Pose2d closestPose = poses.get(0);
+    double smallestDifference = Math.abs(getRotation().minus(closestPose.getRotation()).getRadians());
+    for (Pose2d pose : poses) {
+      double difference = Math.abs(getRotation().minus(pose.getRotation()).getRadians());
+      if (difference < smallestDifference) {
+        smallestDifference = difference;
+        closestPose = pose;
+      }
+    }
+    return closestPose;
   }
 
   @Override

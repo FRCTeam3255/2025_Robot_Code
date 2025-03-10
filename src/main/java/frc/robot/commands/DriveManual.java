@@ -104,7 +104,7 @@ public class DriveManual extends Command {
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       // Begin reef auto align (rotationally, automatically driving, or w/ a driver
       // override)
-      subDrivetrain.autoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
+      subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
           isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
           DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
