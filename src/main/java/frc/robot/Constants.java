@@ -312,10 +312,10 @@ public final class Constants {
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
     public static final Angle MAX_POS = Units.Degrees.of(57);
-    public static final Angle MIN_POS = Units.Degrees.of(-33);
+    public static final Angle MIN_POS = Units.Degrees.of(-37);
 
     public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(57);
-    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(59);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -376,12 +376,13 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(40);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-31);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-33);
     public static final Angle CORAL_ONLY = MAX_POS;
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(44.14); // the tides comin in hahahah
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-18);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
+
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
     public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
