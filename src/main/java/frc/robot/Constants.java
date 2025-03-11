@@ -268,7 +268,7 @@ public final class Constants {
 
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
-      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(5);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(3);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -407,8 +407,8 @@ public final class Constants {
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
-    public static final double CORAL_INTAKE_SPEED = 0.8;
-    public static final double CORAL_INDEXING_SPEED = 0.15; // 0.08
+    public static final double CORAL_INTAKE_SPEED = 1;
+    public static final double CORAL_INDEXING_SPEED = 1; // 0.08
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -610,7 +610,7 @@ public final class Constants {
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // processor poses
-      public static final Pose2d PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
+      public static final Pose2d PROCESSOR = new Pose2d(5.986, 0.896, Rotation2d.fromDegrees(-90));
 
       private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
       private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
@@ -780,8 +780,8 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = .75;
-    public static final double HOPPER_INDEXING_SPEED = .75;
+    public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_INDEXING_SPEED = 1;
     public static final double HOPPER_EJECTING_SPEED = -1.0;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
