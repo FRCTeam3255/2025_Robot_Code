@@ -21,7 +21,6 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.constElevator;
-import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapElevator;
 
 @Logged
@@ -44,8 +43,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN, RobotMap.CAN_BUS_MECHANISMS);
-    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
     voltageRequest = new VoltageOut(0);
@@ -82,7 +81,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean isAtAnyAlgaeScoringPosition() {
-    if (isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET)) {
+    if (isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET)
+    ) {
       return true;
     }
     return false;
