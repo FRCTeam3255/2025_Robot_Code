@@ -91,7 +91,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": "COMP_READY",
   "choreoAuto": false
 }

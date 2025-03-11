@@ -43,6 +43,7 @@ import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
+import frc.robot.Constants.constLED;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
@@ -398,15 +399,20 @@ public class RobotContainer {
 
     readyToLiftElevator.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        .onTrue(Commands.runOnce(
+            () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
     readytoPlaceCoral.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kBothRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        .onTrue(Commands.runOnce(
+            () -> subLED.setLED(constLED.READY_TO_PLACE, 0)))
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
-    justScoredTrigger.onTrue(READY_TO_LEAVE_RUMBLE);
+    justScoredTrigger.onTrue(READY_TO_LEAVE_RUMBLE).onTrue(Commands.runOnce(
+        () -> subLED.setLED(constLED.READY_TO_LEAVE, 0)));
   }
 
   private void configureTesterBindings(SN_XboxController controller) {
@@ -512,6 +518,9 @@ public class RobotContainer {
     try {
       desiredRotation = PathPlannerAuto.getPathGroupFromAutoFile(autoChooser.getSelected().getName()).get(0)
           .getIdealStartingState().rotation();
+      if (constField.isRedAlliance()) {
+        desiredRotation = desiredRotation.plus(Rotation2d.k180deg);
+      }
     } catch (Exception e) {
     }
 

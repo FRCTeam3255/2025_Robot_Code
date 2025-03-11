@@ -4,6 +4,7 @@ package frc.robot;
 
 public class RobotMap {
   public static final int PRAC_BOT_DIO = 0;
+  public static final String CAN_BUS_MECHANISMS = "Mechanisms";
 
   public static class mapControllers {
     public static final int DRIVER_USB = 0;
