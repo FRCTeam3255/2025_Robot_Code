@@ -609,7 +609,7 @@ public final class Constants {
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // processor poses
-      public static final Pose2d PROCESSOR = new Pose2d(5.821, 4.000, Rotation2d.fromDegrees(89.807));
+      public static final Pose2d PROCESSOR = new Pose2d(5.821, 4.000, Rotation2d.fromDegrees(-90));
 
       private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
       private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
