@@ -31,8 +31,12 @@ public class Hopper extends SubsystemBase {
 
   }
 
-  public void spinServo(double speed) {
-    servoMotor.set(speed);
+  public void setServoPosition(double position) {
+    servoMotor.set(position);
+  }
+
+  public void setServoAngle(double angle) {
+    servoMotor.setAngle(angle);
   }
 
   public void runHopper(double speed) {

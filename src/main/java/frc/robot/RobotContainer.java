@@ -284,32 +284,25 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    // controller.btn_Start
-    // .onTrue(TRY_CLIMBER_DEPLOYING);
+    controller.btn_Start
+        .onTrue(TRY_CLIMBER_DEPLOYING);
 
-    // controller.btn_Y
-    // .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
-    // .onFalse(TRY_NONE);
+    controller.btn_Y
+        .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
+        .onFalse(TRY_NONE);
 
-    // controller.btn_A
-    // .whileTrue(TRY_CLIMBER_RETRACTING)
-    // .onFalse(TRY_NONE);
+    controller.btn_A
+        .whileTrue(TRY_CLIMBER_RETRACTING)
+        .onFalse(TRY_NONE);
 
-    // controller.btn_North
-    // .onTrue(
-    // Commands.runOnce(() ->
-    // subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+    controller.btn_North
+        .onTrue(
+            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
 
-    // controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() ->
-    // subAlgaeIntake.hasZeroed = false),
-    // new ZeroAlgaeIntake(subAlgaeIntake)));
-    // controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() ->
-    // subElevator.hasZeroed = false),
-    // new ZeroElevator(subElevator)));
-
-    controller.btn_A.onTrue(new SpinServo(subHopper, 0.8));
-    controller.btn_B.onTrue(new SpinServo(subHopper, 0.1));
-
+    controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
+        new ZeroAlgaeIntake(subAlgaeIntake)));
+    controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
+        new ZeroElevator(subElevator)));
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {

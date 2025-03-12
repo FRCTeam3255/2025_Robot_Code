@@ -10,12 +10,12 @@ import frc.robot.subsystems.Hopper;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SpinServo extends Command {
   Hopper subHopper;
-  double speed;
+  double position;
 
   /** Creates a new SpinServo. */
-  public SpinServo(Hopper subHopper, double speed) {
+  public SpinServo(Hopper subHopper, double position) {
     this.subHopper = subHopper;
-    this.speed = speed;
+    this.position = position;
 
     addRequirements(subHopper);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,7 +24,7 @@ public class SpinServo extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subHopper.spinServo(speed);
+    subHopper.setServoAngle(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
