@@ -293,13 +293,6 @@ public class Drivetrain extends SN_SuperSwerve {
     }
   }
 
-  public void autoAlignNet(Distance distanceFromTarget, Pose2d desiredTarget,
-      LinearVelocity xVelocity,
-      LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
-  }
-
   public boolean isAtRotation(Rotation2d desiredRotation) {
     return (getRotation().getMeasure()
         .compareTo(desiredRotation.getMeasure().minus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) > 0) &&

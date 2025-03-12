@@ -77,7 +77,6 @@ public class DriveManual extends Command {
   @Override
   public void initialize() {
     redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
-    netPose = constField.getFieldPositions().get()[13];
   }
 
   @Override
@@ -161,8 +160,10 @@ public class DriveManual extends Command {
     }
     // -- Net --
     else if (net.getAsBoolean()) {
+
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
+        Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
         desiredNetPose = new Pose2d(netPose.getX(), currentPose.getY(), netPose.getRotation());
         netAlignStarted = true;
       }

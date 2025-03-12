@@ -600,7 +600,9 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       // net poses
-      public static final Pose2d BLUE_NET = new Pose2d(7, 6.19, Rotation2d.fromDegrees(0));
+      private static final Pose2d BLUE_NET = new Pose2d(7, FIELD_WIDTH.in(Units.Meters) / 2, Rotation2d.fromDegrees(0));
+      private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
+      public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
 
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
