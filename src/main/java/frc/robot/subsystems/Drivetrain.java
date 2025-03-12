@@ -208,6 +208,8 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public Pose2d getDesiredNet() {
     // Get the closest net
+    final Pose2d NET = new Pose2d(7.95, getPose().getY(), Rotation2d.fromDegrees(45));
+
     List<Pose2d> netPoses = constField.getNetPositions().get();
     Pose2d currentPose = getPose();
     Pose2d desiredNet = currentPose.nearest(netPoses);
@@ -302,6 +304,13 @@ public class Drivetrain extends SN_SuperSwerve {
 
       drive(automatedDTVelocity, isOpenLoop);
     }
+  }
+
+  public void autoAlignNet(Distance distanceFromTarget, Pose2d desiredTarget,
+      LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
   }
 
   public boolean isAtRotation(Rotation2d desiredRotation) {
