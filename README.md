@@ -31,6 +31,19 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
+## Field Calibration
+- have advantage scope 3D field open whole time
+
+  ### Tune the Limelights and then check:
+-  accuracy in sim
+-  reef April tag against each reef face, then back up to auto drive location and check the April tag again
+
+    ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
+
+-  auto starting line April tag
+-  starting location is accurate in sim
+-  coral station
+
 
 
 ## Software Features
