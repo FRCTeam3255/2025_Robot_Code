@@ -206,17 +206,6 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public final Double CURRENT_POSE_Y_VALUE = getPose().getY();
 
-  public Pose2d getDesiredNet() {
-    // Get the closest net
-    final Pose2d NET = new Pose2d(7.95, getPose().getY(), Rotation2d.fromDegrees(45));
-
-    List<Pose2d> netPoses = constField.getNetPositions().get();
-    Pose2d currentPose = getPose();
-    Pose2d desiredNet = currentPose.nearest(netPoses);
-
-    return desiredNet;
-  }
-
   /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
@@ -295,13 +284,11 @@ public class Drivetrain extends SN_SuperSwerve {
         }
       }
       if (lockX) {
-
         automatedDTVelocity.vxMetersPerSecond = manualXVelocity;
       }
       if (lockY) {
         automatedDTVelocity.vyMetersPerSecond = manualYVelocity;
       }
-
       drive(automatedDTVelocity, isOpenLoop);
     }
   }

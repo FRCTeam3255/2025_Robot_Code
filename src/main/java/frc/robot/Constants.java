@@ -600,10 +600,7 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       // net poses
-      public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(45));
-
-      private static final List<Pose2d> BLUE_NET_POSES = List.of(NET);
-      private static final List<Pose2d> RED_NET_POSES = getRedNetPoses();
+      public static final Pose2d BLUE_NET = new Pose2d(7, 6.19, Rotation2d.fromDegrees(0));
 
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
@@ -619,11 +616,11 @@ public final class Constants {
       public static final Pose2d PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
 
       private static final Pose2d BLUE_PROCESSOR_POSE = PROCESSOR;
-      private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
+      private static final Pose2d RED_PROCESSOR_POSE = getRedAlliancePose(BLUE_PROCESSOR_POSE);
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, BLUE_NET };
 
       private static final Pose2d[] RED_POSES = getRedAlliancePoses();
 
@@ -656,16 +653,6 @@ public final class Constants {
           returnedPoses[11]);
     }
 
-    private static List<Pose2d> getRedNetPoses() {
-      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_NET_POSES.size()];
-
-      for (int i = 0; i < POSES.BLUE_NET_POSES.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_NET_POSES.get(i));
-      }
-
-      return List.of(returnedPoses[0]);
-    }
-
     private static List<Pose2d> getRedCoralStationPoses() {
       Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CORAL_STATION_POSES.size()];
 
@@ -674,14 +661,6 @@ public final class Constants {
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
-    }
-
-    private static Pose2d getRedProcessorPose() {
-      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
-
-      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
-
-      return returnedPose;
     }
 
     /**
@@ -716,14 +695,6 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
-    }
-
-    public static Supplier<List<Pose2d>> getNetPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> POSES.RED_NET_POSES;
-
-      }
-      return () -> POSES.BLUE_NET_POSES;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
