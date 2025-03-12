@@ -619,9 +619,9 @@ public final class Constants {
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
 
       // CAGE POSES
-      public static final Pose2d CAGE_1 = new Pose2d(8.775, 7.248, Rotation2d.fromDegrees(0));
-      public static final Pose2d CAGE_2 = new Pose2d(8.775, 6.151, Rotation2d.fromDegrees(0));
-      public static final Pose2d CAGE_3 = new Pose2d(8.775, 5.068, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_1 = new Pose2d(7.783, 7.248, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_2 = new Pose2d(7.783, 6.151, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_3 = new Pose2d(7.783, 5.068, Rotation2d.fromDegrees(0));
 
       private static final List<Pose2d> BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
       private static final List<Pose2d> RED_CAGE_POSES = getRedCagePoses();
