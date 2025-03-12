@@ -603,9 +603,6 @@ public final class Constants {
       // net poses
       public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(45));
 
-      private static final List<Pose2d> BLUE_NET_POSES = List.of(NET);
-      private static final List<Pose2d> RED_NET_POSES = getRedNetPoses();
-
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
       public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
@@ -655,16 +652,6 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
-    }
-
-    private static List<Pose2d> getRedNetPoses() {
-      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_NET_POSES.size()];
-
-      for (int i = 0; i < POSES.BLUE_NET_POSES.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_NET_POSES.get(i));
-      }
-
-      return List.of(returnedPoses[0]);
     }
 
     private static List<Pose2d> getRedCoralStationPoses() {
@@ -717,14 +704,6 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
-    }
-
-    public static Supplier<List<Pose2d>> getNetPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> POSES.RED_NET_POSES;
-
-      }
-      return () -> POSES.BLUE_NET_POSES;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
