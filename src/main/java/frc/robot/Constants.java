@@ -600,9 +600,6 @@ public final class Constants {
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
-      // net poses
-      public static final Pose2d NET = new Pose2d(7.95, 6.19, Rotation2d.fromDegrees(45));
-
       // CORAL STATION POSES
       public static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-54.5));
       public static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-54.5));
