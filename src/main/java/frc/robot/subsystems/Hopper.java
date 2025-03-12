@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constHopper;
-import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapHopper;
 
 @Logged
@@ -23,7 +22,7 @@ public class Hopper extends SubsystemBase {
 
   /** Creates a new hopper. */
   public Hopper() {
-    hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN);
     hopperSensor = new DigitalInput(mapHopper.HOPPER_SENSOR_DIO);
     servoMotor = new Servo(3);
 

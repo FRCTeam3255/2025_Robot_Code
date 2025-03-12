@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   public CommandScheduler commandScheduler = CommandScheduler.getInstance();
 
   public Robot() {
-    // CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture();
   }
 
   @Override
