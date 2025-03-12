@@ -6,41 +6,36 @@ package frc.robot.commands.states.first_scoring_element;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Constants.constLED;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CoralOuttake;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
-public class EjectCoral extends Command {
-  Elevator globalElevator;
+public class IndexingCoral extends Command {
   StateMachine globalStateMachine;
-  CoralOuttake globalCoralOuttake;
-  LED globalLED;
   Hopper globalHopper;
+  CoralOuttake globalCoralOuttake;
+  AlgaeIntake globalAlgaeIntake;
 
-  /** Creates a new CoralOuttake. */
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper,
-      Elevator subElevator) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public IndexingCoral(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
+      AlgaeIntake subAlgaeIntake) {
     globalStateMachine = subStateMachine;
-    globalCoralOuttake = subCoralOuttake;
-    globalLED = subLED;
     globalHopper = subHopper;
-    globalElevator = subElevator;
+    globalCoralOuttake = subCoralOuttake;
+    globalAlgaeIntake = subAlgaeIntake;
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
-    globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
-    globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
-    globalLED.setLED(constLED.LED_EJECT_CORAL);
+    // Begin indexing :)
+    globalStateMachine.setRobotState(RobotState.INDEXING_CORAL);
+    globalCoralOuttake.setIndexingCoral(true);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
+    globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,14 +46,16 @@ public class EjectCoral extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttake(0);
-    globalCoralOuttake.setHasCoral(false);
+    // stop indexing
     globalCoralOuttake.setIndexingCoral(false);
+    globalCoralOuttake.setHasCoral(true);
+    globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return globalCoralOuttake.sensorIndexedCoral();
   }
 }
