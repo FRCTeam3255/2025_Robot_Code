@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
 
   public Climber() {
     lastDesiredPosition = Units.Degrees.of(0);
-    climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
 
     climberMotor.getConfigurator().apply(constClimber.CLIMBER_CONFIG);
   }
