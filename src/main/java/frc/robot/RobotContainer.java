@@ -48,6 +48,7 @@ import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.DriveManual;
+import frc.robot.commands.SpinServo;
 import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
 import frc.robot.commands.Zeroing.ZeroAlgaeIntake;
@@ -244,12 +245,14 @@ public class RobotContainer {
     zeroSubsystems.addRequirements(subStateMachine);
     manualZeroSubsystems.addRequirements(subStateMachine);
 
-    subDrivetrain
-        .setDefaultCommand(
-            new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
-                conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
-                conDriver.btn_B,
-                conDriver.btn_X, conDriver.btn_LeftBumper));
+    // subDrivetrain
+    // .setDefaultCommand(
+    // new DriveManual(subStateMachine, subDrivetrain, subElevator,
+    // conDriver.axis_LeftY, conDriver.axis_LeftX,
+    // conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger,
+    // conDriver.btn_RightTrigger,
+    // conDriver.btn_B,
+    // conDriver.btn_X, conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -281,25 +284,31 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_Start
-        .onTrue(TRY_CLIMBER_DEPLOYING);
+    // controller.btn_Start
+    // .onTrue(TRY_CLIMBER_DEPLOYING);
 
-    controller.btn_Y
-        .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
-        .onFalse(TRY_NONE);
+    // controller.btn_Y
+    // .whileTrue(TRY_MANUAL_CLIMBER_DEPLOYING)
+    // .onFalse(TRY_NONE);
 
-    controller.btn_A
-        .whileTrue(TRY_CLIMBER_RETRACTING)
-        .onFalse(TRY_NONE);
+    // controller.btn_A
+    // .whileTrue(TRY_CLIMBER_RETRACTING)
+    // .onFalse(TRY_NONE);
 
-    controller.btn_North
-        .onTrue(
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+    // controller.btn_North
+    // .onTrue(
+    // Commands.runOnce(() ->
+    // subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
 
-    controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
-        new ZeroAlgaeIntake(subAlgaeIntake)));
-    controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
-        new ZeroElevator(subElevator)));
+    // controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() ->
+    // subAlgaeIntake.hasZeroed = false),
+    // new ZeroAlgaeIntake(subAlgaeIntake)));
+    // controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() ->
+    // subElevator.hasZeroed = false),
+    // new ZeroElevator(subElevator)));
+
+    controller.btn_A.onTrue(new SpinServo(subHopper, 0.8));
+    controller.btn_B.onTrue(new SpinServo(subHopper, 0.1));
 
   }
 

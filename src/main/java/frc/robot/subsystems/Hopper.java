@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constHopper;
 import frc.robot.RobotMap;
@@ -18,14 +19,20 @@ public class Hopper extends SubsystemBase {
 
   TalonFX hopperMotor;
   DigitalInput hopperSensor;
+  Servo servoMotor;
 
   /** Creates a new hopper. */
   public Hopper() {
     hopperMotor = new TalonFX(mapHopper.HOPPER_MOTOR_CAN, RobotMap.CAN_BUS_MECHANISMS);
     hopperSensor = new DigitalInput(mapHopper.HOPPER_SENSOR_DIO);
+    servoMotor = new Servo(3);
 
     hopperMotor.getConfigurator().apply(constHopper.HOPPER_CONFIG);
 
+  }
+
+  public void spinServo(double speed) {
+    servoMotor.set(speed);
   }
 
   public void runHopper(double speed) {
