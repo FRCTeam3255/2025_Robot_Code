@@ -408,7 +408,7 @@ public final class Constants {
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1; // 0.08
+    public static final double CORAL_INDEXING_SPEED = 1; 
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
