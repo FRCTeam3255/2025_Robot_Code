@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -15,18 +16,21 @@ import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class EjectCoral extends Command {
+  Elevator globalElevator;
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   LED globalLED;
   Hopper globalHopper;
 
   /** Creates a new CoralOuttake. */
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
+  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper,
+      Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
     globalHopper = subHopper;
+    globalElevator = subElevator;
     addRequirements(globalStateMachine);
   }
 
@@ -34,6 +38,7 @@ public class EjectCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
+    globalElevator.setPosition(Constants.constElevator.PREP_0);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);

@@ -511,7 +511,7 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
-    public static final Distance PREP_0 = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(1.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
