@@ -32,17 +32,47 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
 ## Field Calibration
-- have advantage scope 3D field open whole time
+- #### Step 1: have advantage scope 3D field open whole time
 
-  ### Tune the Limelights and then check:
--  accuracy in sim
--  reef April tag against each reef face, then back up to auto drive location and check the April tag again
+-  ### Step 2: Tune the Limelights
+    ## [Limelights' website](limelight.local:5801)
 
-    ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
+- #### Step 3: Check Reef
 
--  auto starting line April tag
--  starting location is accurate in sim
--  coral station
+
+  ```  
+  *Note: if the numbers of the further one doesn't work for the closer one, just use the closer one*
+
+  a. In the advantage scope 3D field, check if the robot position is at the same position in the real life
+
+  b. Manually position the robot to against reef face (see position 1 in photo, the robot face toward reef) 
+
+  c. Ensure Limelights detect the April tags (you should be only see one April tag at one time)
+
+  d. Ensure the robot is at the right position in Advantage scope 3D field 
+
+  e. Manually move the robot back to the auto-drive location (see position 2 in the photo, with the robot facing TOWARD the reef) and check the April tag again (try to see as many April tags as you can)
+ 
+  f. Repeat step a-e for every face of the reef 
+  ```
+
+    ![Field_Calibration_Reef](assets/Field_Calibration_Reefs.png)
+
+
+-  #### Step 4: Check auto starting line 
+        a. Manually move the robot on the auto starting line, make sure the robot is facing toward the center of your side of the field
+
+       b. Ensure Limelights detect the April tags
+
+       c. Ensure the robot is at the right position in Advantage scope 3D field 
+-  #### Step 5: Coral Station
+        a. Manually position the robot against the coral station, the robot face toward CS
+
+        b. Ensure Limelights detect the April tags 
+
+        c. Ensure the robot is at the right position in Advantage scope 3D field 
+
+        d. Repeat step a-c for the other CS
 
 
 
