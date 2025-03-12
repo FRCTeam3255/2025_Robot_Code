@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constLED;
+import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapLED;
 
 import com.ctre.phoenix.led.Animation;
@@ -17,7 +18,7 @@ public class LED extends SubsystemBase {
   /** Creates a new LED. */
 
   public LED() {
-    LED = new CANdle(mapLED.LED_CAN);
+    LED = new CANdle(mapLED.LED_CAN, RobotMap.CAN_BUS_MECHANISMS);
     LED.configAllSettings(constLED.LED_CONFIG);
   }
 
