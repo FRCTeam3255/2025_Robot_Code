@@ -245,14 +245,14 @@ public class RobotContainer {
     zeroSubsystems.addRequirements(subStateMachine);
     manualZeroSubsystems.addRequirements(subStateMachine);
 
-    // subDrivetrain
-    // .setDefaultCommand(
-    // new DriveManual(subStateMachine, subDrivetrain, subElevator,
-    // conDriver.axis_LeftY, conDriver.axis_LeftX,
-    // conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger,
-    // conDriver.btn_RightTrigger,
-    // conDriver.btn_B,
-    // conDriver.btn_X, conDriver.btn_LeftBumper));
+    subDrivetrain
+        .setDefaultCommand(
+            new DriveManual(subStateMachine, subDrivetrain, subElevator,
+                conDriver.axis_LeftY, conDriver.axis_LeftX,
+                conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger,
+                conDriver.btn_RightTrigger,
+                conDriver.btn_B,
+                conDriver.btn_X, conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -303,6 +303,7 @@ public class RobotContainer {
         new ZeroAlgaeIntake(subAlgaeIntake)));
     controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
         new ZeroElevator(subElevator)));
+
   }
 
   private void configureOperatorBindings(SN_XboxController controller) {
