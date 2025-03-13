@@ -784,6 +784,7 @@ public final class Constants {
     public static final double HOPPER_SPEED = 1;
     public static final double HOPPER_INDEXING_SPEED = 1;
     public static final double HOPPER_EJECTING_SPEED = -1.0;
+    public static final double HOPPER_SERVO_INTAKING_POSITION = 1;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 

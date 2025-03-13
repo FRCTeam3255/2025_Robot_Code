@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -21,11 +22,13 @@ import frc.robot.Constants.constClimber;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   TalonFX climberMotor;
+  Servo servoMotor;
   Angle lastDesiredPosition;
 
   public Climber() {
     lastDesiredPosition = Units.Degrees.of(0);
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
+    servoMotor = new Servo(RobotMap.mapClimber.CLIMBER_SERVO_PWM);
 
     climberMotor.getConfigurator().apply(constClimber.CLIMBER_CONFIG);
   }
