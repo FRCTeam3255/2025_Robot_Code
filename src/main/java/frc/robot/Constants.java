@@ -408,7 +408,7 @@ public final class Constants {
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1; 
+    public static final double CORAL_INDEXING_SPEED = 1;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -516,7 +516,7 @@ public final class Constants {
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
-
+    public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(1);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
