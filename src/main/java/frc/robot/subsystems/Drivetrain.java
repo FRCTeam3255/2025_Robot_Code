@@ -49,7 +49,7 @@ public class Drivetrain extends SN_SuperSwerve {
           mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
   };
 
-  Pose2d desiredAlignmentPose = Pose2d.kZero;
+  public Pose2d desiredAlignmentPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
 
@@ -283,27 +283,30 @@ public class Drivetrain extends SN_SuperSwerve {
     }
   }
 
-  public boolean isAtRotation(Rotation2d desiredRotation) {
+  public boolean isAtRotation(Rotation2d desiredRotation, Angle rotTolerance) {
     return (getRotation().getMeasure()
-        .compareTo(desiredRotation.getMeasure().minus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) > 0) &&
+        .compareTo(desiredRotation.getMeasure().minus(rotTolerance)) > 0) &&
         getRotation().getMeasure()
-            .compareTo(desiredRotation.getMeasure().plus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) < 0;
+            .compareTo(desiredRotation.getMeasure().plus(rotTolerance)) < 0;
   }
 
-  public boolean isAtPosition(Pose2d desiredPose2d) {
+  public boolean isAtPosition(Pose2d desiredPose2d, Distance transTolerance) {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
-        .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
+        .lte(transTolerance);
   }
 
   public Boolean isAligned() {
-    return (desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
-        && isAtRotation(desiredAlignmentPose.getRotation());
+    return atPose(desiredAlignmentPose, constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE,
+        constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE);
   }
 
-  public boolean atPose(Pose2d desiredPose) {
-    return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
+  public Boolean isAlignedWithTolerance(Distance transTolerance, Angle rotTolerance) {
+    return atPose(desiredAlignmentPose, transTolerance, rotTolerance);
+  }
+
+  public boolean atPose(Pose2d desiredPose, Distance transTolerance, Angle rotTolerance) {
+    return isAtRotation(desiredPose.getRotation(), rotTolerance) && isAtPosition(desiredPose, transTolerance);
   }
 
   @Override
