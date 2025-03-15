@@ -4,7 +4,7 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ![Black Manta](assets/robot_name_design_2025.png)
 
-- ![2025 comp bot 1.0](assets/2025_compbot_1.0.jpg)
+- ![2025 comp bot 1.0](assets/2025_CompBot_PHR.jpg)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
 
@@ -40,10 +40,16 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 All values, including motor outputs and logic statements, are displayed during match play and saved to the robot as a file. We have the capability of viewing these logs with a 3D model & graphs.
 - **Why it’s cool:** We can translate what the robot is thinking into visuals we can understand in real time, as well as look back on previous matches to diagnose new issues.
 
+Here is an example of our logging for our TalonFXs
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/loggers/TalonFXLogger.java#L1-L32
+
 ### Manual Zeroing
 
 We have code to manually zero the Algae Intake Pivot and Elevator. In disabled, a person can quickly zero the Algae Intake Pivot and Elevator by raising them and then hitting them into their hard stop. We display the status of our manual zeroing using the CANdle, providing a clear indicator of our zeroing status. (Red to Green)
 - **Why it’s cool:** The robot will not run automatic zeroing if the manual zeroing is done to save match time. This ensures that our subsystems are at zero for every match.
+
+Here is an example of our Manual Zeroing for our elevator
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ManualZeroElevator.java#L1-L97
 
 ### Automatic Zeroing
 
@@ -51,10 +57,16 @@ Our Algae Intake Pivot and Elevator automatically sets the subsystem’s zero wh
 - **How it works:** The motor slowly runs to hit the mechanism to a hard stop, triggering a spike in current and a stop in velocity. We detect the current spike and velocity in code to know when the mechanism is at its hard stop to zero it correctly.
 - **Why it’s cool:** Automatic zeroing serves as a fallback. If manual zeroing fails or is not completed, the robot will automatically initiate the automatic zeroing process. This ensures that our subsystems are at zero for every match.
 
+Here is and example of our Auto Zeroing elevator
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ZeroElevator.java#L1-L82
+
 ### Vision
 
 Using 2 Limelight 3G’s, we calculate pose estimates based on the AprilTags that each camera can see. These cameras are mounted to ensure that when we’re up against the reef (when our pose is most important), at least 1 camera can see the tag in front of us. Each Limelight’s pose estimates are then fed into the robot, passed through a rejection filter (if tags are too small or far away), and then added to a Pose Estimator that combines our current pose with the estimates.
 - **Why it’s cool:** This process allows our robot to always have an accurate pose, optimized for times when minuscule changes can heavily impact cycle time. This baseline allows us to do all other vision-related features.
+
+This is our subsystem for our vision
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/subsystems/Vision.java#L1-L154
 
 ### Vision Aided Alignment
 
@@ -62,6 +74,10 @@ The multi-stage system, depending on the distance
 - **Smart:** Automatically chooses which face of the reef to go 
 - **Double limelights**
 - **How it works:** Using the current pose of the robot (see Vision), we calculate the closest reef face on the fly. The auto alignment then determines different desired positions based on which face of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. The same process is used for Cage & Processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
+
+This is where we give the coordinates for our poses for this
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717
+
 
 ### State Machine Control
 
