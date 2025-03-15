@@ -90,8 +90,14 @@ public class DriveManual extends Command {
         0.0, constElevator.MAX_HEIGHT.in(Units.Meters),
         1.0, constDrivetrain.MINIMUM_ELEVATOR_MULTIPLIER);
 
-    double transMultiplier = slowMultiplier
-        * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
+    double actualDriveSpeed = constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond);
+    double transMultiplier = 1.0;
+
+    if (actualDriveSpeed < slowMultiplier) {
+      transMultiplier = actualDriveSpeed * redAllianceMultiplier * elevatorHeightMultiplier;
+    } else {
+      transMultiplier = slowMultiplier * actualDriveSpeed * redAllianceMultiplier * elevatorHeightMultiplier;
+    }
 
     // -- Velocities --
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
