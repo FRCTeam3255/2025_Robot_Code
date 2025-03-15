@@ -509,6 +509,7 @@ public class RobotContainer {
 
   // ------ Autos ------
   public Command getAutonomousCommand() {
+    AUTO_PREP_NUM = 0;
     selectAutoMap();
     return autoChooser.getSelected();
   }
