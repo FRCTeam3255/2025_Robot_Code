@@ -20,8 +20,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.constElevator;
-import frc.robot.RobotMap;
 import frc.robot.RobotMap.mapElevator;
 
 @Logged
@@ -44,8 +44,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN, RobotMap.CAN_BUS_MECHANISMS);
-    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN, RobotMap.CAN_BUS_MECHANISMS);
+    leftMotorFollower = new TalonFX(mapElevator.ELEVATOR_LEFT_CAN);
+    rightMotorLeader = new TalonFX(mapElevator.ELEVATOR_RIGHT_CAN);
 
     lastDesiredPosition = Units.Inches.of(0);
     voltageRequest = new VoltageOut(0);
@@ -59,16 +59,21 @@ public class Elevator extends SubsystemBase {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
-  public boolean isAtSetPoint() {
-    return (getElevatorPosition()
-        .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
-        getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+  public boolean atDesiredPosition() {
+    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, getLastDesiredPosition());
   }
 
   public boolean isAtSpecificSetpoint(Distance setpoint) {
+    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, setpoint);
+  }
+
+  public boolean isAtSetPointWithTolerance(Distance position, Distance tolerance) {
+    if (Robot.isSimulation()) {
+      return true;
+    }
     return (getElevatorPosition()
-        .compareTo(setpoint.minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
-        getElevatorPosition().compareTo(setpoint.plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+        .compareTo(position.minus(tolerance)) > 0) &&
+        getElevatorPosition().compareTo(position.plus(tolerance)) < 0;
   }
 
   public boolean isAtAnyCoralScoringPosition() {

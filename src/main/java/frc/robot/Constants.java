@@ -263,6 +263,7 @@ public final class Constants {
 
     public static class TELEOP_AUTO_ALIGN {
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(3);
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -306,10 +307,10 @@ public final class Constants {
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
     public static final Angle MAX_POS = Units.Degrees.of(57);
-    public static final Angle MIN_POS = Units.Degrees.of(-33);
+    public static final Angle MIN_POS = Units.Degrees.of(-37);
 
     public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(57);
-    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(59);
 
     /**
      * The elapsed time required to consider the motor as zeroed
@@ -370,12 +371,13 @@ public final class Constants {
     public static final Angle CLEANING_REEF_L2_PIVOT_POSITION = Units.Degrees.of(40);
     public static final Angle CLEANING_REEF_L3_PIVOT_POSITION = Units.Degrees.of(40);
 
-    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-31);
+    public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-33);
     public static final Angle CORAL_ONLY = MAX_POS;
     public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(55);
-    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-3);
+    public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(44.14); // the tides comin in hahahah
+    public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-18);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
+
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
     public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
@@ -396,12 +398,12 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.2; // doesnt work :(
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
-    public static final double CORAL_INTAKE_SPEED = 0.8;
-    public static final double CORAL_INDEXING_SPEED = 0.15; // 0.08
+    public static final double CORAL_INTAKE_SPEED = 1;
+    public static final double CORAL_INDEXING_SPEED = 1;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -495,7 +497,7 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(19.1);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
@@ -504,11 +506,13 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
-    public static final Distance PREP_0 = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(1.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
-
+    public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
+    public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
@@ -603,7 +607,7 @@ public final class Constants {
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // Processor
-      private static final Pose2d BLUE_PROCESSOR = new Pose2d(6, .77, Rotation2d.fromDegrees(-90));
+      private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.986, 0.896, Rotation2d.fromDegrees(-90));
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
@@ -761,8 +765,8 @@ public final class Constants {
   }
 
   public static class constHopper {
-    public static final double HOPPER_SPEED = .75;
-    public static final double HOPPER_INDEXING_SPEED = .75;
+    public static final double HOPPER_SPEED = 1;
+    public static final double HOPPER_INDEXING_SPEED = 1;
     public static final double HOPPER_EJECTING_SPEED = -1.0;
 
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();

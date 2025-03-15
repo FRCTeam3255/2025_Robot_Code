@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.states.first_scoring_element;
+package frc.robot.commands.states.second_scoring_element;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -15,14 +15,14 @@ import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
-public class EjectCoral extends Command {
+public class EjectCoralWithAlgae extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  Elevator globalElevator;
   LED globalLED;
   Hopper globalHopper;
-  Elevator globalElevator;
 
-  public EjectCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper,
+  public EjectCoralWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper,
       Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
@@ -37,7 +37,7 @@ public class EjectCoral extends Command {
   @Override
   public void initialize() {
     globalElevator.setPosition(constElevator.EJECT_HOPPER_HEIGHT);
-    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
+    globalStateMachine.setRobotState(RobotState.EJECTING_CORAL_WITH_ALGAE);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
@@ -48,15 +48,16 @@ public class EjectCoral extends Command {
     if (globalElevator.isAtSetPointWithTolerance(constElevator.EJECT_HOPPER_HEIGHT, constElevator.EJECT_DEADZONE)) {
       globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
     globalCoralOuttake.setHasCoral(false);
     globalCoralOuttake.setIndexingCoral(false);
-    globalElevator.setPosition(constElevator.ZEROED_POS);
   }
 
   // Returns true when the command should end.
