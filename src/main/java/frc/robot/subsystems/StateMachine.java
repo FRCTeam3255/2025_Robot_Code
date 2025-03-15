@@ -93,7 +93,7 @@ public class StateMachine extends SubsystemBase {
   public boolean isAutoDriving() {
     return currentDriverState == DriverState.CORAL_STATION_AUTO_DRIVING
         || currentDriverState == DriverState.PROCESSOR_AUTO_DRIVING
-        || currentDriverState == DriverState.CORAL_STATION_AUTO_DRIVING;
+        || currentDriverState == DriverState.REEF_AUTO_DRIVING;
   }
 
   public void setRobotState(RobotState robotState) {
