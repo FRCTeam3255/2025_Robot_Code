@@ -48,7 +48,6 @@ public class ClimberDeploying extends Command {
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
       globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
       globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
-      globalClimber.climberPreped = true;
     } else {
       System.out.println("ClimberDeploying: Match time is not low enough  Eli rn -_-");
     }
@@ -64,6 +63,11 @@ public class ClimberDeploying extends Command {
   @Override
   public void end(boolean interrupted) {
     globalClimber.setClimberMotorVelocity(0);
+    if (!interrupted) {
+      globalClimber.climberPreped = true;
+    } else {
+      System.out.println("ClimberDeploying: Command was interrupted");
+    }
   }
 
   // Returns true when the command should end.
