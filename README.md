@@ -40,7 +40,6 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 - #### Step 3: Check Reef
 
 
-  ```  
   *Note: if the limelight tuning values of the further one doesn't work for the closer one, just use the closer one*
 
   a. In the advantage scope 3D field, check if the robot position is at the same position in the real life
@@ -52,22 +51,21 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
   d. Manually move the robot back to the auto-drive location (see position 2 in the photo, with the robot facing TOWARD the reef) and check the April tag again (try to see as many April tags as you can)
  
   e. Repeat step a-e for every face of the reef 
-  ```
 
     ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
 
 
 -  #### Step 4: Check auto starting line 
-        a. Manually move the robot on the auto starting line, make sure the robot is facing toward the center of your side of the field
+    a. Manually move the robot on the auto starting line, make sure the robot is facing toward the center of your side of the field
 
-        b. Ensure Limelights detect the April tags
+    b. Ensure Limelights detect the April tags
 
 -  #### Step 5: Coral Station
-        a. Manually position the robot against the coral station, the robot face toward CS
+   a. Manually position the robot against the coral station, the robot face toward CS
 
-        b. Ensure Limelights detect the April tags
+   b. Ensure Limelights detect the April tags
 
-        c. Repeat step a-b for the other CS
+   c. Repeat step a-b for the other CS
 
 
 
