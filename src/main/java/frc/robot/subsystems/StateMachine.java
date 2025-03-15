@@ -189,7 +189,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_CORAL:
           case INTAKING_CORAL:
           case INDEXING_CORAL:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
         }
         break;
 
