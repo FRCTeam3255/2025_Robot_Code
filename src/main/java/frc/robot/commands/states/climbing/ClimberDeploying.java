@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.Constants;
@@ -24,16 +25,18 @@ public class ClimberDeploying extends Command {
   LED globalLED;
   AlgaeIntake globalAlgaeIntake;
   Elevator globalElevator;
+  CoralOuttake globalCoralOuttake;
 
   /** Creates a new Climb. */
   public ClimberDeploying(StateMachine subStateMachine, Climber subClimber, Elevator subElevator,
-      AlgaeIntake subAlgaeIntake, LED subLED) {
+      AlgaeIntake subAlgaeIntake, CoralOuttake subCoralOuttake, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalClimber = subClimber;
     globalElevator = subElevator;
     globalLED = subLED;
     globalAlgaeIntake = subAlgaeIntake;
+    globalCoralOuttake = subCoralOuttake;
 
     addRequirements(globalStateMachine);
   }
@@ -47,6 +50,7 @@ public class ClimberDeploying extends Command {
       globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
       globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
+      globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.CLIMBER_ALGAE_VELOCITY);
       globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
     } else {
       System.out.println("ClimberDeploying: Match time is not low enough  Eli rn -_-");
