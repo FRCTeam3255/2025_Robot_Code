@@ -47,7 +47,6 @@ public class HasCoralAndAlgae extends Command {
     globalLED.setLED(constLED.LED_HAS_BOTH);
     globalCoralOuttake.setCoralOuttake(0);
     globalHopper.runHopper(0);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -113,7 +113,7 @@ public class StateMachine extends SubsystemBase {
         return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
       }
     }
-    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator);
+    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
   }
 
   public Command tryState(RobotState desiredState) {
@@ -265,7 +265,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
           case SCORING_ALGAE_WITH_CORAL:
-            return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator);
+            return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
         }
         break;
 
