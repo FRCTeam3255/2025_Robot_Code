@@ -38,7 +38,6 @@ public class EjectCoral extends Command {
   public void initialize() {
     globalElevator.setPosition(constElevator.EJECT_HOPPER_HEIGHT);
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
@@ -46,6 +45,9 @@ public class EjectCoral extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.isAtSetPointWithTolerance(constElevator.EJECT_HOPPER_HEIGHT, constElevator.EJECT_DEADZONE)) {
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
+    }
   }
 
   // Called once the command ends or is interrupted.

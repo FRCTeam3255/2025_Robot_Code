@@ -513,10 +513,11 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(0);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
-    public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(1);
+    public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
