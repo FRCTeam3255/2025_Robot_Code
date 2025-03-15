@@ -225,6 +225,8 @@ public final class Constants {
      */
     public static final double MEASUREMENT_STD_DEV_HEADING = Units.Radians.convertFrom(5, Units.Degrees);
 
+    public static final Distance SHIFT_ELEVATOR_TOLERANCE = Units.Inches.of(3);
+
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
       public static final double AUTO_DRIVE_P = 9;
@@ -519,6 +521,7 @@ public final class Constants {
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
+    public static final Distance HEIGHT_SHIFT = Units.Inches.of(2.8);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 

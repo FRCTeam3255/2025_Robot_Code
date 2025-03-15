@@ -37,7 +37,7 @@ public class Elevator extends SubsystemBase {
   PositionVoltage positionRequest;
   VoltageOut voltageRequest = new VoltageOut(0);
 
-  public boolean attemptingZeroing = false;
+  private boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
 
   MotionMagicVoltage motionRequest;

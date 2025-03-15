@@ -90,6 +90,12 @@ public class StateMachine extends SubsystemBase {
     currentDriverState = driverState;
   }
 
+  public boolean isAutoDriving() {
+    return currentDriverState == DriverState.CORAL_STATION_AUTO_DRIVING
+        || currentDriverState == DriverState.PROCESSOR_AUTO_DRIVING
+        || currentDriverState == DriverState.CORAL_STATION_AUTO_DRIVING;
+  }
+
   public void setRobotState(RobotState robotState) {
     currentRobotState = robotState;
   }
@@ -300,7 +306,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED,
+                subDrivetrain);
         }
         break;
 
@@ -311,7 +318,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED,
+                subDrivetrain);
         }
         break;
 
@@ -322,7 +330,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED,
+                subDrivetrain);
         }
         break;
 
@@ -333,7 +342,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED);
+            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED,
+                subDrivetrain);
         }
         break;
 
