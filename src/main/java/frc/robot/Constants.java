@@ -302,6 +302,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
+    public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
