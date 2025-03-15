@@ -4,10 +4,11 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ![Black Manta](assets/robot_name_design_2025.png)
 
-![2025 comp bot 1.0](assets/2025_compbot_1.0.jpg)
+- ![2025 comp bot 1.0](assets/2025_compbot_1.0.jpg)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
-![PHR Team Photo](assets/PHR_Team_Photo.jpg)
+
+- ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
@@ -30,11 +31,9 @@ competitions (depending on region) to qualify for the FIRST Championship in Hous
 
 Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www.firstinspires.org/robotics/frc/game-and-season) for more details!
 
-## Software Features
-*The following can also be viewed on our [Technical Binder](https://docs.google.com/presentation/d/1BhyFky9psi2LGDSo0eq83TJjHZ4MLhUbbhofXiZBrto/edit#slide=id.g339a318d103_0_13).*
 
-### Controller Map
-![Controller Map](assets/2025_controllermap.png)
+
+## Software Features
 
 ### Logging & Simulation
 
@@ -59,13 +58,19 @@ Using 2 Limelight 3G’s, we calculate pose estimates based on the AprilTags tha
 
 ### Vision Aided Alignment
 
-A multi-stage system, depending on distance
+The multi-stage system, depending on the distance
 - **Smart:** Automatically chooses which face of the reef to go 
 - **Double limelights**
 - **How it works:** Using the current pose of the robot (see Vision), we calculate the closest reef face on the fly. The auto alignment then determines different desired positions based on which face of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. The same process is used for Cage & Processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
 
 ### State Machine Control
+
+- **State Machine Diagram**
 ![State Machine](assets/State_Machine_2.0.png)
+
+- **Controller Map**
+![Controller Map](assets/2025_controllermap.png)
+
 - **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
 
