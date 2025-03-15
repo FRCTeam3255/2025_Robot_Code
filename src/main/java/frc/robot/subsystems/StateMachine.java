@@ -138,7 +138,7 @@ public class StateMachine extends SubsystemBase {
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
             if (subClimber.climberPreped) {
-              Commands.print("Climber is not prepped!!! Not safe to return to NONE >____<");
+              Commands.print("Climber is prepped!!! Not safe to return to NONE >____<");
             } else {
               Elastic.selectTab("Teleoperated");
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,

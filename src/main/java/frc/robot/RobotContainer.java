@@ -444,6 +444,10 @@ public class RobotContainer {
     return !isPracticeBot.get();
   }
 
+  public void resetClimbBool(){
+    subClimber.climberPreped = false;
+  }
+
   public void checkForCoral() {
     if (subCoralOuttake.sensorSeesCoral()) {
       subStateMachine.setRobotState(RobotState.HAS_CORAL);
