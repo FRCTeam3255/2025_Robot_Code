@@ -161,10 +161,12 @@ public class DriveManual extends Command {
     }
     // -- Net --
     else if (net.getAsBoolean()) {
-
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
+        if (netPose.equals(constField.POSES.NET_POSES.get(1))) {
+          yVelocity = yVelocity.unaryMinus();
+        }
         desiredNetPose = new Pose2d(netPose.getX(), currentPose.getY(), netPose.getRotation());
         netAlignStarted = true;
       }
@@ -172,7 +174,7 @@ public class DriveManual extends Command {
       Distance netDistance = Units.Meters
           .of(currentPose.getTranslation().getDistance(desiredNetPose.getTranslation()));
 
-      subDrivetrain.autoAlign(netDistance, desiredNetPose, xVelocity, yVelocity.times(redAllianceMultiplier), rVelocity,
+      subDrivetrain.autoAlign(netDistance, desiredNetPose, xVelocity, yVelocity, rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
     } else {
