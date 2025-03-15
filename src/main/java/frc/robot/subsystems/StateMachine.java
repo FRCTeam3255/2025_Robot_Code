@@ -137,6 +137,13 @@ public class StateMachine extends SubsystemBase {
                 subLED);
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+            if (subClimber.climberPreped) {
+              Commands.print("Climber is prepped!!! Not safe to return to NONE >____<");
+            } else {
+              Elastic.selectTab("Teleoperated");
+              return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
+                  subLED);
+            }
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               Elastic.selectTab("Teleoperated");
