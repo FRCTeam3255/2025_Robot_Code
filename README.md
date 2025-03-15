@@ -34,8 +34,8 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 ## Field Calibration
 - #### Step 1: have advantage scope 3D field open whole time
 
--  ### Step 2: Tune the Limelights
-    ## [Limelights' website](limelight.local:5801)
+-  #### Step 2: Tune the Limelights
+    ### [Limelights' website](limelight.local:5801)
 
 - #### Step 3: Check Reef
 
@@ -45,34 +45,29 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 
   a. In the advantage scope 3D field, check if the robot position is at the same position in the real life
 
-  b. Manually position the robot to against reef face (see position 1 in photo, the robot face toward reef) 
+  b. Manually position the robot to against reef face (see position 1 in photo, the robot face toward reef, slightly towards the corner of the reef b/c we want to ideally be able to see 2 tags (from 2 faces) when approaching the reef) 
 
   c. Ensure Limelights detect the April tags (you should be only see one April tag at one time)
 
-  d. Ensure the robot is at the right position in Advantage scope 3D field 
-
-  e. Manually move the robot back to the auto-drive location (see position 2 in the photo, with the robot facing TOWARD the reef) and check the April tag again (try to see as many April tags as you can)
+  d. Manually move the robot back to the auto-drive location (see position 2 in the photo, with the robot facing TOWARD the reef) and check the April tag again (try to see as many April tags as you can)
  
-  f. Repeat step a-e for every face of the reef 
+  e. Repeat step a-e for every face of the reef 
   ```
 
-    ![Field_Calibration_Reef](assets/Field_Calibration_Reefs.png)
+    ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
 
 
 -  #### Step 4: Check auto starting line 
         a. Manually move the robot on the auto starting line, make sure the robot is facing toward the center of your side of the field
 
-       b. Ensure Limelights detect the April tags
+        b. Ensure Limelights detect the April tags
 
-       c. Ensure the robot is at the right position in Advantage scope 3D field 
 -  #### Step 5: Coral Station
         a. Manually position the robot against the coral station, the robot face toward CS
 
-        b. Ensure Limelights detect the April tags 
+        b. Ensure Limelights detect the April tags
 
-        c. Ensure the robot is at the right position in Advantage scope 3D field 
-
-        d. Repeat step a-c for the other CS
+        c. Repeat step a-b for the other CS
 
 
 
