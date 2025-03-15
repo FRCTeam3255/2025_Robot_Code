@@ -7,12 +7,22 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 - ![2025 comp bot 1.0](assets/2025_CompBot_PHR.jpg)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
+- [Port Hueneme Recap] (https://www.youtube.com/watch?v=wBRe15c5S4I)
+-  ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
-- ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
 - [San Diego Regional](https://www.thebluealliance.com/event/2025casd)
+- [Championship in Houston, TX] (https://www.thebluealliance.com/event/2025cmptx)
+
+## ✨ Highlights ✨  
+
+- Manual & Automatic Zeroing
+- Vision Aided Alignment
+- State Machine
+-
+-
 
 
 ## View Our Robots in Action!
@@ -111,7 +121,7 @@ A mechanism that sets a safety delay after placing coral to ensure the robot doe
   - **Quick Tap:** If the operator performs a quick tap on the trigger button, the robot will wait until the coral has completely exited the scoring mechanism (CoralOuttake) before lowering the elevator. This process is achieved through the Coral Placing Safety Time, ensuring that the robot does not proceed to the next operation until the coral is fully placed.
   - **Long Press:** If the operator holds the trigger button for longer than the preset delay time, the robot will ignore the safety delay. This means the robot will immediately proceed to the next operation when the operator releases the trigger button.
 
-### Motion Magic
+### Motion Magic 🪄🪄
 
 Our Elevator & Algae Pivot use a motion profiling system from CTRE called Motion Magic, allowing us to tune not only our subsystems’ PID controller, but also their acceleration & cruise velocity.
 - **Why it’s cool:** This method of tuning allows our Elevator to reach its desired position (from Min to Max) in 1.2 seconds or less, and our Algae Pivot in 1.8 seconds.
@@ -120,7 +130,8 @@ Our Elevator & Algae Pivot use a motion profiling system from CTRE called Motion
 
 We have 3-L4-coral-auto on both sides of the field.
 - **How it works:**
-  - **Driving:**
+  - **Driving ![alt text](image.png):**
     - Basic driving: Path planner used to navigate by preset trajectories.
     - Pose Target driving: dynamically adjusts robot pose to auto-align (same as the one in tele-op).
   - **Commands:** State-machine-based command sequence scheduling ensures smooth and reliable execution.
+`
