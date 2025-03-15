@@ -38,6 +38,7 @@ public class IntakeCoralHopper extends Command {
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CORAL_ONLY);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
+    globalHopper.setServoPosition(Constants.constHopper.HOPPER_SERVO_INTAKING_POSITION);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
   }
