@@ -189,7 +189,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_CORAL:
           case INTAKING_CORAL:
           case INDEXING_CORAL:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
         }
         break;
 
@@ -247,7 +247,7 @@ public class StateMachine extends SubsystemBase {
           case INTAKING_CORAL_WITH_ALGAE:
           case INDEXING_CORAL_WITH_ALGAE:
           case HAS_ALGAE:
-            return new EjectCoralWithAlgae(subStateMachine, subCoralOuttake, subLED, subHopper);
+            return new EjectCoralWithAlgae(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
         }
         break;
 
@@ -276,6 +276,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL_WITH_ALGAE:
           case INTAKING_CORAL_WITH_ALGAE:
+          case EJECTING_CORAL_WITH_ALGAE:
             return new HasAlgae(subStateMachine, subAlgaeIntake, subLED, subCoralOuttake, subHopper, subElevator);
         }
         break;
