@@ -48,6 +48,7 @@ public class ClimberDeploying extends Command {
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
       globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
       globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+      globalClimber.climberPreped = true;
     } else {
       System.out.println("ClimberDeploying: Match time is not low enough  Eli rn -_-");
     }
@@ -56,6 +57,7 @@ public class ClimberDeploying extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
   }
 
   // Called once the command ends or is interrupted.

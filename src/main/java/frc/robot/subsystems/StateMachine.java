@@ -86,10 +86,6 @@ public class StateMachine extends SubsystemBase {
     this.conOperator = conOperator;
   }
 
-  public void setDriverState(DriverState driverState) {
-    currentDriverState = driverState;
-  }
-
   public void setRobotState(RobotState robotState) {
     currentRobotState = robotState;
   }
@@ -137,6 +133,13 @@ public class StateMachine extends SubsystemBase {
                 subLED);
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+            if (subClimber.climberPreped) {
+              Elastic.selectTab("Teleoperated");
+              return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
+                  subLED);
+            } else {
+              Commands.print("Climber is not prepped!!! Not safe to return to NONE >____<");
+            }
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               Elastic.selectTab("Teleoperated");
