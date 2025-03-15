@@ -268,7 +268,9 @@ public final class Constants {
 
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(1);
+      public static final Distance MAX_AUTO_DRIVE_CAGE_DISTANCE = Units.Meters.of(2);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(3);
+
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -556,7 +558,9 @@ public final class Constants {
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
     public static final Distance FIELD_LENGTH = Units.Feet.of(57).plus(Units.Inches.of(6 + 7 / 8));
+    // what is field length converse to meters? 17.6 meters
     public static final Distance FIELD_WIDTH = Units.Feet.of(26).plus(Units.Inches.of(5));
+    // what is field width converse to meters? 8.05 meters
 
     /**
      * Boolean that controls when the path will be mirrored for the red
@@ -618,6 +622,14 @@ public final class Constants {
       private static final Pose2d RED_PROCESSOR_POSE = getRedProcessorPose();
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR_POSE, RED_PROCESSOR_POSE);
 
+      // CAGE POSES
+      public static final Pose2d CAGE_1 = new Pose2d(7.783, 7.248, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_2 = new Pose2d(7.783, 6.151, Rotation2d.fromDegrees(0));
+      public static final Pose2d CAGE_3 = new Pose2d(7.783, 5.068, Rotation2d.fromDegrees(0));
+
+      private static final List<Pose2d> BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
+      private static final List<Pose2d> RED_CAGE_POSES = getRedCagePoses();
+
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L };
 
@@ -650,6 +662,16 @@ public final class Constants {
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
+    }
+
+    private static List<Pose2d> getRedCagePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CAGE_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CAGE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
     }
 
     private static List<Pose2d> getRedCoralStationPoses() {
@@ -702,6 +724,17 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    /**
+     * @return Array of cage branches for your alliance
+     */
+    public static Supplier<List<Pose2d>> getCagePositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_CAGE_POSES;
+
+      }
+      return () -> POSES.BLUE_CAGE_POSES;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {

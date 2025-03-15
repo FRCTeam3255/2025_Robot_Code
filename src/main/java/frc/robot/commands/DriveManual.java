@@ -27,7 +27,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, cage;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -51,7 +51,7 @@ public class DriveManual extends Command {
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
-      BooleanSupplier processorBtn) {
+      BooleanSupplier processorBtn, BooleanSupplier cage) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -64,6 +64,7 @@ public class DriveManual extends Command {
     this.coralStationRight = coralStationRight;
     this.subElevator = subElevator;
     this.processor = processorBtn;
+    this.cage = cage;
 
     isOpenLoop = true;
 
@@ -136,6 +137,16 @@ public class DriveManual extends Command {
           transMultiplier, isOpenLoop,
           Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
           DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    // -- Cage --
+    else if (cage.getAsBoolean()) {
+      Pose2d desiredCage = subDrivetrain.getDesiredCage();
+      Distance cageDistance = Units.Meters
+          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCage.getTranslation()));
+      subDrivetrain.autoAlign(cageDistance, desiredCage, xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
+          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CAGE_DISTANCE, DriverState.CAGE_AUTO_DRIVING,
+          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
     }
 
     // -- Processors --
