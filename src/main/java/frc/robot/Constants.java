@@ -410,7 +410,7 @@ public final class Constants {
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1; 
+    public static final double CORAL_INDEXING_SPEED = 1;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -557,7 +557,9 @@ public final class Constants {
   public static class constField {
     public static Optional<Alliance> ALLIANCE = Optional.empty();
     public static final Distance FIELD_LENGTH = Units.Feet.of(57).plus(Units.Inches.of(6 + 7 / 8));
+    // what is field length converse to meters? 17.6 meters
     public static final Distance FIELD_WIDTH = Units.Feet.of(26).plus(Units.Inches.of(5));
+    // what is field width converse to meters? 8.05 meters
 
     /**
      * Boolean that controls when the path will be mirrored for the red
@@ -665,11 +667,12 @@ public final class Constants {
       Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CAGE_POSES.size()];
 
       for (int i = 0; i < POSES.BLUE_CAGE_POSES.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_REEF_POSES.get(i));
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CAGE_POSES.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
     }
+
     private static List<Pose2d> getRedCoralStationPoses() {
       Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CORAL_STATION_POSES.size()];
 
@@ -732,6 +735,7 @@ public final class Constants {
       }
       return () -> POSES.BLUE_CAGE_POSES;
     }
+
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
       if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
         return () -> POSES.RED_CORAL_STATION_POSES;
