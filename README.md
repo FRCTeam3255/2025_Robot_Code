@@ -41,7 +41,7 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 
 
   ```  
-  *Note: if the numbers of the further one doesn't work for the closer one, just use the closer one*
+  *Note: if the limelight tuning values of the further one doesn't work for the closer one, just use the closer one*
 
   a. In the advantage scope 3D field, check if the robot position is at the same position in the real life
 
