@@ -327,7 +327,9 @@ public class RobotContainer {
     // Eject Coral
     controller.btn_RightBumper
         .whileTrue(TRY_EJECTING_CORAL)
-        .onFalse(TRY_NONE);
+        .whileTrue(TRY_EJECTING_CORAL_WITH_ALGAE)
+        .onFalse(TRY_NONE)
+        .onFalse(TRY_HAS_ALGAE);
 
     controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
     controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
@@ -432,7 +434,7 @@ public class RobotContainer {
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
-    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
+    return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**
@@ -535,7 +537,7 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitUntil(() -> subElevator.isAtSetPoint()),
+        Commands.waitUntil(() -> subElevator.atDesiredPosition()),
         TRY_SCORING_ALGAE.asProxy().withTimeout(1),
         Commands.waitSeconds(0.5),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
