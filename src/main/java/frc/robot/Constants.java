@@ -386,7 +386,7 @@ public final class Constants {
 
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
-    public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
+    public static final Angle CLIMB_DEPLOY_POSITION = MAX_POS;
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
