@@ -137,13 +137,20 @@ public class StateMachine extends SubsystemBase {
                 subLED);
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+            if (subClimber.isClimberPreped()) {
+              return Commands.print("Climber is prepped!!! Not safe to return to NONE >____<");
+            } else {
+              Elastic.selectTab("Teleoperated");
+              return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
+                  subLED);
+            }
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               Elastic.selectTab("Teleoperated");
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
             } else {
-              Commands.print("Climber is too far down!!! Not safe to return to NONE >____<");
+              return Commands.print("Climber is too far down!!! Not safe to return to NONE >____<");
             }
         }
         break;
@@ -566,6 +573,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case MANUAL_CLIMBER_DEPLOYING:
             return new ManualClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;

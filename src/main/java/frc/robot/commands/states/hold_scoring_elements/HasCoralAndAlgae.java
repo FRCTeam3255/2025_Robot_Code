@@ -46,6 +46,7 @@ public class HasCoralAndAlgae extends Command {
     globalAlgaeIntake.setAlgaeIntakeVoltage(constAlgaeIntake.HOLD_ALGAE_INTAKE_VOLTAGE);
     globalLED.setLED(constLED.LED_HAS_BOTH);
     globalCoralOuttake.setCoralOuttake(0);
+    globalAlgaeIntake.setHasAlgaeOverride(true);
     globalHopper.runHopper(0);
   }
 
