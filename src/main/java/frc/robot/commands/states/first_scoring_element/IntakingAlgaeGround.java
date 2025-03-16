@@ -35,6 +35,7 @@ public class IntakingAlgaeGround extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalAlgaeIntake.setHasAlgaeOverride(false);
     subStateMachine.setRobotState(RobotState.INTAKING_ALGAE_GROUND);
     globalElevator.setPosition(Constants.constElevator.ALGAE_GROUND_INTAKE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
