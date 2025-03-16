@@ -64,7 +64,7 @@ public class ClimberDeploying extends Command {
   public void end(boolean interrupted) {
     globalClimber.setClimberMotorVelocity(0);
     if (!interrupted) {
-      globalClimber.climberPreped = true;
+      globalClimber.setClimberPreped(true);
     } else {
       System.out.println("ClimberDeploying: Command was interrupted");
     }

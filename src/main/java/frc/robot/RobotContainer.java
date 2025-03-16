@@ -445,8 +445,8 @@ public class RobotContainer {
     return !isPracticeBot.get();
   }
 
-  public void resetClimbBool(){
-    subClimber.climberPreped = false;
+  public void resetClimbBool() {
+    subClimber.setClimberPreped(false);
   }
 
   public void checkForCoral() {
