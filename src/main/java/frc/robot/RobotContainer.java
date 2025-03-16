@@ -263,7 +263,6 @@ public class RobotContainer {
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
-
     if (setMegaTag2) {
       subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
           constVision.MEGA_TAG2_STD_DEVS_POSITION,
@@ -280,6 +279,8 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
+    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
