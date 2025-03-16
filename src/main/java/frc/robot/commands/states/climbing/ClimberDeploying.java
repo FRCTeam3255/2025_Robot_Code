@@ -43,6 +43,7 @@ public class ClimberDeploying extends Command {
   public void initialize() {
     if (DriverStation.getMatchTime() <= constClimber.MATCH_CLIMBING_TIME) {
       Elastic.selectTab("Climbing");
+      globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.CLIMB_ALGAE_VELOCITY);
       globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
       globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
@@ -63,6 +64,7 @@ public class ClimberDeploying extends Command {
   @Override
   public void end(boolean interrupted) {
     globalClimber.setClimberMotorVelocity(0);
+    globalAlgaeIntake.setAlgaeIntakeMotor(0);
     if (!interrupted) {
       globalClimber.setClimberPreped(true);
     } else {
