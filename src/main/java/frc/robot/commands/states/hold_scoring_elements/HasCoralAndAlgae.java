@@ -48,7 +48,6 @@ public class HasCoralAndAlgae extends Command {
     globalCoralOuttake.setCoralOuttake(0);
     globalAlgaeIntake.setHasAlgaeOverride(true);
     globalHopper.runHopper(0);
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
