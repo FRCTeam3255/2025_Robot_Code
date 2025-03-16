@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.constField;
+import frc.robot.subsystems.Climber;
 import edu.wpi.first.cameraserver.CameraServer;
 
 @Logged
@@ -78,6 +79,8 @@ public class Robot extends TimedRobot {
     if (!hasAutonomousRun) {
       m_robotContainer.manualZeroSubsystems.schedule();
     }
+
+    m_robotContainer.resetClimbBool();
   }
 
   @Override
