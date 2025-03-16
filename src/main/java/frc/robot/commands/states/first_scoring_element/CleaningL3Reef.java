@@ -34,6 +34,7 @@ public class CleaningL3Reef extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalAlgaeIntake.setHasAlgaeOverride(false);
     globalStateMachine.setRobotState(RobotState.CLEANING_L3);
     globalElevator.setPosition(Constants.constElevator.ALGAE_L3_CLEANING);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
