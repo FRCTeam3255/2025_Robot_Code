@@ -23,11 +23,21 @@ public class Climber extends SubsystemBase {
   TalonFX climberMotor;
   Angle lastDesiredPosition;
 
+  private boolean climberPreped = false;
+
   public Climber() {
     lastDesiredPosition = Units.Degrees.of(0);
     climberMotor = new TalonFX(RobotMap.mapClimber.CLIMBER_LEFT_CAN);
 
     climberMotor.getConfigurator().apply(constClimber.CLIMBER_CONFIG);
+  }
+
+  public boolean isClimberPreped() {
+    return climberPreped;
+  }
+
+  public void setClimberPreped(boolean climberPreped) {
+    this.climberPreped = climberPreped;
   }
 
   public void setClimberMotorVelocity(double velocity) {
