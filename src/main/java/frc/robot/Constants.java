@@ -131,7 +131,7 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.59082;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.809082;
     public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.033936;
     public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.894775;
     public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.343750;
