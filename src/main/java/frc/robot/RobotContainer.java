@@ -80,7 +80,6 @@ public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
-  private final SN_XboxController conTester = new SN_XboxController(mapControllers.TESTER_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Hopper subHopper = new Hopper();
@@ -257,7 +256,6 @@ public class RobotContainer {
     configureSensorBindings();
     configureAutoBindings();
     configureAutoSelector();
-    configureTesterBindings(conTester);
 
     subDrivetrain.resetModulesToAbsolute();
 
@@ -265,7 +263,6 @@ public class RobotContainer {
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
-
     if (setMegaTag2) {
       subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
           constVision.MEGA_TAG2_STD_DEVS_POSITION,
@@ -282,6 +279,8 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
+    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
@@ -329,7 +328,9 @@ public class RobotContainer {
     // Eject Coral
     controller.btn_RightBumper
         .whileTrue(TRY_EJECTING_CORAL)
-        .onFalse(TRY_NONE);
+        .whileTrue(TRY_EJECTING_CORAL_WITH_ALGAE)
+        .onFalse(TRY_NONE)
+        .onFalse(TRY_HAS_ALGAE);
 
     controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
     controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
@@ -416,62 +417,6 @@ public class RobotContainer {
         () -> subLED.setLED(constLED.READY_TO_LEAVE, 0)));
   }
 
-  private void configureTesterBindings(SN_XboxController controller) {
-    // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
-        .ignoringDisable(true));
-
-    // Back: Intake Coral
-    controller.btn_Back
-        .whileTrue(comIntakeCoralHopper);
-
-    // LT: Eat Algae
-    controller.btn_LeftBumper
-        .whileTrue(comIntakingAlgaeGround);
-
-    // RT: Spit Algae
-    controller.btn_RightTrigger
-        .whileTrue(comScoringAlgae);
-
-    // RB: Score Coral
-    controller.btn_RightTrigger
-        .onTrue(comScoringCoral);
-
-    // LB: Climb
-    controller.btn_LeftTrigger
-        .whileTrue(comClimb);
-
-    // btn_East: Set Elevator to Neutral
-    controller.btn_East
-        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
-
-    // btn_South: Prep Processor
-    controller.btn_South
-        .whileTrue(comPrepProcessor);
-
-    // btn_West: Clean L3 Reef
-    controller.btn_West
-        .whileTrue(comCleaningL3Reef);
-
-    // btn_North: Clean L2 Reef
-    controller.btn_North
-        .whileTrue(comCleaningL2Reef);
-
-    // btn_NorthWest: Prep Net
-    controller.btn_NorthWest
-        .whileTrue(comPrepNet);
-
-    // btn_A/B/Y/X: Set Elevator to Coral Levels
-    controller.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
-    controller.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
-    controller.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
-    controller.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
-  }
-
   public RobotState getRobotState() {
     return subStateMachine.getRobotState();
   }
@@ -490,7 +435,7 @@ public class RobotContainer {
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
-    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
+    return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**
@@ -498,6 +443,10 @@ public class RobotContainer {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public void resetClimbBool() {
+    subClimber.setClimberPreped(false);
   }
 
   public void checkForCoral() {
@@ -594,7 +543,7 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitUntil(() -> subElevator.isAtSetPoint()),
+        Commands.waitUntil(() -> subElevator.atDesiredPosition()),
         TRY_SCORING_ALGAE.asProxy().withTimeout(1),
         Commands.waitSeconds(0.5),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));

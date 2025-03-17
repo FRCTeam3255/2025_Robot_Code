@@ -131,7 +131,7 @@ public final class Constants {
     // In Rotations: Obtain by aligning all of the wheels in the correct direction
     // and
     // copy-pasting the Raw Absolute Encoder value
-    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = 0.59082;
+    public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.809082;
     public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.033936;
     public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.894775;
     public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.343750;
@@ -302,6 +302,7 @@ public final class Constants {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
+    public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
     public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
 
@@ -385,7 +386,7 @@ public final class Constants {
 
     public static final Angle EJECT_ALGAE_PIVOT_POSITION = Units.Degrees.of(15);
 
-    public static final Angle CLIMB_DEPLOY_POSITION = MIN_POS;
+    public static final Angle CLIMB_DEPLOY_POSITION = MAX_POS;
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -408,7 +409,7 @@ public final class Constants {
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1; 
+    public static final double CORAL_INDEXING_SPEED = 1;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -511,12 +512,13 @@ public final class Constants {
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
-    public static final Distance PREP_0 = Units.Inches.of(0);
+    public static final Distance PREP_0 = Units.Inches.of(1.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
-
+    public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
