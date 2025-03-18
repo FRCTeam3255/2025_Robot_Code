@@ -10,6 +10,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
@@ -40,16 +41,18 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
     addCommands(
         // Set state and LEDs
         Commands.runOnce(() -> subStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL_WITH_ALGAE)),
-        Commands.runOnce(() -> globalLED.setLED(constLED.LED_PLACE_CORAL)),
+        Commands.runOnce(() -> globalLED.setLED(constLED.LED_PLACE_CORAL_WITH_ALGAE)),
 
         // Shoot coral when elevator is at the right position
-        Commands.waitUntil(() -> globalElevator.isAtSetPoint()),
+        Commands.waitUntil(() -> globalElevator.atDesiredPosition()),
         Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(getCoralOuttakeSpeed())),
         Commands.runOnce(() -> globalCoralOuttake.setHasCoral(false)),
 
         // Start ze timer
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
+
+        Commands.runOnce(() -> RobotContainer.justScored = true),
 
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button

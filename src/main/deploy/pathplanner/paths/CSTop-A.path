@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 1.8,
+        "y": 7.155
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8528526606755178,
-        "y": 6.733237847820239
+        "x": 2.022852660675518,
+        "y": 6.534237847820239
       },
       "isLocked": false,
       "linkedName": null
@@ -32,12 +32,6 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
-    {
-      "name": "GetCoralStationPiece",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
     {
       "name": "PrepPlace",
       "waypointRelativePos": 1.0,

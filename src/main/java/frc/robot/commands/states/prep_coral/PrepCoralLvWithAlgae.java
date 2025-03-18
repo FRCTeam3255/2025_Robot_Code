@@ -46,7 +46,7 @@ public class PrepCoralLvWithAlgae extends Command {
     else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4_WITH_ALGAE);
     globalElevator.setPosition(globalDistance);
-    globalLED.setLED(constLED.LED_PREP_CORAL_LV);
+    globalLED.setLED(constLED.LED_PREP_CORAL_LV_WITH_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,6 +62,6 @@ public class PrepCoralLvWithAlgae extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalElevator.isAtSetPoint();
+    return globalElevator.atDesiredPosition();
   }
 }

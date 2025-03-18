@@ -6,6 +6,7 @@ package frc.robot.commands.states.prep_algae;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
@@ -33,7 +34,7 @@ public class PrepNetWithCoral extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
-    globalLED.setLED(Constants.constLED.LED_PREP_NET);
+    globalLED.setLED(constLED.LED_PREP_NET_WITH_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,6 +50,6 @@ public class PrepNetWithCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalElevator.isAtSetPoint();
+    return globalElevator.atDesiredPosition();
   }
 }

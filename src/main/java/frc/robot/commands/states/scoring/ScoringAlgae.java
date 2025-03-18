@@ -5,12 +5,14 @@
 package frc.robot.commands.states.scoring;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ScoringAlgae extends Command {
@@ -18,6 +20,7 @@ public class ScoringAlgae extends Command {
   Elevator globalElevator;
   AlgaeIntake subAlgaeIntake;
   LED globalLED;
+  double desiredSpeed;
 
   public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,6 +34,12 @@ public class ScoringAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (globalStateMachine.getRobotState() == RobotState.PREP_NET) {
+      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
+    } else {
+      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_PROCESSOR_SPEED;
+    }
+
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
     globalLED.setLED(constLED.LED_SCORING_ALGAE);
   }
@@ -38,8 +47,8 @@ public class ScoringAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint()) {
-      subAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_SPEED);
+    if (globalElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint()) {
+      subAlgaeIntake.setAlgaeIntakeMotor(desiredSpeed);
     }
   }
 
@@ -48,6 +57,7 @@ public class ScoringAlgae extends Command {
   public void end(boolean interrupted) {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setHasAlgaeOverride(false);
+    RobotContainer.justScored = true;
   }
 
   // Returns true when the command should end.

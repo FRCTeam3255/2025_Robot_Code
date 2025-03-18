@@ -22,14 +22,19 @@ public class LED extends SubsystemBase {
   }
 
   public void setLED(int[] rgb) {
-    LED.setLEDs(rgb[0], rgb[1], rgb[2]);
+    if (rgb != null) {
+      clearAnimation();
+      LED.setLEDs(rgb[0], rgb[1], rgb[2]);
+    }
   }
 
-  public void setLEDAnimation(Animation animation, int animationSlot) {
+  public void setLED(Animation animation, int animationSlot) {
+    clearAnimation();
     LED.animate(animation, animationSlot);
   }
 
   public void setLEDMatrix(int[] rgb, int LEDStartIndex, int LEDLength) {
+    clearAnimation();
     LED.setLEDs(rgb[0], rgb[1], rgb[2], 0, LEDStartIndex, LEDLength);
   }
 

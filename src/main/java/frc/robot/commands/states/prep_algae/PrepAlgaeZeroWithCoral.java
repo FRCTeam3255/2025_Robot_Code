@@ -34,7 +34,7 @@ public class PrepAlgaeZeroWithCoral extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO_WITH_CORAL);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
+    globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO_WITH_CORAL);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }
@@ -52,6 +52,6 @@ public class PrepAlgaeZeroWithCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalElevator.isAtSetPoint();
+    return globalElevator.atDesiredPosition();
   }
 }

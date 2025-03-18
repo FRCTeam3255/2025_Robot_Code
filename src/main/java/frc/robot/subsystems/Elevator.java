@@ -20,6 +20,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.constElevator;
 import frc.robot.RobotMap.mapElevator;
 
@@ -58,10 +59,38 @@ public class Elevator extends SubsystemBase {
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
-  public boolean isAtSetPoint() {
+  public boolean atDesiredPosition() {
+    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, getLastDesiredPosition());
+  }
+
+  public boolean isAtSpecificSetpoint(Distance setpoint) {
+    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, setpoint);
+  }
+
+  public boolean isAtSetPointWithTolerance(Distance position, Distance tolerance) {
+    if (Robot.isSimulation()) {
+      return true;
+    }
     return (getElevatorPosition()
-        .compareTo(getLastDesiredPosition().minus(Constants.constElevator.DEADZONE_DISTANCE)) > 0) &&
-        getElevatorPosition().compareTo(getLastDesiredPosition().plus(Constants.constElevator.DEADZONE_DISTANCE)) < 0;
+        .compareTo(position.minus(tolerance)) > 0) &&
+        getElevatorPosition().compareTo(position.plus(tolerance)) < 0;
+  }
+
+  public boolean isAtAnyCoralScoringPosition() {
+    if (isAtSpecificSetpoint(constElevator.CORAL_L1_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L2_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L3_HEIGHT) ||
+        isAtSpecificSetpoint(constElevator.CORAL_L4_HEIGHT)) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isAtAnyAlgaeScoringPosition() {
+    if (isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET)) {
+      return true;
+    }
+    return false;
   }
 
   public AngularVelocity getRotorVelocity() {

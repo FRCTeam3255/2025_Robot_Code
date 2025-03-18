@@ -48,7 +48,8 @@ public class HasAlgae extends Command {
       globalElevator.setPosition(Units.Inches.zero());
     }
     globalStateMachine.setRobotState(RobotState.HAS_ALGAE);
-    globalLED.setLED(constLED.LED_HAS_ALGAE);
+    globalAlgaeIntake.setHasAlgaeOverride(true);
+    globalLED.setLEDMatrix(constLED.LED_HAS_ALGAE, 0, 4);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

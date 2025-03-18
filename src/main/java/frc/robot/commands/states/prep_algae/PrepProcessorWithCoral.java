@@ -35,7 +35,7 @@ public class PrepProcessorWithCoral extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_POS_WITH_CORAL);
-    globalLED.setLED(constLED.LED_PREP_PROCESSOR);
+    globalLED.setLED(constLED.LED_PREP_PROCESSOR_WITH_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,6 +51,6 @@ public class PrepProcessorWithCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalElevator.isAtSetPoint();
+    return globalElevator.atDesiredPosition();
   }
 }

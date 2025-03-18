@@ -17,7 +17,6 @@ public class IntakeCoralHopper extends Command {
   Elevator globalElevator;
   LED globalLED;
   AlgaeIntake globalAlgaeIntake;
-  boolean hasSeenCoral = false;
 
   /** Creates a new IntakeCoralHopper. */
   public IntakeCoralHopper(StateMachine subStateMachine, Hopper subHopper, CoralOuttake subCoralOuttake,
@@ -36,7 +35,7 @@ public class IntakeCoralHopper extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL);
-    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CORAL_ONLY);
     globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
@@ -46,31 +45,17 @@ public class IntakeCoralHopper extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalCoralOuttake.sensorSeesCoral()) {
-      // begin indexing
-      hasSeenCoral = true;
-      globalCoralOuttake.setIndexingCoral(hasSeenCoral);
-      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
-      globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
-    } else if (hasSeenCoral && globalCoralOuttake.sensorIndexedCoral()) {
-      // stop indexing
-      hasSeenCoral = false;
-      globalCoralOuttake.setIndexingCoral(hasSeenCoral);
-      globalCoralOuttake.setHasCoral(true);
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttake(0);
-    globalHopper.runHopper(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return globalCoralOuttake.hasCoral();
+    return globalCoralOuttake.sensorSeesCoral();
 
   }
 }

@@ -11,7 +11,7 @@
             "title": "Driving State",
             "x": 0.0,
             "y": 102.0,
-            "width": 680.0,
+            "width": 374.0,
             "height": 102.0,
             "type": "Large Text Display",
             "properties": {
@@ -22,9 +22,9 @@
           },
           {
             "title": "Robot State",
-            "x": 680.0,
+            "x": 952.0,
             "y": 102.0,
-            "width": 680.0,
+            "width": 408.0,
             "height": 102.0,
             "type": "Large Text Display",
             "properties": {
@@ -95,10 +95,10 @@
           },
           {
             "title": "All At Set Point",
-            "x": 680.0,
-            "y": 204.0,
-            "width": 272.0,
-            "height": 238.0,
+            "x": 816.0,
+            "y": 102.0,
+            "width": 136.0,
+            "height": 340.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "Robot/m_robotContainer/elevatorAndAlgaeAtSetPoint",
@@ -113,9 +113,9 @@
           {
             "title": "Is Aligned",
             "x": 374.0,
-            "y": 204.0,
-            "width": 306.0,
-            "height": 238.0,
+            "y": 102.0,
+            "width": 136.0,
+            "height": 340.0,
             "type": "Boolean Box",
             "properties": {
               "topic": "Robot/m_robotContainer/isAligned",
@@ -141,6 +141,21 @@
               "time_display_mode": "Minutes and Seconds",
               "red_start_time": 15,
               "yellow_start_time": 30
+            }
+          },
+          {
+            "title": "Climber Camera",
+            "x": 510.0,
+            "y": 102.0,
+            "width": 306.0,
+            "height": 340.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/USB Camera 0",
+              "period": 0.06,
+              "rotation_turns": 0,
+              "compression": 40,
+              "fps": 30
             }
           }
         ]

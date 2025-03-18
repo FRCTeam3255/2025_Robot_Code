@@ -51,7 +51,7 @@ public class ZeroAlgaeIntake extends Command {
 
     // Reset to the current position if this command was not interrupted
     if (!interrupted) {
-      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.MAX_POS.plus(Degrees.of(1)));
+      subAlgaeIntake.resetSensorPosition(constAlgaeIntake.ZEROED_AUTO_POS);
       subAlgaeIntake.hasZeroed = true;
     }
   }

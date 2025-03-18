@@ -11,6 +11,7 @@ import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
@@ -22,15 +23,17 @@ public class HasCoral extends Command {
   CoralOuttake globalCoralOuttake;
   AlgaeIntake globalAlgaeIntake;
   Elevator globalElevator;
+  Hopper globalHopper;
   LED globalLED;
 
   public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, AlgaeIntake subAlgaeIntake,
-      Elevator subElevator) {
+      Elevator subElevator, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalAlgaeIntake = subAlgaeIntake;
     globalElevator = subElevator;
+    globalHopper = subHopper;
     globalLED = subLED;
     addRequirements(globalStateMachine);
   }
@@ -39,10 +42,13 @@ public class HasCoral extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(RobotState.HAS_CORAL);
-    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
+    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
+    globalHopper.runHopper(0);
+    globalCoralOuttake.setCoralOuttake(0);
     globalElevator.setPosition(Units.Inches.zero());
-    globalLED.setLED(constLED.LED_HAS_CORAL);
+    globalLED.setLEDMatrix(constLED.LED_HAS_CORAL, 4, 9);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
