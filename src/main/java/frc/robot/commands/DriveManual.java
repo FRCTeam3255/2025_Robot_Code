@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
-import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
@@ -28,7 +27,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, algae;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -108,8 +107,6 @@ public class DriveManual extends Command {
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
       } else {
-        // Begin reef auto align (rotationally, automatically driving, or w/ a driver
-        // override)
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
