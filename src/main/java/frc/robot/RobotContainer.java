@@ -294,7 +294,8 @@ public class RobotContainer {
 
     controller.btn_North
         .onTrue(
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+            Commands
+                .runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions().get()[0])));
 
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));
