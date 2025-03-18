@@ -599,7 +599,6 @@ public final class Constants {
       public static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
-      
       public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
       public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
       public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
@@ -622,14 +621,16 @@ public final class Constants {
 
       private static final List<Pose2d> BLUE_CORAL_STATION_POSES = List.of(LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR);
-          private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
+      private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // Processor
       private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.986, 0.896, Rotation2d.fromDegrees(-90));
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, BLUE_PROCESSOR };
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
+          LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR, ALGAE_AB, ALGAE_CD, ALGAE_EF,
+          ALGAE_GH, ALGAE_IJ, ALGAE_KL };
       private static final Pose2d[] RED_POSES = getRedPosesFromArray(BLUE_POSES);
     }
 
@@ -665,14 +666,6 @@ public final class Constants {
     private static List<Pose2d> getRedCoralStationPoses() {
       Pose2d[] returnedPoses = getRedPosesFromList(POSES.BLUE_CORAL_STATION_POSES);
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
-    }
-
-    private static Pose2d getRedProcessorPose() {
-      Pose2d returnedPose = POSES.BLUE_PROCESSOR_POSE;
-
-      returnedPose = getRedAlliancePose(POSES.BLUE_PROCESSOR_POSE);
-
-      return returnedPose;
     }
 
     private static List<Pose2d> getRedAlgaePoses() {

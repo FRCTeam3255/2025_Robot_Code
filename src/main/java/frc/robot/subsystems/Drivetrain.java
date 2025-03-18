@@ -196,7 +196,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
     return desiredAlgae;
   }
-  
+
   public Pose2d getDesiredCoralStation(boolean farCoralStationRequested) {
     // Get the closest coral station
     List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
@@ -264,6 +264,20 @@ public class Drivetrain extends SN_SuperSwerve {
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
+        maxAutoDriveDistance, driving, rotating, subStateMachine);
+  }
+
+  public void algaeAutoAlign(LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+
+    Pose2d desiredAlgae = getDesiredAlgae();
+    Distance reefDistance = Units.Meters
+        .of(getPose().getTranslation()
+            .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
+
+    autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
         maxAutoDriveDistance, driving, rotating, subStateMachine);
   }
 
