@@ -102,15 +102,17 @@ public class DriveManual extends Command {
 
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
-      // Begin reef auto align (rotationally, automatically driving, or w/ a driver
-      // override)
-      subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
-          isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-          DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
-
+      if (subStateMachine.inCleaningState()) {
+        subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
+            Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
+            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
+      } else {
+        subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
+            isOpenLoop,
+            Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
+      }
     }
-
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
