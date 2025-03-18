@@ -143,3 +143,5 @@ We have 3-L4-coral-auto on both sides of the field.
 
    c. Repeat step a-b for the other CS
 
+## Checklists
+  #### [Full Functional and Pit Checklist](https://docs.google.com/spreadsheets/d/1OUnTOST7weKSB8co4n3Ox3lbtep59XiF4iwNPWjkJzo/edit?usp=drivesdk)
