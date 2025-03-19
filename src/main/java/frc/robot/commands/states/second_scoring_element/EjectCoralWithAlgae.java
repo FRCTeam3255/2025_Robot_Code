@@ -6,8 +6,10 @@ package frc.robot.commands.states.second_scoring_element;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -16,23 +18,26 @@ import frc.robot.subsystems.StateMachine.RobotState;
 public class EjectCoralWithAlgae extends Command {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
+  Elevator globalElevator;
   LED globalLED;
   Hopper globalHopper;
 
-  public EjectCoralWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper) {
+  public EjectCoralWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, Hopper subHopper,
+      Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalCoralOuttake = subCoralOuttake;
     globalLED = subLED;
     globalHopper = subHopper;
+    globalElevator = subElevator;
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    globalElevator.setPosition(constElevator.EJECT_HOPPER_HEIGHT);
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL_WITH_ALGAE);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
     globalLED.setLED(constLED.LED_EJECT_CORAL);
   }
@@ -40,12 +45,17 @@ public class EjectCoralWithAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.isAtSetPointWithTolerance(constElevator.EJECT_HOPPER_HEIGHT, constElevator.EJECT_DEADZONE)) {
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
+    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     globalCoralOuttake.setCoralOuttake(0);
+    globalHopper.runHopper(0);
     globalCoralOuttake.setHasCoral(false);
     globalCoralOuttake.setIndexingCoral(false);
   }

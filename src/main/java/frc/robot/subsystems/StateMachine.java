@@ -113,7 +113,20 @@ public class StateMachine extends SubsystemBase {
         return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
       }
     }
-    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator);
+    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
+  }
+
+  public boolean inCleaningState() {
+    RobotState[] goToHasBothStates = { RobotState.CLEANING_L2, RobotState.CLEANING_L3,
+        RobotState.CLEANING_L2_WITH_CORAL,
+        RobotState.CLEANING_L3_WITH_CORAL };
+
+    for (RobotState state : goToHasBothStates) {
+      if (currentRobotState == state) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public Command tryState(RobotState desiredState) {
@@ -137,13 +150,20 @@ public class StateMachine extends SubsystemBase {
                 subLED);
           case CLIMBER_DEPLOYING:
           case CLIMBER_RETRACTING:
+            if (subClimber.isClimberPreped()) {
+              return Commands.print("Climber is prepped!!! Not safe to return to NONE >____<");
+            } else {
+              Elastic.selectTab("Teleoperated");
+              return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
+                  subLED);
+            }
           case MANUAL_CLIMBER_DEPLOYING:
             if (subClimber.getClimberPosition().lte(constClimber.VALID_NONE_STATE_THRESHOLD)) {
               Elastic.selectTab("Teleoperated");
               return new None(subStateMachine, subCoralOuttake, subHopper, subAlgaeIntake, subClimber, subElevator,
                   subLED);
             } else {
-              Commands.print("Climber is too far down!!! Not safe to return to NONE >____<");
+              return Commands.print("Climber is too far down!!! Not safe to return to NONE >____<");
             }
         }
         break;
@@ -189,7 +209,7 @@ public class StateMachine extends SubsystemBase {
           case HAS_CORAL:
           case INTAKING_CORAL:
           case INDEXING_CORAL:
-            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper);
+            return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
         }
         break;
 
@@ -247,7 +267,7 @@ public class StateMachine extends SubsystemBase {
           case INTAKING_CORAL_WITH_ALGAE:
           case INDEXING_CORAL_WITH_ALGAE:
           case HAS_ALGAE:
-            return new EjectCoralWithAlgae(subStateMachine, subCoralOuttake, subLED, subHopper);
+            return new EjectCoralWithAlgae(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
         }
         break;
 
@@ -265,7 +285,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
           case SCORING_ALGAE_WITH_CORAL:
-            return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator);
+            return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
         }
         break;
 
@@ -276,6 +296,7 @@ public class StateMachine extends SubsystemBase {
           case CLEANING_L3:
           case SCORING_CORAL_WITH_ALGAE:
           case INTAKING_CORAL_WITH_ALGAE:
+          case EJECTING_CORAL_WITH_ALGAE:
             return new HasAlgae(subStateMachine, subAlgaeIntake, subLED, subCoralOuttake, subHopper, subElevator);
         }
         break;
@@ -538,17 +559,7 @@ public class StateMachine extends SubsystemBase {
 
       // -- Climbing --
       case CLIMBER_DEPLOYING:
-        switch (currentRobotState) {
-          case NONE:
-          case CLIMBER_RETRACTING:
-          case CLIMBER_DEPLOYING:
-          case HAS_CORAL_AND_ALGAE:
-          case HAS_ALGAE:
-          case HAS_CORAL:
-          case MANUAL_CLIMBER_DEPLOYING:
-            return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
-        }
-        break;
+        return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
 
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
@@ -565,6 +576,7 @@ public class StateMachine extends SubsystemBase {
           case NONE:
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
+          case MANUAL_CLIMBER_DEPLOYING:
             return new ManualClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
@@ -583,6 +595,8 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_AUTO_DRIVING,
     PROCESSOR_ROTATION_SNAPPING,
     PROCESSOR_AUTO_DRIVING,
+    ALGAE_ROTATION_SNAPPING,
+    ALGAE_AUTO_DRIVING
   }
 
   /**

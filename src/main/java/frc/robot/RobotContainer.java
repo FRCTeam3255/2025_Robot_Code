@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constLED;
@@ -80,7 +81,6 @@ public class RobotContainer {
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
-  private final SN_XboxController conTester = new SN_XboxController(mapControllers.TESTER_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Hopper subHopper = new Hopper();
@@ -257,7 +257,6 @@ public class RobotContainer {
     configureSensorBindings();
     configureAutoBindings();
     configureAutoSelector();
-    configureTesterBindings(conTester);
 
     subDrivetrain.resetModulesToAbsolute();
 
@@ -265,7 +264,6 @@ public class RobotContainer {
   }
 
   public void setMegaTag2(boolean setMegaTag2) {
-
     if (setMegaTag2) {
       subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
           constVision.MEGA_TAG2_STD_DEVS_POSITION,
@@ -282,6 +280,8 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
+    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
 
@@ -295,7 +295,8 @@ public class RobotContainer {
 
     controller.btn_North
         .onTrue(
-            Commands.runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getFieldPositions().get()[0])));
+            Commands
+                .runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions().get()[0])));
 
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));
@@ -329,7 +330,9 @@ public class RobotContainer {
     // Eject Coral
     controller.btn_RightBumper
         .whileTrue(TRY_EJECTING_CORAL)
-        .onFalse(TRY_NONE);
+        .whileTrue(TRY_EJECTING_CORAL_WITH_ALGAE)
+        .onFalse(TRY_NONE)
+        .onFalse(TRY_HAS_ALGAE);
 
     controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
     controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
@@ -416,62 +419,6 @@ public class RobotContainer {
         () -> subLED.setLED(constLED.READY_TO_LEAVE, 0)));
   }
 
-  private void configureTesterBindings(SN_XboxController controller) {
-    // Start: Reset Elevator Sensor Position
-    controller.btn_Start.onTrue(Commands.runOnce(() -> subElevator.resetSensorPosition(Units.Inches.of(0)))
-        .ignoringDisable(true));
-
-    // Back: Intake Coral
-    controller.btn_Back
-        .whileTrue(comIntakeCoralHopper);
-
-    // LT: Eat Algae
-    controller.btn_LeftBumper
-        .whileTrue(comIntakingAlgaeGround);
-
-    // RT: Spit Algae
-    controller.btn_RightTrigger
-        .whileTrue(comScoringAlgae);
-
-    // RB: Score Coral
-    controller.btn_RightTrigger
-        .onTrue(comScoringCoral);
-
-    // LB: Climb
-    controller.btn_LeftTrigger
-        .whileTrue(comClimb);
-
-    // btn_East: Set Elevator to Neutral
-    controller.btn_East
-        .onTrue(Commands.runOnce(() -> subElevator.setNeutral(), subElevator));
-
-    // btn_South: Prep Processor
-    controller.btn_South
-        .whileTrue(comPrepProcessor);
-
-    // btn_West: Clean L3 Reef
-    controller.btn_West
-        .whileTrue(comCleaningL3Reef);
-
-    // btn_North: Clean L2 Reef
-    controller.btn_North
-        .whileTrue(comCleaningL2Reef);
-
-    // btn_NorthWest: Prep Net
-    controller.btn_NorthWest
-        .whileTrue(comPrepNet);
-
-    // btn_A/B/Y/X: Set Elevator to Coral Levels
-    controller.btn_A
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L1_HEIGHT), subElevator));
-    controller.btn_B
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L2_HEIGHT), subElevator));
-    controller.btn_Y
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L3_HEIGHT), subElevator));
-    controller.btn_X
-        .onTrue(Commands.runOnce(() -> subElevator.setPosition(Constants.constElevator.CORAL_L4_HEIGHT), subElevator));
-  }
-
   public RobotState getRobotState() {
     return subStateMachine.getRobotState();
   }
@@ -490,7 +437,7 @@ public class RobotContainer {
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
-    return subElevator.isAtSetPoint() && subAlgaeIntake.isAtSetPoint();
+    return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
   }
 
   /**
@@ -498,6 +445,10 @@ public class RobotContainer {
    */
   public static boolean isPracticeBot() {
     return !isPracticeBot.get();
+  }
+
+  public void resetClimbBool() {
+    subClimber.setClimberPreped(false);
   }
 
   public void checkForCoral() {
@@ -509,8 +460,9 @@ public class RobotContainer {
 
   // ------ Autos ------
   public Command getAutonomousCommand() {
+    AUTO_PREP_NUM = 0;
     selectAutoMap();
-    return autoChooser.getSelected();
+    return Commands.runOnce(() -> subHopper.runHopper(0.1)).andThen(autoChooser.getSelected());
   }
 
   public void resetToAutoPose() {
@@ -541,6 +493,11 @@ public class RobotContainer {
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
         DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
 
+    Command algaeAutoAlign = Commands.runOnce(() -> subDrivetrain.algaeAutoAlign(MetersPerSecond.of(0),
+        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false,
+        constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
+        DriverState.ALGAE_AUTO_DRIVING, subStateMachine)).repeatedly();
+
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
@@ -569,19 +526,19 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
-            subStateMachine.tryState(RobotState.CLEANING_L2).asProxy().repeatedly()
-                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-                .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
-                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy()));
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_CLEANING_L2.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
+            Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.sequence(
-            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
-                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-                .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
-                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true)))));
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_CLEANING_L3.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
+            Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("PrepPlaceWithAlgae",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE))
@@ -593,9 +550,9 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitUntil(() -> subElevator.isAtSetPoint()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(1),
-        Commands.waitSeconds(0.5),
+        Commands.waitSeconds(0.75),
+        Commands.waitUntil(() -> subElevator.atDesiredPosition()),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.2),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
@@ -641,8 +598,8 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
         fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
         fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
-        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
-        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         return fourPieceLow;
       case "Four_Piece_High_Single_Tickle":
         Pair<RobotState, Pose2d>[] fourPieceHighSingleTickle = new Pair[4];

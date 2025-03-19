@@ -29,12 +29,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "G-GFAlgae"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "CleanL2Reef"
@@ -91,7 +85,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": "COMP_READY",
   "choreoAuto": false
 }
