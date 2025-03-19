@@ -529,7 +529,7 @@ public class RobotContainer {
             algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L2.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
-            TRY_PREP_ALGAE_0.asProxy(),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
             Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("CleanL3Reef",
@@ -537,7 +537,7 @@ public class RobotContainer {
             algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L3.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
-            TRY_PREP_ALGAE_0.asProxy(),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
             Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("PrepPlaceWithAlgae",
@@ -550,9 +550,9 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
+        Commands.waitSeconds(0.75),
         Commands.waitUntil(() -> subElevator.atDesiredPosition()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(1),
-        Commands.waitSeconds(0.5),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.2),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
