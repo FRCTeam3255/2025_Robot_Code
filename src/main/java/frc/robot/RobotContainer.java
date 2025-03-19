@@ -462,7 +462,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     AUTO_PREP_NUM = 0;
     selectAutoMap();
-    return autoChooser.getSelected();
+    return Commands.runOnce(() -> subHopper.runHopper(0.1)).andThen(autoChooser.getSelected());
   }
 
   public void resetToAutoPose() {
