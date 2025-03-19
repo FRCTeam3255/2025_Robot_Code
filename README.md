@@ -14,15 +14,14 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 This robot will compete at the following competitions: 
 - [Port Hueneme](https://www.thebluealliance.com/event/2025caph)
 - [San Diego Regional](https://www.thebluealliance.com/event/2025casd)
-- [Championship in Houston, TX] (https://www.thebluealliance.com/event/2025cmptx)
+- [Championship in Houston, TX](https://www.thebluealliance.com/event/2025cmptx)
 
 ## ✨ Highlights ✨  
 
 - Manual & Automatic Zeroing
 - Vision Aided Alignment
 - State Machine
--
--
+- Smart Control of Scoring Elements
 
 
 ## View Our Robots in Action!
@@ -81,8 +80,8 @@ The multi-stage system, depending on the distance
 - **Double limelights**
 - **How it works:** Using the current pose of the robot (see Vision), we calculate the closest reef face on the fly. The auto alignment then determines different desired positions based on which face of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. The same process is used for Cage & Processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
 
-#### This is where we give the coordinates for our poses for this ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717)
-
+#### This is where we give the coordinates for our poses ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717)
+#### This is our logic for our vision aided alignment ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/Drivetrain.java#L288)
 
 ### State Machine Control
 
@@ -99,10 +98,10 @@ The multi-stage system, depending on the distance
 
 The state machine prevents us from going to states before the robot is ready.
 - **Blocking invalid transitions through nested switch statements:** Only state transitions that meet predefined conditions are permitted, preventing the robot from entering invalid or hazardous states. The state machine subsystem manages this.
-- **State Machine subsystem:** Used to manage different states in the robot. It controls which state the transitions between different states. We use enum to control what states we could go to from the current state.
-- **States:** Individual commands represent different operational modes of the robot and control the robot's behavior. We set the requirements of the commands to be subStateMachine.
-- **tryState method:** This method is what we run when we try to go from the current state to the desired state. It will return the desired States if it is valid based on the current state. Then it will execute the command based on the desired states.
-- **Calling states:** We call the tryState method in the RobotContainer. We turn whatever it returns into a Deferred Proxy, which allows the tryState method to be evaluated multiple times.
+- **[State Machine subsystem](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/StateMachine.java):** Used to manage different states in the robot. It controls which state the transitions between different states. We use enum to control what states we could go to from the current state.
+- **[States](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/StateMachine.java#L607):** Individual commands represent different operational modes of the robot and control the robot's behavior. We set the requirements of the commands to be subStateMachine.
+- **[tryState method](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/StateMachine.java#L132):** This method is what we run when we try to go from the current state to the desired state. It will return the desired States if it is valid based on the current state. Then it will execute the command based on the desired states.
+- **[Calling states](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/RobotContainer.java#L118):** We call the tryState method in the RobotContainer. We turn whatever it returns into a Deferred Proxy, which allows the tryState method to be evaluated multiple times.
 
 ### Scoring Elements Indexing
 
@@ -120,9 +119,10 @@ A mechanism that sets a safety delay after placing coral to ensure the robot doe
   - **Quick Tap:** If the operator performs a quick tap on the trigger button, the robot will wait until the coral has completely exited the scoring mechanism (CoralOuttake) before lowering the elevator. This process is achieved through the Coral Placing Safety Time, ensuring that the robot does not proceed to the next operation until the coral is fully placed.
   - **Long Press:** If the operator holds the trigger button for longer than the preset delay time, the robot will ignore the safety delay. This means the robot will immediately proceed to the next operation when the operator releases the trigger button.
 
-#### Example ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/aa8d26028f1bccc69ea9b7a1f556c5ae58b4fd20/src/main/java/frc/robot/commands/states/scoring/ScoringCoral.java#L64C7-L75C85)
+#### Here is where we set our shooting delay ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/commands/states/scoring/ScoringCoral.java#L50)
 
-### Motion Magic 
+
+### Motion Magic 🪄🪄
 
 Our Elevator & Algae Pivot use a motion profiling system from CTRE called Motion Magic, allowing us to tune not only our subsystems’ PID controller, but also their acceleration & cruise velocity.
 - **Why it’s cool:** This method of tuning allows our Elevator to reach its desired position (from Min to Max) in 1.2 seconds or less, and our Algae Pivot in 1.8 seconds.
