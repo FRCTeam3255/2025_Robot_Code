@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
+import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constLED;
@@ -461,7 +462,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     AUTO_PREP_NUM = 0;
     selectAutoMap();
-    return autoChooser.getSelected();
+    return Commands.runOnce(() -> subHopper.runHopper(0.1)).andThen(autoChooser.getSelected());
   }
 
   public void resetToAutoPose() {
@@ -492,6 +493,11 @@ public class RobotContainer {
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
         DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
 
+    Command algaeAutoAlign = Commands.runOnce(() -> subDrivetrain.algaeAutoAlign(MetersPerSecond.of(0),
+        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false,
+        constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
+        DriverState.ALGAE_AUTO_DRIVING, subStateMachine)).repeatedly();
+
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
@@ -520,19 +526,19 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
-            subStateMachine.tryState(RobotState.CLEANING_L2).asProxy().repeatedly()
-                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-                .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
-                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy()));
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_CLEANING_L2.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
+            Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.sequence(
-            subStateMachine.tryState(RobotState.CLEANING_L3).asProxy().repeatedly()
-                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE)
-                .asProxy(),
-            subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO)
-                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true)))));
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_CLEANING_L3.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
+            TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
+            Commands.runOnce(() -> subAlgaeIntake.setHasAlgaeOverride(true))).asProxy());
 
     NamedCommands.registerCommand("PrepPlaceWithAlgae",
         Commands.runOnce(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE))
@@ -544,9 +550,9 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
+        Commands.waitSeconds(0.75),
         Commands.waitUntil(() -> subElevator.atDesiredPosition()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(1),
-        Commands.waitSeconds(0.5),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.2),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
@@ -592,8 +598,8 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] fourPieceLow = new Pair[4];
         fourPieceLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(2)); // C
         fourPieceLow[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
-        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
-        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
+        fourPieceLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(1)); // B
+        fourPieceLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
         return fourPieceLow;
       case "Four_Piece_High_Single_Tickle":
         Pair<RobotState, Pose2d>[] fourPieceHighSingleTickle = new Pair[4];
