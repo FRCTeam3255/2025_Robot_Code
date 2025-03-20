@@ -500,15 +500,15 @@ public final class Constants {
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(19);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(34.75);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(20);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(36.47);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
     public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
     public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
-    public static final Distance PREP_0 = Units.Inches.of(1.8);
+    public static final Distance PREP_0 = Units.Inches.of(2.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
     public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
