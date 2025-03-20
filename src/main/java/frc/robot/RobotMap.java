@@ -38,6 +38,7 @@ public class RobotMap {
 
   public static class mapClimber {
     public static final int CLIMBER_LEFT_CAN = 20;
+    public static final int CLIMBER_SERVO_PWM = 1;
   }
 
   public static class mapAlgaeIntake {
@@ -55,6 +56,7 @@ public class RobotMap {
   public static class mapHopper {
     public static final int HOPPER_MOTOR_CAN = 40;
     public static final int HOPPER_SENSOR_DIO = 1;
+    public static final int HOPPER_SERVO_PWM = 0;
   }
 
   public static class mapElevator {
