@@ -583,14 +583,14 @@ public final class Constants {
       private static final Pose2d REEF_A = new Pose2d(3.171, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B = new Pose2d(3.171, 3.863, Rotation2d.kZero);
       private static final Pose2d REEF_C = new Pose2d(3.688, 2.968, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_D = new Pose2d(4.007, 2.874, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D = new Pose2d(3.975, 2.803, Rotation2d.fromDegrees(60));
       private static final Pose2d REEF_E = new Pose2d(5.001, 2.804, Rotation2d.fromDegrees(120));
       private static final Pose2d REEF_F = new Pose2d(5.285, 2.964, Rotation2d.fromDegrees(120));
       private static final Pose2d REEF_G = new Pose2d(5.7288, 3.863, Rotation2d.k180deg);
       private static final Pose2d REEF_H = new Pose2d(5.7288, 4.189, Rotation2d.k180deg);
       private static final Pose2d REEF_I = new Pose2d(5.288, 5.083, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_J = new Pose2d(4.963, 5.175, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_K = new Pose2d(4.007, 5.185, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_J = new Pose2d(5.002, 5.248, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
