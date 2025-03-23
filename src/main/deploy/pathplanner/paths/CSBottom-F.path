@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.369469927211526,
-        "y": 1.6571743243158945
+        "x": 3.3637499999999996,
+        "y": 1.1389999999999998
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 2.4066598360655735
       },
       "prevControl": {
-        "x": 5.424634761606416,
-        "y": 2.29088052178373
+        "x": 5.27475,
+        "y": 1.9579999999999995
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,18 @@
     }
   ],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.25,
+      "maxWaypointRelativePos": 0.75,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "PrepPlace",

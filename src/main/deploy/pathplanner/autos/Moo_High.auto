@@ -1,0 +1,127 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "P-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "J-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-K"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "K-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-I"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "COMP_READY",
+  "choreoAuto": false
+}
