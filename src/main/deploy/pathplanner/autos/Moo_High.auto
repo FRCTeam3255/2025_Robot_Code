@@ -13,7 +13,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-Tickle-L"
+            "pathName": "P-J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "J-CSTop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSTop-L"
           }
         },
         {
@@ -73,37 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-A"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepPlace"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PlaceSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A-CSTop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "GetCoralStationPiece"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CSTop-J"
+            "pathName": "CSTop-I"
           }
         },
         {

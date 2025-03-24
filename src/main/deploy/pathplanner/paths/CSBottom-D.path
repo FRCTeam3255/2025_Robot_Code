@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "PrepPlace",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0.8526054590570769,
       "endWaypointRelativePos": null,
       "command": null
     }

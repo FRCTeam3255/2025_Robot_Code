@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-Tickle-L"
+            "pathName": "P-E"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L-CSTop"
+            "pathName": "E-CSBottom"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-K"
+            "pathName": "CSBottom-C"
           }
         },
         {
@@ -61,7 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "K-CSTop"
+            "pathName": "C-CSBottom"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-A"
+            "pathName": "CSBottom-D"
           }
         },
         {
@@ -91,7 +91,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A-CSTop"
+            "pathName": "D-CSBottom"
           }
         },
         {
@@ -103,7 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CSTop-J"
+            "pathName": "CSBottom-F"
           }
         },
         {
