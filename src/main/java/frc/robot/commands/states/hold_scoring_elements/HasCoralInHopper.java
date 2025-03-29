@@ -22,7 +22,7 @@ public class HasCoralInHopper extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.HAS_CORAL_AND_ALGAE);
+    globalStateMachine.setRobotState(RobotState.INDEXING_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
