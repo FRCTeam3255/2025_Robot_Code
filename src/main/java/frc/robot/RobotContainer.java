@@ -612,6 +612,18 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
         algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
         return algaeNet;
+      case "Algae_Mid_Net":
+        Pair<RobotState, Pose2d>[] algaeMidNet = new Pair[1];
+        algaeMidNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeMidNet;
+      case "Algae_Near_Net":
+        Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[1];
+        algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeNearNet;
+      case "Algae_Far_Net":
+        Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[1];
+        algaeFarNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeFarNet;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];
