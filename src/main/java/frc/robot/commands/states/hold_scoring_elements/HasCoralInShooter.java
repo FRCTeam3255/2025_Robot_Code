@@ -17,7 +17,7 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.RobotState;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class HasCoral extends Command {
+public class HasCoralInShooter extends Command {
   /** Creates a new HasCoral. */
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
@@ -26,7 +26,8 @@ public class HasCoral extends Command {
   Hopper globalHopper;
   LED globalLED;
 
-  public HasCoral(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED, AlgaeIntake subAlgaeIntake,
+  public HasCoralInShooter(StateMachine subStateMachine, CoralOuttake subCoralOuttake, LED subLED,
+      AlgaeIntake subAlgaeIntake,
       Elevator subElevator, Hopper subHopper) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
@@ -41,13 +42,13 @@ public class HasCoral extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(RobotState.HAS_CORAL);
+    globalStateMachine.setRobotState(RobotState.HAS_CORAL_IN_SHOOTER);
     globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
     globalHopper.runHopper(0);
     globalCoralOuttake.setCoralOuttake(0);
     globalElevator.setPosition(Units.Inches.zero());
-    globalLED.setLEDMatrix(constLED.LED_HAS_CORAL, 4, 9);
+    globalLED.setLEDMatrix(constLED.LED_HAS_CORAL_IN_SHOOTER, 4, 9);
 
   }
 
