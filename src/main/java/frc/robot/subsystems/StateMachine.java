@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.epilogue.Logged;
@@ -216,6 +214,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING_CORAL:
         switch (currentRobotState) {
           case INTAKING_CORAL:
+          case HAS_CORAL_IN_HOPPER:
             return new IndexingCoral(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
@@ -274,6 +273,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING_CORAL_WITH_ALGAE:
         switch (currentRobotState) {
           case INTAKING_CORAL_WITH_ALGAE:
+          case HAS_CORAL_IN_HOPPER:
             return new IndexingCoralWithAlgae(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
