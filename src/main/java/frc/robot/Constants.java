@@ -732,7 +732,8 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left",
+        "limelight-back" };
 
     /**
      * <p>

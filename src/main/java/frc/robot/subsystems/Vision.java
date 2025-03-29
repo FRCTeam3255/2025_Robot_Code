@@ -20,15 +20,19 @@ import frc.robot.Constants.constVision;
 public class Vision extends SubsystemBase {
   PoseEstimate lastEstimateRight = new PoseEstimate();
   PoseEstimate lastEstimateLeft = new PoseEstimate();
+  PoseEstimate lastEstimateBack = new PoseEstimate();
 
   // Not logged, as they turn to false immediately after being read
   @NotLogged
   boolean newRightEstimate = false;
   @NotLogged
   boolean newLeftEstimate = false;
+  @NotLogged
+  boolean newBackEstimate = false;
 
   Pose2d rightPose = new Pose2d();
   Pose2d leftPose = new Pose2d();
+  Pose2d backPose = new Pose2d();
 
   private boolean useMegaTag2 = false;
 
@@ -36,7 +40,7 @@ public class Vision extends SubsystemBase {
   }
 
   public PoseEstimate[] getLastPoseEstimates() {
-    return new PoseEstimate[] { lastEstimateRight, lastEstimateLeft };
+    return new PoseEstimate[] { lastEstimateRight, lastEstimateLeft, lastEstimateBack };
   }
 
   public void setMegaTag2(boolean useMegaTag2) {
@@ -98,6 +102,7 @@ public class Vision extends SubsystemBase {
   public void setCurrentEstimates(AngularVelocity gyroRate) {
     PoseEstimate currentEstimateRight = new PoseEstimate();
     PoseEstimate currentEstimateLeft = new PoseEstimate();
+    PoseEstimate currentEstimateBack = new PoseEstimate();
 
     if (useMegaTag2) {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
