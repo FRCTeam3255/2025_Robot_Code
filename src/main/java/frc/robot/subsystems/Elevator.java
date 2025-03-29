@@ -60,11 +60,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public boolean atDesiredPosition() {
-    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, getLastDesiredPosition());
+    return isAtSetPointWithTolerance(getLastDesiredPosition(), Constants.constElevator.DEADZONE_DISTANCE);
   }
 
   public boolean isAtSpecificSetpoint(Distance setpoint) {
-    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, setpoint);
+    return isAtSetPointWithTolerance(setpoint, Constants.constElevator.DEADZONE_DISTANCE);
   }
 
   public boolean isAtSetPointWithTolerance(Distance position, Distance tolerance) {
