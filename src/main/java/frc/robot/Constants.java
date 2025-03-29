@@ -458,16 +458,18 @@ public final class Constants {
   }
 
   public static class constElevator {
+    public static final Distance NORMAL_REVERSE_LIMIT = Units.Inches.of(0);
+    public static final Distance NORMAL_FORWARD_LIMIT = Units.Inches.of(62);
+
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(62).in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = NORMAL_FORWARD_LIMIT.in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
-          .in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = NORMAL_REVERSE_LIMIT.in(Units.Inches);
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
@@ -516,6 +518,9 @@ public final class Constants {
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
+
+    public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(4.5);
+    public static final Distance CORAL_STUCK_REVERSE_LIMIT = NORMAL_REVERSE_LIMIT.plus(CORAL_STUCK_OFFSET);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 

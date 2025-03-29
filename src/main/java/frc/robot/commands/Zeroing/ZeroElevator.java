@@ -26,7 +26,7 @@ public class ZeroElevator extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    subElevator.setSoftwareLimits(false, true);
+    subElevator.setSoftwareLimitsEnable(false, true);
 
     subElevator.setVoltage(Units.Volts.zero());
     zeroingTimestamp = Units.Seconds.zero();
@@ -42,7 +42,7 @@ public class ZeroElevator extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subElevator.setSoftwareLimits(true, true);
+    subElevator.setSoftwareLimitsEnable(true, true);
 
     // Stop all movement
     subElevator.setVoltage(Units.Volts.zero());
