@@ -210,13 +210,14 @@ public class RobotContainer {
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake, subLED))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
-  private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
+  private final Trigger hasCoralInShooterTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
   private final Trigger indexingCoralTrigger = new Trigger(
       () -> subCoralOuttake.sensorSeesCoral() && (subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL)
           || subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL_WITH_ALGAE)));
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
       && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
       && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);
+  private final Trigger hasCoralInHopperTrigger = new Trigger(() -> subHopper.coralCurrentSpike());
   private final Trigger hasBothTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae());
   private final Trigger hasAlgaeStateTrigger = new Trigger(
       () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
@@ -397,8 +398,11 @@ public class RobotContainer {
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
-    hasCoralTrigger
+    hasCoralInShooterTrigger
         .whileTrue(TRY_HAS_CORAL_IN_SHOOTER);
+    
+    hasCoralInHopperTrigger
+        .whileTrue(TRY_INTAKING_CORAL_HOPPER);
     hasBothTrigger.whileTrue(TRY_HAS_CORAL_AND_ALGAE);
     hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
 

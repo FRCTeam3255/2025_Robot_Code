@@ -800,6 +800,8 @@ public final class Constants {
     public static final double HOPPER_INDEXING_SPEED = 1;
     public static final double HOPPER_EJECTING_SPEED = -1.0;
 
+    public static final double HOPPER_CURRENT_SPIKE = 100; // TODO: Tune this
+
     public static final TalonFXConfiguration HOPPER_CONFIG = new TalonFXConfiguration();
 
     static {

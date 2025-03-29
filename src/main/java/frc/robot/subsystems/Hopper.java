@@ -35,6 +35,10 @@ public class Hopper extends SubsystemBase {
     return hopperSensor.get();
   }
 
+  public boolean coralCurrentSpike() {
+    return hopperMotor.getStatorCurrent().getValueAsDouble() > constHopper.HOPPER_CURRENT_SPIKE;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
