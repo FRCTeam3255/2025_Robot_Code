@@ -6,6 +6,7 @@ package frc.robot.commands.states.prep_coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -16,21 +17,27 @@ public class PrepCoralZero extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   LED globalLED;
+  CoralOuttake globalCoralOuttake;
 
-  public PrepCoralZero(StateMachine subStateMachine, Elevator subElevator, LED subLED) {
+  public PrepCoralZero(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Elevator subElevator, LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalLED = subLED;
+    globalCoralOuttake = subCoralOuttake;
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO);
-    globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
+    if (!globalCoralOuttake.sensorSeesCoral()) {
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO);
+      globalElevator.setPosition(Constants.constElevator.PREP_0);
+      globalLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
+    } else {
+      System.out.println("PrepCoralLv: Coral is in the way");
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

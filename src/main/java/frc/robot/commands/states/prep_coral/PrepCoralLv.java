@@ -10,6 +10,7 @@ import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
+import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -21,9 +22,11 @@ public class PrepCoralLv extends Command {
   AlgaeIntake globalAlgaeIntake;
   Distance globalDistance;
   LED globalLED;
+  CoralOuttake globalCoralOuttake;
 
   /** Creates a new PrepCoralLv. */
-  public PrepCoralLv(StateMachine subStateMachine, Elevator subElevator, AlgaeIntake subAlgaeIntake, Distance height,
+  public PrepCoralLv(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Elevator subElevator,
+      AlgaeIntake subAlgaeIntake, Distance height,
       LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
@@ -31,6 +34,7 @@ public class PrepCoralLv extends Command {
     this.globalAlgaeIntake = subAlgaeIntake;
     this.globalDistance = height;
     globalLED = subLED;
+    globalCoralOuttake = subCoralOuttake;
     addRequirements(subElevator);
     addRequirements(globalStateMachine);
   }
@@ -38,17 +42,21 @@ public class PrepCoralLv extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1);
-    else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L2);
-    else if (globalDistance.equals(constElevator.CORAL_L3_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L3);
-    else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
-      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
-    globalElevator.setPosition(globalDistance);
-    globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
-    globalLED.setLED(constLED.LED_PREP_CORAL_LV);
+    if (!globalCoralOuttake.sensorSeesCoral()) {
+      if (globalDistance.equals(constElevator.CORAL_L1_HEIGHT))
+        globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L1);
+      else if (globalDistance.equals(constElevator.CORAL_L2_HEIGHT))
+        globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L2);
+      else if (globalDistance.equals(constElevator.CORAL_L3_HEIGHT))
+        globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L3);
+      else if (globalDistance.equals(constElevator.CORAL_L4_HEIGHT))
+        globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
+      globalElevator.setPosition(globalDistance);
+      globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
+      globalLED.setLED(constLED.LED_PREP_CORAL_LV);
+    } else {
+      System.out.println("PrepCoralLv: Coral is in the way");
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.

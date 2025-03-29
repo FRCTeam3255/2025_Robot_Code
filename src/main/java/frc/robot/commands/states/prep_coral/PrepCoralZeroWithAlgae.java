@@ -7,29 +7,34 @@ package frc.robot.commands.states.prep_coral;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.constLED;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.LED;
-import frc.robot.subsystems.StateMachine;
+import frc.robot.subsystems.*;
 
 public class PrepCoralZeroWithAlgae extends Command {
   StateMachine globalStateMachine;
   Elevator globalElevator;
   LED globalLED;
+  CoralOuttake globalCoralOuttake;
 
-  public PrepCoralZeroWithAlgae(StateMachine subStateMachine, Elevator subElevator, LED subLED) {
+  public PrepCoralZeroWithAlgae(StateMachine subStateMachine, CoralOuttake subCoralOuttake, Elevator subElevator,
+      LED subLED) {
     // Use addRequirements() here to declare subsystem dependencies.
     globalStateMachine = subStateMachine;
     globalElevator = subElevator;
     globalLED = subLED;
+    globalCoralOuttake = subCoralOuttake;
     addRequirements(globalStateMachine);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO_WITH_ALGAE);
-    globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(constLED.LED_PREP_CORAL_ZERO_WITH_ALGAE);
+    if (!globalCoralOuttake.sensorSeesCoral()) {
+      globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO_WITH_ALGAE);
+      globalElevator.setPosition(Constants.constElevator.PREP_0);
+      globalLED.setLED(constLED.LED_PREP_CORAL_ZERO_WITH_ALGAE);
+    } else {
+      System.out.println("PrepCoralLv: Coral is in the way");
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
