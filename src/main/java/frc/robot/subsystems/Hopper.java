@@ -36,7 +36,7 @@ public class Hopper extends SubsystemBase {
   }
 
   public boolean coralCurrentSpike() {
-    return hopperMotor.getStatorCurrent().getValueAsDouble() > constHopper.HOPPER_CURRENT_SPIKE;
+    return hopperMotor.getStatorCurrent().getValue().gte(constHopper.HOPPER_CURRENT_SPIKE);
   }
 
   @Override
