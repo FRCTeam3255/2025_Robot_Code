@@ -131,9 +131,17 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 
-  public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
+  public void setSoftwareLimitsEnable(boolean reverseLimitEnable, boolean forwardLimitEnable) {
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+
+    rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+  }
+
+  public void setSoftwareLimits(double reverseLimit, double forwardLimit) {
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = reverseLimit;
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimit;
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
