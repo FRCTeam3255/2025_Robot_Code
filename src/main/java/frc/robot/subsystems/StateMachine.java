@@ -290,6 +290,15 @@ public class StateMachine extends SubsystemBase {
         }
         break;
 
+      case HAS_CORAL_IN_HOPPER:
+        switch (currentRobotState) {
+          case INTAKING_CORAL:
+          case INTAKING_CORAL_WITH_ALGAE:
+            return new HasCoralInShooter(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator,
+                subHopper);
+        }
+        break;
+
       case HAS_ALGAE:
         switch (currentRobotState) {
           case INTAKING_ALGAE_GROUND:
@@ -625,6 +634,7 @@ public class StateMachine extends SubsystemBase {
 
     // Hold 1 Scoring element
     HAS_CORAL_IN_SHOOTER,
+    HAS_CORAL_IN_HOPPER,
     HAS_ALGAE,
 
     // Hold 2 Scoring elements
