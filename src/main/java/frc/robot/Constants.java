@@ -63,7 +63,7 @@ public final class Constants {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
     public static final boolean SILENCE_JOYSTICK_WARNINGS = true;
 
-    public static final double HAS_CORAL_RUMBLE_INTENSITY = 1;
+    public static final double HAS_CORAL_IN_SHOOTER_RUMBLE_INTENSITY = 1;
     public static final double HAS_ALGAE_RUMBLE_INTENSITY = 1;
     public static final double READY_TO_PLACE_RUMBLE_INTENSITY = 0.5;
     public static final double READY_TO_RAISE_INTENSITY = 0.6;
@@ -836,7 +836,7 @@ public final class Constants {
     // TODO: Implement CANdle being commanded half & half (top half w/ algae, bottom
     // half w/ coral)
     public static final int[] LED_HAS_ALGAE = { 89, 252, 236 }; // algae-side teal
-    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // elevator-side white
+    public static final int[] LED_HAS_CORAL_IN_SHOOTER = { 255, 255, 255 }; // elevator-side white
     public static final int[] LED_HAS_BOTH = null;
 
     // prep algae
