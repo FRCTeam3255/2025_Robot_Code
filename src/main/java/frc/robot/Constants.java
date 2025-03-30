@@ -519,7 +519,7 @@ public final class Constants {
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
 
-    public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(4.5);
+    public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(11);
     public static final Distance CORAL_STUCK_REVERSE_LIMIT = NORMAL_REVERSE_LIMIT.plus(CORAL_STUCK_OFFSET);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);

@@ -18,8 +18,6 @@ public class CoralStuckSoftwareLimitToggle extends InstantCommand {
 
   public CoralStuckSoftwareLimitToggle(Elevator subElevator) {
     this.subElevator = subElevator;
-
-    addRequirements(subElevator);
   }
 
   // Called when the command is initially scheduled.
