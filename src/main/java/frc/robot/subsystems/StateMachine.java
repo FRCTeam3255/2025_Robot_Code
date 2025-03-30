@@ -129,6 +129,21 @@ public class StateMachine extends SubsystemBase {
     return false;
   }
 
+  public boolean inPrepState() {
+    RobotState[] prepStates = { RobotState.PREP_CORAL_L1, RobotState.PREP_CORAL_L2, RobotState.PREP_CORAL_L3,
+        RobotState.PREP_CORAL_L4, RobotState.PREP_CORAL_ZERO, RobotState.PREP_CORAL_L1_WITH_ALGAE,
+        RobotState.PREP_CORAL_L2_WITH_ALGAE,
+        RobotState.PREP_CORAL_L3_WITH_ALGAE, RobotState.PREP_CORAL_L4_WITH_ALGAE,
+        RobotState.PREP_CORAL_ZERO_WITH_ALGAE };
+
+    for (RobotState state : prepStates) {
+      if (currentRobotState == state) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public Command tryState(RobotState desiredState) {
     // The most elegant solution of all time... nested switch statements :)
     // haters please refer to this:

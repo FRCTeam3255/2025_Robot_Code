@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
+import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.Drivetrain;
@@ -32,6 +33,8 @@ public class DriveManual extends Command {
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
+  boolean hasCleanedReef = false;
+  boolean hasAlignedCleanReef = false;
 
   /**
    * @param subStateMachine
@@ -106,7 +109,23 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
-      } else {
+        // hasAlignedCleanReef = true;
+        // } else if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE)
+        // {
+        // // if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE) {
+        // // hasCleanedReef = true;
+        // // }
+        // if (hasCleanedReef && subStateMachine.getRobotState() ==
+        // RobotState.PREP_CORAL_L4_WITH_ALGAE) {
+        // subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity,
+        // rVelocity, transMultiplier,
+        // isOpenLoop,
+        // Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+        // DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING,
+        // subStateMachine);
+        // }
+      } else if ((subStateMachine.inPrepState() && subElevator.atDesiredPosition())
+          || subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
