@@ -107,9 +107,11 @@ public class Vision extends SubsystemBase {
     if (useMegaTag2) {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[2]);
     } else {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[2]);
     }
 
     if (currentEstimateRight != null && !rejectUpdate(currentEstimateRight, gyroRate)) {
@@ -122,33 +124,48 @@ public class Vision extends SubsystemBase {
       leftPose = currentEstimateLeft.pose;
       newLeftEstimate = true;
     }
+    if (currentEstimateBack != null && !rejectUpdate(currentEstimateBack, gyroRate)) {
+      lastEstimateBack = currentEstimateBack;
+      backPose = currentEstimateBack.pose;
+      newBackEstimate = true;
+    }
   }
 
   public Optional<PoseEstimate> determinePoseEstimate(AngularVelocity gyroRate) {
     setCurrentEstimates(gyroRate);
 
     // No valid pose estimates :(
-    if (!newRightEstimate && !newLeftEstimate) {
+    if (!newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       return Optional.empty();
 
-    } else if (newRightEstimate && !newLeftEstimate) {
+    } else if (newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       // One valid pose estimate (right)
       newRightEstimate = false;
       return Optional.of(lastEstimateRight);
 
-    } else if (!newRightEstimate && newLeftEstimate) {
+    } else if (!newRightEstimate && newLeftEstimate && !newBackEstimate) {
       // One valid pose estimate (left)
       newLeftEstimate = false;
       return Optional.of(lastEstimateLeft);
 
+    } else if (!newRightEstimate && !newLeftEstimate && newBackEstimate) {
+      // One valid pose estimate (back)
+      newLeftEstimate = false;
+      return Optional.of(lastEstimateBack);
+
     } else {
-      // Two valid pose estimates, disgard the one that's further
+      // More than one valid pose estimate, use the closest one
       newRightEstimate = false;
       newLeftEstimate = false;
-      if (lastEstimateLeft.avgTagDist < lastEstimateRight.avgTagDist) {
+      newBackEstimate = false;
+      if (lastEstimateRight.avgTagDist < lastEstimateLeft.avgTagDist
+          && lastEstimateRight.avgTagDist < lastEstimateBack.avgTagDist) {
         return Optional.of(lastEstimateRight);
-      } else {
+      } else if (lastEstimateLeft.avgTagDist < lastEstimateRight.avgTagDist
+          && lastEstimateLeft.avgTagDist < lastEstimateBack.avgTagDist) {
         return Optional.of(lastEstimateLeft);
+      } else {
+        return Optional.of(lastEstimateBack);
       }
     }
   }
