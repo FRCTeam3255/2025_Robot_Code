@@ -473,11 +473,11 @@ public final class Constants {
       // Elevator motors will provide feedback in INCHES the carriage has moved
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = 0.876;
 
-      ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
-      ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
-      ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
+      ELEVATOR_CONFIG.Slot0.kG = 0.0; // Volts to overcome gravity
+      ELEVATOR_CONFIG.Slot0.kS = 0.0; // Volts to overcome static friction
+      ELEVATOR_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 0.5;
+      ELEVATOR_CONFIG.Slot0.kP = 0.0;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
