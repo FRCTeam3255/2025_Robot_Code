@@ -94,10 +94,14 @@ The multi-stage system, depending on the distance
 ### State Machine Control
 
 **Controller Map**
+<br><br>
 ![Controller Map](assets/2025_controllermap.png)
+<br><br>
 
 **State Machine Diagram**
+<br><br>
 ![State Machine](assets/State_Machine_2.0.png)
+<br><br>
 
 - **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
@@ -139,7 +143,10 @@ Our Elevator & Algae Pivot use a motion profiling system from CTRE called Motion
 
 We have 3-L4-coral-auto on both sides of the field, one center auto that score 1 L4 coral and clean 2 reef algae & score in net.
 - **How it works:**
-  - **Driving ![alt text](image.png):**
+<br><br>
+![alt text](image.png)
+<br><br>
+  - **Driving:**
     - Basic driving: Path planner used to navigate by preset trajectories.
     - Pose Target driving: dynamically adjusts robot pose to auto-align (same as the one in tele-op).
   - **Commands:** State-machine-based command sequence scheduling ensures smooth and reliable execution.
