@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 1.8,
+        "y": 7.155
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8010928890729163,
-        "y": 7.171716640066399
+        "x": 1.9269863398689062,
+        "y": 6.928357917988196
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.297,
-        "y": 5.068
+        "x": 5.594740193259738,
+        "y": 5.620476275802429
       },
       "prevControl": {
-        "x": 6.642985915492957,
-        "y": 5.974940140845069
+        "x": 5.372893653975407,
+        "y": 5.806203587243
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,18 @@
     }
   ],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 4.5,
+        "y": 4.0
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.268982630272952,
+      "maxWaypointRelativePos": 0.6799007444168758,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [
     {
       "name": "PrepPlace",

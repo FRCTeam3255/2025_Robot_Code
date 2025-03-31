@@ -109,56 +109,42 @@ public class DriveManual extends Command {
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       netAlignStarted = false;
-      // Reef auto-align is requested
-      Pose2d desiredReef = subDrivetrain.getDesiredReef(leftReef.getAsBoolean());
-      Distance reefDistance = Units.Meters
-          .of(currentPose.getTranslation().getDistance(desiredReef.getTranslation()));
-
-      // Begin reef auto align (rotationally, automatically driving, or w/ a driver
-      // override)
-      subDrivetrain.autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, transMultiplier,
-          isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-          DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
-
+      if (subStateMachine.inCleaningState()) {
+        subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
+            Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
+            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
+      } else {
+        subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
+            isOpenLoop,
+            Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
+      }
     }
-
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
       netAlignStarted = false;
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
-      Distance coralStationDistance = Units.Meters
-          .of(currentPose.getTranslation().getDistance(desiredCoralStation.getTranslation()));
-      subDrivetrain.rotationalAutoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+
+      subDrivetrain.rotationalAlign(desiredCoralStation, xVelocity, yVelocity, isOpenLoop,
+          DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
     }
 
     else if (coralStationLeft.getAsBoolean()) {
       netAlignStarted = false;
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
-      Distance coralStationDistance = Units.Meters
-          .of(currentPose.getTranslation().getDistance(desiredCoralStation.getTranslation()));
-      subDrivetrain.rotationalAutoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity,
-          transMultiplier, isOpenLoop,
-          Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE,
-          DriverState.CORAL_STATION_AUTO_DRIVING, DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+
+      subDrivetrain.rotationalAlign(desiredCoralStation, xVelocity, yVelocity, isOpenLoop,
+          DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
     }
 
     // -- Processors --
     else if (processor.getAsBoolean()) {
       netAlignStarted = false;
       Pose2d desiredProcessor = subDrivetrain.getDesiredProcessor();
-      Distance processorDistance = Units.Meters
-          .of(currentPose.getTranslation().getDistance(desiredProcessor.getTranslation()));
-
-      subDrivetrain.rotationalAutoAlign(processorDistance, desiredProcessor, xVelocity, yVelocity, rVelocity,
-          transMultiplier,
-          isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
-          DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING,
-          subStateMachine);
+      subDrivetrain.rotationalAlign(desiredProcessor, xVelocity, yVelocity, isOpenLoop,
+          DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
     }
+
     // -- Net --
     else if (net.getAsBoolean()) {
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;

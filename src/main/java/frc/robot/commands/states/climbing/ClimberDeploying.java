@@ -43,6 +43,7 @@ public class ClimberDeploying extends Command {
   public void initialize() {
     if (DriverStation.getMatchTime() <= constClimber.MATCH_CLIMBING_TIME) {
       Elastic.selectTab("Climbing");
+      globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.CLIMB_ALGAE_VELOCITY);
       globalStateMachine.setRobotState(RobotState.CLIMBER_DEPLOYING);
       globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
@@ -56,12 +57,19 @@ public class ClimberDeploying extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     globalClimber.setClimberMotorVelocity(0);
+    globalAlgaeIntake.setAlgaeIntakeMotor(0);
+    if (!interrupted) {
+      globalClimber.setClimberPreped(true);
+    } else {
+      System.out.println("ClimberDeploying: Command was interrupted");
+    }
   }
 
   // Returns true when the command should end.
