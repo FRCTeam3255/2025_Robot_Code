@@ -48,14 +48,9 @@ Interested in learning more about REEFSCAPE? Visit [FIRST's website](https://www
 All values, including motor outputs and logic statements, are displayed during match play and saved to the robot as a file. We have the capability of viewing these logs with a 3D model & graphs.
 - **Why it’s cool:** We can translate what the robot is thinking into visuals we can understand in real time, as well as look back on previous matches to diagnose new issues.
 
-
-
-
-#### Example of our logging for our TalonFXs ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/loggers/TalonFXLogger.java#L1-L32)
-
 <details>
 <summary>Example of our logging for our TalonFXs</summary>
-<a href="https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/loggers/TalonFXLogger.java#L1-L32">Try it here!</a>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/loggers/TalonFXLogger.java#L1-L32
 </details>
 
 
