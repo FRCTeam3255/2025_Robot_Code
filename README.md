@@ -4,11 +4,11 @@ Jump into the code [`here!`](src/main/java/frc/robot)
 
 ![Black Manta](assets/robot_name_design_2025.png)
 
-- ![2025 comp bot 1.0](assets/2025_CompBot_PHR.jpg)
+![2025 comp bot 1.0](assets/2025_CompBot_PHR.jpg)
 
 ## We won Port Hueneme Regional and Innovation In Control Award!!!!!
-- [Port Hueneme Recap](https://www.youtube.com/watch?v=wBRe15c5S4I)
--  ![PHR Team Photo](assets/PHR_Team_Photo.jpg)
+[Port Hueneme Recap](https://www.youtube.com/watch?v=wBRe15c5S4I)
+![PHR Team Photo](assets/PHR_Team_Photo.jpg)
 
 
 This robot will compete at the following competitions: 
@@ -92,11 +92,11 @@ The multi-stage system, depending on the distance
 
 ### State Machine Control
 
-- **State Machine Diagram**
-![State Machine](assets/State_Machine_2.0.png)
-
-- **Controller Map**
+**Controller Map**
 ![Controller Map](assets/2025_controllermap.png)
+
+**State Machine Diagram**
+![State Machine](assets/State_Machine_2.0.png)
 
 - **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
@@ -164,7 +164,7 @@ We have 3-L4-coral-auto on both sides of the field, one center auto that score 1
  
   e. Repeat step a-e for every face of the reef 
 
-    ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
+  ![Field_Calibration_Reef](assets/Field_Calibration_Reef.png)
 
 
 -  #### Step 4: Check auto starting line 
