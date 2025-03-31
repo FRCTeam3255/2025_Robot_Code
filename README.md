@@ -59,7 +59,13 @@ https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61
 We have code to manually zero the Algae Intake Pivot and Elevator. In disabled, a person can quickly zero the Algae Intake Pivot and Elevator by raising them and then hitting them into their hard stop. We display the status of our manual zeroing using the CANdle, providing a clear indicator of our zeroing status. (Red to Green)
 - **Why it’s cool:** The robot will not run automatic zeroing if the manual zeroing is done to save match time. This ensures that our subsystems are at zero for every match.
 
-#### Example of our Manual Zeroing for our elevator ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ManualZeroElevator.java#L1-L97)
+
+
+<details>
+<summary>Example of our logging for our TalonFXs</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ManualZeroElevator.java#L1-L97
+</details>
+
 
 ### Automatic Zeroing
 
