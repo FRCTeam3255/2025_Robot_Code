@@ -54,7 +54,7 @@
             "title": "Has Algae",
             "x": 952.0,
             "y": 204.0,
-            "width": 408.0,
+            "width": 272.0,
             "height": 238.0,
             "type": "Boolean Box",
             "properties": {
@@ -156,6 +156,110 @@
               "rotation_turns": 0,
               "compression": 40,
               "fps": 30
+            }
+          },
+          {
+            "title": "isSafeToMoveElevator",
+            "x": 1224.0,
+            "y": 204.0,
+            "width": 136.0,
+            "height": 238.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subCoralOuttake/isSafeToMoveElevator",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "Checkmark",
+              "false_icon": "X"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Autonomous",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "Field",
+            "x": 544.0,
+            "y": 0.0,
+            "width": 816.0,
+            "height": 442.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295
+            }
+          },
+          {
+            "title": "Robot State",
+            "x": 0.0,
+            "y": 102.0,
+            "width": 544.0,
+            "height": 102.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subStateMachine/getRobotState",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "Driving State",
+            "x": 0.0,
+            "y": 204.0,
+            "width": 544.0,
+            "height": 102.0,
+            "type": "Large Text Display",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subStateMachine/getDriverState",
+              "period": 0.06,
+              "data_type": "string"
+            }
+          },
+          {
+            "title": "All Zeroed",
+            "x": 0.0,
+            "y": 306.0,
+            "width": 544.0,
+            "height": 136.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/bothSubsystemsZeroed",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Match Time",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 544.0,
+            "height": 102.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "Robot/getMatchTime",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 15,
+              "yellow_start_time": 30
             }
           }
         ]
@@ -282,93 +386,6 @@
               "topic": "/SmartDashboard/SendableChooser[1]/active",
               "period": 0.06,
               "data_type": "string"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Autonomous",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "Field",
-            "x": 544.0,
-            "y": 0.0,
-            "width": 816.0,
-            "height": 442.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
-            }
-          },
-          {
-            "title": "Robot State",
-            "x": 0.0,
-            "y": 102.0,
-            "width": 544.0,
-            "height": 102.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subStateMachine/getRobotState",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "Driving State",
-            "x": 0.0,
-            "y": 204.0,
-            "width": 544.0,
-            "height": 102.0,
-            "type": "Large Text Display",
-            "properties": {
-              "topic": "Robot/m_robotContainer/subStateMachine/getDriverState",
-              "period": 0.06,
-              "data_type": "string"
-            }
-          },
-          {
-            "title": "All Zeroed",
-            "x": 0.0,
-            "y": 306.0,
-            "width": 544.0,
-            "height": 136.0,
-            "type": "Boolean Box",
-            "properties": {
-              "topic": "Robot/bothSubsystemsZeroed",
-              "period": 0.06,
-              "data_type": "boolean",
-              "true_color": 4283215696,
-              "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
-            }
-          },
-          {
-            "title": "Match Time",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 544.0,
-            "height": 102.0,
-            "type": "Match Time",
-            "properties": {
-              "topic": "Robot/getMatchTime",
-              "period": 0.06,
-              "data_type": "double",
-              "time_display_mode": "Minutes and Seconds",
-              "red_start_time": 15,
-              "yellow_start_time": 30
             }
           }
         ]
