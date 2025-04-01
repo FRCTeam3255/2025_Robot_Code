@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import java.lang.Thread.State;
 import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
@@ -30,14 +31,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.constDrivetrain;
+import frc.robot.Constants.*;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
+
+  StateMachine subStateMachine;
+
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -183,9 +188,15 @@ public class Drivetrain extends SN_SuperSwerve {
     }
     // Determine the closest reef FACE based on our position (left vs right doesn't
     // matter)
-    List<Pose2d> reefPoses = constField.getReefPositions().get();
-    Pose2d desiredReef = getPose().nearest(reefPoses);
-    return desiredReef;
+    if (subStateMachine.inAlgaeWithCoralState()) {
+      List<Pose2d> reefPoses = constField.getReefPositions().get();
+      Pose2d desiredReef = getPose().nearest(reefPoses);
+      return desiredReef;
+    } else {
+      List<Pose2d> reefPosesCLose = constField.getReefPositionsClose().get();
+      Pose2d desiredReef = getPose().nearest(reefPosesCLose);
+      return desiredReef;
+    }
   }
 
   public Pose2d getDesiredAlgae() {

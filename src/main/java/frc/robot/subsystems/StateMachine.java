@@ -131,12 +131,23 @@ public class StateMachine extends SubsystemBase {
 
   public boolean inPrepState() {
     RobotState[] prepStates = { RobotState.PREP_CORAL_L1, RobotState.PREP_CORAL_L2, RobotState.PREP_CORAL_L3,
-        RobotState.PREP_CORAL_L4, RobotState.PREP_CORAL_ZERO, RobotState.PREP_CORAL_L1_WITH_ALGAE,
+        RobotState.PREP_CORAL_L4, RobotState.PREP_CORAL_ZERO };
+
+    for (RobotState state : prepStates) {
+      if (currentRobotState == state) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean inAlgaeWithCoralState() {
+    RobotState[] AlgaeWithCoralStates = { RobotState.PREP_CORAL_L1_WITH_ALGAE,
         RobotState.PREP_CORAL_L2_WITH_ALGAE,
         RobotState.PREP_CORAL_L3_WITH_ALGAE, RobotState.PREP_CORAL_L4_WITH_ALGAE,
         RobotState.PREP_CORAL_ZERO_WITH_ALGAE };
 
-    for (RobotState state : prepStates) {
+    for (RobotState state : AlgaeWithCoralStates) {
       if (currentRobotState == state) {
         return true;
       }
