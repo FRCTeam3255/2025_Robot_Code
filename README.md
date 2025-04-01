@@ -62,7 +62,7 @@ We have code to manually zero the Algae Intake Pivot and Elevator. In disabled, 
 
 
 <details>
-<summary>Example of our logging for our TalonFXs</summary>
+<summary>Example of our Manual Zeroing</summary>
 https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ManualZeroElevator.java#L1-L97
 </details>
 
@@ -73,14 +73,31 @@ Our Algae Intake Pivot and Elevator automatically sets the subsystem’s zero wh
 - **How it works:** The motor slowly runs to hit the mechanism to a hard stop, triggering a spike in current and a stop in velocity. We detect the current spike and velocity in code to know when the mechanism is at its hard stop to zero it correctly.
 - **Why it’s cool:** Automatic zeroing serves as a fallback. If manual zeroing fails or is not completed, the robot will automatically initiate the automatic zeroing process. This ensures that our subsystems are at zero for every match.
 
-#### Example of our Auto Zeroing elevator ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ZeroElevator.java#L1-L82)
+
+
+
+<details>
+<summary>Example of our Automatic Zeroing</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/commands/Zeroing/ZeroElevator.java#L1-L82
+</details>
+
+
 
 ### Vision
 
 Using 2 Limelight 3G’s, we calculate pose estimates based on the AprilTags that each camera can see. These cameras are mounted to ensure that when we’re up against the reef (when our pose is most important), at least 1 camera can see the tag in front of us. Each Limelight’s pose estimates are then fed into the robot, passed through a rejection filter (if tags are too small or far away), and then added to a Pose Estimator that combines our current pose with the estimates.
 - **Why it’s cool:** This process allows our robot to always have an accurate pose, optimized for times when minuscule changes can heavily impact cycle time. This baseline allows us to do all other vision-related features.
 
-#### Vision subsystem ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/subsystems/Vision.java#L1-L154)
+
+
+
+<details>
+<summary>Example of our Vision</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/subsystems/Vision.java#L1-L154
+</details>
+
+
+
 
 ### Vision Aided Alignment
 
@@ -89,8 +106,32 @@ The multi-stage system, depending on the distance
 - **Double limelights**
 - **How it works:** Using the current pose of the robot (see Vision), we calculate the closest reef face on the fly. The auto alignment then determines different desired positions based on which face of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. The same process is used for Cage & Processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
 
-#### This is where we give the coordinates for our poses ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717)
-#### This is our logic for our vision aided alignment ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/Drivetrain.java#L288)
+
+
+
+<details>
+<summary>Example of our Poses coordinates</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717
+</details>
+
+
+
+
+
+<br>
+
+
+
+
+<details>
+<summary>Example of our vision autoalignment</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/Drivetrain.java#L288
+</details>
+
+
+
+
+
 
 ### State Machine Control
 
@@ -106,7 +147,17 @@ The multi-stage system, depending on the distance
 
 - **State Machine link:** [State Machine](https://www.tldraw.com/ro/lFqVEhO80IajGo7JezZaz)
 
-#### StateMachine Subsystem ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/StateMachine.java)
+
+
+
+<details>
+<summary>Example of our Statemachine subsystem</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/StateMachine.java
+</details>
+
+
+<br>
+
 
 
 The state machine prevents us from going to states before the robot is ready.
@@ -123,7 +174,17 @@ The state machine prevents us from going to states before the robot is ready.
 - **Dynamic Speed Adjustment:** The speed of coral transportation is dynamically adjusted based on sensor feedback to ensure that the coral maintains a stable position during the process. It goes faster when the coral is in the hopper, and when the sensor in the coral placer senses the coral, it slows down.
 - **Consistency:** Maintaining consistent indexing logic regardless of task details, ensuring high success rates and efficiency in every mission.
 
-#### Coral indexing state ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/commands/states/first_scoring_element/IndexingCoral.java)
+
+
+
+
+<details>
+<summary>Example of our indexing state</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/commands/states/first_scoring_element/IndexingCoral.java
+</details>
+
+
+
 
 ### Coral Placing Safety Time
 
@@ -132,7 +193,14 @@ A mechanism that sets a safety delay after placing coral to ensure the robot doe
   - **Quick Tap:** If the operator performs a quick tap on the trigger button, the robot will wait until the coral has completely exited the scoring mechanism (CoralOuttake) before lowering the elevator. This process is achieved through the Coral Placing Safety Time, ensuring that the robot does not proceed to the next operation until the coral is fully placed.
   - **Long Press:** If the operator holds the trigger button for longer than the preset delay time, the robot will ignore the safety delay. This means the robot will immediately proceed to the next operation when the operator releases the trigger button.
 
-#### Here is where we set our shooting delay ➡️ [Link here](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/commands/states/scoring/ScoringCoral.java#L50)
+
+
+<details>
+<summary>Example of our shooting delay</summary>
+https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/commands/states/scoring/ScoringCoral.java#L50
+</details>
+
+
 
 
 ### Motion Magic 🪄🪄
