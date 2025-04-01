@@ -305,11 +305,11 @@ public final class Constants {
      */
     public static final AngularVelocity ZEROED_VELOCITY = Units.RotationsPerSecond.of(0.2);
 
-    public static final Angle MAX_POS = Units.Degrees.of(55);
+    public static final Angle MAX_POS = Units.Degrees.of(57);
     public static final Angle MIN_POS = Units.Degrees.of(-37);
 
-    public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(55);
-    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_MANUAL_POS = Units.Degrees.of(57);
+    public static final Angle ZEROED_AUTO_POS = Units.Degrees.of(59);
 
     /**
      * The elapsed time required to consider the motor as zeroed
