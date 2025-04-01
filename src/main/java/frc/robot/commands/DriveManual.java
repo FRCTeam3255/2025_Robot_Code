@@ -32,6 +32,8 @@ public class DriveManual extends Command {
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
+  Pose2d processorPose, desiredProcessorPose;
+  boolean processorAlignStarted = false;
 
   /**
    * @param subStateMachine
@@ -77,6 +79,7 @@ public class DriveManual extends Command {
 
   @Override
   public void execute() {
+    Pose2d currentPose = subDrivetrain.getPose();
     // -- Multipliers --
     if (slowMode.getAsBoolean()) {
       slowMultiplier = constDrivetrain.SLOW_MODE_MULTIPLIER;
@@ -105,12 +108,12 @@ public class DriveManual extends Command {
       if (subStateMachine.inCleaningState()) {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
-            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
+            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
       } else {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
+            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
       }
     }
     // -- Coral Station --
@@ -133,9 +136,25 @@ public class DriveManual extends Command {
 
     // -- Processors --
     else if (processor.getAsBoolean()) {
-      Pose2d desiredProcessor = subDrivetrain.getDesiredProcessor();
-      subDrivetrain.rotationalAlign(desiredProcessor, xVelocity, yVelocity, isOpenLoop,
-          DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
+
+      boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
+      if (!processorAlignStarted || driverOverrideY) {
+        Pose2d processorPose = subDrivetrain.getDesiredProcessor();
+
+        if (processorPose.equals(constField.getProcessorPositions().get().get(1))) {
+          yVelocity = yVelocity.unaryMinus();
+        }
+        desiredProcessorPose = new Pose2d(processorPose.getX(), currentPose.getY(), processorPose.getRotation());
+        processorAlignStarted = true;
+      }
+
+      Distance processorDistance = Units.Meters
+          .of(currentPose.getTranslation().getDistance(desiredProcessorPose.getTranslation()));
+
+      subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
+          DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine, false,
+          driverOverrideY);
     }
 
     else {
