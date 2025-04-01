@@ -15,6 +15,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Robot;
+import frc.robot.Constants;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
@@ -26,6 +27,7 @@ public class RobotPoses extends SubsystemBase {
   Pose3d comp1ElevatorStageOne = Pose3d.kZero;
   Pose3d comp2ElevatorCarriage = Pose3d.kZero;
   Pose3d comp3AlgaeIntake = Pose3d.kZero;
+  Pose3d comp4Bumpers = Pose3d.kZero.plus(Constants.ROBOT_TO_BUMPERS);
   Pose3d coralPose = constField.POSES.SCORING_ELEMENT_NOT_COLLECTED;
   Pose3d algaePose = constField.POSES.SCORING_ELEMENT_NOT_COLLECTED;
 
