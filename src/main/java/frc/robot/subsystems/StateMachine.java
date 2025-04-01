@@ -590,8 +590,7 @@ public class StateMachine extends SubsystemBase {
 
       // -- Climbing --
       case CLIMBER_DEPLOYING:
-        return Commands.either(new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED),
-            Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
+        return new ClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
 
       case CLIMBER_RETRACTING:
         switch (currentRobotState) {
@@ -609,9 +608,7 @@ public class StateMachine extends SubsystemBase {
           case CLIMBER_RETRACTING:
           case CLIMBER_DEPLOYING:
           case MANUAL_CLIMBER_DEPLOYING:
-            return Commands.either(
-                new ManualClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED),
-                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
+            return new ManualClimberDeploying(subStateMachine, subClimber, subElevator, subAlgaeIntake, subLED);
         }
         break;
 

@@ -122,17 +122,13 @@ public class RobotContainer {
   Command TRY_CLIMBER_RETRACTING = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.CLIMBER_RETRACTING));
   Command TRY_CLEANING_L3 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L3)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.CLEANING_L3));
   Command TRY_CLEANING_L2 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L2)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.CLEANING_L2));
   Command TRY_CLEANING_L3_WITH_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L3_WITH_CORAL)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.CLEANING_L3_WITH_CORAL));
   Command TRY_CLEANING_L2_WITH_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.CLEANING_L2_WITH_CORAL)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.CLEANING_L2_WITH_CORAL));
   Command TRY_EJECTING_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.EJECTING_CORAL));
   Command TRY_EJECTING_CORAL_WITH_ALGAE = Commands.deferredProxy(
@@ -158,47 +154,33 @@ public class RobotContainer {
   Command TRY_PREP_ALGAE_0_WITH_CORAL = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.PREP_ALGAE_ZERO_WITH_CORAL));
   Command TRY_PREP_NET = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_NET)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_NET));
   Command TRY_PREP_NET_WITH_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_NET_WITH_CORAL)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_NET_WITH_CORAL));
   Command TRY_PREP_PROCESSOR = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR));
   Command TRY_PREP_PROCESSOR_WITH_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR_WITH_CORAL)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_PROCESSOR_WITH_CORAL));
   Command TRY_PREP_CORAL_L1 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1));
   Command TRY_PREP_CORAL_L2 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2));
   Command TRY_PREP_CORAL_L3 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3));
   Command TRY_PREP_CORAL_L4 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4));
   Command TRY_PREP_CORAL_0 = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO));
   Command TRY_PREP_CORAL_L1_WITH_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1_WITH_ALGAE)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L1_WITH_ALGAE));
   Command TRY_PREP_CORAL_L2_WITH_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2_WITH_ALGAE)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L2_WITH_ALGAE));
   Command TRY_PREP_CORAL_L3_WITH_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3_WITH_ALGAE)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L3_WITH_ALGAE));
   Command TRY_PREP_CORAL_L4_WITH_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_L4_WITH_ALGAE));
   Command TRY_PREP_CORAL_0_WITH_ALGAE = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO_WITH_ALGAE)
-          .onlyIf(subCoralOuttake.isSafeToMoveElevator()));
+      () -> subStateMachine.tryState(RobotState.PREP_CORAL_ZERO_WITH_ALGAE));
   Command TRY_SCORING_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.SCORING_ALGAE));
   Command TRY_SCORING_CORAL = Commands.deferredProxy(
