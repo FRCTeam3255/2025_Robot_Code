@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotations;
-
 import com.frcteam3255.joystick.SN_XboxController;
 
 import edu.wpi.first.epilogue.Logged;
@@ -25,7 +23,7 @@ import frc.robot.commands.states.first_scoring_element.IndexingCoral;
 import frc.robot.commands.states.first_scoring_element.IntakeCoralHopper;
 import frc.robot.commands.states.first_scoring_element.IntakingAlgaeGround;
 import frc.robot.commands.states.hold_scoring_elements.HasAlgae;
-import frc.robot.commands.states.hold_scoring_elements.HasCoral;
+import frc.robot.commands.states.hold_scoring_elements.HasCoralInShooter;
 import frc.robot.commands.states.hold_scoring_elements.HasCoralAndAlgae;
 import frc.robot.commands.states.prep_algae.PrepAlgaeZero;
 import frc.robot.commands.states.prep_algae.PrepAlgaeZeroWithCoral;
@@ -113,7 +111,7 @@ public class StateMachine extends SubsystemBase {
         return new HasCoralAndAlgae(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
       }
     }
-    return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
+    return new HasCoralInShooter(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
   }
 
   public boolean inCleaningState() {
@@ -206,7 +204,7 @@ public class StateMachine extends SubsystemBase {
       case EJECTING_CORAL:
         switch (currentRobotState) {
           case NONE:
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case INTAKING_CORAL:
           case INDEXING_CORAL:
             return new EjectCoral(subStateMachine, subCoralOuttake, subLED, subHopper, subElevator);
@@ -216,6 +214,7 @@ public class StateMachine extends SubsystemBase {
       case INDEXING_CORAL:
         switch (currentRobotState) {
           case INTAKING_CORAL:
+          case HAS_CORAL_IN_HOPPER:
             return new IndexingCoral(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
@@ -224,7 +223,7 @@ public class StateMachine extends SubsystemBase {
       // ------------ Algae -------------
       case CLEANING_L2_WITH_CORAL:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case HAS_CORAL_AND_ALGAE:
           case CLEANING_L3_WITH_CORAL:
           case PREP_CORAL_L1:
@@ -238,7 +237,7 @@ public class StateMachine extends SubsystemBase {
 
       case CLEANING_L3_WITH_CORAL:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case HAS_CORAL_AND_ALGAE:
           case CLEANING_L2_WITH_CORAL:
           case PREP_CORAL_L1:
@@ -274,18 +273,29 @@ public class StateMachine extends SubsystemBase {
       case INDEXING_CORAL_WITH_ALGAE:
         switch (currentRobotState) {
           case INTAKING_CORAL_WITH_ALGAE:
+          case HAS_CORAL_IN_HOPPER:
             return new IndexingCoralWithAlgae(subStateMachine, subHopper, subCoralOuttake, subAlgaeIntake);
         }
         break;
 
       // --- Hold 1 Scoring ELement ---
-      case HAS_CORAL:
+      case HAS_CORAL_IN_SHOOTER:
         switch (currentRobotState) {
           case INDEXING_CORAL:
           case CLEANING_L2_WITH_CORAL:
           case CLEANING_L3_WITH_CORAL:
           case SCORING_ALGAE_WITH_CORAL:
-            return new HasCoral(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator, subHopper);
+            return new HasCoralInShooter(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator,
+                subHopper);
+        }
+        break;
+
+      case HAS_CORAL_IN_HOPPER:
+        switch (currentRobotState) {
+          case INTAKING_CORAL:
+          case INTAKING_CORAL_WITH_ALGAE:
+            return new HasCoralInShooter(subStateMachine, subCoralOuttake, subLED, subAlgaeIntake, subElevator,
+                subHopper);
         }
         break;
 
@@ -315,7 +325,7 @@ public class StateMachine extends SubsystemBase {
       // -- Prep Coral Only --
       case PREP_CORAL_L1:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
@@ -326,7 +336,7 @@ public class StateMachine extends SubsystemBase {
 
       case PREP_CORAL_L2:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case PREP_CORAL_L1:
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
@@ -337,7 +347,7 @@ public class StateMachine extends SubsystemBase {
 
       case PREP_CORAL_L3:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case PREP_CORAL_L1:
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
@@ -348,7 +358,7 @@ public class StateMachine extends SubsystemBase {
 
       case PREP_CORAL_L4:
         switch (currentRobotState) {
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
           case PREP_CORAL_L1:
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
@@ -363,7 +373,7 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
-          case HAS_CORAL:
+          case HAS_CORAL_IN_SHOOTER:
             return new PrepCoralZero(subStateMachine, subElevator, subLED);
         }
         break;
@@ -623,7 +633,8 @@ public class StateMachine extends SubsystemBase {
     INTAKING_CORAL_WITH_ALGAE,
 
     // Hold 1 Scoring element
-    HAS_CORAL,
+    HAS_CORAL_IN_SHOOTER,
+    HAS_CORAL_IN_HOPPER,
     HAS_ALGAE,
 
     // Hold 2 Scoring elements

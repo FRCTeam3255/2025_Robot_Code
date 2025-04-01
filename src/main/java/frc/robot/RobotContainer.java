@@ -143,8 +143,8 @@ public class RobotContainer {
       () -> subStateMachine.tryState(RobotState.INTAKING_CORAL_WITH_ALGAE));
   Command TRY_INTAKING_ALGAE_GROUND = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.INTAKING_ALGAE_GROUND));
-  Command TRY_HAS_CORAL = Commands.deferredProxy(
-      () -> subStateMachine.tryState(RobotState.HAS_CORAL));
+  Command TRY_HAS_CORAL_IN_SHOOTER = Commands.deferredProxy(
+      () -> subStateMachine.tryState(RobotState.HAS_CORAL_IN_SHOOTER));
   Command TRY_HAS_ALGAE = Commands.deferredProxy(
       () -> subStateMachine.tryState(RobotState.HAS_ALGAE));
   Command TRY_HAS_CORAL_AND_ALGAE = Commands.deferredProxy(
@@ -196,7 +196,7 @@ public class RobotContainer {
           .unless(() -> (subStateMachine.getRobotState() == RobotState.SCORING_CORAL
               || subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE)));
 
-  Command HAS_CORAL_OVERRIDE = Commands.deferredProxy(
+  Command HAS_CORAL_IN_SHOOTER_OVERRIDE = Commands.deferredProxy(
       () -> subStateMachine.tryCoralOverride());
 
   Command HAS_ALGAE_OVERRIDE = Commands.runOnce(() -> subAlgaeIntake.algaeToggle());
@@ -210,19 +210,20 @@ public class RobotContainer {
       .alongWith(new ManualZeroAlgaeIntake(subAlgaeIntake, subLED))
       .ignoringDisable(true).withName("ManualZeroSubsystems");
 
-  private final Trigger hasCoralTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
+  private final Trigger hasCoralInShooterTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && !subAlgaeIntake.hasAlgae());
   private final Trigger indexingCoralTrigger = new Trigger(
       () -> subCoralOuttake.sensorSeesCoral() && (subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL)
-          || subStateMachine.getRobotState().equals(RobotState.INTAKING_CORAL_WITH_ALGAE)));
+          || subStateMachine.getRobotState().equals(RobotState.HAS_CORAL_IN_HOPPER)));
   private final Trigger hasAlgaeTrigger = new Trigger(() -> !subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae()
       && subStateMachine.getRobotState() != RobotState.SCORING_CORAL_WITH_ALGAE
       && subStateMachine.getRobotState() != RobotState.INTAKING_CORAL_WITH_ALGAE);
+  private final Trigger hasCoralInHopperTrigger = new Trigger(() -> subHopper.coralCurrentSpike());
   private final Trigger hasBothTrigger = new Trigger(() -> subCoralOuttake.hasCoral() && subAlgaeIntake.hasAlgae());
   private final Trigger hasAlgaeStateTrigger = new Trigger(
       () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
-  Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
-      Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
+  Command HAS_CORAL_IN_SHOOTER_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
+      Constants.constControllers.HAS_CORAL_IN_SHOOTER_RUMBLE_INTENSITY);
   Command READY_TO_LEAVE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.READY_TO_LEAVE_INTENSITY);
 
@@ -320,7 +321,7 @@ public class RobotContainer {
         .onTrue(TRY_SCORING_ALGAE_WITH_CORAL)
         .onTrue(TRY_SCORING_CORAL_WITH_ALGAE)
         .onFalse(TRY_NONE_FROM_SCORING)
-        .onFalse(TRY_HAS_CORAL);
+        .onFalse(TRY_HAS_CORAL_IN_SHOOTER);
 
     // Intake Algae
     controller.btn_LeftBumper
@@ -334,7 +335,7 @@ public class RobotContainer {
         .onFalse(TRY_NONE)
         .onFalse(TRY_HAS_ALGAE);
 
-    controller.btn_Start.onTrue(HAS_CORAL_OVERRIDE);
+    controller.btn_Start.onTrue(HAS_CORAL_IN_SHOOTER_OVERRIDE);
     controller.btn_Back.onTrue(HAS_ALGAE_OVERRIDE);
 
     // Net
@@ -346,14 +347,14 @@ public class RobotContainer {
     controller.btn_East
         .whileTrue(TRY_CLEANING_L3)
         .whileTrue(TRY_CLEANING_L3_WITH_CORAL)
-        .onFalse(TRY_HAS_CORAL)
+        .onFalse(TRY_HAS_CORAL_IN_SHOOTER)
         .onFalse(TRY_NONE);
 
     // L2
     controller.btn_West
         .whileTrue(TRY_CLEANING_L2)
         .whileTrue(TRY_CLEANING_L2_WITH_CORAL)
-        .onFalse(TRY_HAS_CORAL)
+        .onFalse(TRY_HAS_CORAL_IN_SHOOTER)
         .onFalse(TRY_NONE);
 
     // Processor
@@ -391,13 +392,17 @@ public class RobotContainer {
   }
 
   private void configureSensorBindings() {
-    indexingCoralTrigger.onTrue(HAS_CORAL_RUMBLE).onTrue(TRY_INDEXING_CORAL).onTrue(TRY_INDEXING_CORAL_WITH_ALGAE);
+    indexingCoralTrigger.onTrue(HAS_CORAL_IN_SHOOTER_RUMBLE).onTrue(TRY_INDEXING_CORAL)
+        .onTrue(TRY_INDEXING_CORAL_WITH_ALGAE);
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
-    hasCoralTrigger
-        .whileTrue(TRY_HAS_CORAL);
+    hasCoralInShooterTrigger
+        .whileTrue(TRY_HAS_CORAL_IN_SHOOTER);
+    
+    hasCoralInHopperTrigger
+        .whileTrue(TRY_INTAKING_CORAL_HOPPER);
     hasBothTrigger.whileTrue(TRY_HAS_CORAL_AND_ALGAE);
     hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
 
@@ -453,7 +458,7 @@ public class RobotContainer {
 
   public void checkForCoral() {
     if (subCoralOuttake.sensorSeesCoral()) {
-      subStateMachine.setRobotState(RobotState.HAS_CORAL);
+      subStateMachine.setRobotState(RobotState.HAS_CORAL_IN_SHOOTER);
       subCoralOuttake.setHasCoral(true);
     }
   }
@@ -518,10 +523,11 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ForceGamePiece",
         Commands.either(
-            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
+            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL_IN_SHOOTER))
                 .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))
                     .alongWith(Commands.runOnce(() -> subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.MAX_POS)))),
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
+            TRY_INTAKING_CORAL_HOPPER.asProxy()
+                .until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL_IN_SHOOTER),
             subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
 
     NamedCommands.registerCommand("CleanL2Reef",
