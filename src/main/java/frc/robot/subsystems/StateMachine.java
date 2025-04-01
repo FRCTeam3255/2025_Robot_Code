@@ -208,7 +208,8 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLEANING_L3:
-            return new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -216,7 +217,8 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLEANING_L2:
-            return new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -258,7 +260,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new CleaningL2ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new CleaningL2ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -272,7 +275,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new CleaningL3ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new CleaningL3ReefWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -346,7 +350,9 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED);
+            return Commands.either(
+                new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L1_HEIGHT, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -357,7 +363,9 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED);
+            return Commands.either(
+                new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L2_HEIGHT, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -368,7 +376,9 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L4:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED);
+            return Commands.either(
+                new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L3_HEIGHT, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -379,7 +389,9 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2:
           case PREP_CORAL_L3:
           case PREP_CORAL_ZERO:
-            return new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED);
+            return Commands.either(
+                new PrepCoralLv(subStateMachine, subElevator, subAlgaeIntake, constElevator.CORAL_L4_HEIGHT, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -390,7 +402,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L3:
           case PREP_CORAL_L4:
           case HAS_CORAL:
-            return new PrepCoralZero(subStateMachine, subElevator, subLED);
+            return Commands.either(new PrepCoralZero(subStateMachine, subElevator, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -400,7 +413,8 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case PREP_ALGAE_ZERO:
           case PREP_PROCESSOR:
-            return new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepNet(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -409,7 +423,8 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case PREP_ALGAE_ZERO:
           case PREP_NET:
-            return new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepProcessor(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -418,7 +433,8 @@ public class StateMachine extends SubsystemBase {
           case HAS_ALGAE:
           case PREP_NET:
           case PREP_PROCESSOR:
-            return new PrepAlgaeZero(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepAlgaeZero(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -433,8 +449,11 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED,
-                subAlgaeIntake);
+            return Commands.either(
+                new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L1_HEIGHT, subLED,
+                    subAlgaeIntake),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
+
         }
         break;
 
@@ -448,8 +467,11 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED,
-                subAlgaeIntake);
+            return Commands.either(
+                new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L2_HEIGHT, subLED,
+                    subAlgaeIntake),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
+
         }
         break;
 
@@ -463,8 +485,10 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED,
-                subAlgaeIntake);
+            return Commands.either(
+                new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L3_HEIGHT, subLED,
+                    subAlgaeIntake),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -478,8 +502,10 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED,
-                subAlgaeIntake);
+            return Commands.either(
+                new PrepCoralLvWithAlgae(subStateMachine, subElevator, constElevator.CORAL_L4_HEIGHT, subLED,
+                    subAlgaeIntake),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -493,7 +519,9 @@ public class StateMachine extends SubsystemBase {
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepCoralZeroWithAlgae(subStateMachine, subElevator, subLED);
+            return Commands.either(new PrepCoralZeroWithAlgae(subStateMachine, subElevator, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
+
         }
         break;
 
@@ -508,7 +536,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_ZERO_WITH_ALGAE:
           case PREP_PROCESSOR_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepNetWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepNetWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -522,7 +551,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_ZERO_WITH_ALGAE:
           case PREP_NET_WITH_CORAL:
           case PREP_ALGAE_ZERO_WITH_CORAL:
-            return new PrepProcessorWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepProcessorWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 
@@ -536,7 +566,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_ZERO_WITH_ALGAE:
           case PREP_NET_WITH_CORAL:
           case PREP_PROCESSOR_WITH_CORAL:
-            return new PrepAlgaeZeroWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED);
+            return Commands.either(new PrepAlgaeZeroWithCoral(subStateMachine, subElevator, subAlgaeIntake, subLED),
+                Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
         break;
 

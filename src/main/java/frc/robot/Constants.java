@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
@@ -47,7 +46,6 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.units.measure.Voltage;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -58,6 +56,9 @@ public final class Constants {
    * Volts
    */
   public static final double MAX_VOLTAGE = 12;
+
+  public static final Transform3d ROBOT_TO_BUMPERS = new Transform3d(0, 0, Units.Meters.convertFrom(5, Units.Inches),
+      Rotation3d.kZero);
 
   public static class constControllers {
     public static final double DRIVER_LEFT_STICK_DEADBAND = 0.05;
@@ -429,8 +430,8 @@ public final class Constants {
 
   public static class constClimber {
     public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 1;
-    public static final double CLIMBER_RETRACT_VELOCITY = -0.5;
-    public static final double MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY = 0.5;
+    public static final double CLIMBER_RETRACT_VELOCITY = -1;
+    public static final double MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY = 1;
     public static final Angle VALID_NONE_STATE_THRESHOLD = Units.Rotations.of(50);
 
     public static TalonFXConfiguration CLIMBER_CONFIG = new TalonFXConfiguration();

@@ -54,7 +54,7 @@
             "title": "Has Algae",
             "x": 952.0,
             "y": 204.0,
-            "width": 408.0,
+            "width": 272.0,
             "height": 238.0,
             "type": "Boolean Box",
             "properties": {
@@ -156,6 +156,23 @@
               "rotation_turns": 0,
               "compression": 40,
               "fps": 30
+            }
+          },
+          {
+            "title": "isSafeToMoveElevator",
+            "x": 1224.0,
+            "y": 204.0,
+            "width": 136.0,
+            "height": 238.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subCoralOuttake/isSafeToMoveElevator",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "Checkmark",
+              "false_icon": "X"
             }
           }
         ]

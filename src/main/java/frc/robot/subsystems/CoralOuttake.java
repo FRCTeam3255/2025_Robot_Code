@@ -59,6 +59,10 @@ public class CoralOuttake extends SubsystemBase {
     return () -> coralSensor.getIsDetected().getValue();
   }
 
+  public BooleanSupplier isSafeToMoveElevator() {
+    return () -> !sensorSeesCoral();
+  }
+
   public boolean sensorIndexedCoral() {
     return coralSensor.getDistance().getValue().gte(constCoralOuttake.INDEXED_CORAL_DISTANCE);
   }
