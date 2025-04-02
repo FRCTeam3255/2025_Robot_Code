@@ -478,14 +478,15 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 0.5;
+      ELEVATOR_CONFIG.Slot0.kP = 0.92;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.04;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kA = 0.005;
 
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
