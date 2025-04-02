@@ -105,6 +105,7 @@ public class DriveManual extends Command {
 
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+      processorAlignStarted = false;
       if (subStateMachine.inCleaningState()) {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
@@ -118,6 +119,7 @@ public class DriveManual extends Command {
     }
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
+      processorAlignStarted = false;
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
       Distance coralStationDistance = Units.Meters
           .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
@@ -126,6 +128,7 @@ public class DriveManual extends Command {
     }
 
     else if (coralStationLeft.getAsBoolean()) {
+      processorAlignStarted = false;
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
       Distance coralStationDistance = Units.Meters
@@ -159,6 +162,7 @@ public class DriveManual extends Command {
 
     else {
       // Regular driving
+      processorAlignStarted = false;
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
               yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),
