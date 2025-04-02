@@ -140,8 +140,8 @@ public class DriveManual extends Command {
     // -- Processors --
     else if (processor.getAsBoolean()) {
 
-      boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
-      if (!processorAlignStarted || driverOverrideY) {
+      boolean driverOverrideX = xVelocity.abs(Units.MetersPerSecond) > 0.1;
+      if (!processorAlignStarted || driverOverrideX) {
         Pose2d processorPose = subDrivetrain.getDesiredProcessor();
 
         if (processorPose.equals(constField.getProcessorPositions().get().get(1))) {
@@ -156,8 +156,8 @@ public class DriveManual extends Command {
 
       subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, xVelocity, yVelocity, rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
-          DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine, false,
-          driverOverrideY);
+          DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine, driverOverrideX,
+          false);
     }
 
     else {
