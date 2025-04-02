@@ -483,9 +483,10 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 700;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.04;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kA = 0.005;
 
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
