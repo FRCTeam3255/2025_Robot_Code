@@ -107,11 +107,11 @@ public class Vision extends SubsystemBase {
     if (useMegaTag2) {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
-      currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[2]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[2]);
     } else {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
-      currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[2]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[2]);
     }
 
     if (currentEstimateRight != null && !rejectUpdate(currentEstimateRight, gyroRate)) {
