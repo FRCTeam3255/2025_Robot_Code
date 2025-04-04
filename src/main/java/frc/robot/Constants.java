@@ -242,8 +242,8 @@ public final class Constants {
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Kilograms.of(15);
-      public static final double MOI = 6.8;
+      public static final Mass MASS = Units.Kilograms.of(12);
+      public static final double MOI = 5.8;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
       public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
