@@ -297,6 +297,7 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
+    public static final double ALGAE_OUTTAKE_EJECT_SPEED = -0.35;
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
@@ -734,7 +735,8 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left",
+        "limelight-back" };
 
     /**
      * <p>
