@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import java.lang.Thread.State;
 import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
@@ -30,14 +31,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.constDrivetrain;
+import frc.robot.Constants.*;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
+
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -155,7 +158,7 @@ public class Drivetrain extends SN_SuperSwerve {
    *                            branch
    * @return The desired reef branch face to align to
    */
-  public Pose2d getDesiredReef(boolean leftBranchRequested) {
+  public Pose2d getDesiredReef(boolean leftBranchRequested, StateMachine subStateMachine) {
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
@@ -163,7 +166,13 @@ public class Drivetrain extends SN_SuperSwerve {
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
       List<Pose2d> reefPoses = constField.getReefPositions().get();
-      Pose2d desiredReef = getClosestPoseByRotation(reefPoses);
+      List<Pose2d> reefPoseClose = constField.getReefPositionsClose().get();
+      Pose2d desiredReef;
+      if (subStateMachine.inAlgaeWithCoralState()) {
+        desiredReef = getClosestPoseByRotation(reefPoses);
+      } else {
+        desiredReef = getClosestPoseByRotation(reefPoseClose);
+      }
       int closestReefIndex = reefPoses.indexOf(desiredReef);
       // -- The above code will be different later --
 
@@ -258,7 +267,7 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
       DriverState driving, DriverState rotating, StateMachine subStateMachine) {
 
-    Pose2d desiredReef = getDesiredReef(leftBranchRequested);
+    Pose2d desiredReef = getDesiredReef(leftBranchRequested, subStateMachine);
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
