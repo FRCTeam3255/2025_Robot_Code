@@ -232,9 +232,9 @@ public class RobotContainer {
 
   public static boolean justScored = false;
   private final Trigger justScoredTrigger = new Trigger(() -> justScored);
-  private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAligned());
+  private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAlignedCoral());
   private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
-      && subDrivetrain.isAligned());
+      && subDrivetrain.isAlignedCoral());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
@@ -435,7 +435,7 @@ public class RobotContainer {
   }
 
   public boolean isAligned() {
-    return subDrivetrain.isAligned();
+    return subDrivetrain.isAlignedCoral();
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
@@ -502,7 +502,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
             TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
@@ -519,16 +519,13 @@ public class RobotContainer {
             .withName("GetCoralStationPiece"));
 
     NamedCommands.registerCommand("ForceGamePiece",
-        Commands.either(
-            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
-                .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))
-                    .alongWith(Commands.runOnce(() -> subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.MAX_POS)))),
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
-            subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
+        Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
+            .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.MAX_POS)))));
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
-            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedAlgae()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L2.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
             TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
@@ -536,7 +533,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.sequence(
-            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedAlgae()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L3.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
             TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
@@ -552,9 +549,8 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitSeconds(0.75),
         Commands.waitUntil(() -> subElevator.atDesiredPosition()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.2),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
@@ -614,6 +610,18 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
         algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
         return algaeNet;
+      case "Algae_Mid_Net":
+        Pair<RobotState, Pose2d>[] algaeMidNet = new Pair[1];
+        algaeMidNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeMidNet;
+      case "Algae_Near_Net":
+        Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[1];
+        algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeNearNet;
+      case "Algae_Far_Net":
+        Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[1];
+        algaeFarNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeFarNet;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];
