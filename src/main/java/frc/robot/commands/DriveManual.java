@@ -33,8 +33,6 @@ public class DriveManual extends Command {
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
-  boolean hasCleanedReef = false;
-  boolean hasAlignedCleanReef = false;
 
   /**
    * @param subStateMachine
