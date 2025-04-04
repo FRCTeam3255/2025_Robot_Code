@@ -59,6 +59,6 @@ public class CoralReadyToPlaceRumble extends Command {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
     return (!globalElevator.isAtAnyCoralScoringPosition() || !globalCoralOuttake.hasCoral()
-        || !globalDrivetrain.isAligned());
+        || !globalDrivetrain.isAlignedCoral());
   }
 }

@@ -36,8 +36,10 @@ public class ScoringAlgae extends Command {
   public void initialize() {
     if (globalStateMachine.getRobotState() == RobotState.PREP_NET) {
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
-    } else {
+    } else if (globalStateMachine.getRobotState() == RobotState.PREP_PROCESSOR) {
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_PROCESSOR_SPEED;
+    } else {
+      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_EJECT_SPEED;
     }
 
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
