@@ -154,7 +154,7 @@ public class DriveManual extends Command {
       Distance processorDistance = Units.Meters
           .of(currentPose.getTranslation().getDistance(desiredProcessorPose.getTranslation()));
 
-      subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, xVelocity, yVelocity, rVelocity,
+      subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, yVelocity.unaryMinus(), xVelocity, rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine, driverOverrideX,
           false);
