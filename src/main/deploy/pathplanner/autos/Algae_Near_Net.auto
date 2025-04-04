@@ -81,11 +81,41 @@
           "data": {
             "name": "ScoreAlgaeSequence"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-KLAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CleanL2Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "KLAlgae-Net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeSequence"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "COMP_READY",
+  "folder": null,
   "choreoAuto": false
 }
