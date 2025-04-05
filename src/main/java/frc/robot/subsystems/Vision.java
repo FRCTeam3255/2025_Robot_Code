@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.frcteam3255.utils.LimelightHelpers;
 import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
+
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.epilogue.Logged;
@@ -99,7 +101,7 @@ public class Vision extends SubsystemBase {
    *                 the method updates the last known estimates and sets flags
    *                 indicating new estimates are available.
    */
-  public void setCurrentEstimates(AngularVelocity gyroRate) {
+  public void updateEstimatedPoses(AngularVelocity gyroRate) {
     PoseEstimate currentEstimateRight = new PoseEstimate();
     PoseEstimate currentEstimateLeft = new PoseEstimate();
     PoseEstimate currentEstimateBack = new PoseEstimate();
@@ -132,42 +134,26 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  public Optional<PoseEstimate> determinePoseEstimate(AngularVelocity gyroRate) {
-    setCurrentEstimates(gyroRate);
+  public Optional<List<PoseEstimate>> fetchPoseEstimates(AngularVelocity gyroRate) {
+    updateEstimatedPoses(gyroRate);
 
     // No valid pose estimates :(
     if (!newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       return Optional.empty();
-
-    } else if (newRightEstimate && !newLeftEstimate && !newBackEstimate) {
-      // One valid pose estimate (right)
-      newRightEstimate = false;
-      return Optional.of(lastEstimateRight);
-
-    } else if (!newRightEstimate && newLeftEstimate && !newBackEstimate) {
-      // One valid pose estimate (left)
-      newLeftEstimate = false;
-      return Optional.of(lastEstimateLeft);
-
-    } else if (!newRightEstimate && !newLeftEstimate && newBackEstimate) {
-      // One valid pose estimate (back)
-      newLeftEstimate = false;
-      return Optional.of(lastEstimateBack);
-
     } else {
-      // More than one valid pose estimate, use the closest one
-      newRightEstimate = false;
-      newLeftEstimate = false;
-      newBackEstimate = false;
-      if (lastEstimateRight.avgTagDist < lastEstimateLeft.avgTagDist
-          && lastEstimateRight.avgTagDist < lastEstimateBack.avgTagDist) {
-        return Optional.of(lastEstimateRight);
-      } else if (lastEstimateLeft.avgTagDist < lastEstimateRight.avgTagDist
-          && lastEstimateLeft.avgTagDist < lastEstimateBack.avgTagDist) {
-        return Optional.of(lastEstimateLeft);
-      } else {
-        return Optional.of(lastEstimateBack);
+      // At least one valid estimate; return all valid estimates
+      List<PoseEstimate> validEstimates = List.of();
+
+      if (newRightEstimate) {
+        validEstimates.add(lastEstimateRight);
       }
+      if (newLeftEstimate) {
+        validEstimates.add(lastEstimateLeft);
+      }
+      if (newBackEstimate) {
+        validEstimates.add(lastEstimateBack);
+      }
+      return Optional.of(validEstimates);
     }
   }
 
