@@ -503,7 +503,7 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(20);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(36.47);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
