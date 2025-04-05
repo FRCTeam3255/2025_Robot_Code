@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
    * @return True if the estimate should be rejected
    */
 
-  public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate) {
+  public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate, double areaThreshold) {
     // Angular velocity is too high to have accurate vision
     if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
       return true;
@@ -69,7 +69,7 @@ public class Vision extends SubsystemBase {
     }
 
     // 1 Tag with a large area
-    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > constVision.AREA_THRESHOLD) {
+    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > areaThreshold) {
       return false;
       // 2 tags or more
     } else if (poseEstimate.tagCount > 1) {
@@ -114,17 +114,18 @@ public class Vision extends SubsystemBase {
       currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[2]);
     }
 
-    if (currentEstimateRight != null && !rejectUpdate(currentEstimateRight, gyroRate)) {
+    if (currentEstimateRight != null
+        && !rejectUpdate(currentEstimateRight, gyroRate, constVision.AREA_THRESHOLD_FRONT)) {
       lastEstimateRight = currentEstimateRight;
       rightPose = currentEstimateRight.pose;
       newRightEstimate = true;
     }
-    if (currentEstimateLeft != null && !rejectUpdate(currentEstimateLeft, gyroRate)) {
+    if (currentEstimateLeft != null && !rejectUpdate(currentEstimateLeft, gyroRate, constVision.AREA_THRESHOLD_FRONT)) {
       lastEstimateLeft = currentEstimateLeft;
       leftPose = currentEstimateLeft.pose;
       newLeftEstimate = true;
     }
-    if (currentEstimateBack != null && !rejectUpdate(currentEstimateBack, gyroRate)) {
+    if (currentEstimateBack != null && !rejectUpdate(currentEstimateBack, gyroRate, constVision.AREA_THRESHOLD_BACK)) {
       lastEstimateBack = currentEstimateBack;
       backPose = currentEstimateBack.pose;
       newBackEstimate = true;

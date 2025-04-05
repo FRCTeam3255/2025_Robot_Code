@@ -775,7 +775,8 @@ public final class Constants {
      * The area that one tag (if its the only tag in the update) needs to exceed
      * before being accepted
      */
-    public static final double AREA_THRESHOLD = 0.1;
+    public static final double AREA_THRESHOLD_FRONT = 0.1;
+    public static final double AREA_THRESHOLD_BACK = 0.05;
 
     // The below values are accounted for in the limelight interface, NOT in code
     public static class LIMELIGHT_RIGHT {
