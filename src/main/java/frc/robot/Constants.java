@@ -101,7 +101,7 @@ public final class Constants {
 
     }
 
-    public static final double WHEEL_DIAMETER = Units.Inches.of(3.87).in(Units.Meters);
+    public static final double WHEEL_DIAMETER = Units.Meters.of(0.09779).in(Units.Meters);
     public static final Distance WHEEL_RADIUS = Units.Meters.of(WHEEL_DIAMETER / 2);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -228,14 +228,14 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 9;
+      public static final double AUTO_DRIVE_P = 2.5;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 5.6; // 5.7 is also pretty good if we begin seeing undershooting
+      public static final double AUTO_STEER_P = 5;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
@@ -246,7 +246,8 @@ public final class Constants {
       public static final double MOI = 0.1356006666666667 * MASS.in(Kilograms);
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
-      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED, WHEEL_COF,
+      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, MetersPerSecond.of(999),
+          WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
 
