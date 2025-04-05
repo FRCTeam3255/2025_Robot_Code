@@ -182,6 +182,7 @@ public class StateMachine extends SubsystemBase {
         switch (currentRobotState) {
           case NONE:
           case CLEANING_L3:
+          case HAS_ALGAE:
             return Commands.either(new CleaningL2Reef(subStateMachine, subElevator, subAlgaeIntake, subLED),
                 Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
         }
@@ -190,6 +191,7 @@ public class StateMachine extends SubsystemBase {
       case CLEANING_L3:
         switch (currentRobotState) {
           case NONE:
+          case HAS_ALGAE:
           case CLEANING_L2:
             return Commands.either(new CleaningL3Reef(subStateMachine, subElevator, subAlgaeIntake, subLED),
                 Commands.print("CORAL IS STUCK IN ELEVATOR!!!! :("), subCoralOuttake.isSafeToMoveElevator());
