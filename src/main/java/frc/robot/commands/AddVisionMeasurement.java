@@ -47,12 +47,20 @@ public class AddVisionMeasurement extends Command {
         subDrivetrain.getPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
     AngularVelocity gyroRate = Units.DegreesPerSecond.of(subDrivetrain.getGyroRate());
 
-    Optional<List<PoseEstimate>> estimatedPoses = subVision.fetchPoseEstimates(gyroRate);
+    Optional<PoseEstimate[]> estimatedPoses = subVision.fetchPoseEstimates(gyroRate);
     if (estimatedPoses.isPresent()) {
       for (PoseEstimate pose : estimatedPoses.get()) {
-        subDrivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds);
+        if (pose != null) {
+          if (pose.avgTagDist > constVision.FAR_DIST_METERS) {
+            subDrivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds, constVision.FAR_STDEVS);
+          } else {
+            subDrivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds, constVision.CLOSE_STDEVS);
+          }
+          estimatedPose = pose;
+        }
       }
     }
+
   }
 
   @Override

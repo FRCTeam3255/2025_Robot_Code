@@ -134,24 +134,23 @@ public class Vision extends SubsystemBase {
     }
   }
 
-  public Optional<List<PoseEstimate>> fetchPoseEstimates(AngularVelocity gyroRate) {
+  public Optional<PoseEstimate[]> fetchPoseEstimates(AngularVelocity gyroRate) {
     updateEstimatedPoses(gyroRate);
+    PoseEstimate[] validEstimates = new PoseEstimate[3];
 
     // No valid pose estimates :(
     if (!newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       return Optional.empty();
     } else {
-      // At least one valid estimate; return all valid estimates
-      List<PoseEstimate> validEstimates = List.of();
 
       if (newRightEstimate) {
-        validEstimates.add(lastEstimateRight);
+        validEstimates[0] = lastEstimateRight;
       }
       if (newLeftEstimate) {
-        validEstimates.add(lastEstimateLeft);
+        validEstimates[1] = lastEstimateLeft;
       }
       if (newBackEstimate) {
-        validEstimates.add(lastEstimateBack);
+        validEstimates[2] = lastEstimateBack;
       }
       return Optional.of(validEstimates);
     }
