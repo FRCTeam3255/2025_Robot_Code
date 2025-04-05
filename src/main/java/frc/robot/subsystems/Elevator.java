@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicExpoDutyCycle;
+import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -40,7 +42,7 @@ public class Elevator extends SubsystemBase {
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
 
-  MotionMagicVoltage motionRequest;
+  MotionMagicExpoVoltage motionRequest;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -49,7 +51,7 @@ public class Elevator extends SubsystemBase {
 
     lastDesiredPosition = Units.Inches.of(0);
     voltageRequest = new VoltageOut(0);
-    motionRequest = new MotionMagicVoltage(0);
+    motionRequest = new MotionMagicExpoVoltage(0);
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);

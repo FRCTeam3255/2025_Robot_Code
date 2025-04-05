@@ -344,9 +344,17 @@ public class Drivetrain extends SN_SuperSwerve {
         .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
   }
 
-  public Boolean isAligned() {
+  public Boolean isAlignedCoral() {
     return (desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_CORAL_TOLERANCE
+            .in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation());
+  }
+
+  public Boolean isAlignedAlgae() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_ALGAE_TOLERANCE
+            .in(Units.Meters))
         && isAtRotation(desiredAlignmentPose.getRotation());
   }
 
