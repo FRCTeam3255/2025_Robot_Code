@@ -111,6 +111,8 @@ public class RobotContainer {
       subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
+  private final CoralStuckSoftwareLimitToggle comCoralStuckSoftwareLimit = new CoralStuckSoftwareLimitToggle(
+      subElevator);
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -299,7 +301,7 @@ public class RobotContainer {
             Commands
                 .runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions().get()[0])));
 
-    controller.btn_East.onTrue(new CoralStuckSoftwareLimitToggle(subElevator));
+    controller.btn_East.onTrue(comCoralStuckSoftwareLimit);
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));
     controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
@@ -440,6 +442,10 @@ public class RobotContainer {
 
   public boolean elevatorAndAlgaeAtSetPoint() {
     return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
+  }
+
+  public boolean coralStuckSoftwareLimitEnable() {
+    return comCoralStuckSoftwareLimit.isCoralStuck();
   }
 
   /**

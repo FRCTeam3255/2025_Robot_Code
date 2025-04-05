@@ -32,4 +32,8 @@ public class CoralStuckSoftwareLimitToggle extends InstantCommand {
           constElevator.NORMAL_FORWARD_LIMIT.in(Units.Inches));
     }
   }
+
+  public boolean isCoralStuck() {
+    return coralStuckToggle;
+  }
 }
