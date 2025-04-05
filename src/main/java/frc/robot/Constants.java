@@ -278,7 +278,7 @@ public final class Constants {
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
-      public static final Distance AUTO_ALIGNMENT_CORAL_TOLERANCE = Units.Inches.of(1);
+      public static final Distance AUTO_ALIGNMENT_CORAL_TOLERANCE = Units.Inches.of(1.5);
       public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
 
       static {

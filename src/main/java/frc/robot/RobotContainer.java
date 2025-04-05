@@ -552,6 +552,12 @@ public class RobotContainer {
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
+    EventTrigger prepL2 = new EventTrigger("PrepL2");
+    prepL2
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L1),
+            Set.of(subStateMachine)).repeatedly()
+            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L1));
+
     EventTrigger prepPlace = new EventTrigger("PrepPlace");
     prepPlace
         .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),

@@ -38,6 +38,12 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "PrepL2",
+      "waypointRelativePos": 0.7533498759305084,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "PrepPlace",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
