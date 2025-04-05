@@ -354,6 +354,15 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.Slot0.kP = 18;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
+
+      ALGAE_PIVOT_CONFIG.Slot1.kG = 1.05; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot1.kS = 0.5; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot1.kV = 0.0; // Volts for a velocity target of 1 rps
+      ALGAE_PIVOT_CONFIG.Slot1.kA = 0.0; // Volts for an acceleration of 1 rps/s
+      ALGAE_PIVOT_CONFIG.Slot1.kP = 15;
+      ALGAE_PIVOT_CONFIG.Slot1.kI = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot1.kD = 0.00;
+
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
       ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
