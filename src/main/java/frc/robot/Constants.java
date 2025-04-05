@@ -485,7 +485,7 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/
-      ELEVATOR_CONFIG.Slot0.kP = 0.85;
+      ELEVATOR_CONFIG.Slot0.kP = 0.83;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
@@ -614,7 +614,8 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       // net poses
-      private static final Pose2d BLUE_NET = new Pose2d(7, FIELD_WIDTH.in(Units.Meters) / 2, Rotation2d.fromDegrees(0));
+      private static final Pose2d BLUE_NET = new Pose2d(7.8, FIELD_WIDTH.in(Units.Meters) / 2,
+          Rotation2d.fromDegrees(0));
       private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
       public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
 
