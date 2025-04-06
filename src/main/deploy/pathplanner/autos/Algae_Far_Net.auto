@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Net-IJAlgae"
+            "pathName": "Net-EFAlgae"
           }
         },
         {
@@ -67,7 +67,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "IJAlgae-Net"
+            "pathName": "EFAlgae-Net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-CDAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CleanL2Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CDAlgae-Net"
           }
         },
         {
@@ -86,6 +116,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "COMP_READY",
+  "folder": null,
   "choreoAuto": false
 }

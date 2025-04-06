@@ -20,15 +20,19 @@ import frc.robot.Constants.constVision;
 public class Vision extends SubsystemBase {
   PoseEstimate lastEstimateRight = new PoseEstimate();
   PoseEstimate lastEstimateLeft = new PoseEstimate();
+  PoseEstimate lastEstimateBack = new PoseEstimate();
 
   // Not logged, as they turn to false immediately after being read
   @NotLogged
   boolean newRightEstimate = false;
   @NotLogged
   boolean newLeftEstimate = false;
+  @NotLogged
+  boolean newBackEstimate = false;
 
   Pose2d rightPose = new Pose2d();
   Pose2d leftPose = new Pose2d();
+  Pose2d backPose = new Pose2d();
 
   private boolean useMegaTag2 = false;
 
@@ -36,7 +40,7 @@ public class Vision extends SubsystemBase {
   }
 
   public PoseEstimate[] getLastPoseEstimates() {
-    return new PoseEstimate[] { lastEstimateRight, lastEstimateLeft };
+    return new PoseEstimate[] { lastEstimateRight, lastEstimateLeft, lastEstimateBack };
   }
 
   public void setMegaTag2(boolean useMegaTag2) {
@@ -53,7 +57,7 @@ public class Vision extends SubsystemBase {
    * @return True if the estimate should be rejected
    */
 
-  public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate) {
+  public boolean rejectUpdate(PoseEstimate poseEstimate, AngularVelocity gyroRate, double areaThreshold) {
     // Angular velocity is too high to have accurate vision
     if (gyroRate.compareTo(constVision.MAX_ANGULAR_VELOCITY) > 0) {
       return true;
@@ -65,7 +69,7 @@ public class Vision extends SubsystemBase {
     }
 
     // 1 Tag with a large area
-    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > constVision.AREA_THRESHOLD) {
+    if (poseEstimate.tagCount == 1 && poseEstimate.avgTagArea > areaThreshold) {
       return false;
       // 2 tags or more
     } else if (poseEstimate.tagCount > 1) {
@@ -98,24 +102,33 @@ public class Vision extends SubsystemBase {
   public void setCurrentEstimates(AngularVelocity gyroRate) {
     PoseEstimate currentEstimateRight = new PoseEstimate();
     PoseEstimate currentEstimateLeft = new PoseEstimate();
+    PoseEstimate currentEstimateBack = new PoseEstimate();
 
     if (useMegaTag2) {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[2]);
     } else {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[0]);
       currentEstimateLeft = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[1]);
+      currentEstimateBack = LimelightHelpers.getBotPoseEstimate_wpiBlue(constVision.LIMELIGHT_NAMES[2]);
     }
 
-    if (currentEstimateRight != null && !rejectUpdate(currentEstimateRight, gyroRate)) {
+    if (currentEstimateRight != null
+        && !rejectUpdate(currentEstimateRight, gyroRate, constVision.AREA_THRESHOLD_FRONT)) {
       lastEstimateRight = currentEstimateRight;
       rightPose = currentEstimateRight.pose;
       newRightEstimate = true;
     }
-    if (currentEstimateLeft != null && !rejectUpdate(currentEstimateLeft, gyroRate)) {
+    if (currentEstimateLeft != null && !rejectUpdate(currentEstimateLeft, gyroRate, constVision.AREA_THRESHOLD_FRONT)) {
       lastEstimateLeft = currentEstimateLeft;
       leftPose = currentEstimateLeft.pose;
       newLeftEstimate = true;
+    }
+    if (currentEstimateBack != null && !rejectUpdate(currentEstimateBack, gyroRate, constVision.AREA_THRESHOLD_BACK)) {
+      lastEstimateBack = currentEstimateBack;
+      backPose = currentEstimateBack.pose;
+      newBackEstimate = true;
     }
   }
 
@@ -123,27 +136,37 @@ public class Vision extends SubsystemBase {
     setCurrentEstimates(gyroRate);
 
     // No valid pose estimates :(
-    if (!newRightEstimate && !newLeftEstimate) {
+    if (!newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       return Optional.empty();
 
-    } else if (newRightEstimate && !newLeftEstimate) {
+    } else if (newRightEstimate && !newLeftEstimate && !newBackEstimate) {
       // One valid pose estimate (right)
       newRightEstimate = false;
       return Optional.of(lastEstimateRight);
 
-    } else if (!newRightEstimate && newLeftEstimate) {
+    } else if (!newRightEstimate && newLeftEstimate && !newBackEstimate) {
       // One valid pose estimate (left)
       newLeftEstimate = false;
       return Optional.of(lastEstimateLeft);
 
+    } else if (!newRightEstimate && !newLeftEstimate && newBackEstimate) {
+      // One valid pose estimate (back)
+      newLeftEstimate = false;
+      return Optional.of(lastEstimateBack);
+
     } else {
-      // Two valid pose estimates, disgard the one that's further
+      // More than one valid pose estimate, use the closest one
       newRightEstimate = false;
       newLeftEstimate = false;
-      if (lastEstimateLeft.avgTagDist < lastEstimateRight.avgTagDist) {
+      newBackEstimate = false;
+      if (lastEstimateRight.avgTagDist < lastEstimateLeft.avgTagDist
+          && lastEstimateRight.avgTagDist < lastEstimateBack.avgTagDist) {
         return Optional.of(lastEstimateRight);
-      } else {
+      } else if (lastEstimateLeft.avgTagDist < lastEstimateRight.avgTagDist
+          && lastEstimateLeft.avgTagDist < lastEstimateBack.avgTagDist) {
         return Optional.of(lastEstimateLeft);
+      } else {
+        return Optional.of(lastEstimateBack);
       }
     }
   }

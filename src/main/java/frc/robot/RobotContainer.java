@@ -43,6 +43,7 @@ import frc.robot.Constants.constLED;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.CoralStuckSoftwareLimitToggle;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
@@ -110,6 +111,8 @@ public class RobotContainer {
       subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
+  private final CoralStuckSoftwareLimitToggle comCoralStuckSoftwareLimit = new CoralStuckSoftwareLimitToggle(
+      subElevator);
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -231,9 +234,9 @@ public class RobotContainer {
 
   public static boolean justScored = false;
   private final Trigger justScoredTrigger = new Trigger(() -> justScored);
-  private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAligned());
+  private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAlignedCoral());
   private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
-      && subDrivetrain.isAligned());
+      && subDrivetrain.isAlignedCoral());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
@@ -250,7 +253,7 @@ public class RobotContainer {
             new DriveManual(subStateMachine, subDrivetrain, subElevator, conDriver.axis_LeftY, conDriver.axis_LeftX,
                 conDriver.axis_RightX, conDriver.btn_RightBumper, conDriver.btn_LeftTrigger, conDriver.btn_RightTrigger,
                 conDriver.btn_B,
-                conDriver.btn_X, conDriver.btn_LeftBumper));
+                conDriver.btn_X, conDriver.btn_East, conDriver.btn_LeftBumper));
 
     configureDriverBindings(conDriver);
     configureOperatorBindings(conOperator);
@@ -280,7 +283,9 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+    // controller.btn_Back.onTrue(Commands.runOnce(() ->
+    // subDrivetrain.resetModulesToAbsolute()));
+    controller.btn_Back.onTrue(comCoralStuckSoftwareLimit);
 
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
@@ -433,11 +438,15 @@ public class RobotContainer {
   }
 
   public boolean isAligned() {
-    return subDrivetrain.isAligned();
+    return subDrivetrain.isAlignedCoral();
   }
 
   public boolean elevatorAndAlgaeAtSetPoint() {
     return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
+  }
+
+  public boolean coralStuckSoftwareLimitEnable() {
+    return comCoralStuckSoftwareLimit.isCoralStuck();
   }
 
   /**
@@ -491,16 +500,16 @@ public class RobotContainer {
     Command driveAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
         SELECTED_AUTO_PREP_MAP[AUTO_PREP_NUM].getSecond(), MetersPerSecond.of(0),
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
-        DriverState.REEF_AUTO_DRIVING, subStateMachine)).repeatedly();
+        DriverState.REEF_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
 
     Command algaeAutoAlign = Commands.runOnce(() -> subDrivetrain.algaeAutoAlign(MetersPerSecond.of(0),
         MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false,
         constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
-        DriverState.ALGAE_AUTO_DRIVING, subStateMachine)).repeatedly();
+        DriverState.ALGAE_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
             TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
@@ -517,16 +526,13 @@ public class RobotContainer {
             .withName("GetCoralStationPiece"));
 
     NamedCommands.registerCommand("ForceGamePiece",
-        Commands.either(
-            Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
-                .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))
-                    .alongWith(Commands.runOnce(() -> subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.MAX_POS)))),
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_CORAL),
-            subCoralOuttake.sensorSeesCoralSupplier()).withName("ForceGamePiece"));
+        Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
+            .alongWith(Commands.runOnce(() -> subCoralOuttake.setHasCoral(true))
+                .alongWith(Commands.runOnce(() -> subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.MAX_POS)))));
 
     NamedCommands.registerCommand("CleanL2Reef",
         Commands.sequence(
-            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedAlgae()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L2.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
             TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
@@ -534,7 +540,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("CleanL3Reef",
         Commands.sequence(
-            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAligned()).withTimeout(1),
+            algaeAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedAlgae()).withTimeout(1),
             Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
             TRY_CLEANING_L3.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE),
             TRY_PREP_ALGAE_0.asProxy().withTimeout(0.01),
@@ -550,9 +556,8 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitSeconds(0.75),
         Commands.waitUntil(() -> subElevator.atDesiredPosition()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.2),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
         TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT))));
 
     // -- Event Markers --
@@ -612,6 +617,18 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
         algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
         return algaeNet;
+      case "Algae_Mid_Net":
+        Pair<RobotState, Pose2d>[] algaeMidNet = new Pair[1];
+        algaeMidNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeMidNet;
+      case "Algae_Near_Net":
+        Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[1];
+        algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeNearNet;
+      case "Algae_Far_Net":
+        Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[1];
+        algaeFarNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return algaeFarNet;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];

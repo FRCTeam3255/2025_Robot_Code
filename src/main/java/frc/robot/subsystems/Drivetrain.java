@@ -233,6 +233,8 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredProcessor;
   }
 
+  public final Double CURRENT_POSE_Y_VALUE = getPose().getY();
+
   /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
@@ -266,7 +268,7 @@ public class Drivetrain extends SN_SuperSwerve {
       LinearVelocity xVelocity,
       LinearVelocity yVelocity,
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
 
     Pose2d desiredReef = getDesiredReef(leftBranchRequested, subStateMachine);
     Distance reefDistance = Units.Meters
@@ -274,13 +276,13 @@ public class Drivetrain extends SN_SuperSwerve {
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
-        maxAutoDriveDistance, driving, rotating, subStateMachine);
+        maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
   }
 
   public void algaeAutoAlign(LinearVelocity xVelocity,
       LinearVelocity yVelocity,
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine) {
+      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
 
     Pose2d desiredAlgae = getDesiredAlgae();
     Distance reefDistance = Units.Meters
@@ -288,7 +290,7 @@ public class Drivetrain extends SN_SuperSwerve {
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
-        maxAutoDriveDistance, driving, rotating, subStateMachine);
+        maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
   }
 
   /**
@@ -298,14 +300,17 @@ public class Drivetrain extends SN_SuperSwerve {
   public void autoAlign(Distance distanceFromTarget, Pose2d desiredTarget,
       LinearVelocity xVelocity, LinearVelocity yVelocity, AngularVelocity rVelocity, double elevatorMultiplier,
       boolean isOpenLoop, Distance maxAutoDriveDistance, DriverState driving, DriverState rotating,
-      StateMachine subStateMachine) {
+      StateMachine subStateMachine, boolean lockX, boolean lockY) {
     desiredAlignmentPose = desiredTarget;
+    int redAllianceMultiplier = constField.isRedAlliance() ? -1 : 1;
+    double manualXVelocity = xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond);
+    double manualYVelocity = yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond);
     if (distanceFromTarget.gte(maxAutoDriveDistance)) {
       // Rotational-only auto-align
       rotationalAlign(desiredTarget, xVelocity, yVelocity, isOpenLoop, rotating, subStateMachine);
     } else {
       // Full auto-align
-      ChassisSpeeds desiredChassisSpeeds = getAlignmentSpeeds(desiredTarget);
+      ChassisSpeeds automatedDTVelocity = getAlignmentSpeeds(desiredTarget);
       subStateMachine.setDriverState(driving);
 
       // Speed limit based on elevator height
@@ -313,20 +318,26 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity angularSpeedLimit = constDrivetrain.TURN_SPEED.times(elevatorMultiplier);
 
       if (!RobotState.isAutonomous()) {
-        if ((desiredChassisSpeeds.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-            || (desiredChassisSpeeds.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
-            || (desiredChassisSpeeds.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
+        if ((automatedDTVelocity.vxMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (automatedDTVelocity.vyMetersPerSecond > linearSpeedLimit.in(Units.MetersPerSecond))
+            || (automatedDTVelocity.omegaRadiansPerSecond > angularSpeedLimit.in(Units.RadiansPerSecond))) {
 
-          desiredChassisSpeeds.vxMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vxMetersPerSecond, 0,
+          // Automated calculated velocity
+          automatedDTVelocity.vxMetersPerSecond = MathUtil.clamp(automatedDTVelocity.vxMetersPerSecond, 0,
               linearSpeedLimit.in(MetersPerSecond));
-          desiredChassisSpeeds.vyMetersPerSecond = MathUtil.clamp(desiredChassisSpeeds.vyMetersPerSecond, 0,
+          automatedDTVelocity.vyMetersPerSecond = MathUtil.clamp(automatedDTVelocity.vyMetersPerSecond, 0,
               linearSpeedLimit.in(MetersPerSecond));
-          desiredChassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(desiredChassisSpeeds.omegaRadiansPerSecond, 0,
+          automatedDTVelocity.omegaRadiansPerSecond = MathUtil.clamp(automatedDTVelocity.omegaRadiansPerSecond, 0,
               angularSpeedLimit.in(RadiansPerSecond));
         }
       }
-
-      drive(desiredChassisSpeeds, isOpenLoop);
+      if (lockX) {
+        automatedDTVelocity.vxMetersPerSecond = manualXVelocity;
+      }
+      if (lockY) {
+        automatedDTVelocity.vyMetersPerSecond = manualYVelocity;
+      }
+      drive(automatedDTVelocity, isOpenLoop);
     }
   }
 
@@ -343,9 +354,17 @@ public class Drivetrain extends SN_SuperSwerve {
         .lte(constDrivetrain.TELEOP_AUTO_ALIGN.AT_POINT_TOLERANCE);
   }
 
-  public Boolean isAligned() {
+  public Boolean isAlignedCoral() {
     return (desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_TOLERANCE.in(Units.Meters))
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_CORAL_TOLERANCE
+            .in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation());
+  }
+
+  public Boolean isAlignedAlgae() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_ALGAE_TOLERANCE
+            .in(Units.Meters))
         && isAtRotation(desiredAlignmentPose.getRotation());
   }
 

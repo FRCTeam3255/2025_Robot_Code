@@ -263,8 +263,14 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
+      // TODO: Test if this actually works LOL
+
+      public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
       public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(5);
       public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(2);
+
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -278,7 +284,8 @@ public final class Constants {
               Math.pow(TURN_SPEED.in(Units.DegreesPerSecond), 2)));
       public static final Angle AT_ROTATION_TOLERANCE = Units.Degrees.of(1);
 
-      public static final Distance AUTO_ALIGNMENT_TOLERANCE = Units.Inches.of(1);
+      public static final Distance AUTO_ALIGNMENT_CORAL_TOLERANCE = Units.Inches.of(1);
+      public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -297,6 +304,7 @@ public final class Constants {
   public static class constAlgaeIntake {
     public static final double ALGAE_INTAKE_SPEED = 1;
     public static final double ALGAE_OUTTAKE_PROCESSOR_SPEED = -0.15;
+    public static final double ALGAE_OUTTAKE_EJECT_SPEED = -0.35;
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
@@ -452,23 +460,25 @@ public final class Constants {
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POSITION.in(Units.Rotations);
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-10)
           .in(Units.Rotations);
 
     }
   }
 
   public static class constElevator {
+    public static final Distance NORMAL_REVERSE_LIMIT = Units.Inches.of(0);
+    public static final Distance NORMAL_FORWARD_LIMIT = Units.Inches.of(62);
+
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(62).in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = NORMAL_FORWARD_LIMIT.in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
-          .in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = NORMAL_REVERSE_LIMIT.in(Units.Inches);
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
@@ -477,15 +487,16 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 0.5;
+      ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/
+      ELEVATOR_CONFIG.Slot0.kP = 0.83;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 400;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 1100;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.12;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 0;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kV = 0.04;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicExpo_kA = 0.005;
 
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
@@ -500,7 +511,7 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
     public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(20);
     public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(36.47);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
@@ -517,6 +528,9 @@ public final class Constants {
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
+
+    public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(11);
+    public static final Distance CORAL_STUCK_REVERSE_LIMIT = NORMAL_REVERSE_LIMIT.plus(CORAL_STUCK_OFFSET);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -625,6 +639,13 @@ public final class Constants {
           REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE, REEF_K_CLOSE, REEF_L_CLOSE);
       private static final List<Pose2d> RED_REEF_POSES_CLOSE = getRedReefPosesClose();
 
+      // net poses
+      private static final Pose2d BLUE_NET = new Pose2d(7.7, FIELD_WIDTH.in(Units.Meters) / 2,
+          Rotation2d.fromDegrees(0));
+      private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
+      public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
+
+      // Algae poses
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
@@ -648,7 +669,7 @@ public final class Constants {
           REEF_D_CLOSE, REEF_E_CLOSE, REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE,
           REEF_K_CLOSE, REEF_L_CLOSE, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR, ALGAE_AB, ALGAE_CD, ALGAE_EF,
-          ALGAE_GH, ALGAE_IJ, ALGAE_KL };
+          ALGAE_GH, ALGAE_IJ, ALGAE_KL, BLUE_NET };
       private static final Pose2d[] RED_POSES = getRedPosesFromArray(BLUE_POSES);
     }
 
@@ -770,7 +791,8 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left" };
+    public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left",
+        "limelight-back" };
 
     /**
      * <p>
@@ -808,7 +830,8 @@ public final class Constants {
      * The area that one tag (if its the only tag in the update) needs to exceed
      * before being accepted
      */
-    public static final double AREA_THRESHOLD = 0.1;
+    public static final double AREA_THRESHOLD_FRONT = 0.1;
+    public static final double AREA_THRESHOLD_BACK = 0.05;
 
     // The below values are accounted for in the limelight interface, NOT in code
     public static class LIMELIGHT_RIGHT {
