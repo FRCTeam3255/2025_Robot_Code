@@ -614,7 +614,7 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
       // net poses
-      private static final Pose2d BLUE_NET = new Pose2d(7.8, FIELD_WIDTH.in(Units.Meters) / 2,
+      private static final Pose2d BLUE_NET = new Pose2d(7.7, FIELD_WIDTH.in(Units.Meters) / 2,
           Rotation2d.fromDegrees(0));
       private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
       public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
