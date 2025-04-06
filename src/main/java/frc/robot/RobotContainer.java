@@ -43,6 +43,7 @@ import frc.robot.Constants.constLED;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
+import frc.robot.commands.CoralStuckSoftwareLimitToggle;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
 import frc.robot.commands.Zeroing.ManualZeroElevator;
@@ -110,6 +111,8 @@ public class RobotContainer {
       subLED);
   private final IntakingAlgaeGround comIntakingAlgaeGround = new IntakingAlgaeGround(subStateMachine, subElevator,
       subAlgaeIntake, subLED);
+  private final CoralStuckSoftwareLimitToggle comCoralStuckSoftwareLimit = new CoralStuckSoftwareLimitToggle(
+      subElevator);
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -280,7 +283,9 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+    // controller.btn_Back.onTrue(Commands.runOnce(() ->
+    // subDrivetrain.resetModulesToAbsolute()));
+    controller.btn_Back.onTrue(comCoralStuckSoftwareLimit);
 
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
@@ -438,6 +443,10 @@ public class RobotContainer {
 
   public boolean elevatorAndAlgaeAtSetPoint() {
     return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
+  }
+
+  public boolean coralStuckSoftwareLimitEnable() {
+    return comCoralStuckSoftwareLimit.isCoralStuck();
   }
 
   /**
