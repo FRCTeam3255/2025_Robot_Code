@@ -27,11 +27,13 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
   double slowMultiplier = 0;
+  Pose2d netPose, desiredNetPose;
+  boolean netAlignStarted = false;
   Pose2d processorPose, desiredProcessorPose;
   boolean processorAlignStarted = false;
 
@@ -48,12 +50,13 @@ public class DriveManual extends Command {
    * @param coralStationLeft
    * @param coralStationRight
    * @param processorBtn
+   * @param net
    */
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
-      BooleanSupplier processorBtn) {
+      BooleanSupplier processorBtn, BooleanSupplier net) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -66,6 +69,7 @@ public class DriveManual extends Command {
     this.coralStationRight = coralStationRight;
     this.subElevator = subElevator;
     this.processor = processorBtn;
+    this.net = net;
 
     isOpenLoop = true;
 
@@ -105,7 +109,9 @@ public class DriveManual extends Command {
 
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+      netAlignStarted = false;
       processorAlignStarted = false;
+
       if (subStateMachine.inCleaningState()) {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
@@ -119,31 +125,32 @@ public class DriveManual extends Command {
     }
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
+      netAlignStarted = false;
       processorAlignStarted = false;
+
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
+
       subDrivetrain.rotationalAlign(desiredCoralStation, xVelocity, yVelocity, isOpenLoop,
           DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
     }
 
     else if (coralStationLeft.getAsBoolean()) {
+      netAlignStarted = false;
       processorAlignStarted = false;
+
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
-      Distance coralStationDistance = Units.Meters
-          .of(subDrivetrain.getPose().getTranslation().getDistance(desiredCoralStation.getTranslation()));
       subDrivetrain.rotationalAlign(desiredCoralStation, xVelocity, yVelocity, isOpenLoop,
           DriverState.CORAL_STATION_ROTATION_SNAPPING, subStateMachine);
     }
 
     // -- Processors --
     else if (processor.getAsBoolean()) {
+      netAlignStarted = false;
+      boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
-      boolean driverOverrideX = xVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!processorAlignStarted || driverOverrideX) {
         Pose2d processorPose = subDrivetrain.getDesiredProcessor();
-
         if (processorPose.equals(constField.getProcessorPositions().get().get(1))) {
           yVelocity = yVelocity.unaryMinus();
         }
@@ -154,15 +161,36 @@ public class DriveManual extends Command {
       Distance processorDistance = Units.Meters
           .of(currentPose.getTranslation().getDistance(desiredProcessorPose.getTranslation()));
 
-      subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, yVelocity.unaryMinus(), xVelocity.unaryMinus(), rVelocity,
+      subDrivetrain.autoAlign(processorDistance, desiredProcessorPose, yVelocity.unaryMinus(), xVelocity.unaryMinus(),
+          rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_PROCESSOR_DISTANCE,
           DriverState.PROCESSOR_AUTO_DRIVING, DriverState.PROCESSOR_ROTATION_SNAPPING, subStateMachine, driverOverrideX,
           false);
     }
 
-    else {
-      // Regular driving
+    // -- Net --
+    else if (net.getAsBoolean()) {
       processorAlignStarted = false;
+      boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
+      if (!netAlignStarted || driverOverrideY) {
+        Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
+        if (netPose.equals(constField.POSES.NET_POSES.get(1))) {
+          yVelocity = yVelocity.unaryMinus();
+        }
+        desiredNetPose = new Pose2d(netPose.getX(), currentPose.getY(), netPose.getRotation());
+        netAlignStarted = true;
+      }
+
+      Distance netDistance = Units.Meters
+          .of(currentPose.getTranslation().getDistance(desiredNetPose.getTranslation()));
+
+      subDrivetrain.autoAlign(netDistance, desiredNetPose, xVelocity, yVelocity, rVelocity,
+          transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
+          DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
+    } else {
+      netAlignStarted = false;
+      processorAlignStarted = false;
+      // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
               yVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond)),

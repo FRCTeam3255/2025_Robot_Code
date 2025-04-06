@@ -223,6 +223,8 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredProcessor;
   }
 
+  public final Double CURRENT_POSE_Y_VALUE = getPose().getY();
+
   /**
    * Drive the drivetrain with pre-calculated ChassisSpeeds
    *
