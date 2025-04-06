@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
+import java.lang.Thread.State;
 import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
@@ -30,14 +31,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants.constDrivetrain;
+import frc.robot.Constants.*;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constVision;
 import frc.robot.RobotMap.mapDrivetrain;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
+
   private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
       new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
           mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
@@ -155,7 +158,7 @@ public class Drivetrain extends SN_SuperSwerve {
    *                            branch
    * @return The desired reef branch face to align to
    */
-  public Pose2d getDesiredReef(boolean leftBranchRequested) {
+  public Pose2d getDesiredReef(boolean leftBranchRequested, StateMachine subStateMachine) {
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
@@ -163,6 +166,13 @@ public class Drivetrain extends SN_SuperSwerve {
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
       List<Pose2d> reefPoses = constField.getReefPositions().get();
+      List<Pose2d> reefPoseClose = constField.getReefPositionsClose().get();
+      // Pose2d desiredReef;
+      // if (subStateMachine.inAlgaeWithCoralState()) {
+      // desiredReef = getClosestPoseByRotation(reefPoses);
+      // } else {
+      // desiredReef = getClosestPoseByRotation(reefPoseClose);
+      // }
       Pose2d desiredReef = getClosestPoseByRotation(reefPoses);
       int closestReefIndex = reefPoses.indexOf(desiredReef);
       // -- The above code will be different later --
@@ -260,7 +270,7 @@ public class Drivetrain extends SN_SuperSwerve {
       AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
       DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
 
-    Pose2d desiredReef = getDesiredReef(leftBranchRequested);
+    Pose2d desiredReef = getDesiredReef(leftBranchRequested, subStateMachine);
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions().get()[13].getTranslation()));
@@ -338,6 +348,13 @@ public class Drivetrain extends SN_SuperSwerve {
             .compareTo(desiredRotation.getMeasure().plus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) < 0;
   }
 
+  public boolean isAtRotation(Rotation2d desiredRotation, Angle tolerance) {
+    return (getRotation().getMeasure()
+        .compareTo(desiredRotation.getMeasure().minus(tolerance)) > 0) &&
+        getRotation().getMeasure()
+            .compareTo(desiredRotation.getMeasure().plus(tolerance)) < 0;
+  }
+
   public boolean isAtPosition(Pose2d desiredPose2d) {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
@@ -356,6 +373,13 @@ public class Drivetrain extends SN_SuperSwerve {
         getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_ALGAE_TOLERANCE
             .in(Units.Meters))
         && isAtRotation(desiredAlignmentPose.getRotation());
+  }
+
+  public Boolean isAlignedNet() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGN_NET_TOLERANCE
+            .in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation(), constDrivetrain.TELEOP_AUTO_ALIGN.ROTATED_NET_TOLERANCE);
   }
 
   public boolean atPose(Pose2d desiredPose) {

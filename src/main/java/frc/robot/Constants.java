@@ -286,6 +286,9 @@ public final class Constants {
 
       public static final Distance AUTO_ALIGNMENT_CORAL_TOLERANCE = Units.Inches.of(1);
       public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
+      public static final Distance AUTO_ALIGN_NET_TOLERANCE = Units.Inches.of(3);
+      public static final Angle ROTATED_NET_TOLERANCE = Units.Degrees.of(5);
+
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -601,14 +604,29 @@ public final class Constants {
       private static final Pose2d REEF_D = new Pose2d(3.975, 2.803, Rotation2d.fromDegrees(60));
       private static final Pose2d REEF_E = new Pose2d(5.001, 2.804, Rotation2d.fromDegrees(120));
       private static final Pose2d REEF_F = new Pose2d(5.285, 2.964, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_G = new Pose2d(5.7288, 3.863, Rotation2d.k180deg);
-      private static final Pose2d REEF_H = new Pose2d(5.7288, 4.189, Rotation2d.k180deg);
+      private static final Pose2d REEF_G = new Pose2d(5.805, 3.863, Rotation2d.k180deg);
+      private static final Pose2d REEF_H = new Pose2d(5.805, 4.189, Rotation2d.k180deg);
       private static final Pose2d REEF_I = new Pose2d(5.288, 5.083, Rotation2d.fromDegrees(-120));
       private static final Pose2d REEF_J = new Pose2d(5.002, 5.248, Rotation2d.fromDegrees(-120));
       private static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
+      // Branch poses against the reef
+      private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
+      private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
+      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.656, 2.940, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.953, 2.780, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.027, 2.734, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.324, 2.940, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.873, 3.854, Rotation2d.k180deg);
+      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.873, 4.196, Rotation2d.k180deg);
+      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.324, 5.156, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.027, 5.270, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.953, 5.293, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.656, 5.156, Rotation2d.fromDegrees(-60));
+
+      // Algae Poses
       public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
       public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
       public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
@@ -618,6 +636,11 @@ public final class Constants {
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
+
+      private static final List<Pose2d> BLUE_REEF_POSES_CLOSE = List.of(REEF_A_CLOSE, REEF_B_CLOSE, REEF_C_CLOSE,
+          REEF_D_CLOSE, REEF_E_CLOSE,
+          REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE, REEF_K_CLOSE, REEF_L_CLOSE);
+      private static final List<Pose2d> RED_REEF_POSES_CLOSE = getRedReefPosesClose();
 
       // net poses
       private static final Pose2d BLUE_NET = new Pose2d(7.7, FIELD_WIDTH.in(Units.Meters) / 2,
@@ -645,7 +668,9 @@ public final class Constants {
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, REEF_A_CLOSE, REEF_B_CLOSE, REEF_C_CLOSE,
+          REEF_D_CLOSE, REEF_E_CLOSE, REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE,
+          REEF_K_CLOSE, REEF_L_CLOSE, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR, ALGAE_AB, ALGAE_CD, ALGAE_EF,
           ALGAE_GH, ALGAE_IJ, ALGAE_KL, BLUE_NET };
       private static final Pose2d[] RED_POSES = getRedPosesFromArray(BLUE_POSES);
@@ -675,6 +700,13 @@ public final class Constants {
 
     private static List<Pose2d> getRedReefPoses() {
       Pose2d[] returnedPoses = getRedPosesFromList(POSES.BLUE_REEF_POSES);
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
+          returnedPoses[11]);
+    }
+
+    private static List<Pose2d> getRedReefPosesClose() {
+      Pose2d[] returnedPoses = getRedPosesFromList(POSES.BLUE_REEF_POSES_CLOSE);
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
           returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
           returnedPoses[11]);
@@ -732,6 +764,14 @@ public final class Constants {
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getReefPositionsClose() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_REEF_POSES_CLOSE;
+
+      }
+      return () -> POSES.BLUE_REEF_POSES_CLOSE;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {

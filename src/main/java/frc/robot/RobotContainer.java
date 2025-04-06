@@ -235,6 +235,9 @@ public class RobotContainer {
   public static boolean justScored = false;
   private final Trigger justScoredTrigger = new Trigger(() -> justScored);
   private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAlignedCoral());
+  private final Trigger readyToLiftNet = new Trigger(
+      () -> subDrivetrain.isAlignedNet() && subStateMachine.getDriverState().equals(DriverState.NET_AUTO_DRIVING));
+
   private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
       && subDrivetrain.isAlignedCoral());
 
@@ -407,6 +410,13 @@ public class RobotContainer {
     hasAlgaeStateTrigger.onTrue(HAS_ALGAE_RUMBLE);
 
     readyToLiftElevator.onTrue(Commands.runOnce(
+        () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        .onTrue(Commands.runOnce(
+            () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
+        .onFalse(Commands.runOnce(
+            () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
+
+    readyToLiftNet.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
         .onTrue(Commands.runOnce(
             () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
