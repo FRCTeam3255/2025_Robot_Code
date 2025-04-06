@@ -116,7 +116,7 @@ public class DriveManual extends Command {
       if (subStateMachine.inCleaningState()) {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
-            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine);
+            DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
         // hasAlignedCleanReef = true;
         // } else if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE)
         // {
@@ -137,7 +137,7 @@ public class DriveManual extends Command {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine);
+            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
       } else {
         System.out.println("Not safe to self drive, blame Eli >:(");
       }
