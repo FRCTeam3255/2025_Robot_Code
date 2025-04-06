@@ -283,7 +283,9 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings(SN_XboxController controller) {
-    controller.btn_Back.onTrue(Commands.runOnce(() -> subDrivetrain.resetModulesToAbsolute()));
+    // controller.btn_Back.onTrue(Commands.runOnce(() ->
+    // subDrivetrain.resetModulesToAbsolute()));
+    controller.btn_Back.onTrue(comCoralStuckSoftwareLimit);
 
     controller.btn_Start
         .onTrue(TRY_CLIMBER_DEPLOYING);
@@ -301,7 +303,6 @@ public class RobotContainer {
             Commands
                 .runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions().get()[0])));
 
-    controller.btn_East.onTrue(comCoralStuckSoftwareLimit);
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));
     controller.btn_South.onTrue(Commands.sequence(Commands.runOnce(() -> subElevator.hasZeroed = false),
