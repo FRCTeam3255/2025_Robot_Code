@@ -167,12 +167,13 @@ public class Drivetrain extends SN_SuperSwerve {
       // Determine closest reef BRANCH based on our rotation
       List<Pose2d> reefPoses = constField.getReefPositions().get();
       List<Pose2d> reefPoseClose = constField.getReefPositionsClose().get();
-      Pose2d desiredReef;
-      if (subStateMachine.inAlgaeWithCoralState()) {
-        desiredReef = getClosestPoseByRotation(reefPoses);
-      } else {
-        desiredReef = getClosestPoseByRotation(reefPoseClose);
-      }
+      // Pose2d desiredReef;
+      // if (subStateMachine.inAlgaeWithCoralState()) {
+      // desiredReef = getClosestPoseByRotation(reefPoses);
+      // } else {
+      // desiredReef = getClosestPoseByRotation(reefPoseClose);
+      // }
+      Pose2d desiredReef = getClosestPoseByRotation(reefPoses);
       int closestReefIndex = reefPoses.indexOf(desiredReef);
       // -- The above code will be different later --
 
