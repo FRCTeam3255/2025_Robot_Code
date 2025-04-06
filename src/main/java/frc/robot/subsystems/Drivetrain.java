@@ -348,6 +348,13 @@ public class Drivetrain extends SN_SuperSwerve {
             .compareTo(desiredRotation.getMeasure().plus(constDrivetrain.TELEOP_AUTO_ALIGN.AT_ROTATION_TOLERANCE)) < 0;
   }
 
+  public boolean isAtRotation(Rotation2d desiredRotation, Angle tolerance) {
+    return (getRotation().getMeasure()
+        .compareTo(desiredRotation.getMeasure().minus(tolerance)) > 0) &&
+        getRotation().getMeasure()
+            .compareTo(desiredRotation.getMeasure().plus(tolerance)) < 0;
+  }
+
   public boolean isAtPosition(Pose2d desiredPose2d) {
     return Units.Meters
         .of(getPose().getTranslation().getDistance(desiredPose2d.getTranslation()))
@@ -366,6 +373,13 @@ public class Drivetrain extends SN_SuperSwerve {
         getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGNMENT_ALGAE_TOLERANCE
             .in(Units.Meters))
         && isAtRotation(desiredAlignmentPose.getRotation());
+  }
+
+  public Boolean isAlignedNet() {
+    return (desiredAlignmentPose.getTranslation().getDistance(
+        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGN_NET_TOLERANCE
+            .in(Units.Meters))
+        && isAtRotation(desiredAlignmentPose.getRotation(), constDrivetrain.TELEOP_AUTO_ALIGN.ROTATED_NET_TOLERANCE);
   }
 
   public boolean atPose(Pose2d desiredPose) {
