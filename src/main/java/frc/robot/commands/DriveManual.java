@@ -133,7 +133,8 @@ public class DriveManual extends Command {
         // subStateMachine);
         // }
       } else if ((subStateMachine.inPrepState() && subElevator.atDesiredPosition())
-          || subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
+          || subStateMachine.getRobotState() == RobotState.HAS_CORAL
+          || subStateMachine.getRobotState() == RobotState.INDEXING_CORAL) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
