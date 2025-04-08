@@ -22,12 +22,14 @@ import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.CoralOuttake;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
-  DoubleSupplier xAxis, yAxis, rotationAxis;
+  CoralOuttake subCoralOuttake;
+  Double xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
   Elevator subElevator;
   boolean isOpenLoop;
@@ -53,13 +55,14 @@ public class DriveManual extends Command {
    * @param processorBtn
    * @param net
    */
-  public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
-      DoubleSupplier yAxis,
-      DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
+  public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, CoralOuttake subCoralOuttake,
+      Double xAxis, Double yAxis,
+      Double rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
       BooleanSupplier processorBtn, BooleanSupplier net) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
+    this.subCoralOuttake = subCoralOuttake;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
@@ -71,6 +74,10 @@ public class DriveManual extends Command {
     this.subElevator = subElevator;
     this.processor = processorBtn;
     this.net = net;
+
+    if (subCoralOuttake.getDriveXSpeed() != null) {
+      this.xAxis = subCoralOuttake.getDriveXSpeed();
+    }
 
     isOpenLoop = true;
 
@@ -102,10 +109,10 @@ public class DriveManual extends Command {
         * constDrivetrain.OBSERVED_DRIVE_SPEED.in(Units.MetersPerSecond) * elevatorHeightMultiplier;
 
     // -- Velocities --
-    LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
-    LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
+    LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis * transMultiplier);
+    LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis * transMultiplier);
     AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+        .of(-rotationAxis * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
     // -- Controlling --

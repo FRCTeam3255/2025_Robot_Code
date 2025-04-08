@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
@@ -225,6 +226,8 @@ public final class Constants {
      * <b>Units:</b> Radians
      */
     public static final double MEASUREMENT_STD_DEV_HEADING = Units.Radians.convertFrom(5, Units.Degrees);
+    public static final Double DRIVE_X_AXIS_MULTIPLIER = 0.5;
+    public static final double AFTER_L1_SPEED = 0.5;
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem

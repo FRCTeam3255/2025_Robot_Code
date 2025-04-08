@@ -50,6 +50,7 @@ import frc.robot.commands.states.second_scoring_element.IntakeCoralWithAlgae;
 @Logged
 public class StateMachine extends SubsystemBase {
   public static DriverState currentDriverState;
+  public static RobotState lastRobotState;
   public static RobotState currentRobotState;
   @NotLogged
   AlgaeIntake subAlgaeIntake;
@@ -75,6 +76,7 @@ public class StateMachine extends SubsystemBase {
       Drivetrain subDrivetrain, Elevator subElevator, Hopper subHopper, LED subLED, SN_XboxController conOperator) {
     currentRobotState = RobotState.NONE;
     currentDriverState = DriverState.MANUAL;
+    lastRobotState = RobotState.NONE;
 
     this.subAlgaeIntake = subAlgaeIntake;
     this.subClimber = subClimber;
@@ -96,6 +98,10 @@ public class StateMachine extends SubsystemBase {
 
   public DriverState getDriverState() {
     return currentDriverState;
+  }
+
+  public RobotState getLastState() {
+    return lastRobotState;
   }
 
   public RobotState getRobotState() {
@@ -164,6 +170,8 @@ public class StateMachine extends SubsystemBase {
     // https://www.chiefdelphi.com/t/frc-3255-supernurds-2025-build-thread/477499/104
 
     // working!
+
+    lastRobotState = currentRobotState;
 
     switch (desiredState) {
       case NONE:

@@ -12,13 +12,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
+import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotMap.mapCoralOuttake;
+import frc.robot.subsystems.StateMachine.*;
 
 @Logged
 public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   CANrange coralSensor;
   private boolean hasCoral, indexingCoral;
+  StateMachine globalStateMachine;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -49,6 +52,14 @@ public class CoralOuttake extends SubsystemBase {
 
   public void coralToggle() {
     this.hasCoral = !hasCoral;
+  }
+
+  public Double getDriveXSpeed() {
+    if (StateMachine.lastRobotState == RobotState.PREP_CORAL_L1) {
+      return constDrivetrain.AFTER_L1_SPEED;
+    } else {
+      return null;
+    }
   }
 
   public boolean sensorSeesCoral() {
