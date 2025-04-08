@@ -37,6 +37,8 @@ public class DriveManual extends Command {
   boolean netAlignStarted = false;
   Pose2d processorPose, desiredProcessorPose;
   boolean processorAlignStarted = false;
+  boolean hasCleanedReef = false;
+  boolean hasAlignedCleanReef = false;
 
   /**
    * @param subStateMachine
@@ -117,36 +119,47 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
-        // hasAlignedCleanReef = true;
-        // } else if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE)
-        // {
-        // // if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE) {
-        // // hasCleanedReef = true;
-        // // }
-        // if (hasCleanedReef && subStateMachine.getRobotState() ==
-        // RobotState.PREP_CORAL_L4_WITH_ALGAE) {
-        // subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity,
-        // rVelocity, transMultiplier,
-        // isOpenLoop,
-        // Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-        // DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING,
-        // subStateMachine);
-        // }
-      } else if ((subStateMachine.inPrepState() && subElevator.atDesiredPosition())
-          || subStateMachine.getRobotState() == RobotState.HAS_CORAL
-          || subStateMachine.getRobotState() == RobotState.INDEXING_CORAL) {
-        subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
+        hasAlignedCleanReef = true;
+      } else if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE) {
+        if (subStateMachine.getRobotState() == RobotState.HAS_CORAL_AND_ALGAE) {
+          hasCleanedReef = true;
+        }
+        if (hasCleanedReef && (subStateMachine.inPrepState() && subElevator.atDesiredPosition())) {
+          subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity,
+              rVelocity, transMultiplier,
+              isOpenLoop,
+              Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+              DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING,
+              subStateMachine, false, false);
+        }
+        if (subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE) {
+          hasAlignedCleanReef = false;
+        }
+      } else if (!hasAlignedCleanReef) {
+        subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity,
+            rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
-            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
+            DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING,
+            subStateMachine, false, false);
       } else {
         System.out.println("Not safe to self drive, blame Eli >:(");
       }
+      // } else if ((subStateMachine.inPrepState() && subElevator.atDesiredPosition())
+      // || subStateMachine.getRobotState() == RobotState.HAS_CORAL
+      // || subStateMachine.getRobotState() == RobotState.INDEXING_CORAL) {
+      // subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity,
+      // rVelocity, transMultiplier,
+      // isOpenLoop,
+      // Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
+      // DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING,
+      // subStateMachine, false, false);
     }
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
+      hasAlignedCleanReef = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
 
@@ -167,6 +180,7 @@ public class DriveManual extends Command {
     // -- Processors --
     else if (processor.getAsBoolean()) {
       netAlignStarted = false;
+      hasAlignedCleanReef = false;
       boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
       if (!processorAlignStarted || driverOverrideX) {
@@ -191,6 +205,7 @@ public class DriveManual extends Command {
     // -- Net --
     else if (net.getAsBoolean()) {
       processorAlignStarted = false;
+      hasAlignedCleanReef = false;
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
@@ -210,6 +225,7 @@ public class DriveManual extends Command {
     } else {
       netAlignStarted = false;
       processorAlignStarted = false;
+      hasAlignedCleanReef = false;
       // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
