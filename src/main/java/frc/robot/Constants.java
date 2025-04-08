@@ -748,9 +748,8 @@ public final class Constants {
       if (onRed) {
         return () -> POSES.RED_POSES;
 
-      } else {
-        return () -> POSES.BLUE_POSES;
       }
+      return () -> POSES.BLUE_POSES;
     }
 
     /**
@@ -792,9 +791,8 @@ public final class Constants {
     public static Supplier<List<Pose2d>> getAlgaePositions(Boolean onRed) {
       if (onRed) {
         return () -> POSES.RED_ALGAE_POSES;
-      } else {
-        return () -> POSES.BLUE_ALGAE_POSES;
       }
+      return () -> POSES.BLUE_ALGAE_POSES;
     }
   }
 
