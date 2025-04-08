@@ -55,7 +55,8 @@ public class CoralOuttake extends SubsystemBase {
   }
 
   public Double getDriveXSpeed() {
-    if (StateMachine.lastRobotState == RobotState.PREP_CORAL_L1) {
+    if (StateMachine.lastRobotState == RobotState.PREP_CORAL_L1
+        && StateMachine.currentRobotState == RobotState.SCORING_CORAL) {
       return constDrivetrain.AFTER_L1_SPEED;
     } else {
       return null;
