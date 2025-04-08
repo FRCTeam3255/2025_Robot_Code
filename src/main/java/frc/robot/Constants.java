@@ -613,6 +613,8 @@ public final class Constants {
       private static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
+      private static final List<Pose2d> REEF_CENTER_POSES = List.of(REEF_CENTER, getRedAlliancePose(REEF_CENTER));
+
       // Branch poses against the reef
       private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
@@ -653,11 +655,6 @@ public final class Constants {
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
-      private static final List<Pose2d> ALGAE_POSES = Stream.concat(
-          Stream.of(BLUE_ALGAE_POSES.stream(), RED_ALGAE_POSES.stream()),
-          Stream.of(BLUE_ALGAE_POSES.stream(), RED_ALGAE_POSES.stream()).toList().stream())
-          .flatMap(s -> s)
-          .toList();
 
       // Coral Stations
       private static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-55));
@@ -747,8 +744,8 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of field element positions
      */
-    public static Supplier<Pose2d[]> getAllFieldPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<Pose2d[]> getAllFieldPositions(Boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_POSES;
 
       }
@@ -791,8 +788,11 @@ public final class Constants {
       return () -> POSES.PROCESSOR_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getAlgaePositions() {
-      return () -> POSES.ALGAE_POSES;
+    public static Supplier<List<Pose2d>> getAlgaePositions(Boolean onRed) {
+      if (onRed) {
+        return () -> POSES.RED_ALGAE_POSES;
+      }
+      return () -> POSES.BLUE_ALGAE_POSES;
     }
   }
 

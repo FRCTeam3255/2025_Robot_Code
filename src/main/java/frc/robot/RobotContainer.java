@@ -78,6 +78,8 @@ public class RobotContainer {
   private final String LEFT_LABEL = "Left";
   private final String RIGHT_LABEL = "Right";
 
+  Boolean onRed = constField.isRedAlliance();
+
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
   private final SN_XboxController conDriver = new SN_XboxController(mapControllers.DRIVER_USB);
@@ -304,7 +306,8 @@ public class RobotContainer {
     controller.btn_North
         .onTrue(
             Commands
-                .runOnce(() -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions().get()[0])));
+                .runOnce(
+                    () -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions(onRed).get()[0])));
 
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));
