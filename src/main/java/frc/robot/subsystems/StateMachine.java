@@ -171,8 +171,6 @@ public class StateMachine extends SubsystemBase {
 
     // working!
 
-    lastRobotState = currentRobotState;
-
     switch (desiredState) {
       case NONE:
         switch (currentRobotState) {
@@ -650,6 +648,9 @@ public class StateMachine extends SubsystemBase {
         break;
 
     }
+
+    lastRobotState = currentRobotState;
+
     return Commands
         .print("ITS SO OVER D: Invalid State Provided, Blame Eli. Attempted to go to: " + desiredState.toString()
             + " while at " + currentRobotState.toString());

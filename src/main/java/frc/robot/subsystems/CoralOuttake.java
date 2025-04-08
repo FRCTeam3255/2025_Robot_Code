@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -21,7 +22,6 @@ public class CoralOuttake extends SubsystemBase {
   TalonFX outtakeMotor;
   CANrange coralSensor;
   private boolean hasCoral, indexingCoral;
-  StateMachine globalStateMachine;
 
   /** Creates a new CoralOuttake. */
   public CoralOuttake() {
@@ -54,7 +54,7 @@ public class CoralOuttake extends SubsystemBase {
     this.hasCoral = !hasCoral;
   }
 
-  public Double getDriveXSpeed() {
+  public DoubleSupplier getDriveXSpeed(StateMachine subStateMachine) {
     if (StateMachine.lastRobotState == RobotState.PREP_CORAL_L1
         && StateMachine.currentRobotState == RobotState.SCORING_CORAL) {
       return constDrivetrain.AFTER_L1_SPEED;
