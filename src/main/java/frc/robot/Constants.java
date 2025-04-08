@@ -7,9 +7,11 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
@@ -288,7 +290,6 @@ public final class Constants {
       public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
       public static final Distance AUTO_ALIGN_NET_TOLERANCE = Units.Inches.of(3);
       public static final Angle ROTATED_NET_TOLERANCE = Units.Degrees.of(5);
-
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -652,6 +653,11 @@ public final class Constants {
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
+      private static final List<Pose2d> ALGAE_POSES = Stream.concat(
+          Stream.of(BLUE_ALGAE_POSES.stream(), RED_ALGAE_POSES.stream()),
+          Stream.of(BLUE_ALGAE_POSES.stream(), RED_ALGAE_POSES.stream()).toList().stream())
+          .flatMap(s -> s)
+          .toList();
 
       // Coral Stations
       private static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-55));
@@ -786,10 +792,7 @@ public final class Constants {
     }
 
     public static Supplier<List<Pose2d>> getAlgaePositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> POSES.RED_ALGAE_POSES;
-      }
-      return () -> POSES.BLUE_ALGAE_POSES;
+      return () -> POSES.ALGAE_POSES;
     }
   }
 
