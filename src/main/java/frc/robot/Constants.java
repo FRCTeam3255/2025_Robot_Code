@@ -265,10 +265,8 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
-      // TODO: Test if this actually works LOL
-
       public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
-      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2.5);
       public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(5);
       public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(2);
@@ -493,7 +491,7 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/
-      ELEVATOR_CONFIG.Slot0.kP = 0.83;
+      ELEVATOR_CONFIG.Slot0.kP = 0.8;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
@@ -517,13 +515,13 @@ public final class Constants {
     }
 
     public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(20);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(36.47);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18.75);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(35);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
-    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
-    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
+    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(24);
+    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(8);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(2.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
@@ -533,6 +531,7 @@ public final class Constants {
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
+    public static final Distance SAFE_TO_SLIDE = Units.Inches.of(32.55);
 
     public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(11);
     public static final Distance CORAL_STUCK_REVERSE_LIMIT = NORMAL_REVERSE_LIMIT.plus(CORAL_STUCK_OFFSET);
@@ -647,7 +646,7 @@ public final class Constants {
       private static final List<Pose2d> RED_REEF_POSES_CLOSE = getRedReefPosesClose();
 
       // net poses
-      private static final Pose2d BLUE_NET = new Pose2d(7.7, FIELD_WIDTH.in(Units.Meters) / 2,
+      private static final Pose2d BLUE_NET = new Pose2d(7.5, FIELD_WIDTH.in(Units.Meters) / 2,
           Rotation2d.fromDegrees(0));
       private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
       public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);

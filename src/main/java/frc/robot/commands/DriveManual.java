@@ -22,11 +22,13 @@ import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
+  AlgaeIntake subAlgaeIntake;
   DoubleSupplier xAxis, yAxis, rotationAxis;
   BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
   Elevator subElevator;
@@ -53,13 +55,15 @@ public class DriveManual extends Command {
    * @param processorBtn
    * @param net
    */
-  public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
+  public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator,
+      AlgaeIntake subAlgaeIntake, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
       BooleanSupplier processorBtn, BooleanSupplier net) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
+    this.subAlgaeIntake = subAlgaeIntake;
     this.xAxis = xAxis;
     this.yAxis = yAxis;
     this.rotationAxis = rotationAxis;
@@ -117,14 +121,20 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
-      } else if ((subStateMachine.inPrepState() && subElevator.atDesiredPosition())
-          || subStateMachine.getRobotState() == RobotState.HAS_CORAL) {
+      } else if (safeToSlide()) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
       } else {
-        System.out.println("Not safe to self drive, blame Eli >:(");
+        System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
+            + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
+        // Regular driving
+        subDrivetrain.drive(
+            Translation2d.kZero,
+            0.0, isOpenLoop);
+        subStateMachine.setDriverState(DriverState.MANUAL);
+
       }
     }
     // -- Coral Station --
@@ -211,5 +221,14 @@ public class DriveManual extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public boolean safeToSlide() {
+    if (subAlgaeIntake.hasAlgae()
+        && !subElevator.getElevatorPosition().gte(
+            constElevator.SAFE_TO_SLIDE)) {
+      return false;
+    }
+    return true;
   }
 }
