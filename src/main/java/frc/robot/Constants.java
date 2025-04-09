@@ -7,9 +7,11 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
@@ -610,6 +612,8 @@ public final class Constants {
       private static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
+      private static final List<Pose2d> REEF_CENTER_POSES = List.of(REEF_CENTER, getRedAlliancePose(REEF_CENTER));
+
       // Branch poses against the reef
       private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
@@ -739,8 +743,15 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of field element positions
      */
-    public static Supplier<Pose2d[]> getAllFieldPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<Pose2d[]> getAllFieldPositions(Boolean onRed, Boolean useDSAlliance) {
+      if (useDSAlliance) {
+        if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+          return () -> POSES.RED_POSES;
+        }
+        return () -> POSES.BLUE_POSES;
+      }
+
+      if (onRed) {
         return () -> POSES.RED_POSES;
 
       }
@@ -756,8 +767,8 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of the reef branches for your alliance
      */
-    public static Supplier<List<Pose2d>> getReefPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getReefPositions(boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_REEF_POSES;
 
       }
@@ -783,8 +794,8 @@ public final class Constants {
       return () -> POSES.PROCESSOR_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getAlgaePositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getAlgaePositions(Boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_ALGAE_POSES;
       }
       return () -> POSES.BLUE_ALGAE_POSES;
