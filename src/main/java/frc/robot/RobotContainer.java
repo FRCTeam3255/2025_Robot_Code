@@ -229,6 +229,10 @@ public class RobotContainer {
       () -> StateMachine.currentRobotState == RobotState.HAS_CORAL && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW ||
           StateMachine.currentRobotState == RobotState.HAS_CORAL_AND_ALGAE && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW);
 
+  private final Trigger coralMovedBack = new Trigger(
+      () -> StateMachine.currentRobotState == RobotState.HAS_CORAL && subCoralOuttake.sensorSeesCoral() ||
+          StateMachine.currentRobotState == RobotState.HAS_CORAL_AND_ALGAE && subCoralOuttake.sensorSeesCoral());
+
   Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
   Command READY_TO_LEAVE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
@@ -412,6 +416,11 @@ public class RobotContainer {
     coralRepositioned
       .onTrue(Commands.runOnce(
         () -> subCoralOuttake.setCoralOuttakeSpeed(0.0)
+        ));
+
+    coralMovedBack
+      .onTrue(Commands.runOnce(
+        () -> subCoralOuttake.slowlyMoveCoral()
         ));
 
     hasCoralTrigger
