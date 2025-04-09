@@ -166,7 +166,6 @@ public class Drivetrain extends SN_SuperSwerve {
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
       List<Pose2d> reefPoses = constField.getReefPositions(poseOnRed).get();
-      List<Pose2d> reefPoseClose = constField.getReefPositionsClose().get();
       // Pose2d desiredReef;
       // if (subStateMachine.inAlgaeWithCoralState()) {
       // desiredReef = getClosestPoseByRotation(reefPoses);
