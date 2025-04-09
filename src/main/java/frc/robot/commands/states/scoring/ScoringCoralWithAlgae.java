@@ -45,7 +45,7 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
 
         // Shoot coral when elevator is at the right position
         Commands.waitUntil(() -> globalElevator.atDesiredPosition()),
-        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(getCoralOuttakeSpeed())),
+        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttakeSpeed(getCoralOuttakeSpeed())),
         Commands.runOnce(() -> globalCoralOuttake.setHasCoral(false)),
 
         // Start ze timer
