@@ -658,7 +658,8 @@ public class StateMachine extends SubsystemBase {
     NET_ROTATION_SNAPPING,
     NET_AUTO_DRIVING,
     ALGAE_ROTATION_SNAPPING,
-    ALGAE_AUTO_DRIVING
+    ALGAE_AUTO_DRIVING,
+    CAGE_ROTATION_SNAPPING
   }
 
   /**
