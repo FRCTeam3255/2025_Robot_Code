@@ -768,8 +768,8 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of the reef branches for your alliance
      */
-    public static Supplier<List<Pose2d>> getReefPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getReefPositions(boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_REEF_POSES;
 
       }

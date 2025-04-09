@@ -599,7 +599,7 @@ public class RobotContainer {
   private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
     RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
     RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
-    List<Pose2d> fieldPositions = constField.getReefPositions().get();
+    List<Pose2d> fieldPositions = constField.getReefPositions(constField.isRedAlliance()).get();
 
     switch (selectedAuto) {
       case "Four_Piece_High":

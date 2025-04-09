@@ -158,13 +158,14 @@ public class Drivetrain extends SN_SuperSwerve {
    */
   public Pose2d getDesiredReef(boolean leftBranchRequested, StateMachine subStateMachine) {
     Boolean onRed = constField.isRedAlliance();
+    boolean poseOnRed = getPose().getX() > 8.775;
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
 
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
-      List<Pose2d> reefPoses = constField.getReefPositions().get();
+      List<Pose2d> reefPoses = constField.getReefPositions(poseOnRed).get();
       List<Pose2d> reefPoseClose = constField.getReefPositionsClose().get();
       // Pose2d desiredReef;
       // if (subStateMachine.inAlgaeWithCoralState()) {
@@ -192,7 +193,7 @@ public class Drivetrain extends SN_SuperSwerve {
     }
     // Determine the closest reef FACE based on our position (left vs right doesn't
     // matter)
-    List<Pose2d> reefPoses = constField.getReefPositions().get();
+    List<Pose2d> reefPoses = constField.getReefPositions(poseOnRed).get();
     Pose2d desiredReef = getPose().nearest(reefPoses);
     return desiredReef;
   }
@@ -271,7 +272,7 @@ public class Drivetrain extends SN_SuperSwerve {
       DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
 
     Pose2d desiredReef = getDesiredReef(leftBranchRequested, subStateMachine);
-    Boolean onRed = constField.isRedAlliance();
+    Boolean onRed = getPose().getX() > 8.775;
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
             .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
