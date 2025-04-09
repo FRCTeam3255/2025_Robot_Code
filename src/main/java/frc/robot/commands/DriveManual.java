@@ -28,7 +28,7 @@ public class DriveManual extends Command {
   StateMachine subStateMachine;
   Drivetrain subDrivetrain;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net, prepClimb;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -52,12 +52,13 @@ public class DriveManual extends Command {
    * @param coralStationRight
    * @param processorBtn
    * @param net
+   * @param prepClimb
    */
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
-      BooleanSupplier processorBtn, BooleanSupplier net) {
+      BooleanSupplier processorBtn, BooleanSupplier net, BooleanSupplier prepClimb) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.xAxis = xAxis;
@@ -71,6 +72,7 @@ public class DriveManual extends Command {
     this.subElevator = subElevator;
     this.processor = processorBtn;
     this.net = net;
+    this.prepClimb = prepClimb;
 
     isOpenLoop = true;
 
@@ -206,7 +208,20 @@ public class DriveManual extends Command {
       subDrivetrain.autoAlign(netDistance, desiredNetPose, xVelocity, yVelocity, rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
-    } else {
+    }
+
+    // -- Prep Climb --
+    else if (prepClimb.getAsBoolean()) {
+      netAlignStarted = false;
+      processorAlignStarted = false;
+
+      Pose2d desiredCage = constField.getCagePositions().get().get(0);
+
+      subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
+          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else {
       netAlignStarted = false;
       processorAlignStarted = false;
       // Regular driving
