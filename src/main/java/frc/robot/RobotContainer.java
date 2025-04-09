@@ -225,13 +225,9 @@ public class RobotContainer {
   private final Trigger hasAlgaeStateTrigger = new Trigger(
       () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
-  private final Trigger coralRepositioned = new Trigger(
-      () -> StateMachine.currentRobotState == RobotState.HAS_CORAL && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW ||
-          StateMachine.currentRobotState == RobotState.HAS_CORAL_AND_ALGAE && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW);
-
   private final Trigger coralMovedBack = new Trigger(
-      () -> StateMachine.currentRobotState == RobotState.HAS_CORAL && subCoralOuttake.sensorSeesCoral() ||
-          StateMachine.currentRobotState == RobotState.HAS_CORAL_AND_ALGAE && subCoralOuttake.sensorSeesCoral());
+      () -> subCoralOuttake.getDesiredOuttakeSpeed() == 0
+          && subCoralOuttake.sensorSeesCoral());
 
   Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
@@ -413,17 +409,11 @@ public class RobotContainer {
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
 
-    coralRepositioned
-      .onTrue(Commands.runOnce(() -> {
-      System.out.println("Coral reposition detected, stopping coral outtake.");
-      subCoralOuttake.setCoralOuttakeSpeed(0.0);
-      }));
-
     coralMovedBack
-      .onTrue(Commands.runOnce(() -> {
-      System.out.println("Coral moved back detected, moving coral slowly.");
-      subCoralOuttake.slowlyMoveCoral();
-      }));
+        .onTrue(Commands.sequence(
+            Commands.runOnce(() -> subCoralOuttake.setCoralOuttakeSpeed(constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW)),
+            Commands.waitUntil(() -> !subCoralOuttake.sensorSeesCoral()),
+            Commands.runOnce(() -> subCoralOuttake.setCoralOuttakeSpeed(0))));
 
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
