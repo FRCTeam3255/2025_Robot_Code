@@ -49,7 +49,11 @@ public class AlgaeIntake extends SubsystemBase {
   }
 
   public void setAlgaePivotAngle(Angle setpoint) {
-    intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Rotation)));
+    if (hasAlgae()) {
+      intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Rotation)).withSlot(1));
+    } else {
+      intakePivotMotor.setControl(motionRequest.withPosition(setpoint.in(Units.Rotation)).withSlot(0));
+    }
     lastDesiredAngle = setpoint;
   }
 
