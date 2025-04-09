@@ -744,7 +744,14 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of field element positions
      */
-    public static Supplier<Pose2d[]> getAllFieldPositions(Boolean onRed) {
+    public static Supplier<Pose2d[]> getAllFieldPositions(Boolean onRed, Boolean useDSAlliance) {
+      if (useDSAlliance) {
+        if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+          return () -> POSES.RED_POSES;
+        }
+        return () -> POSES.BLUE_POSES;
+      }
+
       if (onRed) {
         return () -> POSES.RED_POSES;
 

@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 import com.frcteam3255.joystick.SN_XboxController;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -26,6 +27,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,6 +43,7 @@ import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
 import frc.robot.Constants.constLED;
 import frc.robot.Constants.constVision;
+import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.CoralStuckSoftwareLimitToggle;
@@ -78,7 +81,7 @@ public class RobotContainer {
   private final String LEFT_LABEL = "Left";
   private final String RIGHT_LABEL = "Right";
 
-  Boolean onRed = constField.isRedAlliance();
+  Boolean onRed = constField.ALLIANCE.isPresent() && constField.ALLIANCE.get().equals(Alliance.Red);
 
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
 
@@ -307,7 +310,8 @@ public class RobotContainer {
         .onTrue(
             Commands
                 .runOnce(
-                    () -> subDrivetrain.resetPoseToPose(Constants.constField.getAllFieldPositions(onRed).get()[0])));
+                    () -> subDrivetrain
+                        .resetPoseToPose(Constants.constField.getAllFieldPositions(onRed, true).get()[0])));
 
     controller.btn_West.onTrue(Commands.sequence(Commands.runOnce(() -> subAlgaeIntake.hasZeroed = false),
         new ZeroAlgaeIntake(subAlgaeIntake)));

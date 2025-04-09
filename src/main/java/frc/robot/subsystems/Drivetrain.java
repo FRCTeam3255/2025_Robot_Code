@@ -160,7 +160,7 @@ public class Drivetrain extends SN_SuperSwerve {
     Boolean onRed = constField.isRedAlliance();
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
-            .getDistance(constField.getAllFieldPositions(onRed).get()[13].getTranslation()));
+            .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
 
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
@@ -274,7 +274,7 @@ public class Drivetrain extends SN_SuperSwerve {
     Boolean onRed = constField.isRedAlliance();
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
-            .getDistance(constField.getAllFieldPositions(onRed).get()[13].getTranslation()));
+            .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredReef, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
         maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
@@ -289,7 +289,7 @@ public class Drivetrain extends SN_SuperSwerve {
     Boolean onRed = getPose().getX() > 8.775;
     Distance reefDistance = Units.Meters
         .of(getPose().getTranslation()
-            .getDistance(constField.getAllFieldPositions(onRed).get()[13].getTranslation()));
+            .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
         maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
