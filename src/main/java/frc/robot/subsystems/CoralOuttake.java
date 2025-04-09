@@ -31,12 +31,16 @@ public class CoralOuttake extends SubsystemBase {
     coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
-  public void setCoralOuttake(double speed) {
+  public void setCoralOuttakeSpeed(double speed) {
     outtakeMotor.set(speed);
   }
 
   public void setIndexingCoral(boolean indexing) {
     this.indexingCoral = indexing;
+  }
+
+  public double getCoralOuttakeSpeed() {
+    return outtakeMotor.getRotorVelocity().getValueAsDouble();
   }
 
   public boolean isIndexingCoral() {
@@ -61,6 +65,12 @@ public class CoralOuttake extends SubsystemBase {
 
   public BooleanSupplier isSafeToMoveElevator() {
     return () -> !sensorSeesCoral();
+  }
+
+  public void slowlyMoveCoral() {
+    if (getCoralOuttakeSpeed() > 0.0) {
+      setCoralOuttakeSpeed(constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW);
+    }
   }
 
   public boolean sensorIndexedCoral() {
