@@ -36,7 +36,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constControllers;
-import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constField;
@@ -225,10 +224,6 @@ public class RobotContainer {
   private final Trigger hasAlgaeStateTrigger = new Trigger(
       () -> subStateMachine.getRobotState() == RobotState.HAS_ALGAE);
 
-  private final Trigger coralRepositioned = new Trigger(
-      () -> StateMachine.currentRobotState == RobotState.HAS_CORAL && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW ||
-          StateMachine.currentRobotState == RobotState.HAS_CORAL_AND_ALGAE && !subCoralOuttake.sensorSeesCoral() && subCoralOuttake.getCoralOuttakeSpeed() == constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW);
-
   Command HAS_CORAL_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
       Constants.constControllers.HAS_CORAL_RUMBLE_INTENSITY);
   Command READY_TO_LEAVE_RUMBLE = new HasGamePieceRumble(conDriver, conOperator, RumbleType.kRightRumble,
@@ -410,11 +405,6 @@ public class RobotContainer {
 
     hasAlgaeTrigger
         .whileTrue(TRY_HAS_ALGAE);
-
-    coralRepositioned
-      .onTrue(Commands.runOnce(
-        () -> subCoralOuttake.setCoralOuttakeSpeed(0.0)
-        ));
 
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
