@@ -36,7 +36,7 @@ public class IntakeCoralHopper extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CORAL_ONLY);
-    globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);

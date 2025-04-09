@@ -56,7 +56,7 @@ public class ScoringCoral extends SequentialCommandGroup {
 
         // Shoot coral when elevator is at the right position
         Commands.waitUntil(() -> globalElevator.atDesiredPosition()),
-        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttakeSpeed(getCoralOuttakeSpeed())),
+        Commands.runOnce(() -> globalCoralOuttake.setCoralOuttake(getCoralOuttakeSpeed())),
         Commands.runOnce(() -> globalCoralOuttake.setHasCoral(false)),
         Commands.runOnce(() -> globalElevator.setPosition(constElevator.AFTER_L1_HEIGHT))
             .onlyIf(() -> desiredState.equals(RobotState.PREP_CORAL_L1)),

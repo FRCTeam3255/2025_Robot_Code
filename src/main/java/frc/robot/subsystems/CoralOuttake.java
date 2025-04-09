@@ -7,12 +7,10 @@ package frc.robot.subsystems;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constDrivetrain;
@@ -36,12 +34,8 @@ public class CoralOuttake extends SubsystemBase {
     coralSensor.getConfigurator().apply(constCoralOuttake.CORAL_SENSOR_CONFIG);
   }
 
-  public void setCoralOuttakeSpeed(double speed) {
+  public void setCoralOuttake(double speed) {
     outtakeMotor.set(speed);
-  }
-
-  public double getCoralOuttakeSpeed() {
-    return outtakeMotor.getRotorVelocity().getValueAsDouble();
   }
 
   public void setIndexingCoral(boolean indexing) {
@@ -66,12 +60,6 @@ public class CoralOuttake extends SubsystemBase {
       return constDrivetrain.AFTER_L1_SPEED;
     } else {
       return null;
-    }
-  }
-
-  public void slowlyMoveCoral() {
-    if (getCoralOuttakeSpeed() > 0.0) {
-      setCoralOuttakeSpeed(constCoralOuttake.CORAL_OUTTAKE_SPEED_SLOW);
     }
   }
 

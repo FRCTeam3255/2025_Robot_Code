@@ -33,7 +33,7 @@ public class IndexingCoralWithAlgae extends Command {
     // Begin indexing :)
     globalStateMachine.setRobotState(RobotState.INDEXING_CORAL_WITH_ALGAE);
     globalCoralOuttake.setIndexingCoral(true);
-    globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
+    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
 
   }
@@ -49,7 +49,7 @@ public class IndexingCoralWithAlgae extends Command {
     // stop indexing
     globalCoralOuttake.setIndexingCoral(false);
     globalCoralOuttake.setHasCoral(true);
-    globalCoralOuttake.setCoralOuttakeSpeed(0);
+    globalCoralOuttake.setCoralOuttake(0);
     globalHopper.runHopper(0);
   }
 

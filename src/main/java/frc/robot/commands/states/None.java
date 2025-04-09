@@ -37,7 +37,7 @@ public class None extends Command {
   @Override
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.NONE);
-    subCoralOuttake.setCoralOuttakeSpeed(0);
+    subCoralOuttake.setCoralOuttake(0);
     subHopper.runHopper(0);
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);

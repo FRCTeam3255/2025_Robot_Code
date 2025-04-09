@@ -46,14 +46,14 @@ public class EjectCoral extends Command {
   @Override
   public void execute() {
     if (globalElevator.isAtSetPointWithTolerance(constElevator.EJECT_HOPPER_HEIGHT, constElevator.EJECT_DEADZONE)) {
-      globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
+      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_REVERSE_OUTTAKE_SPEED);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttakeSpeed(0);
+    globalCoralOuttake.setCoralOuttake(0);
     globalCoralOuttake.setHasCoral(false);
     globalCoralOuttake.setIndexingCoral(false);
     globalElevator.setPosition(constElevator.ZEROED_POS);
