@@ -414,14 +414,16 @@ public class RobotContainer {
         .whileTrue(TRY_HAS_ALGAE);
 
     coralRepositioned
-      .onTrue(Commands.runOnce(
-        () -> subCoralOuttake.setCoralOuttakeSpeed(0.0)
-        ));
+      .onTrue(Commands.runOnce(() -> {
+      System.out.println("Coral reposition detected, stopping coral outtake.");
+      subCoralOuttake.setCoralOuttakeSpeed(0.0);
+      }));
 
     coralMovedBack
-      .onTrue(Commands.runOnce(
-        () -> subCoralOuttake.slowlyMoveCoral()
-        ));
+      .onTrue(Commands.runOnce(() -> {
+      System.out.println("Coral moved back detected, moving coral slowly.");
+      subCoralOuttake.slowlyMoveCoral();
+      }));
 
     hasCoralTrigger
         .whileTrue(TRY_HAS_CORAL);
