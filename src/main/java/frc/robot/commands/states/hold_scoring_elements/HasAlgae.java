@@ -43,7 +43,7 @@ public class HasAlgae extends Command {
   public void initialize() {
     if (globalStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE) {
       // Elevator is going DOWN
-      globalCoralOuttake.setCoralOuttake(0);
+      globalCoralOuttake.setCoralOuttakeSpeed(0);
       globalHopper.runHopper(0);
       globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
       globalElevator.setPosition(Units.Inches.zero());
