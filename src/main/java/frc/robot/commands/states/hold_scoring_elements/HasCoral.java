@@ -45,7 +45,7 @@ public class HasCoral extends Command {
     globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     globalAlgaeIntake.setAlgaeIntakeMotor(0);
     globalHopper.runHopper(0);
-    globalCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.setCoralOuttakeSpeed(0);
     globalElevator.setPosition(Units.Inches.zero());
     globalLED.setLEDMatrix(constLED.LED_HAS_CORAL, 4, 9);
 

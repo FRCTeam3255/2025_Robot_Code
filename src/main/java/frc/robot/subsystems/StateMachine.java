@@ -129,6 +129,35 @@ public class StateMachine extends SubsystemBase {
     return false;
   }
 
+  public boolean inPrepState() {
+    RobotState[] prepStates = { RobotState.PREP_CORAL_L1, RobotState.PREP_CORAL_L2, RobotState.PREP_CORAL_L3,
+        RobotState.PREP_CORAL_L4, RobotState.PREP_CORAL_ZERO, RobotState.PREP_CORAL_L1_WITH_ALGAE,
+        RobotState.PREP_CORAL_L2_WITH_ALGAE,
+        RobotState.PREP_CORAL_L3_WITH_ALGAE, RobotState.PREP_CORAL_L4_WITH_ALGAE,
+        RobotState.PREP_CORAL_ZERO_WITH_ALGAE };
+
+    for (RobotState state : prepStates) {
+      if (currentRobotState == state) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean inAlgaeWithCoralState() {
+    RobotState[] AlgaeWithCoralStates = { RobotState.PREP_CORAL_L1_WITH_ALGAE,
+        RobotState.PREP_CORAL_L2_WITH_ALGAE,
+        RobotState.PREP_CORAL_L3_WITH_ALGAE, RobotState.PREP_CORAL_L4_WITH_ALGAE,
+        RobotState.PREP_CORAL_ZERO_WITH_ALGAE };
+
+    for (RobotState state : AlgaeWithCoralStates) {
+      if (currentRobotState == state) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public Command tryState(RobotState desiredState) {
     // The most elegant solution of all time... nested switch statements :)
     // haters please refer to this:
@@ -626,6 +655,8 @@ public class StateMachine extends SubsystemBase {
     CORAL_STATION_AUTO_DRIVING,
     PROCESSOR_ROTATION_SNAPPING,
     PROCESSOR_AUTO_DRIVING,
+    NET_ROTATION_SNAPPING,
+    NET_AUTO_DRIVING,
     ALGAE_ROTATION_SNAPPING,
     ALGAE_AUTO_DRIVING
   }
