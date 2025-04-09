@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -30,7 +31,7 @@ public class DriveManual extends Command {
   Drivetrain subDrivetrain;
   AlgaeIntake subAlgaeIntake;
   DoubleSupplier xAxis, yAxis, rotationAxis;
-  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net;
+  BooleanSupplier slowMode, leftReef, rightReef, coralStationLeft, coralStationRight, processor, net, prepClimb;
   Elevator subElevator;
   boolean isOpenLoop;
   double redAllianceMultiplier = 1;
@@ -39,6 +40,7 @@ public class DriveManual extends Command {
   boolean netAlignStarted = false;
   Pose2d processorPose, desiredProcessorPose;
   boolean processorAlignStarted = false;
+  boolean prepClimbValid = false;
 
   /**
    * @param subStateMachine
@@ -54,13 +56,14 @@ public class DriveManual extends Command {
    * @param coralStationRight
    * @param processorBtn
    * @param net
+   * @param prepClimb
    */
   public DriveManual(StateMachine subStateMachine, Drivetrain subDrivetrain, Elevator subElevator,
       AlgaeIntake subAlgaeIntake, DoubleSupplier xAxis,
       DoubleSupplier yAxis,
       DoubleSupplier rotationAxis, BooleanSupplier slowMode, BooleanSupplier leftReef, BooleanSupplier rightReef,
       BooleanSupplier coralStationLeft, BooleanSupplier coralStationRight,
-      BooleanSupplier processorBtn, BooleanSupplier net) {
+      BooleanSupplier processorBtn, BooleanSupplier net, BooleanSupplier prepClimb) {
     this.subStateMachine = subStateMachine;
     this.subDrivetrain = subDrivetrain;
     this.subAlgaeIntake = subAlgaeIntake;
@@ -75,6 +78,7 @@ public class DriveManual extends Command {
     this.subElevator = subElevator;
     this.processor = processorBtn;
     this.net = net;
+    this.prepClimb = prepClimb;
 
     isOpenLoop = true;
 
@@ -112,10 +116,15 @@ public class DriveManual extends Command {
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
+    if (prepClimb.getAsBoolean()) {
+      prepClimbValid = true;
+    }
+
     // -- Controlling --
     if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
+      prepClimbValid = false;
 
       if (subStateMachine.inCleaningState()) {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
@@ -141,6 +150,7 @@ public class DriveManual extends Command {
     else if (coralStationRight.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
+      prepClimbValid = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
 
@@ -151,6 +161,7 @@ public class DriveManual extends Command {
     else if (coralStationLeft.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
+      prepClimbValid = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
@@ -161,6 +172,7 @@ public class DriveManual extends Command {
     // -- Processors --
     else if (processor.getAsBoolean()) {
       netAlignStarted = false;
+      prepClimbValid = false;
       boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
       if (!processorAlignStarted || driverOverrideX) {
@@ -185,6 +197,7 @@ public class DriveManual extends Command {
     // -- Net --
     else if (net.getAsBoolean()) {
       processorAlignStarted = false;
+      prepClimbValid = false;
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
@@ -201,9 +214,28 @@ public class DriveManual extends Command {
       subDrivetrain.autoAlign(netDistance, desiredNetPose, xVelocity, yVelocity, rVelocity,
           transMultiplier, isOpenLoop, Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_NET_DISTANCE,
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
-    } else {
+    }
+
+    // -- Prep Climb --
+    else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
+
+      if (Math.abs(rotationAxis.getAsDouble()) > 0.0) {
+        prepClimbValid = false;
+      }
+
+      List<Pose2d> cagePoses = constField.getCagePositions().get();
+      Pose2d desiredCage = currentPose.nearest(cagePoses);
+
+      subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
+          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
+    }
+
+    else {
+      netAlignStarted = false;
+      processorAlignStarted = false;
+      prepClimbValid = false;
       // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
