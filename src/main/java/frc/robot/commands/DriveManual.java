@@ -220,12 +220,13 @@ public class DriveManual extends Command {
     else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
+      boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
 
       if (Math.abs(rotationAxis.getAsDouble()) > 0.0) {
         prepClimbValid = false;
       }
 
-      List<Pose2d> cagePoses = constField.getCagePositions().get();
+      List<Pose2d> cagePoses = constField.getAllCagePositions(onOpposingSide).get();
       Pose2d desiredCage = currentPose.nearest(cagePoses);
 
       subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
