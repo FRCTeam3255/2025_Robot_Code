@@ -52,11 +52,14 @@ public class Vision extends SubsystemBase {
   }
 
   public boolean seesAprilTag() {
-    if (currentEstimateRight.tagCount == 0 && currentEstimateLeft.tagCount == 0 && currentEstimateBack.tagCount == 0) {
-      return false;
+    if (currentEstimateRight != null && currentEstimateLeft != null && currentEstimateBack != null) {
+      if (currentEstimateRight.tagCount != 0 || currentEstimateLeft.tagCount != 0
+          || currentEstimateBack.tagCount != 0) {
+        return true;
+      }
     }
 
-    return true;
+    return false;
   }
 
   /**
