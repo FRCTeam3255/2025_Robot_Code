@@ -250,6 +250,7 @@ public class RobotContainer {
 
   private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
       && subDrivetrain.isAlignedCoral());
+  private final Trigger seesAprilTag = new Trigger(() -> subVision.seesAprilTag());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
@@ -451,6 +452,8 @@ public class RobotContainer {
 
     justScoredTrigger.onTrue(READY_TO_LEAVE_RUMBLE).onTrue(Commands.runOnce(
         () -> subLED.setLED(constLED.READY_TO_LEAVE, 0)));
+
+    seesAprilTag.onTrue(Commands.runOnce(() -> subLED.setLED(constLED.SEES_APRIL_TAG)));
   }
 
   public RobotState getRobotState() {

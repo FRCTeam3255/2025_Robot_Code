@@ -972,6 +972,7 @@ public final class Constants {
     public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 }; // red
     public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
 
+    // Other stuff ＼（〇_ｏ）／
     public static final StrobeAnimation READY_TO_LIFT = new StrobeAnimation(252, 179, 89,
         0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // orange
 
@@ -984,6 +985,7 @@ public final class Constants {
     public static final StrobeAnimation ENDGAME_TIMER = new StrobeAnimation(255, 0, 0,
         0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // red
 
+    public static final int[] SEES_APRIL_TAG = { 0, 255, 0 }; // green
   }
 
 }

@@ -34,6 +34,10 @@ public class Vision extends SubsystemBase {
   Pose2d leftPose = new Pose2d();
   Pose2d backPose = new Pose2d();
 
+  PoseEstimate currentEstimateRight = new PoseEstimate();
+  PoseEstimate currentEstimateLeft = new PoseEstimate();
+  PoseEstimate currentEstimateBack = new PoseEstimate();
+
   private boolean useMegaTag2 = false;
 
   public Vision() {
@@ -45,6 +49,14 @@ public class Vision extends SubsystemBase {
 
   public void setMegaTag2(boolean useMegaTag2) {
     this.useMegaTag2 = useMegaTag2;
+  }
+
+  public boolean seesAprilTag() {
+    if (currentEstimateRight.tagCount == 0 && currentEstimateLeft.tagCount == 0 && currentEstimateBack.tagCount == 0) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -100,9 +112,9 @@ public class Vision extends SubsystemBase {
    *                 indicating new estimates are available.
    */
   public void setCurrentEstimates(AngularVelocity gyroRate) {
-    PoseEstimate currentEstimateRight = new PoseEstimate();
-    PoseEstimate currentEstimateLeft = new PoseEstimate();
-    PoseEstimate currentEstimateBack = new PoseEstimate();
+    currentEstimateRight = new PoseEstimate();
+    currentEstimateLeft = new PoseEstimate();
+    currentEstimateBack = new PoseEstimate();
 
     if (useMegaTag2) {
       currentEstimateRight = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(constVision.LIMELIGHT_NAMES[0]);
