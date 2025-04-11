@@ -539,11 +539,6 @@ public class RobotContainer {
         constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
         DriverState.ALGAE_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
 
-    Command coralStationAutoAlign = Commands.runOnce(() -> subDrivetrain.coralStationAutoAlign(MetersPerSecond.of(0),
-        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false,
-        constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE, DriverState.CORAL_STATION_AUTO_DRIVING,
-        DriverState.CORAL_STATION_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
-
     Command netAutoAlign = Commands.runOnce(() -> subDrivetrain.autoPeriodNetAlign(subStateMachine)).repeatedly();
 
     NamedCommands.registerCommand("PlaceSequence",
@@ -610,11 +605,7 @@ public class RobotContainer {
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
-        Set.of(subStateMachine)))
-        .onTrue(Commands.sequence(
-            coralStationAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoralStation()).withTimeout(1),
-            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false))));
-
+        Set.of(subStateMachine)));
   }
 
   /**

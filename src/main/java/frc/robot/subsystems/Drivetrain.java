@@ -227,13 +227,6 @@ public class Drivetrain extends SN_SuperSwerve {
     return desiredCoralStation;
   }
 
-  public Pose2d getClosestCoralStation() {
-    List<Pose2d> coralStationPoses = constField.getCoralStationPositions().get();
-    Pose2d currentPose = getPose();
-    Pose2d desiredCoralStation = currentPose.nearest(coralStationPoses);
-    return desiredCoralStation;
-  }
-
   public Pose2d getDesiredProcessor() {
     // Get the closest processor
     List<Pose2d> processorPoses = constField.getProcessorPositions().get();
@@ -301,21 +294,6 @@ public class Drivetrain extends SN_SuperSwerve {
             .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
 
     autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
-        maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
-  }
-
-  public void coralStationAutoAlign(LinearVelocity xVelocity,
-      LinearVelocity yVelocity,
-      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
-      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
-
-    Pose2d desiredCoralStation = getClosestCoralStation();
-    Distance coralStationDistance = Units.Meters
-        .of(getPose().getTranslation()
-            .getDistance(desiredCoralStation.getTranslation()));
-
-    autoAlign(coralStationDistance, desiredCoralStation, xVelocity, yVelocity, rVelocity, elevatorMultiplier,
-        isOpenLoop,
         maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
   }
 
@@ -422,13 +400,6 @@ public class Drivetrain extends SN_SuperSwerve {
         && isAtRotation(desiredAlignmentPose.getRotation(), constDrivetrain.TELEOP_AUTO_ALIGN.ROTATED_NET_TOLERANCE);
   }
 
-  public Boolean isAlignedCoralStation() {
-    return (desiredAlignmentPose.getTranslation().getDistance(
-        getPose().getTranslation()) <= constDrivetrain.TELEOP_AUTO_ALIGN.AUTO_ALIGN_CORAL_STATION_TOLERANCE
-            .in(Units.Meters))
-        && isAtRotation(desiredAlignmentPose.getRotation());
-  }
-
   public boolean atPose(Pose2d desiredPose) {
     return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
   }
@@ -449,7 +420,6 @@ public class Drivetrain extends SN_SuperSwerve {
       if (difference < smallestDifference) {
         smallestDifference = difference;
         closestPose = pose;
-
       }
     }
     return closestPose;
