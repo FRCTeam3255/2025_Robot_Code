@@ -119,7 +119,7 @@ public class RobotContainer {
 
   private final String LEFT_LABEL = "Left";
   private final String RIGHT_LABEL = "Right";
-  private final Boolean CAN_SEE_APRIL_TAG = subVision.canSeeTag()
+  private final Boolean CAN_SEE_APRIL_TAG = subVision.canSeeTag();
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();
