@@ -70,4 +70,5 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
 
     return coralOuttakeSpeed;
   }
+
 }

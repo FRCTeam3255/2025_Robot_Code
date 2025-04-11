@@ -252,6 +252,35 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
+   * Drive the drivetrain!
+   *
+   * @param translation
+   *                      Desired translational velocity in meters per second
+   * @param rotation
+   *                      Desired rotational velocity in radians per second
+   * @param isOpenLoop
+   *                      Are the modules being set based on open loop or closed
+   *                      loop
+   *                      control
+   * @param fieldRelative Is field relative
+   *
+   */
+  public void drive(Translation2d translation, double rotation, boolean isOpenLoop, boolean fieldRelative) {
+    ChassisSpeeds chassisSpeeds;
+
+    if (fieldRelative) {
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
+          getRotation());
+    } else {
+      chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+    }
+
+    SwerveModuleState[] desiredModuleStates = swerveKinematics
+        .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
+    setModuleStates(desiredModuleStates, isOpenLoop);
+  }
+
+  /**
    * Aligns the drivetrain to a desired rotation.
    * 
    */
