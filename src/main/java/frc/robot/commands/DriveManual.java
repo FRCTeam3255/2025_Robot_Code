@@ -221,7 +221,7 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
 
-      if (Math.abs(rotationAxis.getAsDouble()) > 0.0) {
+      if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
 

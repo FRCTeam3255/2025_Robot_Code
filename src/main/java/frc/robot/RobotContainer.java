@@ -536,6 +536,8 @@ public class RobotContainer {
         constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
         DriverState.ALGAE_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
 
+    Command netAutoAlign = Commands.runOnce(() -> subDrivetrain.autoPeriodNetAlign(subStateMachine)).repeatedly();
+
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
@@ -581,8 +583,11 @@ public class RobotContainer {
             .asProxy());
 
     NamedCommands.registerCommand("PrepNet",
-        TRY_PREP_NET.asProxy()
-            .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET));
+        Commands.sequence(
+            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1),
+            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            TRY_PREP_NET.asProxy()
+                .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET)));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(() -> subElevator.atDesiredPosition()),
@@ -611,7 +616,7 @@ public class RobotContainer {
   private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
     RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
     RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
-    List<Pose2d> fieldPositions = constField.getReefPositions(constField.isRedAlliance()).get();
+    List<Pose2d> fieldPositions = constField.getReefPositionsClose(constField.isRedAlliance()).get();
 
     switch (selectedAuto) {
       case "Four_Piece_High":
@@ -658,6 +663,11 @@ public class RobotContainer {
         Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[1];
         algaeFarNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
         return algaeFarNet;
+
+      case "Right_Algae_Net":
+        Pair<RobotState, Pose2d>[] rightAlgaeNet = new Pair[1];
+        rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        return rightAlgaeNet;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];
