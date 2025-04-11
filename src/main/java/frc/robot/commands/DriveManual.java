@@ -41,6 +41,8 @@ public class DriveManual extends Command {
   Pose2d processorPose, desiredProcessorPose;
   boolean processorAlignStarted = false;
   boolean prepClimbValid = false;
+  boolean hasAlignedBranch = false;
+  boolean shouldMoveBackwards = false;
 
   /**
    * @param subStateMachine
@@ -99,6 +101,7 @@ public class DriveManual extends Command {
     } else {
       slowMultiplier = 1;
     }
+    subDrivetrain.setFieldRelative();
 
     // Get Joystick inputs
     double elevatorHeightMultiplier = SN_Math.interpolate(
@@ -130,11 +133,24 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
+        hasAlignedBranch = false;
+        shouldMoveBackwards = false;
       } else if (safeToSlide()) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
+        if (subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE) {
+          shouldMoveBackwards = true;
+          System.out.println("shouldMoveBackwards = true");
+        }
+      } else if (shouldMoveBackwards && subStateMachine.getRobotState() == RobotState.HAS_ALGAE) {
+        System.out.println("Trying to move backwards, don't know if it's working... pray for me");
+        subDrivetrain.drive(
+            new Translation2d(-0.1, 0),
+            0.0,
+            isOpenLoop, false);
+
       } else {
         System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
             + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
@@ -147,10 +163,14 @@ public class DriveManual extends Command {
       }
     }
     // -- Coral Station --
-    else if (coralStationRight.getAsBoolean()) {
+    else if (coralStationRight.getAsBoolean())
+
+    {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
 
@@ -162,6 +182,8 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
@@ -173,6 +195,8 @@ public class DriveManual extends Command {
     else if (processor.getAsBoolean()) {
       netAlignStarted = false;
       prepClimbValid = false;
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
       boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
       if (!processorAlignStarted || driverOverrideX) {
@@ -198,6 +222,8 @@ public class DriveManual extends Command {
     else if (net.getAsBoolean()) {
       processorAlignStarted = false;
       prepClimbValid = false;
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
@@ -220,7 +246,8 @@ public class DriveManual extends Command {
     else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
-
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
       if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
@@ -236,6 +263,8 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
+      hasAlignedBranch = false;
+      shouldMoveBackwards = false;
       // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
