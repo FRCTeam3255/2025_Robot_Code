@@ -288,6 +288,7 @@ public final class Constants {
       public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
       public static final Distance AUTO_ALIGN_NET_TOLERANCE = Units.Inches.of(3);
       public static final Angle ROTATED_NET_TOLERANCE = Units.Degrees.of(5);
+      public static final Distance AUTO_ALIGN_CORAL_STATION_TOLERANCE = Units.Inches.of(3);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
