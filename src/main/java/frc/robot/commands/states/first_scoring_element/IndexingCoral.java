@@ -33,7 +33,7 @@ public class IndexingCoral extends Command {
     // Begin indexing :)
     globalStateMachine.setRobotState(RobotState.INDEXING_CORAL);
     globalCoralOuttake.setIndexingCoral(true);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
+    globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
 
   }
@@ -49,7 +49,7 @@ public class IndexingCoral extends Command {
     // stop indexing
     globalCoralOuttake.setIndexingCoral(false);
     globalCoralOuttake.setHasCoral(true);
-    globalCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.setCoralOuttakeSpeed(0);
     globalHopper.runHopper(0);
   }
 
