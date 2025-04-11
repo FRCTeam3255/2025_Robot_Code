@@ -27,7 +27,6 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
   SN_XboxController controller;
   RobotState desiredState;
   double coralOuttakeSpeed;
-  boolean isScored = false;
 
   public ScoringCoralWithAlgae(CoralOuttake subCoralOuttake, StateMachine subStateMachine, Elevator globalElevator,
       LED subLED, SN_XboxController controller, RobotState desiredState) {
@@ -58,7 +57,6 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button
         Commands.deferredProxy(() -> globalStateMachine.tryState(RobotState.HAS_ALGAE)));
-    isScored = true;
   }
 
   public double getCoralOuttakeSpeed() {

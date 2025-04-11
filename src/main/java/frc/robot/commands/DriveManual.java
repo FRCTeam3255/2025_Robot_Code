@@ -22,6 +22,7 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
@@ -142,10 +143,8 @@ public class DriveManual extends Command {
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
         if (subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE) {
           shouldMoveBackwards = true;
-          System.out.println("shouldMoveBackwards = true");
         }
       } else if (shouldMoveBackwards && subStateMachine.getRobotState() == RobotState.HAS_ALGAE) {
-        System.out.println("Trying to move backwards, don't know if it's working... pray for me");
         subDrivetrain.drive(
             new Translation2d(-0.1, 0),
             0.0,
