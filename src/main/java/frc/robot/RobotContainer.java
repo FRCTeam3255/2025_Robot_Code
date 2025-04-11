@@ -79,9 +79,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 @Logged
 public class RobotContainer {
-  private final String LEFT_LABEL = "Left";
-  private final String RIGHT_LABEL = "Right";
-
   Boolean onRed = constField.ALLIANCE.isPresent() && constField.ALLIANCE.get().equals(Alliance.Red);
 
   private static DigitalInput isPracticeBot = new DigitalInput(RobotMap.PRAC_BOT_DIO);
@@ -119,6 +116,10 @@ public class RobotContainer {
       subAlgaeIntake, subLED);
   private final CoralStuckSoftwareLimitToggle comCoralStuckSoftwareLimit = new CoralStuckSoftwareLimitToggle(
       subElevator);
+
+  private final String LEFT_LABEL = "Left";
+  private final String RIGHT_LABEL = "Right";
+  private final Boolean CAN_SEE_APRIL_TAG = subVision.canSeeTag()
 
   @NotLogged
   SendableChooser<Command> autoChooser = new SendableChooser<>();

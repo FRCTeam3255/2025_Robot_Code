@@ -132,6 +132,10 @@ public class Vision extends SubsystemBase {
     }
   }
 
+  public boolean canSeeTag() {
+    return (newRightEstimate || newLeftEstimate || newBackEstimate);
+  }
+
   public Optional<PoseEstimate> determinePoseEstimate(AngularVelocity gyroRate) {
     setCurrentEstimates(gyroRate);
 
