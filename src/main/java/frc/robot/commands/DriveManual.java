@@ -222,7 +222,7 @@ public class DriveManual extends Command {
       processorAlignStarted = false;
       boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
 
-      if (Math.abs(rotationAxis.getAsDouble()) > 0.0) {
+      if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
 

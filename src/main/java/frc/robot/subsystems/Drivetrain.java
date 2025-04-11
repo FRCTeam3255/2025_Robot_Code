@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
@@ -31,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapDrivetrain;
 import frc.robot.subsystems.*;
@@ -165,7 +167,7 @@ public class Drivetrain extends SN_SuperSwerve {
 
     if (reefDistance.lte(constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE)) {
       // Determine closest reef BRANCH based on our rotation
-      List<Pose2d> reefPoses = constField.getReefPositions(poseOnRed).get();
+      List<Pose2d> reefPoses = constField.getReefPositionsClose(poseOnRed).get();
       // Pose2d desiredReef;
       // if (subStateMachine.inAlgaeWithCoralState()) {
       // desiredReef = getClosestPoseByRotation(reefPoses);
@@ -192,7 +194,7 @@ public class Drivetrain extends SN_SuperSwerve {
     }
     // Determine the closest reef FACE based on our position (left vs right doesn't
     // matter)
-    List<Pose2d> reefPoses = constField.getReefPositions(poseOnRed).get();
+    List<Pose2d> reefPoses = constField.getReefPositionsClose(poseOnRed).get();
     Pose2d desiredReef = getPose().nearest(reefPoses);
     return desiredReef;
   }
@@ -293,6 +295,20 @@ public class Drivetrain extends SN_SuperSwerve {
 
     autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
         maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
+  }
+
+  public void autoPeriodNetAlign(StateMachine subStateMachine) {
+    Pose2d desiredNetPose;
+    Pose2d currentPose = getPose();
+    Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
+    desiredNetPose = new Pose2d(netPose.getX(), currentPose.getY(), netPose.getRotation());
+
+    Distance netDistance = Units.Meters
+        .of(currentPose.getTranslation().getDistance(desiredNetPose.getTranslation()));
+
+    autoAlign(netDistance, desiredNetPose, MetersPerSecond.of(0), MetersPerSecond.of(0), DegreesPerSecond.of(0),
+        1, false, Units.Meters.of(1000),
+        DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, false);
   }
 
   /**
