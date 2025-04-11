@@ -38,7 +38,7 @@ public class DriveManual extends Command {
   double slowMultiplier = 0;
   Pose2d netPose, desiredNetPose;
   boolean netAlignStarted = false;
-  Pose2d processorPose, desiredProcessorPose;
+  Pose2d processorPose, desiredProcessorPose, desiredCage = new Pose2d();
   boolean processorAlignStarted = false;
   boolean prepClimbValid = false;
 
@@ -118,6 +118,9 @@ public class DriveManual extends Command {
 
     if (prepClimb.getAsBoolean()) {
       prepClimbValid = true;
+      boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
+      List<Pose2d> cagePoses = constField.getAllCagePositions(onOpposingSide).get();
+      desiredCage = currentPose.nearest(cagePoses);
     }
 
     // -- Controlling --
@@ -220,15 +223,10 @@ public class DriveManual extends Command {
     else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
-      boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
 
       if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
-
-      List<Pose2d> cagePoses = constField.getAllCagePositions(onOpposingSide).get();
-      Pose2d desiredCage = currentPose.nearest(cagePoses);
-
       subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
           DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
     }
