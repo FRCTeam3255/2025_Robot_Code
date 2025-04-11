@@ -470,10 +470,6 @@ public class RobotContainer {
     return subDrivetrain.isAlignedCoral();
   }
 
-  public boolean elevatorAndAlgaeAtSetPoint() {
-    return subElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint();
-  }
-
   public boolean coralStuckSoftwareLimitEnable() {
     return comCoralStuckSoftwareLimit.isCoralStuck();
   }

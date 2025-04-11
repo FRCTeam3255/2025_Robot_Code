@@ -7,6 +7,7 @@ package frc.robot.commands.states.scoring;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constAlgaeIntake;
+import frc.robot.Constants.constElevator;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Elevator;
@@ -49,7 +50,8 @@ public class ScoringAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalElevator.atDesiredPosition() && subAlgaeIntake.isAtSetPoint()) {
+    if (globalElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)
+        && subAlgaeIntake.isAtSetPoint()) {
       subAlgaeIntake.setAlgaeIntakeMotor(desiredSpeed);
     }
   }

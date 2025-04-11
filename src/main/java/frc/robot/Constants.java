@@ -7,11 +7,9 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
@@ -310,7 +308,7 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
-    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(3.5);
 
     /**
      * The velocity that the motor goes at once it has zeroed (and can no longer
@@ -525,6 +523,7 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(2.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance NET_TOLERANCE = Units.Inches.of(4.414); // phr :)
     public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
