@@ -51,7 +51,7 @@ public class CleaningL3Reef extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!globalAlgaeIntake.hasAlgae()) {
+    if (!globalAlgaeIntake.hasAlgae() && !edu.wpi.first.wpilibj.RobotState.isAutonomous()) {
       globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
       globalElevator.setPosition(Constants.constElevator.PREP_0);
     }
