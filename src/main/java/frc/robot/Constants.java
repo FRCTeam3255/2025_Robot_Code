@@ -618,24 +618,24 @@ public final class Constants {
       // Branch poses against the reef
       private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
-      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.656, 2.940, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.953, 2.780, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.027, 2.734, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.324, 2.940, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.873, 3.854, Rotation2d.k180deg);
-      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.873, 4.196, Rotation2d.k180deg);
-      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.324, 5.156, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.027, 5.270, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.953, 5.293, Rotation2d.fromDegrees(-60));
-      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.656, 5.156, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.677, 2.959, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.970, 2.8, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.005, 2.793, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.293, 2.960, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.816, 3.853, Rotation2d.k180deg);
+      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.816, 4.196, Rotation2d.k180deg);
+      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.293, 5.09, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.005, 5.260, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.970, 5.26, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.677, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
-      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
-      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
-      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
-      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
-      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
-      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
+      public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
@@ -667,7 +667,7 @@ public final class Constants {
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // Processor
-      private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.986, 0.896, Rotation2d.fromDegrees(-90));
+      private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.6, 0.896, Rotation2d.fromDegrees(-90));
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
       // Cages
@@ -794,8 +794,8 @@ public final class Constants {
       return () -> POSES.BLUE_REEF_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getReefPositionsClose() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getReefPositionsClose(boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_REEF_POSES_CLOSE;
 
       }
