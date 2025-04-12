@@ -659,29 +659,38 @@ public class RobotContainer {
         fourPieceHighSingleTickle[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // J
         return fourPieceHighSingleTickle;
       case "Algae_Net":
-        Pair<RobotState, Pose2d>[] algaeNet = new Pair[1];
+        Pair<RobotState, Pose2d>[] algaeNet = new Pair[3];
         algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algaeNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
         return algaeNet;
       case "Algae_Mid_Net":
-        Pair<RobotState, Pose2d>[] algaeMidNet = new Pair[1];
+        Pair<RobotState, Pose2d>[] algaeMidNet = new Pair[4];
         algaeMidNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeMidNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algaeMidNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
+        algaeMidNet[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         return algaeMidNet;
       case "Algae_Near_Net":
-        Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[1];
+        Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[4];
         algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeNearNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algaeNearNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
+        algaeNearNet[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(5)); // ALGAE KL
         return algaeNearNet;
       case "Algae_Far_Net":
-        Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[1];
+        Pair<RobotState, Pose2d>[] algaeFarNet = new Pair[4];
         algaeFarNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeFarNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algaeFarNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
+        algaeFarNet[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(1)); // ALGAE CD
         return algaeFarNet;
-
       case "Right_Algae_Net":
         Pair<RobotState, Pose2d>[] rightAlgaeNet = new Pair[3];
         rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
         rightAlgaeNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
         rightAlgaeNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         return rightAlgaeNet;
-
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];
         mooHigh[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(9)); // j
@@ -689,7 +698,6 @@ public class RobotContainer {
         mooHigh[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(10)); // k
         mooHigh[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(8)); // i
         return mooHigh;
-
       case "Moo_Low":
         Pair<RobotState, Pose2d>[] mooLow = new Pair[4];
         mooLow[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(4)); // E
@@ -697,7 +705,6 @@ public class RobotContainer {
         mooLow[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(3)); // D
         mooLow[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(5)); // F
         return mooLow;
-
       default:
         Pair<RobotState, Pose2d>[] noAutoSelected = new Pair[1];
         noAutoSelected[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, new Pose2d());
