@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
@@ -43,7 +44,6 @@ public class DriveManual extends Command {
   boolean processorAlignStarted = false;
   boolean prepClimbValid = false;
   boolean hasAlignedBranch = false;
-  boolean shouldMoveBackwards = false;
 
   /**
    * @param subStateMachine
@@ -125,10 +125,15 @@ public class DriveManual extends Command {
       boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
       List<Pose2d> cagePoses = constField.getAllCagePositions(onOpposingSide).get();
       desiredCage = currentPose.nearest(cagePoses);
+    } else if (subDrivetrain.driveBackwards
+        && Math.abs(rotationAxis.getAsDouble()) < constControllers.DRIVER_LEFT_STICK_DEADBAND) {
+      subDrivetrain.drive(
+          new Translation2d(-0.4, 0),
+          0.0,
+          isOpenLoop, false);
     }
-
     // -- Controlling --
-    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
@@ -138,21 +143,11 @@ public class DriveManual extends Command {
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
         hasAlignedBranch = false;
-        shouldMoveBackwards = false;
       } else if (safeToSlide()) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
-        if (subStateMachine.getRobotState() == RobotState.SCORING_CORAL_WITH_ALGAE) {
-          shouldMoveBackwards = true;
-        }
-      } else if (shouldMoveBackwards && subStateMachine.getRobotState() == RobotState.HAS_ALGAE) {
-        subDrivetrain.drive(
-            new Translation2d(-0.3, 0),
-            0.0,
-            isOpenLoop, false);
-
       } else {
         System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
             + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
@@ -164,15 +159,13 @@ public class DriveManual extends Command {
 
       }
     }
-    // -- Coral Station --
-    else if (coralStationRight.getAsBoolean())
 
-    {
+    // -- Coral Station --
+    else if (coralStationRight.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
 
@@ -185,7 +178,6 @@ public class DriveManual extends Command {
       processorAlignStarted = false;
       prepClimbValid = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
@@ -198,7 +190,6 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       prepClimbValid = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
       boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
       if (!processorAlignStarted || driverOverrideX) {
@@ -225,7 +216,6 @@ public class DriveManual extends Command {
       processorAlignStarted = false;
       prepClimbValid = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
@@ -249,7 +239,6 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
       if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
@@ -262,7 +251,8 @@ public class DriveManual extends Command {
       processorAlignStarted = false;
       prepClimbValid = false;
       hasAlignedBranch = false;
-      shouldMoveBackwards = false;
+      subDrivetrain.driveBackwards = false;
+
       // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),

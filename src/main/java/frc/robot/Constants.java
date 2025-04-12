@@ -269,6 +269,8 @@ public final class Constants {
       public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(2);
 
+      public static final Distance SAFE_TO_LOWER_ELEVATOR_DISTANCE = Units.Meters.of(1.33);
+
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -426,7 +428,7 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
-    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.3);
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.35);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();

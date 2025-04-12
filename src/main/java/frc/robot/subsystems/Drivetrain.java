@@ -55,6 +55,7 @@ public class Drivetrain extends SN_SuperSwerve {
   Pose2d desiredAlignmentPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
+  public boolean driveBackwards = false;
 
   public Drivetrain() {
     super(
@@ -431,6 +432,14 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public boolean atPose(Pose2d desiredPose) {
     return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
+  }
+
+  public boolean safeToLowerElevator() {
+    Boolean onRed = getPose().getX() > 8.775;
+
+    return getPose().getTranslation()
+        .getDistance(constField.getAllFieldPositions(onRed, false).get()[13]
+            .getTranslation()) >= constDrivetrain.TELEOP_AUTO_ALIGN.SAFE_TO_LOWER_ELEVATOR_DISTANCE.in(Units.Meters);
   }
 
   /**
