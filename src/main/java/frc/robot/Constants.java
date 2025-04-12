@@ -308,8 +308,6 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
-    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(3.5);
-
     /**
      * The velocity that the motor goes at once it has zeroed (and can no longer
      * continue in that direction)
@@ -357,15 +355,15 @@ public final class Constants {
       ALGAE_PIVOT_CONFIG.Slot0.kS = 0.5; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 18;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 25;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
 
-      ALGAE_PIVOT_CONFIG.Slot1.kG = 1.05; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot1.kG = 0.5; // Volts to overcome gravity
       ALGAE_PIVOT_CONFIG.Slot1.kS = 0.5; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot1.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot1.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot1.kP = 15;
+      ALGAE_PIVOT_CONFIG.Slot1.kP = 25;
       ALGAE_PIVOT_CONFIG.Slot1.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot1.kD = 0.00;
 
@@ -412,8 +410,7 @@ public final class Constants {
         Units.Meters.convertFrom(-9, Units.Inches),
         Rotation3d.kZero);
 
-    public static final Angle DEADZONE_DISTANCE = Units.Degrees.of(1);
-
+    public static final Angle DEADZONE_DISTANCE = Units.Degrees.of(4);
   }
 
   public static class constCoralOuttake {
