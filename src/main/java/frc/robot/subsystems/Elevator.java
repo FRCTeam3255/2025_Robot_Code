@@ -58,6 +58,9 @@ public class Elevator extends SubsystemBase {
   }
 
   public Distance getElevatorPosition() {
+    if (Robot.isSimulation()) {
+      return getLastDesiredPosition();
+    }
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 

@@ -243,7 +243,7 @@ public class RobotContainer {
       Constants.constControllers.HAS_ALGAE_RUMBLE_INTENSITY);
 
   public static boolean justScored = false;
-  private final Trigger justScoredTrigger = new Trigger(() -> justScored);
+  public static final Trigger justScoredTrigger = new Trigger(() -> justScored);
   private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAlignedCoral());
   private final Trigger readyToLiftNet = new Trigger(
       () -> subDrivetrain.isAlignedNet() && subStateMachine.getDriverState().equals(DriverState.NET_AUTO_DRIVING));

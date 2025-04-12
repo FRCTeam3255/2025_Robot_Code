@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
-import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.AlgaeIntake;
@@ -38,7 +37,7 @@ public class DriveManual extends Command {
   double slowMultiplier = 0;
   Pose2d netPose, desiredNetPose;
   boolean netAlignStarted = false;
-  Pose2d processorPose, desiredProcessorPose;
+  Pose2d processorPose, desiredProcessorPose, desiredCage = new Pose2d();
   boolean processorAlignStarted = false;
   boolean prepClimbValid = false;
 
@@ -118,10 +117,18 @@ public class DriveManual extends Command {
 
     if (prepClimb.getAsBoolean()) {
       prepClimbValid = true;
+      boolean onOpposingSide = subDrivetrain.getPose().getX() > 8.775;
+      List<Pose2d> cagePoses = constField.getAllCagePositions(onOpposingSide).get();
+      desiredCage = currentPose.nearest(cagePoses);
+    } else if (subDrivetrain.driveBackwards
+        && Math.abs(rotationAxis.getAsDouble()) < constControllers.DRIVER_LEFT_STICK_DEADBAND) {
+      subDrivetrain.drive(
+          new Translation2d(-0.4, 0),
+          0.0,
+          isOpenLoop, false);
     }
-
     // -- Controlling --
-    if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
+    else if (leftReef.getAsBoolean() || rightReef.getAsBoolean()) {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
@@ -146,6 +153,7 @@ public class DriveManual extends Command {
 
       }
     }
+
     // -- Coral Station --
     else if (coralStationRight.getAsBoolean()) {
       netAlignStarted = false;
@@ -220,14 +228,9 @@ public class DriveManual extends Command {
     else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
-
       if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
-
-      List<Pose2d> cagePoses = constField.getCagePositions().get();
-      Pose2d desiredCage = currentPose.nearest(cagePoses);
-
       subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
           DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
     }
@@ -236,6 +239,8 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
+      subDrivetrain.driveBackwards = false;
+
       // Regular driving
       subDrivetrain.drive(
           new Translation2d(xVelocity.times(redAllianceMultiplier).in(Units.MetersPerSecond),
