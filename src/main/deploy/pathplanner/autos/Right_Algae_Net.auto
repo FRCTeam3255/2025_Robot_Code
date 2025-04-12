@@ -81,6 +81,12 @@
           "data": {
             "name": "ScoreAlgaeSequence"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-LEAVEEEE"
+          }
         }
       ]
     }
