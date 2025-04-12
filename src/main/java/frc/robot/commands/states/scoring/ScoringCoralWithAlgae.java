@@ -14,6 +14,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.constCoralOuttake;
 import frc.robot.Constants.constLED;
 import frc.robot.subsystems.CoralOuttake;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.StateMachine;
@@ -23,16 +24,19 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
   StateMachine globalStateMachine;
   CoralOuttake globalCoralOuttake;
   Elevator globalElevator;
+  Drivetrain globalDrivetrain;
   LED globalLED;
   SN_XboxController controller;
   RobotState desiredState;
   double coralOuttakeSpeed;
 
   public ScoringCoralWithAlgae(CoralOuttake subCoralOuttake, StateMachine subStateMachine, Elevator globalElevator,
+      Drivetrain subDrivetrain,
       LED subLED, SN_XboxController controller, RobotState desiredState) {
     globalCoralOuttake = subCoralOuttake;
     globalStateMachine = subStateMachine;
     globalLED = subLED;
+    globalDrivetrain = subDrivetrain;
     this.controller = controller;
     this.desiredState = desiredState;
 
@@ -51,8 +55,10 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
         // Start ze timer
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
         Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
-
-        Commands.runOnce(() -> RobotContainer.justScored = true),
+        // Game piece was scored so wait until the robot has driven away :p
+        Commands.runOnce(() -> globalDrivetrain.driveBackwards = true),
+        Commands.waitUntil(() -> globalDrivetrain.safeToLowerElevator()),
+        Commands.runOnce(() -> globalDrivetrain.driveBackwards = false),
 
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button
@@ -70,4 +76,5 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
 
     return coralOuttakeSpeed;
   }
+
 }

@@ -269,6 +269,8 @@ public final class Constants {
       public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
       public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(2);
 
+      public static final Distance SAFE_TO_LOWER_ELEVATOR_DISTANCE = Units.Meters.of(1.33);
+
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -390,8 +392,8 @@ public final class Constants {
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-33);
     public static final Angle CORAL_ONLY = MAX_POS; // no sag :p
-    public static final Angle COLLECTED_ALGAE = Units.Degrees.of(47.38);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle COLLECTED_ALGAE = Units.Degrees.of(52);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(52);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(44.14); // the tides comin in hahahah
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-18);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
@@ -426,7 +428,7 @@ public final class Constants {
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
 
-    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.3);
+    public static final Time CORAL_SCORE_TIME = Units.Seconds.of(0.35);
 
     public static TalonFXConfiguration CORAL_OUTTAKE_CONFIG = new TalonFXConfiguration();
     public static CANrangeConfiguration CORAL_SENSOR_CONFIG = new CANrangeConfiguration();
@@ -623,16 +625,16 @@ public final class Constants {
       // Branch poses against the reef
       private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
-      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.677, 2.959, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.970, 2.8, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.005, 2.793, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.293, 2.960, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.816, 3.853, Rotation2d.k180deg);
-      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.816, 4.196, Rotation2d.k180deg);
-      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.293, 5.09, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.005, 5.260, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.970, 5.26, Rotation2d.fromDegrees(-60));
-      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.677, 5.09, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.72, 3, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D_CLOSE = new Pose2d(4, 2.82, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_E_CLOSE = new Pose2d(4.99, 2.84, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.31, 3, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.77, 3.853, Rotation2d.k180deg);
+      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.77, 4.196, Rotation2d.k180deg);
+      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.25, 5.05, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.00, 5.23, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K_CLOSE = new Pose2d(4, 5.21, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.72, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
       public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);

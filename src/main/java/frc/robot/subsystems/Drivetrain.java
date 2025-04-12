@@ -55,6 +55,7 @@ public class Drivetrain extends SN_SuperSwerve {
   Pose2d desiredAlignmentPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
+  public boolean driveBackwards = false;
 
   public Drivetrain() {
     super(
@@ -252,6 +253,35 @@ public class Drivetrain extends SN_SuperSwerve {
   }
 
   /**
+   * Drive the drivetrain!
+   *
+   * @param translation
+   *                      Desired translational velocity in meters per second
+   * @param rotation
+   *                      Desired rotational velocity in radians per second
+   * @param isOpenLoop
+   *                      Are the modules being set based on open loop or closed
+   *                      loop
+   *                      control
+   * @param fieldRelative Is field relative
+   *
+   */
+  public void drive(Translation2d translation, double rotation, boolean isOpenLoop, boolean fieldRelative) {
+    ChassisSpeeds chassisSpeeds;
+
+    if (fieldRelative) {
+      chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
+          getRotation());
+    } else {
+      chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+    }
+
+    SwerveModuleState[] desiredModuleStates = swerveKinematics
+        .toSwerveModuleStates(ChassisSpeeds.discretize(chassisSpeeds, timeFromLastUpdate));
+    setModuleStates(desiredModuleStates, isOpenLoop);
+  }
+
+  /**
    * Aligns the drivetrain to a desired rotation.
    * 
    */
@@ -402,6 +432,14 @@ public class Drivetrain extends SN_SuperSwerve {
 
   public boolean atPose(Pose2d desiredPose) {
     return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
+  }
+
+  public boolean safeToLowerElevator() {
+    Boolean onRed = getPose().getX() > 8.775;
+
+    return getPose().getTranslation()
+        .getDistance(constField.getAllFieldPositions(onRed, false).get()[13]
+            .getTranslation()) >= constDrivetrain.TELEOP_AUTO_ALIGN.SAFE_TO_LOWER_ELEVATOR_DISTANCE.in(Units.Meters);
   }
 
   /**

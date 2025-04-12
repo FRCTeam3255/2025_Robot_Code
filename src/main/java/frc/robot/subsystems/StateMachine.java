@@ -612,7 +612,8 @@ public class StateMachine extends SubsystemBase {
           case PREP_CORAL_L2_WITH_ALGAE:
           case PREP_CORAL_L3_WITH_ALGAE:
           case PREP_CORAL_L4_WITH_ALGAE:
-            return new ScoringCoralWithAlgae(subCoralOuttake, subStateMachine, subElevator, subLED, conOperator,
+            return new ScoringCoralWithAlgae(subCoralOuttake, subStateMachine, subElevator, subDrivetrain, subLED,
+                conOperator,
                 getRobotState());
         }
         break;
