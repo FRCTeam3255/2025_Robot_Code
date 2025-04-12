@@ -392,8 +392,8 @@ public final class Constants {
 
     public static final Angle INTAKE_ALGAE_GROUND_PIVOT_POSITION = Units.Degrees.of(-33);
     public static final Angle CORAL_ONLY = MAX_POS; // no sag :p
-    public static final Angle COLLECTED_ALGAE = Units.Degrees.of(47.38);
-    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(55);
+    public static final Angle COLLECTED_ALGAE = Units.Degrees.of(52);
+    public static final Angle PREP_ALGAE_ZERO_PIVOT_POSITION = Units.Degrees.of(52);
     public static final Angle PREP_NET_PIVOT_POSITION = Units.Degrees.of(44.14); // the tides comin in hahahah
     public static final Angle PREP_PROCESSOR_PIVOT_POSITION = Units.Degrees.of(-18);
     public static final Angle PREP_PROCESSOR_POS_WITH_CORAL = Units.Degrees.of(14);
