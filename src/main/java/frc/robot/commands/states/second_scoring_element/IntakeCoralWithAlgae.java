@@ -35,7 +35,7 @@ public class IntakeCoralWithAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.INTAKING_CORAL_WITH_ALGAE);
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
-    globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
+    globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_INTAKE_SPEED);
     globalHopper.runHopper(Constants.constHopper.HOPPER_SPEED);
     globalLED.setLED(constLED.LED_INTAKE_CORAL_HOPPER);
     globalElevator.setPosition(Constants.constElevator.CORAL_INTAKE_HIGHT);
@@ -48,7 +48,7 @@ public class IntakeCoralWithAlgae extends Command {
       // begin indexing
       hasSeenCoral = true;
       globalCoralOuttake.setIndexingCoral(hasSeenCoral);
-      globalCoralOuttake.setCoralOuttake(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
+      globalCoralOuttake.setCoralOuttakeSpeed(Constants.constCoralOuttake.CORAL_INDEXING_SPEED);
       globalHopper.runHopper(Constants.constHopper.HOPPER_INDEXING_SPEED);
     } else if (hasSeenCoral && globalCoralOuttake.sensorIndexedCoral()) {
       // stop indexing
@@ -61,7 +61,7 @@ public class IntakeCoralWithAlgae extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    globalCoralOuttake.setCoralOuttake(0);
+    globalCoralOuttake.setCoralOuttakeSpeed(0);
     globalHopper.runHopper(0);
   }
 

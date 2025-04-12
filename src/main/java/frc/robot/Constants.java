@@ -263,8 +263,12 @@ public final class Constants {
     }
 
     public static class TELEOP_AUTO_ALIGN {
-      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_CORAL_STATION_DISTANCE = Units.Meters.of(10);
+      public static final Distance MAX_AUTO_DRIVE_REEF_DISTANCE = Units.Meters.of(2.5);
+      public static final Distance MAX_AUTO_DRIVE_NET_DISTANCE = Units.Meters.of(5);
       public static final Distance MAX_AUTO_DRIVE_ALGAE_DISTANCE = Units.Meters.of(2);
+      public static final Distance MAX_AUTO_DRIVE_PROCESSOR_DISTANCE = Units.Meters.of(2);
+
       public static final LinearVelocity MIN_DRIVER_OVERRIDE = constDrivetrain.OBSERVED_DRIVE_SPEED.div(10);
 
       public static final PIDController TRANS_CONTROLLER = new PIDController(
@@ -280,6 +284,8 @@ public final class Constants {
 
       public static final Distance AUTO_ALIGNMENT_CORAL_TOLERANCE = Units.Inches.of(1);
       public static final Distance AUTO_ALIGNMENT_ALGAE_TOLERANCE = Units.Inches.of(2);
+      public static final Distance AUTO_ALIGN_NET_TOLERANCE = Units.Inches.of(3);
+      public static final Angle ROTATED_NET_TOLERANCE = Units.Degrees.of(5);
 
       static {
         TRANS_CONTROLLER.setTolerance(AT_POINT_TOLERANCE.in(Units.Meters));
@@ -302,7 +308,7 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
-    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
+    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(3.5);
 
     /**
      * The velocity that the motor goes at once it has zeroed (and can no longer
@@ -414,6 +420,7 @@ public final class Constants {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
     public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
     public static final double CORAL_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.1;
     public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
 
     public static final double CORAL_INTAKE_SPEED = 1;
@@ -463,23 +470,25 @@ public final class Constants {
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       CLIMBER_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAX_POSITION.in(Units.Rotations);
       CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(0)
+      CLIMBER_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Rotations.of(-10)
           .in(Units.Rotations);
 
     }
   }
 
   public static class constElevator {
+    public static final Distance NORMAL_REVERSE_LIMIT = Units.Inches.of(0);
+    public static final Distance NORMAL_FORWARD_LIMIT = Units.Inches.of(62);
+
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Units.Inches.of(62).in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = NORMAL_FORWARD_LIMIT.in(Units.Inches);
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.Inches.of(0)
-          .in(Units.Inches);
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = NORMAL_REVERSE_LIMIT.in(Units.Inches);
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       // Elevator motors will provide feedback in INCHES the carriage has moved
@@ -489,7 +498,7 @@ public final class Constants {
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/
-      ELEVATOR_CONFIG.Slot0.kP = 0.85;
+      ELEVATOR_CONFIG.Slot0.kP = 0.8;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
       ELEVATOR_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
@@ -512,23 +521,28 @@ public final class Constants {
       COAST_MODE_CONFIGURATION.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     }
 
-    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(6);
-    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(20);
-    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(36.47);
+    public static final Distance CORAL_L1_HEIGHT = Units.Inches.of(5);
+    public static final Distance CORAL_L2_HEIGHT = Units.Inches.of(18.75);
+    public static final Distance CORAL_L3_HEIGHT = Units.Inches.of(35);
     public static final Distance CORAL_L4_HEIGHT = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_NET = Units.Inches.of(61);
     public static final Distance ALGAE_PREP_PROCESSOR_HEIGHT = Units.Inches.of(1);
-    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(25);
-    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(9);
+    public static final Distance ALGAE_L3_CLEANING = Units.Inches.of(24);
+    public static final Distance ALGAE_L2_CLEANING = Units.Inches.of(8);
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(2.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance NET_TOLERANCE = Units.Inches.of(4.414); // phr :)
     public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
     public static final Distance AFTER_L1_HEIGHT = Units.Inches.of(19);
     public static final Distance EJECT_HOPPER_HEIGHT = Units.Inches.of(2);
     public static final Distance MAX_HEIGHT = Units.Inches.of(62);
+    public static final Distance SAFE_TO_SLIDE = Units.Inches.of(32.55);
+
+    public static final Distance CORAL_STUCK_OFFSET = Units.Inches.of(11);
+    public static final Distance CORAL_STUCK_REVERSE_LIMIT = NORMAL_REVERSE_LIMIT.plus(CORAL_STUCK_OFFSET);
 
     public static final Time ZEROING_TIMEOUT = Units.Seconds.of(3);
 
@@ -599,24 +613,53 @@ public final class Constants {
       private static final Pose2d REEF_D = new Pose2d(3.975, 2.803, Rotation2d.fromDegrees(60));
       private static final Pose2d REEF_E = new Pose2d(5.001, 2.804, Rotation2d.fromDegrees(120));
       private static final Pose2d REEF_F = new Pose2d(5.285, 2.964, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_G = new Pose2d(5.7288, 3.863, Rotation2d.k180deg);
-      private static final Pose2d REEF_H = new Pose2d(5.7288, 4.189, Rotation2d.k180deg);
+      private static final Pose2d REEF_G = new Pose2d(5.805, 3.863, Rotation2d.k180deg);
+      private static final Pose2d REEF_H = new Pose2d(5.805, 4.189, Rotation2d.k180deg);
       private static final Pose2d REEF_I = new Pose2d(5.288, 5.083, Rotation2d.fromDegrees(-120));
       private static final Pose2d REEF_J = new Pose2d(5.002, 5.248, Rotation2d.fromDegrees(-120));
       private static final Pose2d REEF_K = new Pose2d(3.972, 5.247, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_L = new Pose2d(3.693, 5.079, Rotation2d.fromDegrees(-60));
       private static final Pose2d REEF_CENTER = new Pose2d(4.490, 4.026, Rotation2d.kZero);
 
-      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
-      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
-      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
-      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
-      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
-      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
+      private static final List<Pose2d> REEF_CENTER_POSES = List.of(REEF_CENTER, getRedAlliancePose(REEF_CENTER));
+
+      // Branch poses against the reef
+      private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
+      private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
+      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.677, 2.959, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.970, 2.8, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.005, 2.793, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.293, 2.960, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.816, 3.853, Rotation2d.k180deg);
+      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.816, 4.196, Rotation2d.k180deg);
+      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.293, 5.09, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.005, 5.260, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.970, 5.26, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.677, 5.09, Rotation2d.fromDegrees(-60));
+
+      // Algae Poses
+      public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
 
+      private static final List<Pose2d> BLUE_REEF_POSES_CLOSE = List.of(REEF_A_CLOSE, REEF_B_CLOSE, REEF_C_CLOSE,
+          REEF_D_CLOSE, REEF_E_CLOSE,
+          REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE, REEF_K_CLOSE, REEF_L_CLOSE);
+      private static final List<Pose2d> RED_REEF_POSES_CLOSE = getRedReefPosesClose();
+
+      // net poses
+      private static final Pose2d BLUE_NET = new Pose2d(7.5, FIELD_WIDTH.in(Units.Meters) / 2,
+          Rotation2d.fromDegrees(0));
+      private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
+      public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
+
+      // Algae poses
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
@@ -632,13 +675,23 @@ public final class Constants {
       private static final List<Pose2d> RED_CORAL_STATION_POSES = getRedCoralStationPoses();
 
       // Processor
-      private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.986, 0.896, Rotation2d.fromDegrees(-90));
+      private static final Pose2d BLUE_PROCESSOR = new Pose2d(5.6, 0.896, Rotation2d.fromDegrees(-90));
       private static final List<Pose2d> PROCESSOR_POSES = List.of(BLUE_PROCESSOR, getRedAlliancePose(BLUE_PROCESSOR));
 
+      // Cages
+      public static final Pose2d CAGE_1 = new Pose2d(7.783, 7.248, Rotation2d.fromDegrees(180));
+      public static final Pose2d CAGE_2 = new Pose2d(7.783, 6.151, Rotation2d.fromDegrees(180));
+      public static final Pose2d CAGE_3 = new Pose2d(7.783, 5.068, Rotation2d.fromDegrees(180));
+
+      private static final List<Pose2d> BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
+      private static final List<Pose2d> RED_CAGE_POSES = getRedCagePoses();
+
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
-          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
+          REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, REEF_A_CLOSE, REEF_B_CLOSE, REEF_C_CLOSE,
+          REEF_D_CLOSE, REEF_E_CLOSE, REEF_F_CLOSE, REEF_G_CLOSE, REEF_H_CLOSE, REEF_I_CLOSE, REEF_J_CLOSE,
+          REEF_K_CLOSE, REEF_L_CLOSE, BLUE_PROCESSOR, LEFT_CORAL_STATION_FAR,
           LEFT_CORAL_STATION_NEAR, RIGHT_CORAL_STATION_FAR, RIGHT_CORAL_STATION_NEAR, ALGAE_AB, ALGAE_CD, ALGAE_EF,
-          ALGAE_GH, ALGAE_IJ, ALGAE_KL };
+          ALGAE_GH, ALGAE_IJ, ALGAE_KL, BLUE_NET };
       private static final Pose2d[] RED_POSES = getRedPosesFromArray(BLUE_POSES);
     }
 
@@ -671,6 +724,13 @@ public final class Constants {
           returnedPoses[11]);
     }
 
+    private static List<Pose2d> getRedReefPosesClose() {
+      Pose2d[] returnedPoses = getRedPosesFromList(POSES.BLUE_REEF_POSES_CLOSE);
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5], returnedPoses[6], returnedPoses[7], returnedPoses[8], returnedPoses[9], returnedPoses[10],
+          returnedPoses[11]);
+    }
+
     private static List<Pose2d> getRedCoralStationPoses() {
       Pose2d[] returnedPoses = getRedPosesFromList(POSES.BLUE_CORAL_STATION_POSES);
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3]);
@@ -687,6 +747,16 @@ public final class Constants {
           returnedPoses[5]);
     }
 
+    private static List<Pose2d> getRedCagePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CAGE_POSES.size()];
+
+      for (int i = 0; i < POSES.BLUE_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CAGE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
+    }
+
     /**
      * Gets the positions of ALL of the field elements on your alliance. All
      * coordinates are in meters and are relative to the blue alliance.
@@ -700,8 +770,15 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of field element positions
      */
-    public static Supplier<Pose2d[]> getAllFieldPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<Pose2d[]> getAllFieldPositions(Boolean onRed, Boolean useDSAlliance) {
+      if (useDSAlliance) {
+        if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+          return () -> POSES.RED_POSES;
+        }
+        return () -> POSES.BLUE_POSES;
+      }
+
+      if (onRed) {
         return () -> POSES.RED_POSES;
 
       }
@@ -717,12 +794,20 @@ public final class Constants {
      *      Robot Coordinate Systems</a>
      * @return An array of the reef branches for your alliance
      */
-    public static Supplier<List<Pose2d>> getReefPositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getReefPositions(boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_REEF_POSES;
 
       }
       return () -> POSES.BLUE_REEF_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getReefPositionsClose(boolean onRed) {
+      if (onRed) {
+        return () -> POSES.RED_REEF_POSES_CLOSE;
+
+      }
+      return () -> POSES.BLUE_REEF_POSES_CLOSE;
     }
 
     public static Supplier<List<Pose2d>> getCoralStationPositions() {
@@ -736,11 +821,19 @@ public final class Constants {
       return () -> POSES.PROCESSOR_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getAlgaePositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+    public static Supplier<List<Pose2d>> getAlgaePositions(Boolean onRed) {
+      if (onRed) {
         return () -> POSES.RED_ALGAE_POSES;
       }
       return () -> POSES.BLUE_ALGAE_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getCagePositions() {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> POSES.RED_CAGE_POSES;
+
+      }
+      return () -> POSES.BLUE_CAGE_POSES;
     }
   }
 
@@ -784,7 +877,8 @@ public final class Constants {
      * The area that one tag (if its the only tag in the update) needs to exceed
      * before being accepted
      */
-    public static final double AREA_THRESHOLD = 0.1;
+    public static final double AREA_THRESHOLD_FRONT = 0.1;
+    public static final double AREA_THRESHOLD_BACK = 0.05;
 
     // The below values are accounted for in the limelight interface, NOT in code
     public static class LIMELIGHT_RIGHT {
