@@ -7,11 +7,9 @@ package frc.robot;
 import static edu.wpi.first.units.Units.Kilograms;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.StrobeAnimation;
@@ -310,8 +308,6 @@ public final class Constants {
     public static final double ALGAE_OUTTAKE_NET_SPEED = -0.5;
     public static final double CLIMB_ALGAE_VELOCITY = -0.3;
 
-    public static final Angle INTAKE_DEADZONE_DISTANCE = Units.Degrees.of(1); // TODO: Tune this
-
     /**
      * The velocity that the motor goes at once it has zeroed (and can no longer
      * continue in that direction)
@@ -355,18 +351,27 @@ public final class Constants {
 
       ALGAE_PIVOT_CONFIG.Feedback.SensorToMechanismRatio = 1000 / 27;
 
-      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.45; // Volts to overcome gravity
-      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.2; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot0.kG = 0.53; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot0.kS = 0.5; // Volts to overcome static friction
       ALGAE_PIVOT_CONFIG.Slot0.kV = 0.0; // Volts for a velocity target of 1 rps
       ALGAE_PIVOT_CONFIG.Slot0.kA = 0.0; // Volts for an acceleration of 1 rps/s
-      ALGAE_PIVOT_CONFIG.Slot0.kP = 19;
+      ALGAE_PIVOT_CONFIG.Slot0.kP = 25;
       ALGAE_PIVOT_CONFIG.Slot0.kI = 0.0;
       ALGAE_PIVOT_CONFIG.Slot0.kD = 0.00;
+
+      ALGAE_PIVOT_CONFIG.Slot1.kG = 0.5; // Volts to overcome gravity
+      ALGAE_PIVOT_CONFIG.Slot1.kS = 0.5; // Volts to overcome static friction
+      ALGAE_PIVOT_CONFIG.Slot1.kV = 0.0; // Volts for a velocity target of 1 rps
+      ALGAE_PIVOT_CONFIG.Slot1.kA = 0.0; // Volts for an acceleration of 1 rps/s
+      ALGAE_PIVOT_CONFIG.Slot1.kP = 25;
+      ALGAE_PIVOT_CONFIG.Slot1.kI = 0.0;
+      ALGAE_PIVOT_CONFIG.Slot1.kD = 0.00;
+
       ALGAE_PIVOT_CONFIG.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
       ALGAE_PIVOT_CONFIG.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
 
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 40;
-      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 2100;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 9999;
+      ALGAE_PIVOT_CONFIG.MotionMagic.MotionMagicAcceleration = 9999;
 
       ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
       ALGAE_PIVOT_CONFIG.CurrentLimits.SupplyCurrentLowerLimit = 30;
@@ -405,8 +410,7 @@ public final class Constants {
         Units.Meters.convertFrom(-9, Units.Inches),
         Rotation3d.kZero);
 
-    public static final Angle DEADZONE_DISTANCE = Units.Degrees.of(1);
-
+    public static final Angle DEADZONE_DISTANCE = Units.Degrees.of(4);
   }
 
   public static class constCoralOuttake {
@@ -525,6 +529,7 @@ public final class Constants {
     public static final Distance ALGAE_GROUND_INTAKE = Units.Inches.of(0);
     public static final Distance PREP_0 = Units.Inches.of(2.8);
     public static final Distance DEADZONE_DISTANCE = Units.Inches.of(1);
+    public static final Distance NET_TOLERANCE = Units.Inches.of(4.414); // phr :)
     public static final Distance EJECT_DEADZONE = Units.Inches.of(0.5);
     public static final Distance CORAL_INTAKE_HIGHT = Units.Inches.of(0);
     public static final Distance INIT_TIP_HEIGHT = Units.Inches.of(30);
@@ -675,8 +680,10 @@ public final class Constants {
       public static final Pose2d CAGE_2 = new Pose2d(7.783, 6.151, Rotation2d.fromDegrees(180));
       public static final Pose2d CAGE_3 = new Pose2d(7.783, 5.068, Rotation2d.fromDegrees(180));
 
-      private static final List<Pose2d> BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
-      private static final List<Pose2d> RED_CAGE_POSES = getRedCagePoses();
+      private static final List<Pose2d> OUR_SIDE_BLUE_CAGE_POSES = List.of(CAGE_1, CAGE_2, CAGE_3);
+      private static final List<Pose2d> OUR_SIDE_RED_CAGE_POSES = getRedCagePoses();
+      private static final List<Pose2d> OPPOSING_SIDE_BLUE_CAGE_POSES = getOpposingSideBlueCagePoses();
+      private static final List<Pose2d> OPPOSING_SIDE_RED_CAGE_POSES = getOpposingSideRedCagePoses();
 
       private static final Pose2d[] BLUE_POSES = new Pose2d[] { RESET_POSE, REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L, REEF_CENTER, REEF_A_CLOSE, REEF_B_CLOSE, REEF_C_CLOSE,
@@ -707,6 +714,11 @@ public final class Constants {
         returnedPoses[i] = getRedAlliancePose(bluePoseList.get(i));
       }
       return returnedPoses;
+    }
+
+    public static Pose2d getOpposingSideCagePoses(Pose2d poses) {
+      return new Pose2d(FIELD_LENGTH.in(Units.Meters) - (poses.getX()), poses.getY(),
+          poses.getRotation().plus(Rotation2d.k180deg));
     }
 
     private static List<Pose2d> getRedReefPoses() {
@@ -740,10 +752,30 @@ public final class Constants {
     }
 
     private static List<Pose2d> getRedCagePoses() {
-      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_CAGE_POSES.size()];
+      Pose2d[] returnedPoses = new Pose2d[POSES.OUR_SIDE_BLUE_CAGE_POSES.size()];
 
-      for (int i = 0; i < POSES.BLUE_CAGE_POSES.size(); i++) {
-        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_CAGE_POSES.get(i));
+      for (int i = 0; i < POSES.OUR_SIDE_BLUE_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.OUR_SIDE_BLUE_CAGE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
+    }
+
+    private static List<Pose2d> getOpposingSideBlueCagePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.OUR_SIDE_BLUE_CAGE_POSES.size()];
+
+      for (int i = 0; i < POSES.OUR_SIDE_BLUE_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getOpposingSideCagePoses(POSES.OUR_SIDE_BLUE_CAGE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
+    }
+
+    private static List<Pose2d> getOpposingSideRedCagePoses() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.OUR_SIDE_RED_CAGE_POSES.size()];
+
+      for (int i = 0; i < POSES.OUR_SIDE_RED_CAGE_POSES.size(); i++) {
+        returnedPoses[i] = getOpposingSideCagePoses(POSES.OUR_SIDE_RED_CAGE_POSES.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2]);
@@ -820,12 +852,27 @@ public final class Constants {
       return () -> POSES.BLUE_ALGAE_POSES;
     }
 
-    public static Supplier<List<Pose2d>> getCagePositions() {
-      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
-        return () -> POSES.RED_CAGE_POSES;
+    public static Supplier<List<Pose2d>> getBlueCagePositions(boolean onOpposingSide) {
+      if (onOpposingSide) {
+        return () -> POSES.OPPOSING_SIDE_BLUE_CAGE_POSES;
 
       }
-      return () -> POSES.BLUE_CAGE_POSES;
+      return () -> POSES.OUR_SIDE_BLUE_CAGE_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getRedCagePositions(boolean onOpposingSide) {
+      if (onOpposingSide) {
+        return () -> POSES.OPPOSING_SIDE_RED_CAGE_POSES;
+
+      }
+      return () -> POSES.OUR_SIDE_RED_CAGE_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getAllCagePositions(boolean onOpposingSide) {
+      if (ALLIANCE.isPresent() && ALLIANCE.get().equals(Alliance.Red)) {
+        return () -> getRedCagePositions(onOpposingSide).get();
+      }
+      return () -> getBlueCagePositions(onOpposingSide).get();
     }
   }
 
