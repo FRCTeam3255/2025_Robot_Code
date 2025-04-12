@@ -146,7 +146,7 @@ public class DriveManual extends Command {
         }
       } else if (shouldMoveBackwards && subStateMachine.getRobotState() == RobotState.HAS_ALGAE) {
         subDrivetrain.drive(
-            new Translation2d(-0.1, 0),
+            new Translation2d(-0.3, 0),
             0.0,
             isOpenLoop, false);
 

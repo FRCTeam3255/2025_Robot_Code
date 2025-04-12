@@ -50,9 +50,8 @@ public class ScoringCoralWithAlgae extends SequentialCommandGroup {
 
         // Start ze timer
         Commands.waitSeconds(constCoralOuttake.CORAL_SCORE_TIME.in(Units.Seconds)),
-        Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
-
         Commands.runOnce(() -> RobotContainer.justScored = true),
+        Commands.waitUntil(() -> !controller.btn_RightTrigger.getAsBoolean()),
 
         // Set the state to NONE once the timer is up and the operator lets go of the
         // button

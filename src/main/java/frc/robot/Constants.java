@@ -618,16 +618,16 @@ public final class Constants {
       // Branch poses against the reef
       private static final Pose2d REEF_A_CLOSE = new Pose2d(3.155, 4.189, Rotation2d.kZero);
       private static final Pose2d REEF_B_CLOSE = new Pose2d(3.155, 3.863, Rotation2d.kZero);
-      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.677, 2.959, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_D_CLOSE = new Pose2d(3.970, 2.8, Rotation2d.fromDegrees(60));
-      private static final Pose2d REEF_E_CLOSE = new Pose2d(5.005, 2.793, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.293, 2.960, Rotation2d.fromDegrees(120));
-      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.816, 3.853, Rotation2d.k180deg);
-      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.816, 4.196, Rotation2d.k180deg);
-      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.293, 5.09, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.005, 5.260, Rotation2d.fromDegrees(-120));
-      private static final Pose2d REEF_K_CLOSE = new Pose2d(3.970, 5.26, Rotation2d.fromDegrees(-60));
-      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.677, 5.09, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_C_CLOSE = new Pose2d(3.72, 3, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_D_CLOSE = new Pose2d(4, 2.82, Rotation2d.fromDegrees(60));
+      private static final Pose2d REEF_E_CLOSE = new Pose2d(4.99, 2.84, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_F_CLOSE = new Pose2d(5.31, 3, Rotation2d.fromDegrees(120));
+      private static final Pose2d REEF_G_CLOSE = new Pose2d(5.77, 3.853, Rotation2d.k180deg);
+      private static final Pose2d REEF_H_CLOSE = new Pose2d(5.77, 4.196, Rotation2d.k180deg);
+      private static final Pose2d REEF_I_CLOSE = new Pose2d(5.25, 5.05, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_J_CLOSE = new Pose2d(5.00, 5.23, Rotation2d.fromDegrees(-120));
+      private static final Pose2d REEF_K_CLOSE = new Pose2d(4, 5.21, Rotation2d.fromDegrees(-60));
+      private static final Pose2d REEF_L_CLOSE = new Pose2d(3.72, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
       public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
