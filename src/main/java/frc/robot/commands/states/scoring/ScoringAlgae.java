@@ -4,6 +4,7 @@
 
 package frc.robot.commands.states.scoring;
 
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constAlgaeIntake;
@@ -22,6 +23,8 @@ public class ScoringAlgae extends Command {
   AlgaeIntake subAlgaeIntake;
   LED globalLED;
   double desiredSpeed;
+  Distance desiredSetpoint;
+  Distance elevatorTolerance = constElevator.DEADZONE_DISTANCE;
 
   public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,10 +39,14 @@ public class ScoringAlgae extends Command {
   @Override
   public void initialize() {
     if (globalStateMachine.getRobotState() == RobotState.PREP_NET) {
+      desiredSetpoint = constElevator.ALGAE_PREP_NET;
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
+      elevatorTolerance = constElevator.NET_TOLERANCE;
     } else if (globalStateMachine.getRobotState() == RobotState.PREP_PROCESSOR) {
+      desiredSetpoint = constElevator.ALGAE_PREP_PROCESSOR_HEIGHT;
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_PROCESSOR_SPEED;
     } else {
+      desiredSetpoint = constElevator.PREP_0;
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_EJECT_SPEED;
     }
 
@@ -50,7 +57,7 @@ public class ScoringAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)
+    if (globalElevator.isAtSetPointWithTolerance(desiredSetpoint, elevatorTolerance)
         && subAlgaeIntake.isAtSetPoint()) {
       subAlgaeIntake.setAlgaeIntakeMotor(desiredSpeed);
     }
