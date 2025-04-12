@@ -103,13 +103,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepNet"
+            "name": "PrepYEETNet"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ScoreAlgaeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-LEAVEEEE"
           }
         }
       ]

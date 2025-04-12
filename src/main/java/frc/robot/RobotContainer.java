@@ -578,17 +578,20 @@ public class RobotContainer {
             .asProxy());
 
     NamedCommands.registerCommand("PrepNet",
-        Commands.sequence(
-            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1),
-            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
-            TRY_PREP_NET.asProxy()
-                .until(() -> subStateMachine.getRobotState() == RobotState.PREP_NET)));
+        Commands.deadline(
+            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1), TRY_PREP_NET.asProxy()));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
-        Commands.waitUntil(() -> subElevator.atDesiredPosition()),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.4),
-        TRY_NONE.asProxy().until(() -> subElevator.getElevatorPosition().lte(constElevator.INIT_TIP_HEIGHT)),
+        Commands.waitUntil(
+            () -> subElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
+        TRY_NONE.asProxy().withTimeout(0.01),
+        TRY_CLEANING_L2.asProxy().withTimeout(0.01),
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
+
+    NamedCommands.registerCommand("PrepYEETNet",
+        Commands.deadline(
+            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(0.5), TRY_PREP_NET.asProxy()));
 
     // -- Event Markers --
     EventTrigger prepL2 = new EventTrigger("PrepL2");
@@ -602,9 +605,17 @@ public class RobotContainer {
         .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.PREP_CORAL_L4),
             Set.of(subStateMachine)).repeatedly()
             .until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4));
+
     EventTrigger getCoralStationPiece = new EventTrigger("GetCoralStationPiece");
     getCoralStationPiece.onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.INTAKING_CORAL),
         Set.of(subStateMachine)));
+
+    EventTrigger prepClean = new EventTrigger("PrepCleanL2");
+    prepClean
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.CLEANING_L2),
+            Set.of(subStateMachine)).repeatedly()
+            .until(() -> subStateMachine.getRobotState() == RobotState.CLEANING_L2));
+
   }
 
   /**
