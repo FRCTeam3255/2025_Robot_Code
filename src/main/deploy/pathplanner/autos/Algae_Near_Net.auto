@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-G"
+            "pathName": "P-H"
           }
         },
         {
@@ -98,24 +98,6 @@
           "type": "path",
           "data": {
             "pathName": "KLAlgae-Net"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PrepYEETNet"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreAlgaeSequence"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Net-LEAVEEEE"
           }
         }
       ]

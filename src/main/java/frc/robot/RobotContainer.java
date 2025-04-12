@@ -252,7 +252,7 @@ public class RobotContainer {
       && subDrivetrain.isAlignedCoral());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
-  String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
+  public static String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
   int AUTO_PREP_NUM = 0;
 
   public RobotContainer() {
@@ -539,8 +539,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
-            driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
-            Commands.runOnce(() -> subDrivetrain.drive(new ChassisSpeeds(), false)),
+            Commands.deadline(
+                driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
+                TRY_PREP_CORAL_L4.asProxy()),
             TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
             TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
             Commands.runOnce(() -> AUTO_PREP_NUM++)).withName("PlaceSequence"));
@@ -584,14 +585,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(
             () -> subElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.3),
         TRY_NONE.asProxy().withTimeout(0.01),
         TRY_CLEANING_L2.asProxy().withTimeout(0.01),
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
 
     NamedCommands.registerCommand("PrepYEETNet",
-        Commands.deadline(
-            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(0.5), TRY_PREP_NET.asProxy()));
+        TRY_PREP_NET.asProxy().withTimeout(0.01));
+
+    NamedCommands.registerCommand("ScoreAlgaeYEET",
+        TRY_SCORING_ALGAE.asProxy());
 
     // -- Event Markers --
     EventTrigger prepL2 = new EventTrigger("PrepL2");
@@ -616,6 +619,17 @@ public class RobotContainer {
             Set.of(subStateMachine)).repeatedly()
             .until(() -> subStateMachine.getRobotState() == RobotState.CLEANING_L2));
 
+    EventTrigger prepYeet = new EventTrigger("PrepYEETNet");
+    prepYeet
+        .onTrue(new DeferredCommand(() -> Commands.sequence(
+            Commands.runOnce(() -> subAlgaeIntake.YEET = true),
+            subStateMachine.tryState(RobotState.PREP_NET)),
+            Set.of(subStateMachine)));
+
+    EventTrigger scoreAlgae = new EventTrigger("ScoreAlgaeYEET");
+    scoreAlgae
+        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.SCORING_ALGAE),
+            Set.of(subStateMachine)).repeatedly());
   }
 
   /**
@@ -676,7 +690,7 @@ public class RobotContainer {
         return algaeMidNet;
       case "Algae_Near_Net":
         Pair<RobotState, Pose2d>[] algaeNearNet = new Pair[4];
-        algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeNearNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
         algaeNearNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
         algaeNearNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
         algaeNearNet[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(5)); // ALGAE KL
