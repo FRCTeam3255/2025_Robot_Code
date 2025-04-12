@@ -17,13 +17,10 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
-import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
@@ -43,7 +40,6 @@ public class DriveManual extends Command {
   Pose2d processorPose, desiredProcessorPose, desiredCage = new Pose2d();
   boolean processorAlignStarted = false;
   boolean prepClimbValid = false;
-  boolean hasAlignedBranch = false;
 
   /**
    * @param subStateMachine
@@ -102,7 +98,6 @@ public class DriveManual extends Command {
     } else {
       slowMultiplier = 1;
     }
-    subDrivetrain.setFieldRelative();
 
     // Get Joystick inputs
     double elevatorHeightMultiplier = SN_Math.interpolate(
@@ -142,7 +137,6 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
-        hasAlignedBranch = false;
       } else if (safeToSlide()) {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
@@ -165,7 +159,6 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
-      hasAlignedBranch = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(0);
 
@@ -177,7 +170,6 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
-      hasAlignedBranch = false;
 
       Pose2d desiredCoralStation = constField.getCoralStationPositions().get().get(2);
 
@@ -189,7 +181,6 @@ public class DriveManual extends Command {
     else if (processor.getAsBoolean()) {
       netAlignStarted = false;
       prepClimbValid = false;
-      hasAlignedBranch = false;
       boolean driverOverrideX = yVelocity.abs(Units.MetersPerSecond) > 0.1;
 
       if (!processorAlignStarted || driverOverrideX) {
@@ -215,7 +206,6 @@ public class DriveManual extends Command {
     else if (net.getAsBoolean()) {
       processorAlignStarted = false;
       prepClimbValid = false;
-      hasAlignedBranch = false;
       boolean driverOverrideY = yVelocity.abs(Units.MetersPerSecond) > 0.1;
       if (!netAlignStarted || driverOverrideY) {
         Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
@@ -238,7 +228,6 @@ public class DriveManual extends Command {
     else if (prepClimbValid) {
       netAlignStarted = false;
       processorAlignStarted = false;
-      hasAlignedBranch = false;
       if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
         prepClimbValid = false;
       }
@@ -250,7 +239,6 @@ public class DriveManual extends Command {
       netAlignStarted = false;
       processorAlignStarted = false;
       prepClimbValid = false;
-      hasAlignedBranch = false;
       subDrivetrain.driveBackwards = false;
 
       // Regular driving
