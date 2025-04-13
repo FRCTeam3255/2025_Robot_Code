@@ -585,7 +585,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(
             () -> subElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.3),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.32),
         TRY_NONE.asProxy().withTimeout(0.01),
         TRY_CLEANING_L2.asProxy().withTimeout(0.01),
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
