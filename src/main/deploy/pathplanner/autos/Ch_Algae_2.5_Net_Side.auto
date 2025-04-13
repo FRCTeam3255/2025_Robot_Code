@@ -55,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Net-EFAlgae"
+            "pathName": "Net-IJAlgae"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "EFAlgae-Net"
+            "pathName": "IJAlgae-Net"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Net-LEAVEEEE"
+            "pathName": "Net-EFAlgae"
           }
         }
       ]
