@@ -103,13 +103,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepNet"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreAlgaeSequence"
+            "name": "PrepProcessor"
           }
         }
       ]

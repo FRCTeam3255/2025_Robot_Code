@@ -24,6 +24,7 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -581,14 +582,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("PrepNet",
         Commands.deadline(
             netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1), TRY_PREP_NET.asProxy()));
-
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(
             () -> subElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.45),
         TRY_NONE.asProxy().withTimeout(0.01),
         TRY_CLEANING_L2.asProxy().withTimeout(0.01),
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
+
+    NamedCommands.registerCommand("PrepProcessor",
+        TRY_PREP_PROCESSOR.asProxy());
 
     // -- Event Markers --
     EventTrigger prepL2 = new EventTrigger("PrepL2");
