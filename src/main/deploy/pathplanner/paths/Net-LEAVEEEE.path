@@ -3,47 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.628,
-        "y": 0.69
+        "x": 7.5,
+        "y": 5.691
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4127683883329945,
-        "y": 1.291186796631933
+        "x": 6.040378289473684,
+        "y": 5.689555921052631
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.65625,
-        "y": 2.2148565573770487
+        "x": 6.109786184210526,
+        "y": 5.691
       },
       "prevControl": {
-        "x": 3.453605425559814,
-        "y": 2.065420725966562
+        "x": 6.6864297945205475,
+        "y": 5.662799657534247
+      },
+      "nextControl": {
+        "x": 5.810648858278707,
+        "y": 5.7056290965246825
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.869243421052631,
+        "y": 6.728700657894737
+      },
+      "prevControl": {
+        "x": 5.869243421052631,
+        "y": 6.343832236842106
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.8066115702479352,
-      "rotationDegrees": 59.99999999999999
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepPlace",
-      "waypointRelativePos": 0.8526054590570769,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 10.0,
@@ -54,13 +58,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "CSBottom-Score",
+  "folder": "Algae",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

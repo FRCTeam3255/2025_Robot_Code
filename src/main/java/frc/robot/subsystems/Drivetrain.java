@@ -327,6 +327,21 @@ public class Drivetrain extends SN_SuperSwerve {
         maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
   }
 
+  public void algaeAutonomousPeriodAlign(Pose2d desiredPose, LinearVelocity xVelocity,
+      LinearVelocity yVelocity,
+      AngularVelocity rVelocity, double elevatorMultiplier, boolean isOpenLoop, Distance maxAutoDriveDistance,
+      DriverState driving, DriverState rotating, StateMachine subStateMachine, boolean lockX, boolean lockY) {
+
+    Pose2d desiredAlgae = desiredPose;
+    Boolean onRed = getPose().getX() > 8.775;
+    Distance reefDistance = Units.Meters
+        .of(getPose().getTranslation()
+            .getDistance(constField.getAllFieldPositions(onRed, false).get()[13].getTranslation()));
+
+    autoAlign(reefDistance, desiredAlgae, xVelocity, yVelocity, rVelocity, elevatorMultiplier, isOpenLoop,
+        maxAutoDriveDistance, driving, rotating, subStateMachine, lockX, lockY);
+  }
+
   public void autoPeriodNetAlign(StateMachine subStateMachine) {
     Pose2d desiredNetPose;
     Pose2d currentPose = getPose();

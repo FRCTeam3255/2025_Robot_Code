@@ -40,7 +40,8 @@ public class ScoringAlgae extends Command {
   public void initialize() {
     if (globalStateMachine.getRobotState() == RobotState.PREP_NET) {
       desiredSetpoint = constElevator.ALGAE_PREP_NET;
-      desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
+      desiredSpeed = (edu.wpi.first.wpilibj.RobotState.isAutonomous()) ? -1
+          : constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED;
       elevatorTolerance = constElevator.NET_TOLERANCE;
     } else if (globalStateMachine.getRobotState() == RobotState.PREP_PROCESSOR) {
       desiredSetpoint = constElevator.ALGAE_PREP_PROCESSOR_HEIGHT;
@@ -69,6 +70,7 @@ public class ScoringAlgae extends Command {
     subAlgaeIntake.setAlgaeIntakeMotor(0);
     subAlgaeIntake.setHasAlgaeOverride(false);
     RobotContainer.justScored = true;
+    subAlgaeIntake.YEET = false;
   }
 
   // Returns true when the command should end.

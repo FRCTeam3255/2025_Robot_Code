@@ -34,6 +34,7 @@ public class AlgaeIntake extends SubsystemBase {
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
   public boolean hasAlgaeOverride = false;
+  public boolean YEET = false;
 
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {

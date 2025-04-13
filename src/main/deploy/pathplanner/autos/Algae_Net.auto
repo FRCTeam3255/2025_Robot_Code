@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "P-G"
+            "pathName": "P-H"
           }
         },
         {
@@ -80,6 +80,12 @@
           "type": "named",
           "data": {
             "name": "ScoreAlgaeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-LEAVEEEE"
           }
         }
       ]
