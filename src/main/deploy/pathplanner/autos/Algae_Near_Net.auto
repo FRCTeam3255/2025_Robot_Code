@@ -103,13 +103,13 @@
         {
           "type": "named",
           "data": {
-            "name": "PrepYEETNet"
+            "name": "PrepNet"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ScoreAlgaeYEET"
+            "name": "ScoreAlgaeSequence"
           }
         }
       ]

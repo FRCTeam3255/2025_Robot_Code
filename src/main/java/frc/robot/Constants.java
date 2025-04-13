@@ -658,6 +658,11 @@ public final class Constants {
       private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
       public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
 
+      private static final Pose2d BLUE_NET_AUTO = new Pose2d(7.05, FIELD_WIDTH.in(Units.Meters) / 2,
+          Rotation2d.fromDegrees(0));
+      private static final Pose2d RED_NET_AUTO = getRedAlliancePose(BLUE_NET_AUTO);
+      public static final List<Pose2d> NET_POSES_AUTO = List.of(BLUE_NET_AUTO, RED_NET_AUTO);
+
       // Algae poses
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);

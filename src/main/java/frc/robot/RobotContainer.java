@@ -580,21 +580,15 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("PrepNet",
         Commands.deadline(
-            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(0.9), TRY_PREP_NET.asProxy()));
+            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1), TRY_PREP_NET.asProxy()));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(
             () -> subElevator.isAtSetPointWithTolerance(constElevator.ALGAE_PREP_NET, constElevator.NET_TOLERANCE)),
-        TRY_SCORING_ALGAE.asProxy().withTimeout(0.32),
+        TRY_SCORING_ALGAE.asProxy().withTimeout(0.35),
         TRY_NONE.asProxy().withTimeout(0.01),
         TRY_CLEANING_L2.asProxy().withTimeout(0.01),
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
-
-    NamedCommands.registerCommand("PrepYEETNet",
-        TRY_PREP_NET.asProxy().withTimeout(0.01).alongWith(Commands.runOnce(() -> subAlgaeIntake.YEET = true)));
-
-    NamedCommands.registerCommand("ScoreAlgaeYEET",
-        TRY_SCORING_ALGAE.asProxy());
 
     // -- Event Markers --
     EventTrigger prepL2 = new EventTrigger("PrepL2");
@@ -618,18 +612,6 @@ public class RobotContainer {
         .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.CLEANING_L2),
             Set.of(subStateMachine)).repeatedly()
             .until(() -> subStateMachine.getRobotState() == RobotState.CLEANING_L2));
-
-    EventTrigger prepYeet = new EventTrigger("PrepYEETNet");
-    prepYeet
-        .onTrue(new DeferredCommand(() -> Commands.sequence(
-            Commands.runOnce(() -> subAlgaeIntake.YEET = true),
-            subStateMachine.tryState(RobotState.PREP_NET)),
-            Set.of(subStateMachine)));
-
-    EventTrigger scoreAlgae = new EventTrigger("ScoreAlgaeYEET");
-    scoreAlgae
-        .onTrue(new DeferredCommand(() -> subStateMachine.tryState(RobotState.SCORING_ALGAE),
-            Set.of(subStateMachine)).repeatedly());
   }
 
   /**

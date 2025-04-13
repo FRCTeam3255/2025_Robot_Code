@@ -345,7 +345,7 @@ public class Drivetrain extends SN_SuperSwerve {
   public void autoPeriodNetAlign(StateMachine subStateMachine) {
     Pose2d desiredNetPose;
     Pose2d currentPose = getPose();
-    Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES);
+    Pose2d netPose = currentPose.nearest(constField.POSES.NET_POSES_AUTO);
     desiredNetPose = new Pose2d(netPose.getX(), currentPose.getY(), netPose.getRotation());
 
     Distance netDistance = Units.Meters
