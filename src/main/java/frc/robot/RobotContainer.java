@@ -580,7 +580,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("PrepNet",
         Commands.deadline(
-            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(1), TRY_PREP_NET.asProxy()));
+            netAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedNet()).withTimeout(0.9), TRY_PREP_NET.asProxy()));
 
     NamedCommands.registerCommand("ScoreAlgaeSequence", Commands.sequence(
         Commands.waitUntil(
@@ -591,7 +591,7 @@ public class RobotContainer {
         Commands.runOnce(() -> AUTO_PREP_NUM++)));
 
     NamedCommands.registerCommand("PrepYEETNet",
-        TRY_PREP_NET.asProxy().withTimeout(0.01));
+        TRY_PREP_NET.asProxy().withTimeout(0.01).alongWith(Commands.runOnce(() -> subAlgaeIntake.YEET = true)));
 
     NamedCommands.registerCommand("ScoreAlgaeYEET",
         TRY_SCORING_ALGAE.asProxy());

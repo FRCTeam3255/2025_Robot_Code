@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.657962328767123,
-        "y": 5.940774828767124
+        "x": 4.541447368421052,
+        "y": 5.997450657894737
       },
       "isLocked": false,
       "linkedName": null
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 7.05,
-        "y": 5.918236301369863
+        "y": 5.6606907894736835
       },
       "prevControl": {
         "x": 6.208561643835616,
-        "y": 5.888184931506849
+        "y": 5.63063941961067
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,20 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepYEETNet",
-      "waypointRelativePos": 0.5834829443447034,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "ScoreAlgaeYEET",
-      "waypointRelativePos": 0.9353680430879714,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 4.5,
     "maxAcceleration": 10.0,

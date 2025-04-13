@@ -99,6 +99,18 @@
           "data": {
             "pathName": "KLAlgae-Net"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepYEETNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeYEET"
+          }
         }
       ]
     }
