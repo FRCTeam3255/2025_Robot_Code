@@ -662,7 +662,7 @@ public class RobotContainer {
         return fourPieceHighSingleTickle;
       case "Algae_Net":
         Pair<RobotState, Pose2d>[] algaeNet = new Pair[3];
-        algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        algaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
         algaeNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
         algaeNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
         return algaeNet;
@@ -689,7 +689,7 @@ public class RobotContainer {
         return algaeFarNet;
       case "Right_Algae_Net":
         Pair<RobotState, Pose2d>[] rightAlgaeNet = new Pair[3];
-        rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(6)); // G
+        rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
         rightAlgaeNet[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
         rightAlgaeNet[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         return rightAlgaeNet;
