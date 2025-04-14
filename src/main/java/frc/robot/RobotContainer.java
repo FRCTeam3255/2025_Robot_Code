@@ -674,6 +674,14 @@ public class RobotContainer {
         algae3NetSide[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         return algae3NetSide;
 
+      case "Ch_Algae_2.5_Net_To_KL":
+        Pair<RobotState, Pose2d>[] algae3NetKL = new Pair[4];
+        algae3NetKL[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
+        algae3NetKL[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algae3NetKL[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
+        algae3NetKL[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(5)); // ALGAE KL
+        return algae3NetKL;
+
       case "Right_Algae_Net":
         Pair<RobotState, Pose2d>[] rightAlgaeNet = new Pair[3];
         rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
@@ -688,6 +696,14 @@ public class RobotContainer {
         algae3ProcessorSide[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         algae3ProcessorSide[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
         return algae3ProcessorSide;
+
+      case "Ch_Algae_2.5_Processor_To_CD":
+        Pair<RobotState, Pose2d>[] algae3ProcessorCD = new Pair[4];
+        algae3ProcessorCD[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
+        algae3ProcessorCD[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algae3ProcessorCD[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
+        algae3ProcessorCD[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(1)); // ALGAE CD
+        return algae3ProcessorCD;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];
