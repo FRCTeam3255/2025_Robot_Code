@@ -228,25 +228,25 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 5;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 5;
+      public static final double AUTO_STEER_P = 5.6;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Kilograms.of(6);
-      public static final double MOI = 0.1356006666666667 * MASS.in(Kilograms);
+      public static final Mass MASS = Units.Kilograms.of(20);
+      public static final double MOI = 8;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
-      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, MetersPerSecond.of(999),
+      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED,
           WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
