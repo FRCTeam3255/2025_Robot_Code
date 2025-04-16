@@ -538,6 +538,11 @@ public class RobotContainer {
 
     Command netAutoAlign = Commands.runOnce(() -> subDrivetrain.autoPeriodNetAlign(subStateMachine)).repeatedly();
 
+    Command csAutoAlign = Commands.runOnce(() -> subDrivetrain.autoAlign(Meters.of(0),
+        subDrivetrain.getPose().nearest(constField.getCoralStationPositions().get()), MetersPerSecond.of(0),
+        MetersPerSecond.of(0), DegreesPerSecond.of(0), 1.0, false, Meters.of(1000), DriverState.REEF_AUTO_DRIVING,
+        DriverState.REEF_AUTO_DRIVING, subStateMachine, false, false)).repeatedly();
+
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             Commands.deadline(
@@ -553,9 +558,8 @@ public class RobotContainer {
             .asProxy().withName("PrepPlace"));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
-        Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()))
-            .withName("GetCoralStationPiece"));
+        Commands.deadline(TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()),
+            csAutoAlign));
 
     NamedCommands.registerCommand("ForceGamePiece",
         Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
