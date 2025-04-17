@@ -228,25 +228,25 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 5;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 5;
+      public static final double AUTO_STEER_P = 5.6;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Kilograms.of(6);
-      public static final double MOI = 0.1356006666666667 * MASS.in(Kilograms);
+      public static final Mass MASS = Units.Kilograms.of(20);
+      public static final double MOI = 8;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
-      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, MetersPerSecond.of(999),
+      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED,
           WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
@@ -417,13 +417,13 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
-    public static final double CORAL_OUTTAKE_SPEED = 0.3;
-    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.1;
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.05;
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.25; // perfecto
 
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1;
+    public static final double CORAL_INTAKE_SPEED = 0.9;
+    public static final double CORAL_INDEXING_SPEED = 0.30;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -637,12 +637,12 @@ public final class Constants {
       private static final Pose2d REEF_L_CLOSE = new Pose2d(3.72, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
-      public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
-      public static final Pose2d ALGAE_CD = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
-      public static final Pose2d ALGAE_EF = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
-      public static final Pose2d ALGAE_GH = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
-      public static final Pose2d ALGAE_IJ = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
-      public static final Pose2d ALGAE_KL = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
+      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();

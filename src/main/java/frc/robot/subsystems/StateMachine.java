@@ -148,7 +148,7 @@ public class StateMachine extends SubsystemBase {
     RobotState[] AlgaeWithCoralStates = { RobotState.PREP_CORAL_L1_WITH_ALGAE,
         RobotState.PREP_CORAL_L2_WITH_ALGAE,
         RobotState.PREP_CORAL_L3_WITH_ALGAE, RobotState.PREP_CORAL_L4_WITH_ALGAE,
-        RobotState.PREP_CORAL_ZERO_WITH_ALGAE };
+        RobotState.PREP_CORAL_ZERO_WITH_ALGAE, RobotState.HAS_CORAL_AND_ALGAE };
 
     for (RobotState state : AlgaeWithCoralStates) {
       if (currentRobotState == state) {
