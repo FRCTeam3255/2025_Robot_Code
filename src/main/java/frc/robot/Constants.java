@@ -637,12 +637,12 @@ public final class Constants {
       private static final Pose2d REEF_L_CLOSE = new Pose2d(3.72, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
-      public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
-      public static final Pose2d ALGAE_CD = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
-      public static final Pose2d ALGAE_EF = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
-      public static final Pose2d ALGAE_GH = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
-      public static final Pose2d ALGAE_IJ = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
-      public static final Pose2d ALGAE_KL = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
+      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();

@@ -145,7 +145,6 @@ public class DriveManual extends Command {
       } else {
         System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
             + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
-        // Regular driving
         subDrivetrain.drive(
             Translation2d.kZero,
             0.0, isOpenLoop);
