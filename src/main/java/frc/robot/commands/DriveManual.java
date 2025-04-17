@@ -215,16 +215,17 @@ public class DriveManual extends Command {
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
     }
 
-    // -- Prep Climb --
-    else if (prepClimbValid) {
-      netAlignStarted = false;
-      processorAlignStarted = false;
-      if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
-        prepClimbValid = false;
-      }
-      subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
-          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
-    }
+    // // -- Prep Climb --
+    // else if (prepClimbValid) {
+    // netAlignStarted = false;
+    // processorAlignStarted = false;
+    // if (Math.abs(rotationAxis.getAsDouble()) >
+    // constControllers.DRIVER_LEFT_STICK_DEADBAND) {
+    // prepClimbValid = false;
+    // }
+    // subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
+    // DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
+    // }
 
     else {
       netAlignStarted = false;

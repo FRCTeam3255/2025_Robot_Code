@@ -541,7 +541,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             Commands.deadline(
-                driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
+                driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1.25),
                 TRY_PREP_CORAL_L4.asProxy()),
             TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
             TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
