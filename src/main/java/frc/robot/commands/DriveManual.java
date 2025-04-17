@@ -137,19 +137,11 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
-      } else if (safeToSlide()) {
+      } else {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
-      } else {
-        System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
-            + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
-        subDrivetrain.drive(
-            Translation2d.kZero,
-            0.0, isOpenLoop);
-        subStateMachine.setDriverState(DriverState.MANUAL);
-
       }
     }
 
@@ -257,14 +249,5 @@ public class DriveManual extends Command {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public boolean safeToSlide() {
-    if (subAlgaeIntake.hasAlgae()
-        && !subElevator.getElevatorPosition().gte(
-            constElevator.SAFE_TO_SLIDE)) {
-      return false;
-    }
-    return true;
   }
 }
