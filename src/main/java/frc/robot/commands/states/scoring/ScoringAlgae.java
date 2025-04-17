@@ -25,6 +25,7 @@ public class ScoringAlgae extends Command {
   double desiredSpeed;
   Distance desiredSetpoint;
   Distance elevatorTolerance = constElevator.DEADZONE_DISTANCE;
+  boolean ignoreAlgaePivot;
 
   public ScoringAlgae(StateMachine subStateMachine, AlgaeIntake subAlgaeIntake, LED subLED, Elevator subElevator) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -51,6 +52,7 @@ public class ScoringAlgae extends Command {
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_EJECT_SPEED;
     }
 
+    ignoreAlgaePivot = globalStateMachine.getRobotState() == RobotState.PREP_ALGAE_ZERO;
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
     globalLED.setLED(constLED.LED_SCORING_ALGAE);
   }
@@ -58,7 +60,7 @@ public class ScoringAlgae extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (globalStateMachine.getRobotState() == RobotState.PREP_ALGAE_ZERO) {
+    if (ignoreAlgaePivot) {
       if (globalElevator.isAtSetPointWithTolerance(desiredSetpoint, elevatorTolerance)) {
         subAlgaeIntake.setAlgaeIntakeMotor(desiredSpeed);
       }

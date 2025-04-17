@@ -632,7 +632,7 @@ public class RobotContainer {
   private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
     RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
     RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
-    List<Pose2d> fieldPositions = constField.getReefPositionsClose(constField.isRedAlliance()).get();
+    List<Pose2d> fieldPositions = constField.getReefPositions(constField.isRedAlliance()).get();
     List<Pose2d> algaePositions = constField.getAlgaePositions(constField.isRedAlliance()).get();
 
     switch (selectedAuto) {

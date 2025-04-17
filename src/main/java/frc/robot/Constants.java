@@ -417,13 +417,13 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
-    public static final double CORAL_OUTTAKE_SPEED = 0.3;
-    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.1;
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.05;
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.25; // perfecto
 
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1;
+    public static final double CORAL_INTAKE_SPEED = 0.9;
+    public static final double CORAL_INDEXING_SPEED = 0.30;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
