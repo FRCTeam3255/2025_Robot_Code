@@ -663,6 +663,18 @@ public final class Constants {
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
 
+      // Algae Poses
+      public static final Pose2d ALGAE_AB_CLOSE = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
+      public static final Pose2d ALGAE_CD_CLOSE = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
+      public static final Pose2d ALGAE_EF_CLOSE = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
+      public static final Pose2d ALGAE_GH_CLOSE = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
+      public static final Pose2d ALGAE_IJ_CLOSE = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
+      public static final Pose2d ALGAE_KL_CLOSE = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
+      private static final List<Pose2d> BLUE_ALGAE_POSES_CLOSE = List.of(ALGAE_AB_CLOSE, ALGAE_CD_CLOSE, ALGAE_EF_CLOSE,
+          ALGAE_GH_CLOSE, ALGAE_IJ_CLOSE,
+          ALGAE_KL_CLOSE);
+      private static final List<Pose2d> RED_ALGAE_POSES_CLOSE = getRedAlgaePosesClose();
+
       // Coral Stations
       private static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-55));
       private static final Pose2d LEFT_CORAL_STATION_NEAR = new Pose2d(0.71, 6.68, Rotation2d.fromDegrees(-55));
@@ -747,6 +759,17 @@ public final class Constants {
 
       for (int i = 0; i < POSES.BLUE_ALGAE_POSES.size(); i++) {
         returnedPoses[i] = getRedAlliancePose(POSES.BLUE_ALGAE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5]);
+    }
+
+    private static List<Pose2d> getRedAlgaePosesClose() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_ALGAE_POSES_CLOSE.size()];
+
+      for (int i = 0; i < POSES.BLUE_ALGAE_POSES_CLOSE.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_ALGAE_POSES_CLOSE.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
@@ -852,6 +875,13 @@ public final class Constants {
         return () -> POSES.RED_ALGAE_POSES;
       }
       return () -> POSES.BLUE_ALGAE_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getAlgaePositionsClose(Boolean onRed) {
+      if (onRed) {
+        return () -> POSES.RED_ALGAE_POSES_CLOSE;
+      }
+      return () -> POSES.BLUE_ALGAE_POSES_CLOSE;
     }
 
     public static Supplier<List<Pose2d>> getBlueCagePositions(boolean onOpposingSide) {
