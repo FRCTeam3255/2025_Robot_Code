@@ -40,13 +40,15 @@ public class IntakingAlgaeGround extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_GROUND_INTAKE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
 
-    globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.INTAKE_ALGAE_GROUND_PIVOT_POSITION);
     globalLED.setLED(constLED.LED_INTAKE_ALGAE_GROUND);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (globalElevator.atDesiredPosition()) {
+      globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.INTAKE_ALGAE_GROUND_PIVOT_POSITION);
+    }
   }
 
   // Called once the command ends or is interrupted.

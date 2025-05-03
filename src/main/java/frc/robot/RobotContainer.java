@@ -541,7 +541,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PlaceSequence",
         Commands.sequence(
             Commands.deadline(
-                driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1),
+                driveAutoAlign.asProxy().until(() -> subDrivetrain.isAlignedCoral()).withTimeout(1.25),
                 TRY_PREP_CORAL_L4.asProxy()),
             TRY_PREP_CORAL_L4.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.PREP_CORAL_L4),
             TRY_SCORING_CORAL.asProxy().until(() -> subStateMachine.getRobotState() == RobotState.NONE),
@@ -553,9 +553,7 @@ public class RobotContainer {
             .asProxy().withName("PrepPlace"));
 
     NamedCommands.registerCommand("GetCoralStationPiece",
-        Commands.sequence(
-            TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()))
-            .withName("GetCoralStationPiece"));
+        TRY_INTAKING_CORAL_HOPPER.asProxy().until(() -> subCoralOuttake.sensorSeesCoral()));
 
     NamedCommands.registerCommand("ForceGamePiece",
         Commands.runOnce(() -> subStateMachine.setRobotState(RobotState.HAS_CORAL))
@@ -628,8 +626,8 @@ public class RobotContainer {
   private Pair<RobotState, Pose2d>[] configureAutoPrepMaps(String selectedAuto) {
     RobotState AUTO_PREP_CORAL_4 = RobotState.PREP_CORAL_L4;
     RobotState AUTO_PREP_CORAL_2 = RobotState.PREP_CORAL_L2;
-    List<Pose2d> fieldPositions = constField.getReefPositionsClose(constField.isRedAlliance()).get();
-    List<Pose2d> algaePositions = constField.getAlgaePositions(constField.isRedAlliance()).get();
+    List<Pose2d> fieldPositions = constField.getReefPositions(constField.isRedAlliance()).get();
+    List<Pose2d> algaePositions = constField.getAlgaePositionsClose(constField.isRedAlliance()).get();
 
     switch (selectedAuto) {
       case "Four_Piece_High":
@@ -674,6 +672,14 @@ public class RobotContainer {
         algae3NetSide[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         return algae3NetSide;
 
+      case "Ch_Algae_2.5_Net_To_KL":
+        Pair<RobotState, Pose2d>[] algae3NetKL = new Pair[4];
+        algae3NetKL[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
+        algae3NetKL[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algae3NetKL[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
+        algae3NetKL[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(5)); // ALGAE KL
+        return algae3NetKL;
+
       case "Right_Algae_Net":
         Pair<RobotState, Pose2d>[] rightAlgaeNet = new Pair[3];
         rightAlgaeNet[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
@@ -688,6 +694,14 @@ public class RobotContainer {
         algae3ProcessorSide[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
         algae3ProcessorSide[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(4)); // ALGAE IJ
         return algae3ProcessorSide;
+
+      case "Ch_Algae_2.5_Processor_To_CD":
+        Pair<RobotState, Pose2d>[] algae3ProcessorCD = new Pair[4];
+        algae3ProcessorCD[0] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, fieldPositions.get(7)); // H
+        algae3ProcessorCD[1] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(3)); // ALGAE GH
+        algae3ProcessorCD[2] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(2)); // ALGAE EF
+        algae3ProcessorCD[3] = new Pair<RobotState, Pose2d>(AUTO_PREP_CORAL_4, algaePositions.get(1)); // ALGAE CD
+        return algae3ProcessorCD;
 
       case "Moo_High":
         Pair<RobotState, Pose2d>[] mooHigh = new Pair[4];

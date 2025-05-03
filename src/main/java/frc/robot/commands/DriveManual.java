@@ -137,20 +137,11 @@ public class DriveManual extends Command {
         subDrivetrain.algaeAutoAlign(xVelocity, yVelocity, rVelocity, transMultiplier, isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_ALGAE_DISTANCE, DriverState.ALGAE_AUTO_DRIVING,
             DriverState.ALGAE_ROTATION_SNAPPING, subStateMachine, false, false);
-      } else if (safeToSlide()) {
+      } else {
         subDrivetrain.reefAutoAlign(leftReef.getAsBoolean(), xVelocity, yVelocity, rVelocity, transMultiplier,
             isOpenLoop,
             Constants.constDrivetrain.TELEOP_AUTO_ALIGN.MAX_AUTO_DRIVE_REEF_DISTANCE,
             DriverState.REEF_AUTO_DRIVING, DriverState.REEF_ROTATION_SNAPPING, subStateMachine, false, false);
-      } else {
-        System.out.println("Not safe to self drive, blame Eli >:( -- STATE:" + subStateMachine.getRobotState()
-            + ", ELEVATOR HEIGHT:" + subElevator.getElevatorPosition().in(Units.Meters));
-        // Regular driving
-        subDrivetrain.drive(
-            Translation2d.kZero,
-            0.0, isOpenLoop);
-        subStateMachine.setDriverState(DriverState.MANUAL);
-
       }
     }
 
@@ -224,16 +215,17 @@ public class DriveManual extends Command {
           DriverState.NET_AUTO_DRIVING, DriverState.NET_ROTATION_SNAPPING, subStateMachine, false, driverOverrideY);
     }
 
-    // -- Prep Climb --
-    else if (prepClimbValid) {
-      netAlignStarted = false;
-      processorAlignStarted = false;
-      if (Math.abs(rotationAxis.getAsDouble()) > constControllers.DRIVER_LEFT_STICK_DEADBAND) {
-        prepClimbValid = false;
-      }
-      subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
-          DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
-    }
+    // // -- Prep Climb --
+    // else if (prepClimbValid) {
+    // netAlignStarted = false;
+    // processorAlignStarted = false;
+    // if (Math.abs(rotationAxis.getAsDouble()) >
+    // constControllers.DRIVER_LEFT_STICK_DEADBAND) {
+    // prepClimbValid = false;
+    // }
+    // subDrivetrain.rotationalAlign(desiredCage, xVelocity, yVelocity, isOpenLoop,
+    // DriverState.CAGE_ROTATION_SNAPPING, subStateMachine);
+    // }
 
     else {
       netAlignStarted = false;
@@ -258,14 +250,5 @@ public class DriveManual extends Command {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public boolean safeToSlide() {
-    if (subAlgaeIntake.hasAlgae()
-        && !subElevator.getElevatorPosition().gte(
-            constElevator.SAFE_TO_SLIDE)) {
-      return false;
-    }
-    return true;
   }
 }

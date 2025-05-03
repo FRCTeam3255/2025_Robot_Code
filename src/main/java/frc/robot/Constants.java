@@ -228,25 +228,25 @@ public final class Constants {
 
     public static class AUTO {
       // This PID is implemented on the Drivetrain subsystem
-      public static final double AUTO_DRIVE_P = 5;
+      public static final double AUTO_DRIVE_P = 9;
       public static final double AUTO_DRIVE_I = 0;
       public static final double AUTO_DRIVE_D = 0;
       public static final PIDConstants AUTO_DRIVE_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_DRIVE_P,
           constDrivetrain.AUTO.AUTO_DRIVE_I,
           constDrivetrain.AUTO.AUTO_DRIVE_D);
 
-      public static final double AUTO_STEER_P = 5;
+      public static final double AUTO_STEER_P = 5.6;
       public static final double AUTO_STEER_I = 0.0;
       public static final double AUTO_STEER_D = 0.0;
       public static final PIDConstants AUTO_STEER_PID = new PIDConstants(constDrivetrain.AUTO.AUTO_STEER_P,
           constDrivetrain.AUTO.AUTO_STEER_I,
           constDrivetrain.AUTO.AUTO_STEER_D);
 
-      public static final Mass MASS = Units.Kilograms.of(6);
-      public static final double MOI = 0.1356006666666667 * MASS.in(Kilograms);
+      public static final Mass MASS = Units.Kilograms.of(20);
+      public static final double MOI = 8;
       public static final double WHEEL_COF = 1.0;
       public static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
-      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, MetersPerSecond.of(999),
+      public static final ModuleConfig MODULE_CONFIG = new ModuleConfig(WHEEL_RADIUS, OBSERVED_DRIVE_SPEED,
           WHEEL_COF,
           DRIVE_MOTOR,
           DRIVE_CURRENT_LIMIT, 1);
@@ -417,13 +417,13 @@ public final class Constants {
 
   public static class constCoralOuttake {
     public static final double CORAL_REVERSE_OUTTAKE_SPEED = -0.7;
-    public static final double CORAL_L1_OUTTAKE_SPEED = 0.4;
-    public static final double CORAL_OUTTAKE_SPEED = 0.3;
-    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.1;
-    public static final double CORAL_L4_OUTTAKE_SPEED = 0.4; // perfecto
+    public static final double CORAL_L1_OUTTAKE_SPEED = 0.3;
+    public static final double CORAL_OUTTAKE_SPEED = 0.2;
+    public static final double CORAL_OUTTAKE_SPEED_SLOW = 0.05;
+    public static final double CORAL_L4_OUTTAKE_SPEED = 0.25; // perfecto
 
-    public static final double CORAL_INTAKE_SPEED = 1;
-    public static final double CORAL_INDEXING_SPEED = 1;
+    public static final double CORAL_INTAKE_SPEED = 0.9;
+    public static final double CORAL_INDEXING_SPEED = 0.30;
 
     public static final Distance REQUIRED_CORAL_DISTANCE = Units.Meters.of(0.1);
     public static final Distance INDEXED_CORAL_DISTANCE = Units.Meters.of(0.13);
@@ -447,7 +447,7 @@ public final class Constants {
 
   public static class constClimber {
     public static final double CLIMBER_MOTOR_DEPLOYING_VELOCITY = 1;
-    public static final double CLIMBER_RETRACT_VELOCITY = -1;
+    public static final double CLIMBER_RETRACT_VELOCITY = -0.75;
     public static final double MANUAL_CLIMBER_MOTOR_DEPLOYING_VELOCITY = 1;
     public static final Angle VALID_NONE_STATE_THRESHOLD = Units.Rotations.of(50);
 
@@ -637,12 +637,12 @@ public final class Constants {
       private static final Pose2d REEF_L_CLOSE = new Pose2d(3.72, 5.09, Rotation2d.fromDegrees(-60));
 
       // Algae Poses
-      public static final Pose2d ALGAE_AB = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
-      public static final Pose2d ALGAE_CD = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
-      public static final Pose2d ALGAE_EF = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
-      public static final Pose2d ALGAE_GH = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
-      public static final Pose2d ALGAE_IJ = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
-      public static final Pose2d ALGAE_KL = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
+      public static final Pose2d ALGAE_AB = REEF_A.interpolate(REEF_B, 0.5);
+      public static final Pose2d ALGAE_CD = REEF_C.interpolate(REEF_D, 0.5);
+      public static final Pose2d ALGAE_EF = REEF_E.interpolate(REEF_F, 0.5);
+      public static final Pose2d ALGAE_GH = REEF_G.interpolate(REEF_H, 0.5);
+      public static final Pose2d ALGAE_IJ = REEF_I.interpolate(REEF_J, 0.5);
+      public static final Pose2d ALGAE_KL = REEF_K.interpolate(REEF_L, 0.5);
       private static final List<Pose2d> BLUE_REEF_POSES = List.of(REEF_A, REEF_B, REEF_C, REEF_D, REEF_E,
           REEF_F, REEF_G, REEF_H, REEF_I, REEF_J, REEF_K, REEF_L);
       private static final List<Pose2d> RED_REEF_POSES = getRedReefPoses();
@@ -662,6 +662,18 @@ public final class Constants {
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,
           ALGAE_KL);
       private static final List<Pose2d> RED_ALGAE_POSES = getRedAlgaePoses();
+
+      // Algae Poses
+      public static final Pose2d ALGAE_AB_CLOSE = REEF_A_CLOSE.interpolate(REEF_B_CLOSE, 0.5);
+      public static final Pose2d ALGAE_CD_CLOSE = REEF_C_CLOSE.interpolate(REEF_D_CLOSE, 0.5);
+      public static final Pose2d ALGAE_EF_CLOSE = REEF_E_CLOSE.interpolate(REEF_F_CLOSE, 0.5);
+      public static final Pose2d ALGAE_GH_CLOSE = REEF_G_CLOSE.interpolate(REEF_H_CLOSE, 0.5);
+      public static final Pose2d ALGAE_IJ_CLOSE = REEF_I_CLOSE.interpolate(REEF_J_CLOSE, 0.5);
+      public static final Pose2d ALGAE_KL_CLOSE = REEF_K_CLOSE.interpolate(REEF_L_CLOSE, 0.5);
+      private static final List<Pose2d> BLUE_ALGAE_POSES_CLOSE = List.of(ALGAE_AB_CLOSE, ALGAE_CD_CLOSE, ALGAE_EF_CLOSE,
+          ALGAE_GH_CLOSE, ALGAE_IJ_CLOSE,
+          ALGAE_KL_CLOSE);
+      private static final List<Pose2d> RED_ALGAE_POSES_CLOSE = getRedAlgaePosesClose();
 
       // Coral Stations
       private static final Pose2d LEFT_CORAL_STATION_FAR = new Pose2d(1.64, 7.33, Rotation2d.fromDegrees(-55));
@@ -747,6 +759,17 @@ public final class Constants {
 
       for (int i = 0; i < POSES.BLUE_ALGAE_POSES.size(); i++) {
         returnedPoses[i] = getRedAlliancePose(POSES.BLUE_ALGAE_POSES.get(i));
+      }
+
+      return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
+          returnedPoses[5]);
+    }
+
+    private static List<Pose2d> getRedAlgaePosesClose() {
+      Pose2d[] returnedPoses = new Pose2d[POSES.BLUE_ALGAE_POSES_CLOSE.size()];
+
+      for (int i = 0; i < POSES.BLUE_ALGAE_POSES_CLOSE.size(); i++) {
+        returnedPoses[i] = getRedAlliancePose(POSES.BLUE_ALGAE_POSES_CLOSE.get(i));
       }
 
       return List.of(returnedPoses[0], returnedPoses[1], returnedPoses[2], returnedPoses[3], returnedPoses[4],
@@ -852,6 +875,13 @@ public final class Constants {
         return () -> POSES.RED_ALGAE_POSES;
       }
       return () -> POSES.BLUE_ALGAE_POSES;
+    }
+
+    public static Supplier<List<Pose2d>> getAlgaePositionsClose(Boolean onRed) {
+      if (onRed) {
+        return () -> POSES.RED_ALGAE_POSES_CLOSE;
+      }
+      return () -> POSES.BLUE_ALGAE_POSES_CLOSE;
     }
 
     public static Supplier<List<Pose2d>> getBlueCagePositions(boolean onOpposingSide) {
