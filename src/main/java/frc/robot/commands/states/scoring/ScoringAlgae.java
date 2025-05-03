@@ -6,6 +6,7 @@ package frc.robot.commands.states.scoring;
 
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.constAlgaeIntake;
 import frc.robot.Constants.constElevator;
@@ -52,7 +53,7 @@ public class ScoringAlgae extends Command {
       desiredSpeed = constAlgaeIntake.ALGAE_OUTTAKE_EJECT_SPEED;
     }
 
-    ignoreAlgaePivot = globalStateMachine.getRobotState() == RobotState.PREP_ALGAE_ZERO;
+    ignoreAlgaePivot = edu.wpi.first.wpilibj.RobotState.isTeleop();
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
     globalLED.setLED(constLED.LED_SCORING_ALGAE);
   }
