@@ -27,6 +27,9 @@ import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -36,6 +39,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
@@ -911,6 +916,18 @@ public final class Constants {
   public static class constVision {
     public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left",
         "limelight-back" };
+
+    public static final Matrix<N3, N1> CLOSE_STDEVS = VecBuilder.fill(
+        constVision.MEGA_TAG2_STD_DEVS_POSITION,
+        constVision.MEGA_TAG2_STD_DEVS_POSITION,
+        constVision.MEGA_TAG2_STD_DEVS_HEADING);
+
+    public static final Matrix<N3, N1> FAR_STDEVS = VecBuilder.fill(
+        4,
+        4,
+        constVision.MEGA_TAG2_STD_DEVS_HEADING);
+
+    public static final double FAR_DIST_METERS = 4;
 
     /**
      * <p>
