@@ -56,6 +56,6 @@ public class AlgaeReadyToPlaceRumble extends Command {
   public boolean isFinished() {
     // Stops when ready to shoot anymore, might want to add drivetrain alignment
     // to this
-    return (!globalElevator.isAtAnyAlgaeScoringPosition() || !globalAlgaeIntake.isAtAnyAlgaeScoringPosition());
+    return (!globalElevator.isAtNetPosition() || !globalAlgaeIntake.isAtAnyAlgaeScoringPosition());
   }
 }

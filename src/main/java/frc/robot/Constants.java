@@ -657,6 +657,8 @@ public final class Constants {
           Rotation2d.fromDegrees(0));
       private static final Pose2d RED_NET = getRedAlliancePose(BLUE_NET);
       public static final List<Pose2d> NET_POSES = List.of(BLUE_NET, RED_NET);
+      public static final double NET_BLUE_EDGE_X = 7.708;
+      public static final double NET_RED_EDGE_X = 9.872;
 
       // Algae poses
       private static final List<Pose2d> BLUE_ALGAE_POSES = List.of(ALGAE_AB, ALGAE_CD, ALGAE_EF, ALGAE_GH, ALGAE_IJ,

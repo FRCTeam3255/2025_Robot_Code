@@ -443,6 +443,12 @@ public class Drivetrain extends SN_SuperSwerve {
         && isAtRotation(desiredAlignmentPose.getRotation(), constDrivetrain.TELEOP_AUTO_ALIGN.ROTATED_NET_TOLERANCE);
   }
 
+  public boolean isUnderBarge() {
+    // if x is between 7.708 and 9.872
+    return (getPose().getTranslation().getX() >= constField.POSES.NET_BLUE_EDGE_X
+        && getPose().getTranslation().getX() <= constField.POSES.NET_RED_EDGE_X);
+  }
+
   public boolean atPose(Pose2d desiredPose) {
     return isAtRotation(desiredPose.getRotation()) && isAtPosition(desiredPose);
   }

@@ -247,10 +247,13 @@ public class RobotContainer {
   public static final Trigger justScoredTrigger = new Trigger(() -> justScored);
   private final Trigger readyToLiftElevator = new Trigger(() -> subDrivetrain.isAlignedCoral());
   private final Trigger readyToLiftNet = new Trigger(
-      () -> subDrivetrain.isAlignedNet() && subStateMachine.getDriverState().equals(DriverState.NET_AUTO_DRIVING));
+      () -> !subDrivetrain.isUnderBarge() && subStateMachine.getDriverState().equals(DriverState.NET_AUTO_DRIVING));
 
   private final Trigger readyToPlaceCoral = new Trigger(() -> subElevator.isAtAnyCoralScoringPosition()
       && subDrivetrain.isAlignedCoral());
+  private final Trigger readyToPlaceNet = new Trigger(
+      () -> subElevator.isAtNetPosition() && subDrivetrain.isAlignedNet()
+          && subAlgaeIntake.isAtAnyAlgaeScoringPosition());
 
   Pair<RobotState, Pose2d>[] SELECTED_AUTO_PREP_MAP;
   public static String SELECTED_AUTO_PREP_MAP_NAME = "none :("; // For logging :p
@@ -441,10 +444,19 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(
             () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
         .onFalse(Commands.runOnce(
-            () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
+            () -> conOperator.setRumble(RumbleType.kLeftRumble, 0)));
 
     readyToPlaceCoral.onTrue(Commands.runOnce(
-        () -> conOperator.setRumble(RumbleType.kBothRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
+        () -> conOperator.setRumble(RumbleType.kBothRumble,
+            Constants.constControllers.READY_TO_PLACE_RUMBLE_INTENSITY)))
+        .onTrue(Commands.runOnce(
+            () -> subLED.setLED(constLED.READY_TO_PLACE, 0)))
+        .onFalse(Commands.runOnce(
+            () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
+
+    readyToPlaceNet.onTrue(Commands.runOnce(
+        () -> conOperator.setRumble(RumbleType.kBothRumble,
+            Constants.constControllers.READY_TO_PLACE_RUMBLE_INTENSITY)))
         .onTrue(Commands.runOnce(
             () -> subLED.setLED(constLED.READY_TO_PLACE, 0)))
         .onFalse(Commands.runOnce(
