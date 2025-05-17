@@ -970,7 +970,26 @@ public final class Constants {
       public static final Angle LL_ROLL = Units.Degrees.of(180);
       public static final Angle LL_PITCH = Units.Degrees.of(23.17);
       public static final Angle LL_YAW = Units.Degrees.of(-51.25);
+    }
 
+    public static class PHOTONVISION_CAM_RIGHT{ 
+      public static final double PV_FORWARD = 0.269494;
+      public static final double PV_RIGHT = 0.307594;
+      public static final double PV_UP = 0.211328;
+
+      public static final double PV_ROLL = 180;
+      public static final double PV_PITCH = 23.17;
+      public static final double PV_YAW = 51.25;
+    }
+
+    public static class PHOTONVISION_CAM_LEFT{ 
+      public static final double PV_FORWARD = 0.269494;
+      public static final double PV_RIGHT = -0.307594;
+      public static final double PV_UP = 0.211328;
+
+      public static final double PV_ROLL = 180;
+      public static final double PV_PITCH = 23.17;
+      public static final double PV_YAW = -51.25;
     }
   }
 
