@@ -4,18 +4,13 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants.*;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -23,14 +18,10 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
 
@@ -42,6 +33,7 @@ public class Vision extends SubsystemBase {
   private final PhotonPoseEstimator photonEstimatorLeft;
   private final PhotonPoseEstimator photonEstimatorRight;
   private final PhotonPoseEstimator photonEstimatorBack;
+  @NotLogged
   private Matrix<N3, N1> curStdDevs;
   private final EstimateConsumer estConsumer;
 
@@ -185,6 +177,7 @@ public class Vision extends SubsystemBase {
    * SwerveDrivePoseEstimator}. This should
    * only be used when there are targets visible.
    */
+  @NotLogged
   public Matrix<N3, N1> getEstimationStdDevs() {
     return curStdDevs;
   }
