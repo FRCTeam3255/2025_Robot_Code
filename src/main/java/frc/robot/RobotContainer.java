@@ -11,8 +11,10 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 import com.frcteam3255.joystick.SN_XboxController;
+import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -47,7 +49,6 @@ import frc.robot.Constants.constLED;
 import frc.robot.Constants.constVision;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.AddVisionMeasurement;
 import frc.robot.commands.CoralStuckSoftwareLimitToggle;
 import frc.robot.commands.DriveManual;
 import frc.robot.commands.Zeroing.ManualZeroAlgaeIntake;
@@ -76,6 +77,7 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.subsystems.StateMachine.RobotState;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision.EstimateConsumer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 @Logged
@@ -91,8 +93,9 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
+  EstimateConsumer estConsumer;
   private final Hopper subHopper = new Hopper();
-  private final Vision subVision = new Vision();
+  private final Vision subVision = new Vision(estConsumer);
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();
@@ -281,22 +284,6 @@ public class RobotContainer {
     checkForCoral();
   }
 
-  public void setMegaTag2(boolean setMegaTag2) {
-    if (setMegaTag2) {
-      subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
-          constVision.MEGA_TAG2_STD_DEVS_POSITION,
-          constVision.MEGA_TAG2_STD_DEVS_POSITION,
-          constVision.MEGA_TAG2_STD_DEVS_HEADING));
-    } else {
-      // Use MegaTag 1
-      subDrivetrain.swervePoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(
-          constVision.MEGA_TAG1_STD_DEVS_POSITION,
-          constVision.MEGA_TAG1_STD_DEVS_POSITION,
-          constVision.MEGA_TAG1_STD_DEVS_HEADING));
-    }
-    subVision.setMegaTag2(setMegaTag2);
-  }
-
   private void configureDriverBindings(SN_XboxController controller) {
     // controller.btn_Back.onTrue(Commands.runOnce(() ->
     // subDrivetrain.resetModulesToAbsolute()));
@@ -456,11 +443,6 @@ public class RobotContainer {
 
   public RobotState getRobotState() {
     return subStateMachine.getRobotState();
-  }
-
-  public Command AddVisionMeasurement() {
-    return new AddVisionMeasurement(subDrivetrain, subVision)
-        .withInterruptBehavior(Command.InterruptionBehavior.kCancelIncoming).ignoringDisable(true);
   }
 
   public boolean allZeroed() {

@@ -63,7 +63,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    m_robotContainer.AddVisionMeasurement().schedule();
     CommandScheduler.getInstance().run();
     pdhValues.updateValues();
   }
@@ -73,7 +72,6 @@ public class Robot extends TimedRobot {
     Elastic.selectTab("Disabled");
 
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
-    m_robotContainer.setMegaTag2(false);
 
     if (!hasAutonomousRun) {
       m_robotContainer.manualZeroSubsystems.schedule();
@@ -101,7 +99,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Elastic.selectTab("Autonomous");
 
-    m_robotContainer.setMegaTag2(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
 
@@ -129,7 +126,6 @@ public class Robot extends TimedRobot {
     Elastic.selectTab("Teleoperated");
 
     bothSubsystemsZeroed = m_robotContainer.allZeroed();
-    m_robotContainer.setMegaTag2(true);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

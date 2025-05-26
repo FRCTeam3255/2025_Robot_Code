@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.Constants.*;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,14 +15,15 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.frcteam3255.utils.LimelightHelpers.PoseEstimate;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -30,89 +33,164 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.constVision;
-import frc.robot.Robot;
 
 @Logged
 public class Vision extends SubsystemBase {
   private final PhotonCamera leftCamera;
   private final PhotonCamera rightCamera;
-  private final PhotonPoseEstimator photonEstimator;
+  private final PhotonCamera backCamera;
+  private final PhotonPoseEstimator photonEstimatorLeft;
+  private final PhotonPoseEstimator photonEstimatorRight;
+  private final PhotonPoseEstimator photonEstimatorBack;
   private Matrix<N3, N1> curStdDevs;
   private final EstimateConsumer estConsumer;
 
-  private PhotonCameraSim leftCameraSim;
-  private PhotonCameraSim rightCameraSim;
-  private VisionSystemSim visionSim;
+  public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   public Vision(EstimateConsumer estConsumer) {
     this.estConsumer = estConsumer;
-    leftCamera = new PhotonCamera("OV-Face-Up");    
+    leftCamera = new PhotonCamera("OV-Face-Up");
     rightCamera = new PhotonCamera("AR-Face-Up");
-    photonEstimator =
-    new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, kRobotToCam);
-photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    backCamera = new PhotonCamera("Back-Camera");
+    photonEstimatorLeft = new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        constVision.kRobotToLeftCam);
+    photonEstimatorLeft.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonEstimatorRight = new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        constVision.kRobotToRightCam);
+    photonEstimatorRight.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    photonEstimatorBack = new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        constVision.kRobotToBackCam);
+    photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
   }
 
-  public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+  public void updatePositionEstimate() {
 
-  public static final Transform3d kRobotToLeftCam = new Transform3d(
-      new Translation3d(constVision.PHOTONVISION_CAM_LEFT.PV_FORWARD, constVision.PHOTONVISION_CAM_LEFT.PV_RIGHT,
-          constVision.PHOTONVISION_CAM_LEFT.PV_UP),
-      new Rotation3d(constVision.PHOTONVISION_CAM_LEFT.PV_ROLL, constVision.PHOTONVISION_CAM_LEFT.PV_PITCH,
-          constVision.PHOTONVISION_CAM_LEFT.PV_YAW));
+  }
 
-  public static final Transform3d kRobotToRightCam = new Transform3d(
-      new Translation3d(constVision.PHOTONVISION_CAM_RIGHT.PV_FORWARD, constVision.PHOTONVISION_CAM_RIGHT.PV_RIGHT,
-          constVision.PHOTONVISION_CAM_RIGHT.PV_UP),
-      new Rotation3d(constVision.PHOTONVISION_CAM_RIGHT.PV_ROLL, constVision.PHOTONVISION_CAM_RIGHT.PV_PITCH,
-          constVision.PHOTONVISION_CAM_RIGHT.PV_YAW));
+  private void updateEstimationStdDevs(
+      Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+    if (estimatedPose.isEmpty()) {
+      // No pose input. Default to single-tag std devs
+      curStdDevs = constVision.kSingleTagStdDevs;
 
-  PhotonPoseEstimator photonEstimatorLeft = new PhotonPoseEstimator(
-      kTagLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-      kRobotToLeftCam);
+    } else {
+      // Pose present. Start running Heuristic
+      var estStdDevs = constVision.kSingleTagStdDevs;
+      int numTags = 0;
+      double avgDist = 0;
 
-  PhotonPoseEstimator photonEstimatorRight = new PhotonPoseEstimator(
-      kTagLayout,
-      PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-      kRobotToRightCam);
+      // Precalculation - see how many tags we found, and calculate an
+      // average-distance metric
+      for (var tgt : targets) {
+        var tagPose = photonEstimatorLeft.getFieldTags().getTagPose(tgt.getFiducialId());
+        if (tagPose.isEmpty())
+          continue;
+        numTags++;
+        avgDist += tagPose
+            .get()
+            .toPose2d()
+            .getTranslation()
+            .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+      }
 
-  public void updatePositionEstamate() {
+      for (var tgt : targets) {
+        var tagPose = photonEstimatorRight.getFieldTags().getTagPose(tgt.getFiducialId());
+        if (tagPose.isEmpty())
+          continue;
+        numTags++;
+        avgDist += tagPose
+            .get()
+            .toPose2d()
+            .getTranslation()
+            .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+      }
+
+      for (var tgt : targets) {
+        var tagPose = photonEstimatorBack.getFieldTags().getTagPose(tgt.getFiducialId());
+        if (tagPose.isEmpty())
+          continue;
+        numTags++;
+        avgDist += tagPose
+            .get()
+            .toPose2d()
+            .getTranslation()
+            .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+      }
+
+      if (numTags == 0) {
+        // No tags visible. Default to single-tag std devs
+        curStdDevs = constVision.kSingleTagStdDevs;
+      } else {
+        // One or more tags visible, run the full heuristic.
+        avgDist /= numTags;
+        // Decrease std devs if multiple targets are visible
+        if (numTags > 1)
+          estStdDevs = constVision.kMultiTagStdDevs;
+        // Increase std devs based on (average) distance
+        if (numTags == 1 && avgDist > 4)
+          estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        else
+          estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+        curStdDevs = estStdDevs;
+      }
+    }
   }
 
   @Override
   public void periodic() {
+    Optional<EstimatedRobotPose> visionEstLeft = Optional.empty();
+    for (var change : leftCamera.getAllUnreadResults()) {
+      visionEstLeft = photonEstimatorLeft.update(change);
+      updateEstimationStdDevs(visionEstLeft, change.getTargets());
+      visionEstLeft.ifPresent(
+          est -> {
+            // Change our trust in the measurement based on the tags we can see
+            var estStdDevs = getEstimationStdDevs();
+
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+          });
+    }
+
+    Optional<EstimatedRobotPose> visionEstRight = Optional.empty();
+    for (var change : rightCamera.getAllUnreadResults()) {
+      visionEstRight = photonEstimatorRight.update(change);
+      updateEstimationStdDevs(visionEstRight, change.getTargets());
+      visionEstRight.ifPresent(
+          est -> {
+            // Change our trust in the measurement based on the tags we can see
+            var estStdDevs = getEstimationStdDevs();
+
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+          });
+    }
+
+    Optional<EstimatedRobotPose> visionEstBack = Optional.empty();
+    for (var change : backCamera.getAllUnreadResults()) {
+      visionEstBack = photonEstimatorBack.update(change);
+      updateEstimationStdDevs(visionEstBack, change.getTargets());
+      visionEstBack.ifPresent(
+          est -> {
+            // Change our trust in the measurement based on the tags we can see
+            var estStdDevs = getEstimationStdDevs();
+
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+          });
+    }
   }
 
-   /**
-     * Returns the latest standard deviations of the estimated pose from {@link
-     * #getEstimatedGlobalPose()}, for use with {@link
-     * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator SwerveDrivePoseEstimator}. This should
-     * only be used when there are targets visible.
-     */
+  /**
+   * Returns the latest standard deviations of the estimated pose from {@link
+   * #getEstimatedGlobalPose()}, for use with {@link
+   * edu.wpi.first.math.estimator.SwerveDrivePoseEstimator
+   * SwerveDrivePoseEstimator}. This should
+   * only be used when there are targets visible.
+   */
   public Matrix<N3, N1> getEstimationStdDevs() {
-        return curStdDevs;
-    }
+    return curStdDevs;
+  }
 
-    // ----- Simulation
-
-    public void simulationPeriodic(Pose2d robotSimPose) {
-        visionSim.update(robotSimPose);
-    }
-
-    /** Reset pose history of the robot in the vision system simulation. */
-    public void resetSimPose(Pose2d pose) {
-        if (Robot.isSimulation()) visionSim.resetRobotPose(pose);
-    }
-
-    /** A Field2d for visualizing our robot and objects on the field. */
-    public Field2d getSimDebugField() {
-        if (!Robot.isSimulation()) return null;
-        return visionSim.getDebugField();
-    }
-
-    @FunctionalInterface
-    public static interface EstimateConsumer {
-        public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
-    }
+  @FunctionalInterface
+  public static interface EstimateConsumer {
+    public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
+  }
 }

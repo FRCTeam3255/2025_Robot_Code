@@ -27,6 +27,8 @@ import com.frcteam3255.components.swerve.SN_SwerveModule;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -36,6 +38,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
@@ -50,6 +54,18 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.RobotMap.mapDrivetrain;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 
 public final class Constants {
   /**
@@ -909,6 +925,14 @@ public final class Constants {
   }
 
   public static class constVision {
+    public static final String kCameraName = "YOUR CAMERA NAME";
+
+    // The layout of the AprilTags on the field
+    public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+
     public static final String[] LIMELIGHT_NAMES = new String[] { "limelight-right", "limelight-left",
         "limelight-back" };
 
@@ -972,7 +996,7 @@ public final class Constants {
       public static final Angle LL_YAW = Units.Degrees.of(-51.25);
     }
 
-    public static class PHOTONVISION_CAM_RIGHT{ 
+    public static class PHOTONVISION_CAM_RIGHT {
       public static final double PV_FORWARD = 0.269494;
       public static final double PV_RIGHT = 0.307594;
       public static final double PV_UP = 0.211328;
@@ -982,7 +1006,7 @@ public final class Constants {
       public static final double PV_YAW = 51.25;
     }
 
-    public static class PHOTONVISION_CAM_LEFT{ 
+    public static class PHOTONVISION_CAM_LEFT {
       public static final double PV_FORWARD = 0.269494;
       public static final double PV_RIGHT = -0.307594;
       public static final double PV_UP = 0.211328;
@@ -991,6 +1015,38 @@ public final class Constants {
       public static final double PV_PITCH = 23.17;
       public static final double PV_YAW = -51.25;
     }
+
+    // TODO: Add back camera values
+
+    public static class PHOTONVISION_CAM_BACK {
+      public static final double PV_FORWARD = 0;
+      public static final double PV_RIGHT = -0;
+      public static final double PV_UP = 0;
+
+      public static final double PV_ROLL = 0;
+      public static final double PV_PITCH = 0;
+      public static final double PV_YAW = 0;
+    }
+    // Cam mounted facing forward, half a meter forward of center, half a meter up
+    // from center,
+    // pitched upward.
+
+    public static final Transform3d kRobotToLeftCam = new Transform3d(
+        new Translation3d(constVision.PHOTONVISION_CAM_LEFT.PV_FORWARD, constVision.PHOTONVISION_CAM_LEFT.PV_RIGHT,
+            constVision.PHOTONVISION_CAM_LEFT.PV_UP),
+        new Rotation3d(constVision.PHOTONVISION_CAM_LEFT.PV_ROLL, constVision.PHOTONVISION_CAM_LEFT.PV_PITCH,
+            constVision.PHOTONVISION_CAM_LEFT.PV_YAW));
+
+    public static final Transform3d kRobotToRightCam = new Transform3d(
+        new Translation3d(constVision.PHOTONVISION_CAM_RIGHT.PV_FORWARD, constVision.PHOTONVISION_CAM_RIGHT.PV_RIGHT,
+            constVision.PHOTONVISION_CAM_RIGHT.PV_UP),
+        new Rotation3d(constVision.PHOTONVISION_CAM_RIGHT.PV_ROLL, constVision.PHOTONVISION_CAM_RIGHT.PV_PITCH,
+            constVision.PHOTONVISION_CAM_RIGHT.PV_YAW));
+    public static final Transform3d kRobotToBackCam = new Transform3d(
+        new Translation3d(constVision.PHOTONVISION_CAM_BACK.PV_FORWARD, constVision.PHOTONVISION_CAM_BACK.PV_RIGHT,
+            constVision.PHOTONVISION_CAM_BACK.PV_UP),
+        new Rotation3d(constVision.PHOTONVISION_CAM_BACK.PV_ROLL, constVision.PHOTONVISION_CAM_BACK.PV_PITCH,
+            constVision.PHOTONVISION_CAM_BACK.PV_YAW));
   }
 
   public static class constHopper {
