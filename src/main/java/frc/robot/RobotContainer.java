@@ -93,9 +93,8 @@ public class RobotContainer {
   private final SN_XboxController conOperator = new SN_XboxController(mapControllers.OPERATOR_USB);
 
   private final Drivetrain subDrivetrain = new Drivetrain();
-  EstimateConsumer estConsumer;
   private final Hopper subHopper = new Hopper();
-  private final Vision subVision = new Vision(estConsumer);
+  private final Vision subVision = new Vision(subDrivetrain::addVisionMeasurement);
   private final AlgaeIntake subAlgaeIntake = new AlgaeIntake();
   private final CoralOuttake subCoralOuttake = new CoralOuttake();
   private final Climber subClimber = new Climber();

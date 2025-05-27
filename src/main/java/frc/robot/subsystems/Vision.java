@@ -55,10 +55,6 @@ public class Vision extends SubsystemBase {
     photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
   }
 
-  public void updatePositionEstimate() {
-
-  }
-
   private void updateEstimationStdDevs(
       Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
     if (estimatedPose.isEmpty()) {
@@ -139,7 +135,7 @@ public class Vision extends SubsystemBase {
             // Change our trust in the measurement based on the tags we can see
             var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
           });
     }
 
@@ -152,7 +148,7 @@ public class Vision extends SubsystemBase {
             // Change our trust in the measurement based on the tags we can see
             var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
           });
     }
 
@@ -165,7 +161,7 @@ public class Vision extends SubsystemBase {
             // Change our trust in the measurement based on the tags we can see
             var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
           });
     }
   }
@@ -184,6 +180,6 @@ public class Vision extends SubsystemBase {
 
   @FunctionalInterface
   public static interface EstimateConsumer {
-    public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
+    public void accept(Pose2d pose, double timestamp);
   }
 }
