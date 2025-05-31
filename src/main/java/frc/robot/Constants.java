@@ -925,8 +925,6 @@ public final class Constants {
   }
 
   public static class constVision {
-    public static final String kCameraName = "YOUR CAMERA NAME";
-
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 

@@ -41,9 +41,9 @@ public class Vision extends SubsystemBase {
 
   public Vision(EstimateConsumer estConsumer) {
     this.estConsumer = estConsumer;
-    leftCamera = new PhotonCamera("OV-Face-Up");
-    rightCamera = new PhotonCamera("AR-Face-Up");
-    backCamera = new PhotonCamera("Back-Camera");
+    leftCamera = new PhotonCamera("Front-Left-Cam");
+    rightCamera = new PhotonCamera("Front-Right-Cam");
+    backCamera = new PhotonCamera("Back-Cam");
     photonEstimatorLeft = new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         constVision.kRobotToLeftCam);
     photonEstimatorLeft.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
