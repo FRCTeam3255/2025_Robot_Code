@@ -994,6 +994,16 @@ public final class Constants {
       public static final Angle LL_YAW = Units.Degrees.of(-51.25);
     }
 
+    public static class LIMELIGHT_BACK {
+      public static final Distance LL_FORWARD = Units.Meters.of(-0.31549);
+      public static final Distance LL_RIGHT = Units.Meters.of(-0.293786);
+      public static final Distance LL_UP = Units.Meters.of(0.22789);
+
+      public static final Angle LL_ROLL = Units.Degrees.of(0);
+      public static final Angle LL_PITCH = Units.Degrees.of(22.63);
+      public static final Angle LL_YAW = Units.Degrees.of(-150);
+    }
+
     public static class PHOTONVISION_CAM_RIGHT {
       public static final double PV_FORWARD = 0.269494;
       public static final double PV_RIGHT = 0.307594;
@@ -1014,16 +1024,14 @@ public final class Constants {
       public static final double PV_YAW = -51.25;
     }
 
-    // TODO: Add back camera values
-
     public static class PHOTONVISION_CAM_BACK {
-      public static final double PV_FORWARD = 0;
-      public static final double PV_RIGHT = -0;
-      public static final double PV_UP = 0;
+      public static final double PV_FORWARD = -0.31549;
+      public static final double PV_RIGHT = -0.293786;
+      public static final double PV_UP = 0.22789;
 
       public static final double PV_ROLL = 0;
-      public static final double PV_PITCH = 0;
-      public static final double PV_YAW = 0;
+      public static final double PV_PITCH = 22.63;
+      public static final double PV_YAW = -150;
     }
     // Cam mounted facing forward, half a meter forward of center, half a meter up
     // from center,
