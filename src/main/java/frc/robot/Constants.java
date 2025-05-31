@@ -88,16 +88,16 @@ public final class Constants {
       public static SN_SwerveModule[] MODULES = new SN_SwerveModule[] {
           new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
               mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN,
-              constDrivetrain.PRACTICE_BOT.FRONT_LEFT_ABS_ENCODER_OFFSET, mapDrivetrain.CAN_BUS_NAME),
+              constDrivetrain.PRACTICE_BOT.FRONT_LEFT_ABS_ENCODER_OFFSET, mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME),
           new SN_SwerveModule(1, mapDrivetrain.FRONT_RIGHT_DRIVE_CAN, mapDrivetrain.FRONT_RIGHT_STEER_CAN,
               mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN,
-              constDrivetrain.PRACTICE_BOT.FRONT_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.CAN_BUS_NAME),
+              constDrivetrain.PRACTICE_BOT.FRONT_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME),
           new SN_SwerveModule(2, mapDrivetrain.BACK_LEFT_DRIVE_CAN, mapDrivetrain.BACK_LEFT_STEER_CAN,
               mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.PRACTICE_BOT.BACK_LEFT_ABS_ENCODER_OFFSET,
-              mapDrivetrain.CAN_BUS_NAME),
+              mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME),
           new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
               mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-              constDrivetrain.PRACTICE_BOT.BACK_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.CAN_BUS_NAME),
+              constDrivetrain.PRACTICE_BOT.BACK_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME ),
       };
 
     }

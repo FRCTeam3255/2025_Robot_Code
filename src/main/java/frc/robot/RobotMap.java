@@ -12,7 +12,8 @@ public class RobotMap {
   }
 
   public static class mapDrivetrain {
-    public static final String CAN_BUS_NAME = "rio";
+    public static final String PRACTICE_BOT_CAN_BUS_NAME = "rio";
+    public static final String CAN_BUS_NAME = "Swerve";
     public static final int PIGEON_CAN = 0;
 
     // Module 0

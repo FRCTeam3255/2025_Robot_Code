@@ -53,7 +53,8 @@ public class Drivetrain extends SN_SuperSwerve {
             : constDrivetrain.MODULES,
         constDrivetrain.WHEELBASE,
         constDrivetrain.TRACK_WIDTH,
-        mapDrivetrain.CAN_BUS_NAME,
+        (RobotContainer.isPracticeBot()) ? mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME
+            : mapDrivetrain.CAN_BUS_NAME,
         mapDrivetrain.PIGEON_CAN,
         constDrivetrain.MIN_STEER_PERCENT,
         constDrivetrain.DRIVE_MOTOR_INVERT,
