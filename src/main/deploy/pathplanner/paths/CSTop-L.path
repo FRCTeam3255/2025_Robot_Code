@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.63,
-        "y": 7.354
+        "x": 1.8,
+        "y": 7.155
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8122621550697446,
-        "y": 7.182884521946925
+        "x": 1.9733643840706463,
+        "y": 6.97487562537012
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.708,
-        "y": 5.074
+        "x": 3.315,
+        "y": 5.702000000000001
       },
       "prevControl": {
-        "x": 3.058152666230537,
-        "y": 5.683895164567919
+        "x": 1.948332236842106,
+        "y": 7.337947368421052
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,13 +30,19 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5314009661835741,
-      "rotationDegrees": -53.0
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -59.99999999999999
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "PrepL2",
+      "waypointRelativePos": 0.7533498759305084,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
     {
       "name": "PrepPlace",
       "waypointRelativePos": 1.0,
@@ -54,7 +60,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.00000000000001
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "CSTop-Score",

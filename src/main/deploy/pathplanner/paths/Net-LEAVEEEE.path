@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.5,
+        "y": 5.691
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.040378289473684,
+        "y": 5.689555921052631
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.109786184210526,
+        "y": 5.691
+      },
+      "prevControl": {
+        "x": 6.6864297945205475,
+        "y": 5.662799657534247
+      },
+      "nextControl": {
+        "x": 5.810648858278707,
+        "y": 5.7056290965246825
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.869243421052631,
+        "y": 6.728700657894737
+      },
+      "prevControl": {
+        "x": 5.869243421052631,
+        "y": 6.343832236842106
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.5,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Algae",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Inches;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicExpoDutyCycle;
+import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -40,7 +42,7 @@ public class Elevator extends SubsystemBase {
   public boolean attemptingZeroing = false;
   public boolean hasZeroed = false;
 
-  MotionMagicVoltage motionRequest;
+  MotionMagicExpoVoltage motionRequest;
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -49,22 +51,25 @@ public class Elevator extends SubsystemBase {
 
     lastDesiredPosition = Units.Inches.of(0);
     voltageRequest = new VoltageOut(0);
-    motionRequest = new MotionMagicVoltage(0);
+    motionRequest = new MotionMagicExpoVoltage(0);
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
   }
 
   public Distance getElevatorPosition() {
+    if (Robot.isSimulation()) {
+      return getLastDesiredPosition();
+    }
     return Units.Inches.of(rightMotorLeader.getPosition().getValueAsDouble());
   }
 
   public boolean atDesiredPosition() {
-    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, getLastDesiredPosition());
+    return isAtSetPointWithTolerance(getLastDesiredPosition(), Constants.constElevator.DEADZONE_DISTANCE);
   }
 
   public boolean isAtSpecificSetpoint(Distance setpoint) {
-    return isAtSetPointWithTolerance(Constants.constElevator.DEADZONE_DISTANCE, setpoint);
+    return isAtSetPointWithTolerance(setpoint, Constants.constElevator.DEADZONE_DISTANCE);
   }
 
   public boolean isAtSetPointWithTolerance(Distance position, Distance tolerance) {
@@ -131,9 +136,17 @@ public class Elevator extends SubsystemBase {
     leftMotorFollower.setControl(new Follower(rightMotorLeader.getDeviceID(), true));
   }
 
-  public void setSoftwareLimits(boolean reverseLimitEnable, boolean forwardLimitEnable) {
+  public void setSoftwareLimitsEnable(boolean reverseLimitEnable, boolean forwardLimitEnable) {
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = reverseLimitEnable;
     constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = forwardLimitEnable;
+
+    rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+    leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
+  }
+
+  public void setSoftwareLimits(double reverseLimit, double forwardLimit) {
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = reverseLimit;
+    constElevator.ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimit;
 
     rightMotorLeader.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);
     leftMotorFollower.getConfigurator().apply(constElevator.ELEVATOR_CONFIG);

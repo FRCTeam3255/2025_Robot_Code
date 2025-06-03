@@ -1,0 +1,97 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "P-H"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CleanL2Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "GFAlgae-Net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-IJAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CleanL3Reef"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "IJAlgae-Net"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepNet"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreAlgaeSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Net-EFAlgae"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "COMP_READY",
+  "choreoAuto": false
+}

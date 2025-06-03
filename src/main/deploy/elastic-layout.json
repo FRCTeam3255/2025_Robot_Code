@@ -11,7 +11,7 @@
             "title": "Driving State",
             "x": 0.0,
             "y": 102.0,
-            "width": 374.0,
+            "width": 408.0,
             "height": 102.0,
             "type": "Large Text Display",
             "properties": {
@@ -22,9 +22,9 @@
           },
           {
             "title": "Robot State",
-            "x": 952.0,
+            "x": 986.0,
             "y": 102.0,
-            "width": 408.0,
+            "width": 374.0,
             "height": 102.0,
             "type": "Large Text Display",
             "properties": {
@@ -35,9 +35,9 @@
           },
           {
             "title": "Has Coral",
-            "x": 0.0,
+            "x": 136.0,
             "y": 204.0,
-            "width": 374.0,
+            "width": 272.0,
             "height": 238.0,
             "type": "Boolean Box",
             "properties": {
@@ -52,9 +52,9 @@
           },
           {
             "title": "Has Algae",
-            "x": 952.0,
+            "x": 986.0,
             "y": 204.0,
-            "width": 408.0,
+            "width": 238.0,
             "height": 238.0,
             "type": "Boolean Box",
             "properties": {
@@ -71,7 +71,7 @@
             "title": "LEFT LABEL",
             "x": 0.0,
             "y": 0.0,
-            "width": 374.0,
+            "width": 408.0,
             "height": 102.0,
             "type": "Large Text Display",
             "properties": {
@@ -95,7 +95,7 @@
           },
           {
             "title": "All At Set Point",
-            "x": 816.0,
+            "x": 850.0,
             "y": 102.0,
             "width": 136.0,
             "height": 340.0,
@@ -112,7 +112,7 @@
           },
           {
             "title": "Is Aligned",
-            "x": 374.0,
+            "x": 408.0,
             "y": 102.0,
             "width": 136.0,
             "height": 340.0,
@@ -129,9 +129,9 @@
           },
           {
             "title": "Match Time",
-            "x": 374.0,
+            "x": 408.0,
             "y": 0.0,
-            "width": 612.0,
+            "width": 578.0,
             "height": 102.0,
             "type": "Match Time",
             "properties": {
@@ -145,7 +145,7 @@
           },
           {
             "title": "Climber Camera",
-            "x": 510.0,
+            "x": 544.0,
             "y": 102.0,
             "width": 306.0,
             "height": 340.0,
@@ -156,6 +156,40 @@
               "rotation_turns": 0,
               "compression": 40,
               "fps": 30
+            }
+          },
+          {
+            "title": "isSafeToMoveElevator",
+            "x": 1224.0,
+            "y": 204.0,
+            "width": 136.0,
+            "height": 238.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/subCoralOuttake/isSafeToMoveElevator",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "Checkmark",
+              "false_icon": "X"
+            }
+          },
+          {
+            "title": "coralStuckSoftwareLimitEnable",
+            "x": 0.0,
+            "y": 204.0,
+            "width": 136.0,
+            "height": 238.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "Robot/m_robotContainer/coralStuckSoftwareLimitEnable",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           }
         ]

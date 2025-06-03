@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.065445901289886,
-        "y": 7.006127243384698
+        "x": 2.2880000000000003,
+        "y": 6.774750000000001
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.63675,
-        "y": 5.78
+        "x": 3.6172500000000003,
+        "y": 5.86775
       },
       "prevControl": {
-        "x": 2.1619808538387106,
-        "y": 6.544167708454439
+        "x": 2.5795429208211154,
+        "y": 6.737530058651027
       },
       "nextControl": null,
       "isLocked": false,
@@ -37,6 +37,12 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "PrepL2",
+      "waypointRelativePos": 0.548883374689826,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
     {
       "name": "PrepPlace",
       "waypointRelativePos": 1.0,

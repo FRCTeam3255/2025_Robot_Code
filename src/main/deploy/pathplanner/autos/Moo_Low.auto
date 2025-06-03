@@ -1,0 +1,127 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ForceGamePiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "P-E"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "E-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-D"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "D-CSBottom"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GetCoralStationPiece"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CSBottom-F"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PrepPlace"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PlaceSequence"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "COMP_READY",
+  "choreoAuto": false
+}
