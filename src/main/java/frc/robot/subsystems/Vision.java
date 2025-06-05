@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -130,39 +133,45 @@ public class Vision extends SubsystemBase {
     for (var change : leftCamera.getAllUnreadResults()) {
       visionEstLeft = photonEstimatorLeft.update(change);
       updateEstimationStdDevs(visionEstLeft, change.getTargets());
-      visionEstLeft.ifPresent(
-          est -> {
-            // Change our trust in the measurement based on the tags we can see
-            var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
-          });
+      var result = leftCamera.getLatestResult();
+      PhotonTrackedTarget target = result.getBestTarget();
+
+      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+            kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToLeftCam);
+        estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
+      }
     }
 
     Optional<EstimatedRobotPose> visionEstRight = Optional.empty();
     for (var change : rightCamera.getAllUnreadResults()) {
       visionEstRight = photonEstimatorRight.update(change);
       updateEstimationStdDevs(visionEstRight, change.getTargets());
-      visionEstRight.ifPresent(
-          est -> {
-            // Change our trust in the measurement based on the tags we can see
-            var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
-          });
+      var result = rightCamera.getLatestResult();
+      PhotonTrackedTarget target = result.getBestTarget();
+
+      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+            kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToRightCam);
+        estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
+      }
     }
 
     Optional<EstimatedRobotPose> visionEstBack = Optional.empty();
     for (var change : backCamera.getAllUnreadResults()) {
       visionEstBack = photonEstimatorBack.update(change);
       updateEstimationStdDevs(visionEstBack, change.getTargets());
-      visionEstBack.ifPresent(
-          est -> {
-            // Change our trust in the measurement based on the tags we can see
-            var estStdDevs = getEstimationStdDevs();
 
-            estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds);
-          });
+      var result = backCamera.getLatestResult();
+      PhotonTrackedTarget target = result.getBestTarget();
+
+      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+        Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
+            kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToBackCam);
+        estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
+      }
     }
   }
 
