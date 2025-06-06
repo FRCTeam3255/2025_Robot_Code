@@ -137,7 +137,7 @@ public class Vision extends SubsystemBase {
       var result = leftCamera.getLatestResult();
       PhotonTrackedTarget target = result.getBestTarget();
 
-      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+      if (target != null && kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
             kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToLeftCam);
         estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
