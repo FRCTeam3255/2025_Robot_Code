@@ -113,15 +113,10 @@ public class DriveManual extends Command {
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
 
-    if (RobotContainer.isPracticeBot()) {
-      AngularVelocity rVelocity = Units.RadiansPerSecond
-          .of(rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
-              * elevatorHeightMultiplier);
-    } else {
-      AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
-            * elevatorHeightMultiplier);
-    }
+    double rotationMultiplier = RobotContainer.isPracticeBot() ? 1 : -1;
+    AngularVelocity rVelocity = Units.RadiansPerSecond
+      .of(rotationAxis.getAsDouble() * rotationMultiplier * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+        * elevatorHeightMultiplier);
 
     if (prepClimb.getAsBoolean()) {
       prepClimbValid = true;
