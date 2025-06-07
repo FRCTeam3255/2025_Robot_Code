@@ -152,7 +152,7 @@ public class Vision extends SubsystemBase {
       var result = rightCamera.getLatestResult();
       PhotonTrackedTarget target = result.getBestTarget();
 
-      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+      if (target != null && kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
             kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToRightCam);
         estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
@@ -167,7 +167,7 @@ public class Vision extends SubsystemBase {
       var result = backCamera.getLatestResult();
       PhotonTrackedTarget target = result.getBestTarget();
 
-      if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
+      if (target != null && kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
         Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(),
             kTagLayout.getTagPose(target.getFiducialId()).get(), constVision.kRobotToBackCam);
         estConsumer.accept(robotPose.toPose2d(), result.getTimestampSeconds());
