@@ -22,6 +22,7 @@ import frc.robot.subsystems.StateMachine;
 import frc.robot.subsystems.StateMachine.DriverState;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
 
@@ -111,9 +112,16 @@ public class DriveManual extends Command {
     // -- Velocities --
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
-    AngularVelocity rVelocity = Units.RadiansPerSecond
+
+    if (RobotContainer.isPracticeBot()) {
+      AngularVelocity rVelocity = Units.RadiansPerSecond
+          .of(rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+              * elevatorHeightMultiplier);
+    } else {
+      AngularVelocity rVelocity = Units.RadiansPerSecond
         .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
+    }
 
     if (prepClimb.getAsBoolean()) {
       prepClimbValid = true;

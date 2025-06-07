@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
-import java.lang.Thread.State;
 import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
@@ -32,10 +31,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapDrivetrain;
-import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
