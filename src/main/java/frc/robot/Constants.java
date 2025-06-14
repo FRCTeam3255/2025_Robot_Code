@@ -80,10 +80,10 @@ public final class Constants {
           SN_SwerveConstants.MK4I.FALCON.L2.driveGearRatio,
           SN_SwerveConstants.MK4I.FALCON.L2.maxSpeedMeters);
 
-      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = 0.390625;
-      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = -0.156494;
-      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = 0.445557;
-      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.187012;
+      public static final double BACK_RIGHT_ABS_ENCODER_OFFSET = -0.108398;
+      public static final double BACK_LEFT_ABS_ENCODER_OFFSET = 0.752197;
+      public static final double FRONT_RIGHT_ABS_ENCODER_OFFSET = -0.055420;
+      public static final double FRONT_LEFT_ABS_ENCODER_OFFSET = -0.679443;
 
       public static SN_SwerveModule[] MODULES = new SN_SwerveModule[] {
           new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
@@ -97,7 +97,7 @@ public final class Constants {
               mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME),
           new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
               mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN,
-              constDrivetrain.PRACTICE_BOT.BACK_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME ),
+              constDrivetrain.PRACTICE_BOT.BACK_RIGHT_ABS_ENCODER_OFFSET, mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME),
       };
 
     }
