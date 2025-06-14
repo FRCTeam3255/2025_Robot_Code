@@ -112,9 +112,8 @@ public class DriveManual extends Command {
     // -- Velocities --
     LinearVelocity xVelocity = Units.MetersPerSecond.of(xAxis.getAsDouble() * transMultiplier);
     LinearVelocity yVelocity = Units.MetersPerSecond.of(-yAxis.getAsDouble() * transMultiplier);
-
     AngularVelocity rVelocity = Units.RadiansPerSecond
-        .of(rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
+        .of(-rotationAxis.getAsDouble() * constDrivetrain.TURN_SPEED.in(Units.RadiansPerSecond)
             * elevatorHeightMultiplier);
 
     if (prepClimb.getAsBoolean()) {
