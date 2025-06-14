@@ -90,22 +90,14 @@ Each Limelight’s pose estimates are then fed into the robot, passed through a 
 - **Example of Vision:**  
   Jump into code [`here!`](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/subsystems/Vision.java#L1-L154)
 
-### Vision Aided Alignment
-
-
-#### Reef Vision Aided Alignment
+### Reef Alignment
+The multi-stage system, depending on the distance
+- **Smart:** Automatically chooses which face of the reef to go 
 - **How it works:** Using the current pose of the robot (see Vision), we calculate our desired reef face on the fly based on our distance from the reef and current rotation. The self alignment then determines different desired positions based on which branch of the reef the driver picks, always relative to their left & right. Then, we calculate our distance from the desired pose. If the distance is too large, the robot will just turn to the correct angle; otherwise, the robot will fully self-drive to the desired position. 
 
-#### Net/Processor Vision Aided Alignment
-
+### Net/Processor Vision Aided Alignment
 - **How it works:** Similar to the reef, we calculate the closest position of the net and processor alignment, except there are no “left vs right” buttons; they’re just based on which is closest.
 However, the net and processor have a special type of alignment. We can self-align to a vertical/horizontal axis where you can score, and the driver can still move along the line. For example, for the net, we lock the drivetrain y velocity (relative to the robot) but the driver can still travel along the x-axis.
-
-- **Example of our Poses coordinates:**  
-  Jump into code [`here!`](https://github.com/FRCTeam3255/2025_Robot_Code/blob/26d6f1e49594b345b34e01dcde61f79d4eecd758/src/main/java/frc/robot/Constants.java#L580-L717)
-
-- **Example of our vision autoalignment:**  
-  Jump into code [`here!`](https://github.com/FRCTeam3255/2025_Robot_Code/blob/main/src/main/java/frc/robot/subsystems/Drivetrain.java#L288)
 
 ### State Machine Control
 
@@ -162,7 +154,7 @@ The addition of constant force springs after San Diego Regional allowed us to ac
 
 ### Autos
 
-Our autos include a 3 coral auto on both sides, 4 one coral and 2.5 algae net auto, and “Tickle” autos that bump other bots (forcing the ranking point).
+Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net auto, and “Tickle” autos that bump other bots (forcing the ranking point).
 - **How it works:**
 <br><br>
 ![alt text](image.png)
@@ -172,7 +164,7 @@ Our autos include a 3 coral auto on both sides, 4 one coral and 2.5 algae net au
     - Pose Target driving: dynamically adjusts robot pose to auto-align (same as the one in tele-op).
   - **Commands:** State-machine-based command sequence scheduling ensures smooth and reliable execution.
 
-  **Autos Sheet**
+**Autos Sheet**
 ![Autos_Sheet](assets/Auto_Sheet.png)
 
 ## Field Calibration
