@@ -165,7 +165,9 @@ Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net a
   - **Commands:** State-machine-based command sequence scheduling ensures smooth and reliable execution.
 
 **Autos Sheet**
+<br><br>
 ![Autos_Sheet](assets/Auto_Sheet.png)
+<br><br>
 
 ## Field Calibration
 - #### Step 1: have advantage scope 3D field open whole time
