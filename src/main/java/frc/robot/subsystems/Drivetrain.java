@@ -8,7 +8,6 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 
-import java.lang.Thread.State;
 import java.util.List;
 
 import com.frcteam3255.components.swerve.SN_SuperSwerve;
@@ -32,26 +31,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.RobotMap.mapDrivetrain;
-import frc.robot.subsystems.*;
 import frc.robot.subsystems.StateMachine.DriverState;
 
 @Logged
 public class Drivetrain extends SN_SuperSwerve {
-
-  private static SN_SwerveModule[] modules = new SN_SwerveModule[] {
-      new SN_SwerveModule(0, mapDrivetrain.FRONT_LEFT_DRIVE_CAN, mapDrivetrain.FRONT_LEFT_STEER_CAN,
-          mapDrivetrain.FRONT_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_LEFT_ABS_ENCODER_OFFSET),
-      new SN_SwerveModule(1, mapDrivetrain.FRONT_RIGHT_DRIVE_CAN, mapDrivetrain.FRONT_RIGHT_STEER_CAN,
-          mapDrivetrain.FRONT_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.FRONT_RIGHT_ABS_ENCODER_OFFSET),
-      new SN_SwerveModule(2, mapDrivetrain.BACK_LEFT_DRIVE_CAN, mapDrivetrain.BACK_LEFT_STEER_CAN,
-          mapDrivetrain.BACK_LEFT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_LEFT_ABS_ENCODER_OFFSET),
-      new SN_SwerveModule(3, mapDrivetrain.BACK_RIGHT_DRIVE_CAN, mapDrivetrain.BACK_RIGHT_STEER_CAN,
-          mapDrivetrain.BACK_RIGHT_ABSOLUTE_ENCODER_CAN, constDrivetrain.BACK_RIGHT_ABS_ENCODER_OFFSET),
-  };
-
   Pose2d desiredAlignmentPose = Pose2d.kZero;
   SwerveModuleState[] desiredModuleStates;
   SwerveModuleState[] actualModuleStates;
@@ -65,7 +50,8 @@ public class Drivetrain extends SN_SuperSwerve {
             : constDrivetrain.MODULES,
         constDrivetrain.WHEELBASE,
         constDrivetrain.TRACK_WIDTH,
-        mapDrivetrain.CAN_BUS_NAME,
+        (RobotContainer.isPracticeBot()) ? mapDrivetrain.PRACTICE_BOT_CAN_BUS_NAME
+            : mapDrivetrain.CAN_BUS_NAME,
         mapDrivetrain.PIGEON_CAN,
         constDrivetrain.MIN_STEER_PERCENT,
         constDrivetrain.DRIVE_MOTOR_INVERT,
