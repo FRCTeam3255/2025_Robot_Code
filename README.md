@@ -157,7 +157,7 @@ The addition of constant force springs after San Diego Regional allowed us to ac
 Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net auto, and “Tickle” autos that bump other bots (forcing the ranking point).
 - **How it works:**
 <br><br>
-![alt text](image.png)
+![alt text](assets/nyoooom.png)
 <br><br>
   - **Driving:**
     - Basic driving: Path planner used to navigate by preset trajectories.
@@ -165,13 +165,14 @@ Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net a
   - **Commands:** State-machine-based command sequence scheduling ensures smooth and reliable execution.
 
 **Autos Sheet**
+<br><br>
 ![Autos_Sheet](assets/Auto_Sheet.png)
+<br><br>
 
 ## Field Calibration
 - #### Step 1: have advantage scope 3D field open whole time
 
 -  #### Step 2: Tune the Limelights
-    ### [Limelights' website](limelight.local:5801)
 
 - #### Step 3: Check Reef
 
@@ -203,3 +204,7 @@ Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net a
 
 ## Checklists
   #### [Full Functional and Pit Checklist](https://docs.google.com/spreadsheets/d/1OUnTOST7weKSB8co4n3Ox3lbtep59XiF4iwNPWjkJzo/edit?usp=drivesdk)
+
+<br><br>
+<img src="assets/emoji.png" width="10%" alt="yippee"/>
+<br><br>
