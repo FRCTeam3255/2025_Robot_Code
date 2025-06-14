@@ -207,5 +207,5 @@ Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net a
   #### [Full Functional and Pit Checklist](https://docs.google.com/spreadsheets/d/1OUnTOST7weKSB8co4n3Ox3lbtep59XiF4iwNPWjkJzo/edit?usp=drivesdk)
 
 <br><br>
-<img src="assets/emoji.png" width="20%" alt="yippee"/>
+<img src="assets/emoji.png" width="10%" alt="yippee"/>
 <br><br>
