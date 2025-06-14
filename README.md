@@ -173,7 +173,6 @@ Our autos include a 3 coral auto on both sides, four 1 coral and 2.5 algae net a
 - #### Step 1: have advantage scope 3D field open whole time
 
 -  #### Step 2: Tune the Limelights
-    ### [Limelights' website](limelight.local:5801)
 
 - #### Step 3: Check Reef
 
