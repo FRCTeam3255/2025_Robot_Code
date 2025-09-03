@@ -91,7 +91,7 @@ public class Elevator extends SubsystemBase {
     return false;
   }
 
-  public boolean isAtAnyAlgaeScoringPosition() {
+  public boolean isAtNetPosition() {
     if (isAtSpecificSetpoint(constElevator.ALGAE_PREP_NET)) {
       return true;
     }
