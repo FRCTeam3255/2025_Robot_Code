@@ -1000,6 +1000,9 @@ public final class Constants {
       LED_CONFIG.brightnessScalar = 1;
 
     }
+
+    public static final int[] ALIGNING = { 255, 0, 0 };
+
     public static final int LED_NUMBER = 8;
     public static final int LED_STRIP_START_INDEX = 1;
 
@@ -1048,7 +1051,7 @@ public final class Constants {
     public static final int[] LED_CLEANING_L3_REEF_WITH_CORAL = { 0, 0, 0 };
     public static final int[] LED_INTAKE_CORAL_WITH_ALGAE = { 0, 0, 255 };// blue
     // that other guy what a loser
-    public static final int[] LED_NONE = { 0, 0, 0 }; // no color
+    public static final int[] LED_NONE = { 255, 255, 255 }; // no color
 
     // Zeroing
     public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 }; // red
