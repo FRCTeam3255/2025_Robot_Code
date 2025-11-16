@@ -9,38 +9,37 @@ import frc.robot.Constants.constLED;
 import frc.robot.RobotMap.mapLED;
 
 import com.ctre.phoenix.led.Animation;
-import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix6.controls.*;
+import com.ctre.phoenix6.signals.RGBWColor;
+import com.ctre.phoenix6.hardware.CANdle;
 
 public class LED extends SubsystemBase {
-  CANdle LED;
+  CANdle LED = new CANdle(mapLED.LED_CAN);
 
   /** Creates a new LED. */
 
   public LED() {
-    LED = new CANdle(mapLED.LED_CAN);
-    LED.configAllSettings(constLED.LED_CONFIG);
+    LED.getConfigurator().apply(constLED.LED_CONFIG);
   }
 
   public void setLED(int[] rgb) {
     if (rgb != null) {
       clearAnimation();
-      LED.setLEDs(rgb[0], rgb[1], rgb[2]);
+      LED.setControl(new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER)
+      .withColor(new RGBWColor(rgb[0], rgb[1], rgb[2], rgb[3])));
     }
   }
 
   public void setLED(Animation animation, int animationSlot) {
-    clearAnimation();
-    LED.animate(animation, animationSlot);
-  }
-
-  public void setLEDMatrix(int[] rgb, int LEDStartIndex, int LEDLength) {
-    clearAnimation();
-    LED.setLEDs(rgb[0], rgb[1], rgb[2], 0, LEDStartIndex, LEDLength);
+    LED.setControl(
+      new LarsonAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withSlot(1)
+    );
   }
 
   public void clearAnimation() {
-    LED.clearAnimation(0);
-    LED.clearAnimation(1);
+    for (int i = 0; i < 8; ++i) {
+      LED.setControl(new EmptyAnimation(i));
+    }
   }
 
   @Override

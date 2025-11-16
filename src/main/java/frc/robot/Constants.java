@@ -11,16 +11,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.ctre.phoenix.led.CANdleConfiguration;
-import com.ctre.phoenix.led.StrobeAnimation;
+import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.StrobeAnimation;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
+import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
+import com.ctre.phoenix6.signals.StripTypeValue;
 import com.ctre.phoenix6.signals.UpdateModeValue;
 import com.frcteam3255.components.swerve.SN_SwerveConstants;
 import com.frcteam3255.components.swerve.SN_SwerveModule;
@@ -997,7 +999,11 @@ public final class Constants {
   public static class constLED {
     public static final CANdleConfiguration LED_CONFIG = new CANdleConfiguration();
     static {
-      LED_CONFIG.brightnessScalar = 1;
+      /* set the LED strip type and brightness */
+      LED_CONFIG.LED.StripType = StripTypeValue.RGBW;
+      LED_CONFIG.LED.BrightnessScalar = 1.0;
+      /* disable status LED when being controlled */
+      LED_CONFIG.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Disabled;
 
     }
     public static final int LED_NUMBER = 8;
@@ -1056,8 +1062,8 @@ public final class Constants {
     public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 }; // red
     public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
 
-    public static final StrobeAnimation READY_TO_LIFT = new StrobeAnimation(252, 179, 89,
-        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // orange
+    public static final new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
+    .withColor(kRed)
 
     public static final StrobeAnimation READY_TO_PLACE = new StrobeAnimation(200, 89, 252,
         0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // purple
