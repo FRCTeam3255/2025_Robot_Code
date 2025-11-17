@@ -1064,24 +1064,20 @@ public final class Constants {
     public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
 
     // Colors
-    private static final RGBWColor kRed = new RGBWColor(255, 0, 0, 0);
-    private static final RGBWColor kOrange = new RGBWColor(255, 165, 0, 0);
-    private static final RGBWColor kYellow = new RGBWColor(255, 255, 0, 0);
-    private static final RGBWColor kGreen = new RGBWColor(0, 255, 0, 0);
-    private static final RGBWColor kBlue = new RGBWColor(0, 0, 255, 0);
-    private static final RGBWColor kPurple = new RGBWColor(128, 0, 128, 0);
-    private static final RGBWColor kWhite = new RGBWColor(255, 255, 255, 0);
+    public static final RGBWColor kRed = new RGBWColor(255, 0, 0, 0);
+    public static final RGBWColor kOrange = new RGBWColor(255, 165, 0, 0);
+    public static final RGBWColor kYellow = new RGBWColor(255, 255, 0, 0);
+    public static final RGBWColor kGreen = new RGBWColor(0, 255, 0, 0);
+    public static final RGBWColor kBlue = new RGBWColor(0, 0, 255, 0);
+    public static final RGBWColor kPurple = new RGBWColor(128, 0, 128, 0);
+    public static final RGBWColor kWhite = new RGBWColor(255, 255, 255, 0);
 
-    public static final StrobeAnimation READY_TO_LIFT = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
-    .withColor(kOrange);
+    public static final RGBWColor READY_TO_LIFT_COLOR = kOrange;
 
-    public static final StrobeAnimation READY_TO_PLACE = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
-    .withColor(kPurple);
+    public static final RGBWColor READY_TO_PLACE_COLOR = kPurple;
 
-    public static final StrobeAnimation READY_TO_LEAVE = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
-    .withColor(kGreen);
+    public static final RGBWColor READY_TO_LEAVE_COLOR = kGreen;
 
-    public static final StrobeAnimation ENDGAME_TIMER = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
-    .withColor(kRed);
+    public static final RGBWColor ENDGAME_TIMER_COLOR = kRed;
   }
 }

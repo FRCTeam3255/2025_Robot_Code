@@ -30,10 +30,10 @@ public class LED extends SubsystemBase {
     }
   }
 
-  public void setLED(Animation animation, int animationSlot) {
-    LED.setControl(
-      new LarsonAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withSlot(1)
-    );
+  public void setLEDStrobe(RGBWColor color) {
+    clearAnimation();
+    LED.setControl(new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER)
+    .withColor(color));
   }
 
   public void clearAnimation() {

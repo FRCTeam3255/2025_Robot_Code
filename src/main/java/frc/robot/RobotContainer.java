@@ -432,26 +432,26 @@ public class RobotContainer {
     readyToLiftElevator.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
         .onTrue(Commands.runOnce(
-            () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
+            () -> subLED.setLEDStrobe(constLED.READY_TO_LIFT_COLOR)))
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
     readyToLiftNet.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kLeftRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
         .onTrue(Commands.runOnce(
-            () -> subLED.setLED(constLED.READY_TO_LIFT, 0)))
+            () -> subLED.setLEDStrobe(constLED.READY_TO_LIFT_COLOR)))
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
     readyToPlaceCoral.onTrue(Commands.runOnce(
         () -> conOperator.setRumble(RumbleType.kBothRumble, Constants.constControllers.READY_TO_RAISE_INTENSITY)))
         .onTrue(Commands.runOnce(
-            () -> subLED.setLED(constLED.READY_TO_PLACE, 0)))
+            () -> subLED.setLEDStrobe(constLED.READY_TO_PLACE_COLOR)))
         .onFalse(Commands.runOnce(
             () -> conOperator.setRumble(RumbleType.kBothRumble, 0)));
 
     justScoredTrigger.onTrue(READY_TO_LEAVE_RUMBLE).onTrue(Commands.runOnce(
-        () -> subLED.setLED(constLED.READY_TO_LEAVE, 0)));
+        () -> subLED.setLEDStrobe(constLED.READY_TO_LEAVE_COLOR)));
   }
 
   public RobotState getRobotState() {

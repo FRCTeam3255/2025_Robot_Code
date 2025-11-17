@@ -34,7 +34,7 @@ public class ManualZeroElevator extends Command {
   public void initialize() {
     globalElevator.setSoftwareLimitsEnable(false, true);
     globalElevator.hasZeroed = false;
-    globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 4, 9);
+    globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
   }
 
   @Override
@@ -82,11 +82,11 @@ public class ManualZeroElevator extends Command {
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
-      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_SUCCESS, 4, 9);
+      globalLED.setLED(constLED.ELEVATOR_ZERO_SUCCESS);
 
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
-      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 4, 9);
+      globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
     }
   }
 
