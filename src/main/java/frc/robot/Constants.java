@@ -19,6 +19,7 @@ import com.ctre.phoenix6.controls.StrobeAnimation;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.RGBWColor;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.ctre.phoenix6.signals.StatusLedWhenActiveValue;
@@ -1062,18 +1063,25 @@ public final class Constants {
     public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 }; // red
     public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
 
-    public static final new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
-    .withColor(kRed)
+    // Colors
+    private static final RGBWColor kRed = new RGBWColor(255, 0, 0, 0);
+    private static final RGBWColor kOrange = new RGBWColor(255, 165, 0, 0);
+    private static final RGBWColor kYellow = new RGBWColor(255, 255, 0, 0);
+    private static final RGBWColor kGreen = new RGBWColor(0, 255, 0, 0);
+    private static final RGBWColor kBlue = new RGBWColor(0, 0, 255, 0);
+    private static final RGBWColor kPurple = new RGBWColor(128, 0, 128, 0);
+    private static final RGBWColor kWhite = new RGBWColor(255, 255, 255, 0);
 
-    public static final StrobeAnimation READY_TO_PLACE = new StrobeAnimation(200, 89, 252,
-        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // purple
+    public static final StrobeAnimation READY_TO_LIFT = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
+    .withColor(kOrange);
 
-    public static final StrobeAnimation READY_TO_LEAVE = new StrobeAnimation(0, 255, 0,
-        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // green
+    public static final StrobeAnimation READY_TO_PLACE = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
+    .withColor(kPurple);
 
-    public static final StrobeAnimation ENDGAME_TIMER = new StrobeAnimation(255, 0, 0,
-        0, 0.05, LED_NUMBER, LED_STRIP_START_INDEX); // red
+    public static final StrobeAnimation READY_TO_LEAVE = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
+    .withColor(kGreen);
 
+    public static final StrobeAnimation ENDGAME_TIMER = new StrobeAnimation(LED_STRIP_START_INDEX, LED_NUMBER).withSlot(1)
+    .withColor(kRed);
   }
-
 }
