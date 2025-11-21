@@ -1007,61 +1007,6 @@ public final class Constants {
       LED_CONFIG.CANdleFeatures.StatusLedWhenActive = StatusLedWhenActiveValue.Disabled;
 
     }
-    public static final int LED_NUMBER = 8;
-    public static final int LED_STRIP_START_INDEX = 1;
-
-    // Climbing
-    public static final int[] LED_CLIMBER_DEPLOYING = null;
-    public static final int[] LED_CLIMBER_RETRACTING = null;
-    public static final int[] LED_MANUAL_CLIMBER_DEPLOYING = null;
-
-    // first scoring element
-    public static final int[] LED_CLEANING_L2_REEF = null;
-    public static final int[] LED_CLEANING_L3_REEF = null;
-    public static final int[] LED_EJECT_CORAL = null;
-    public static final int[] LED_INTAKE_CORAL_HOPPER = { 0, 0, 255 };// blue
-    public static final int[] LED_INTAKE_ALGAE_GROUND = null;
-
-    // hold scoring elements
-
-    // TODO: Implement CANdle being commanded half & half (top half w/ algae, bottom
-    // half w/ coral)
-    public static final int[] LED_HAS_ALGAE = { 89, 252, 236 }; // algae-side teal
-    public static final int[] LED_HAS_CORAL = { 255, 255, 255 }; // elevator-side white
-    public static final int[] LED_HAS_BOTH = null;
-
-    // prep algae
-    public static final int[] LED_PREP_ALGAE_ZERO = null;
-    public static final int[] LED_PREP_ALGAE_ZERO_WITH_CORAL = null;
-    public static final int[] LED_PREP_NET = null;
-    public static final int[] LED_PREP_NET_WITH_CORAL = null;
-    public static final int[] LED_PREP_PROCESSOR = null;
-    public static final int[] LED_PREP_PROCESSOR_WITH_CORAL = null;
-
-    // prep coral
-    public static final int[] LED_PREP_CORAL_LV = null;
-    public static final int[] LED_PREP_CORAL_LV_WITH_ALGAE = null;
-    public static final int[] LED_PREP_CORAL_ZERO = null;
-    public static final int[] LED_PREP_CORAL_ZERO_WITH_ALGAE = null;
-
-    // scoring
-    public static final int[] LED_SCORING_ALGAE = null;
-    public static final int[] LED_SCORING_ALGAE_WITH_CORAL = null;
-    public static final int[] LED_PLACE_CORAL = null;
-    public static final int[] LED_PLACE_CORAL_WITH_ALGAE = null;
-
-    // second scoring element
-    public static final int[] LED_CLEANING_L2_REEF_WITH_CORAL = { 0, 0, 0 };
-    public static final int[] LED_CLEANING_L3_REEF_WITH_CORAL = { 0, 0, 0 };
-    public static final int[] LED_INTAKE_CORAL_WITH_ALGAE = { 0, 0, 255 };// blue
-    // that other guy what a loser
-    public static final int[] LED_NONE = { 0, 0, 0 }; // no color
-
-    // Zeroing
-    public static final int[] ALGAE_ZERO_FAILED = { 255, 0, 0 }; // red
-    public static final int[] ALGAE_ZERO_SUCCESS = { 0, 0, 0 }; // no color
-    public static final int[] ELEVATOR_ZERO_FAILED = { 255, 0, 0 }; // red
-    public static final int[] ELEVATOR_ZERO_SUCCESS = { 0, 0, 0 }; // no color
 
     // Colors
     public static final RGBWColor kRed = new RGBWColor(255, 0, 0, 0);
@@ -1071,13 +1016,69 @@ public final class Constants {
     public static final RGBWColor kBlue = new RGBWColor(0, 0, 255, 0);
     public static final RGBWColor kPurple = new RGBWColor(128, 0, 128, 0);
     public static final RGBWColor kWhite = new RGBWColor(255, 255, 255, 0);
+    public static final RGBWColor kTeal = new RGBWColor(0, 255, 255, 0);
+    public static final RGBWColor kBlack = new RGBWColor(0, 0, 0, 0);
+
+
+    public static final int LED_NUMBER = 8;
+    public static final int LED_STRIP_START_INDEX = 1;
+
+    // Climbing
+    public static final RGBWColor LED_CLIMBER_DEPLOYING = null;
+    public static final RGBWColor LED_CLIMBER_RETRACTING = null;
+    public static final RGBWColor LED_MANUAL_CLIMBER_DEPLOYING = null;
+
+    // first scoring element
+    public static final RGBWColor LED_CLEANING_L2_REEF = null;
+    public static final RGBWColor LED_CLEANING_L3_REEF = null;
+    public static final RGBWColor LED_EJECT_CORAL = null;
+    public static final RGBWColor LED_INTAKE_CORAL_HOPPER = kBlue;
+    public static final RGBWColor LED_INTAKE_ALGAE_GROUND = null;
+
+    // hold scoring elements
+
+    // TODO: Implement CANdle being commanded half & half (top half w/ algae, bottom
+    // half w/ coral)
+    public static final RGBWColor LED_HAS_ALGAE = kTeal; // algae-side teal
+    public static final RGBWColor LED_HAS_CORAL = kWhite; // elevator-side white
+    public static final RGBWColor LED_HAS_BOTH = null;
+
+    // prep algae
+    public static final RGBWColor LED_PREP_ALGAE_ZERO = null;
+    public static final RGBWColor LED_PREP_ALGAE_ZERO_WITH_CORAL = null;
+    public static final RGBWColor LED_PREP_NET = null;
+    public static final RGBWColor LED_PREP_NET_WITH_CORAL = null;
+    public static final RGBWColor LED_PREP_PROCESSOR = null;
+    public static final RGBWColor LED_PREP_PROCESSOR_WITH_CORAL = null;
+
+    // prep coral
+    public static final RGBWColor LED_PREP_CORAL_LV = null;
+    public static final RGBWColor LED_PREP_CORAL_LV_WITH_ALGAE = null;
+    public static final RGBWColor LED_PREP_CORAL_ZERO = null;
+    public static final RGBWColor LED_PREP_CORAL_ZERO_WITH_ALGAE = null;
+
+    // scoring
+    public static final RGBWColor LED_SCORING_ALGAE = null;
+    public static final RGBWColor LED_SCORING_ALGAE_WITH_CORAL = null;
+    public static final RGBWColor LED_PLACE_CORAL = null;
+    public static final RGBWColor LED_PLACE_CORAL_WITH_ALGAE = null;
+
+        // second scoring element
+    public static final RGBWColor LED_CLEANING_L2_REEF_WITH_CORAL = kBlack;
+    public static final RGBWColor LED_CLEANING_L3_REEF_WITH_CORAL = kBlack;
+    public static final RGBWColor LED_INTAKE_CORAL_WITH_ALGAE = kBlue;// blue
+    // that other guy what a loser
+    public static final RGBWColor LED_NONE = kWhite; // no color
+
+    // Zeroing
+    public static final RGBWColor ALGAE_ZERO_FAILED = kRed; // red
+    public static final RGBWColor ALGAE_ZERO_SUCCESS = kBlack; // no color
+    public static final RGBWColor ELEVATOR_ZERO_FAILED = kRed; // red
+    public static final RGBWColor ELEVATOR_ZERO_SUCCESS = kBlack; // no color
 
     public static final RGBWColor READY_TO_LIFT_COLOR = kOrange;
-
     public static final RGBWColor READY_TO_PLACE_COLOR = kPurple;
-
     public static final RGBWColor READY_TO_LEAVE_COLOR = kGreen;
-
     public static final RGBWColor ENDGAME_TIMER_COLOR = kRed;
   }
 }
