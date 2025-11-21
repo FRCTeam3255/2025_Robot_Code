@@ -25,7 +25,7 @@ public class LED extends SubsystemBase {
     LED.getConfigurator().apply(cfg);
   }
 
-  public void setLEDSolidColor(RGBWColor color) {
+  public void setLED(RGBWColor color) {
     setControl(solidColor.withColor(color));
   }
 
