@@ -17,9 +17,6 @@ import frc.robot.RobotMap.mapLED;
 public class LED extends SubsystemBase {
 
   private final CANdle LED = new CANdle(mapLED.LED_CAN);
-  private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX,
-      constLED.LED_NUMBER);
-  private final SolidColor solidColor = new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER);
 
   public LED() {
     LED.getConfigurator().apply(constLED.LED_CONFIG);
@@ -27,7 +24,7 @@ public class LED extends SubsystemBase {
 
   public void setLEDSolid(RGBWColor color) {
     clearAnimations();
-    LED.setControl(solidColor.withColor(color));
+    LED.setControl(new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withColor(color));
   }
 
   public void setLEDMatrix(RGBWColor color, int LEDStartIndex, int LEDLength) {
@@ -37,7 +34,7 @@ public class LED extends SubsystemBase {
 
   public void setLEDStrobe(RGBWColor color) {
     clearAnimations();
-    LED.setControl(strobeAnimation.withColor(color));
+    LED.setControl(new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withColor(color));
   }
 
   public void clearAnimations() {
