@@ -36,7 +36,7 @@ public class PrepProcessor extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_PROCESSOR_HEIGHT);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_PROCESSOR_PIVOT_POSITION);
-    globalLED.setLED(constLED.LED_PREP_PROCESSOR);
+    globalLED.setLEDSolid(constLED.LED_PREP_PROCESSOR);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

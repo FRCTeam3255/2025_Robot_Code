@@ -40,7 +40,7 @@ public class IntakingAlgaeGround extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_GROUND_INTAKE);
     globalAlgaeIntake.setAlgaeIntakeMotor(Constants.constAlgaeIntake.ALGAE_INTAKE_SPEED);
 
-    globalLED.setLED(constLED.LED_INTAKE_ALGAE_GROUND);
+    globalLED.setLEDSolid(constLED.LED_INTAKE_ALGAE_GROUND);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

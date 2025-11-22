@@ -41,7 +41,7 @@ public class ScoringAlgaeWithCoral extends Command {
     }
 
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE_WITH_CORAL);
-    globalLED.setLED(constLED.LED_SCORING_ALGAE_WITH_CORAL);
+    globalLED.setLEDSolid(constLED.LED_SCORING_ALGAE_WITH_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

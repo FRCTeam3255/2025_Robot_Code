@@ -50,7 +50,7 @@ public class ScoringCoral extends SequentialCommandGroup {
     addCommands(
         // Set state and LEDs
         Commands.runOnce(() -> subStateMachine.setRobotState(StateMachine.RobotState.SCORING_CORAL)),
-        Commands.runOnce(() -> globalLED.setLED(constLED.LED_PLACE_CORAL)),
+        Commands.runOnce(() -> globalLED.setLEDSolid(constLED.LED_PLACE_CORAL)),
         Commands.runOnce(() -> globalAlgaeIntake.setAlgaeIntakeMotor(constAlgaeIntake.ALGAE_OUTTAKE_NET_SPEED))
             .onlyIf(() -> desiredState.equals(RobotState.PREP_CORAL_L1)),
 

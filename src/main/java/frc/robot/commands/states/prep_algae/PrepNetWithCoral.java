@@ -34,7 +34,7 @@ public class PrepNetWithCoral extends Command {
     globalElevator.setPosition(Constants.constElevator.ALGAE_PREP_NET);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_NET_PIVOT_POSITION);
-    globalLED.setLED(constLED.LED_PREP_NET_WITH_CORAL);
+    globalLED.setLEDSolid(constLED.LED_PREP_NET_WITH_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

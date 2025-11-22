@@ -53,7 +53,7 @@ public class HasAlgae extends Command {
     }
     globalStateMachine.setRobotState(RobotState.HAS_ALGAE);
     globalAlgaeIntake.setHasAlgaeOverride(true);
-    globalLED.setLED(constLED.LED_HAS_ALGAE);
+    globalLED.setLEDSolid(constLED.LED_HAS_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

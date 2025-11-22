@@ -43,7 +43,7 @@ public class None extends Command {
     subAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
     subClimber.setClimberMotorVelocity(0);
     subElevator.setPosition(Units.Inches.zero());
-    globalLED.setLED(constLED.LED_NONE);
+    globalLED.setLEDSolid(constLED.LED_NONE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

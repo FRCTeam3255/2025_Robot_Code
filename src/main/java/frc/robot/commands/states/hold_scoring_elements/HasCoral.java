@@ -47,7 +47,7 @@ public class HasCoral extends Command {
     globalHopper.runHopper(0);
     globalCoralOuttake.setCoralOuttakeSpeed(0);
     globalElevator.setPosition(Units.Inches.zero());
-    globalLED.setLED(constLED.LED_HAS_CORAL);
+    globalLED.setLEDSolid(constLED.LED_HAS_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

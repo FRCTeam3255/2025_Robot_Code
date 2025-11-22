@@ -35,7 +35,7 @@ public class PrepAlgaeZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_ALGAE_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(constLED.LED_PREP_ALGAE_ZERO);
+    globalLED.setLEDSolid(constLED.LED_PREP_ALGAE_ZERO);
 
     globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.PREP_ALGAE_ZERO_PIVOT_POSITION);
   }

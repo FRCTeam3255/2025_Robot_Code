@@ -29,7 +29,7 @@ public class PrepCoralZeroWithAlgae extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO_WITH_ALGAE);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(constLED.LED_PREP_CORAL_ZERO_WITH_ALGAE);
+    globalLED.setLEDSolid(constLED.LED_PREP_CORAL_ZERO_WITH_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

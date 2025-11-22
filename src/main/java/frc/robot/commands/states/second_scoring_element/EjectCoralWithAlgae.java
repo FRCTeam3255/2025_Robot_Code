@@ -39,7 +39,7 @@ public class EjectCoralWithAlgae extends Command {
     globalElevator.setPosition(constElevator.EJECT_HOPPER_HEIGHT);
     globalStateMachine.setRobotState(RobotState.EJECTING_CORAL_WITH_ALGAE);
     globalHopper.runHopper(Constants.constHopper.HOPPER_EJECTING_SPEED);
-    globalLED.setLED(constLED.LED_EJECT_CORAL);
+    globalLED.setLEDSolid(constLED.LED_EJECT_CORAL);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

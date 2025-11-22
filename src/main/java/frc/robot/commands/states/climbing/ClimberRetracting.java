@@ -37,7 +37,7 @@ public class ClimberRetracting extends Command {
     Elastic.selectTab("Climbing");
     globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_RETRACT_VELOCITY);
     globalStateMachine.setRobotState(StateMachine.RobotState.CLIMBER_RETRACTING);
-    globalLED.setLED(constLED.LED_CLIMBER_RETRACTING);
+    globalLED.setLEDSolid(constLED.LED_CLIMBER_RETRACTING);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

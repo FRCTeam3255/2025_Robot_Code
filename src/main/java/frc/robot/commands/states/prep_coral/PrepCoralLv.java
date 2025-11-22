@@ -48,7 +48,7 @@ public class PrepCoralLv extends Command {
       globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_L4);
     globalElevator.setPosition(globalDistance);
     globalAlgaeIntake.setAlgaePivotAngle(constAlgaeIntake.CORAL_ONLY);
-    globalLED.setLED(constLED.LED_PREP_CORAL_LV);
+    globalLED.setLEDSolid(constLED.LED_PREP_CORAL_LV);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

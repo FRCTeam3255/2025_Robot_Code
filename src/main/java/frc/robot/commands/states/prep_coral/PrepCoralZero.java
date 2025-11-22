@@ -30,7 +30,7 @@ public class PrepCoralZero extends Command {
   public void initialize() {
     globalStateMachine.setRobotState(StateMachine.RobotState.PREP_CORAL_ZERO);
     globalElevator.setPosition(Constants.constElevator.PREP_0);
-    globalLED.setLED(Constants.constLED.LED_PREP_CORAL_ZERO);
+    globalLED.setLEDSolid(Constants.constLED.LED_PREP_CORAL_ZERO);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

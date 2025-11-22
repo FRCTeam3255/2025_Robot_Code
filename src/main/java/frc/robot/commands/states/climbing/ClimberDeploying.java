@@ -48,7 +48,7 @@ public class ClimberDeploying extends Command {
       globalAlgaeIntake.setAlgaePivotAngle(Constants.constAlgaeIntake.CLIMB_DEPLOY_POSITION);
       globalElevator.setPosition(Constants.constElevator.ZEROED_POS);
       globalClimber.setClimberMotorVelocity(Constants.constClimber.CLIMBER_MOTOR_DEPLOYING_VELOCITY);
-      globalLED.setLED(constLED.LED_CLIMBER_DEPLOYING);
+      globalLED.setLEDSolid(constLED.LED_CLIMBER_DEPLOYING);
     } else {
       System.out.println("ClimberDeploying: Match time is not low enough  Eli rn -_-");
     }

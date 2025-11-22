@@ -55,7 +55,7 @@ public class ScoringAlgae extends Command {
 
     ignoreAlgaePivot = edu.wpi.first.wpilibj.RobotState.isTeleop();
     globalStateMachine.setRobotState(StateMachine.RobotState.SCORING_ALGAE);
-    globalLED.setLED(constLED.LED_SCORING_ALGAE);
+    globalLED.setLEDSolid(constLED.LED_SCORING_ALGAE);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
