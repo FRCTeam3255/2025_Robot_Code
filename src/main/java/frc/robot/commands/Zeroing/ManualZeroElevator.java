@@ -34,7 +34,7 @@ public class ManualZeroElevator extends Command {
   public void initialize() {
     globalElevator.setSoftwareLimitsEnable(false, true);
     globalElevator.hasZeroed = false;
-    globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 0, 3);
+    globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 4, 9);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class ManualZeroElevator extends Command {
       if (Units.Seconds.of(Timer.getFPGATimestamp()).minus(zeroingTimestamp).gte(constElevator.ZEROING_TIMEOUT)) {
         globalElevator.attemptingZeroing = false;
         System.out.println("Elevator Zeroing Failed :(");
-        globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
+        globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 4, 9);
       } else {
         boolean deltaRotorVelocity = globalElevator.getRotorVelocity().minus(lastRotorVelocity)
             .lte(constElevator.MANUAL_ZEROING_DELTA_VELOCITY);
@@ -82,11 +82,11 @@ public class ManualZeroElevator extends Command {
       globalElevator.resetSensorPosition(constElevator.ZEROED_POS);
       globalElevator.setCoastMode(false);
       System.out.println("Elevator Zeroing Successful!!!! Yippee and hooray!!! :3");
-      globalLED.setLED(constLED.ELEVATOR_ZERO_SUCCESS);
+      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_SUCCESS, 4, 9);
 
     } else {
       System.out.println("Elevator was never zeroed :((( blame eli");
-      globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
+      globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 4, 9);
     }
   }
 
