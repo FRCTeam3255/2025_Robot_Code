@@ -34,7 +34,7 @@ public class ManualZeroElevator extends Command {
   public void initialize() {
     globalElevator.setSoftwareLimitsEnable(false, true);
     globalElevator.hasZeroed = false;
-    globalLED.setLED(constLED.ELEVATOR_ZERO_FAILED);
+    globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 0, 3);
   }
 
   @Override

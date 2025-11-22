@@ -26,6 +26,10 @@ public class LED extends SubsystemBase {
     LED.setControl(solidColor.withColor(color));
   }
 
+  public void setLEDMatrix(RGBWColor color, int LEDStartIndex, int LEDLength) {
+    new SolidColor(LEDStartIndex, LEDLength).withColor(color);
+  }
+
   public void setLEDStrobe(RGBWColor color) {
     LED.setControl(strobeAnimation.withColor(color));
   }

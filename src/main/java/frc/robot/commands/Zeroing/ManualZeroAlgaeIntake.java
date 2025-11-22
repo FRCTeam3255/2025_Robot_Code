@@ -33,7 +33,7 @@ public class ManualZeroAlgaeIntake extends Command {
   public void initialize() {
     zeroingSuccess = false;
     globalAlgaeIntake.hasZeroed = false;
-    globalLED.setLED(constLED.ALGAE_ZERO_FAILED);
+    globalLED.setLEDMatrix(constLED.ELEVATOR_ZERO_FAILED, 3, 7);
 
   }
 

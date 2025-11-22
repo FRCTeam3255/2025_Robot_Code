@@ -1020,7 +1020,7 @@ public final class Constants {
 
 
     public static final int LED_NUMBER = 8;
-    public static final int LED_STRIP_START_INDEX = 1;
+    public static final int LED_STRIP_START_INDEX = 0;
 
     // Climbing
     public static final RGBWColor LED_CLIMBER_DEPLOYING = null;
