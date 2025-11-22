@@ -4,8 +4,6 @@
 
 package frc.robot.commands.Zeroing;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
