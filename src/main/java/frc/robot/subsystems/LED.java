@@ -17,7 +17,7 @@ public class LED extends SubsystemBase {
 
   private final CANdle LED = new CANdle(mapLED.LED_CAN);
   private final SolidColor solidColor = new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER);
-  private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withSlot(0);
+  private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withUpdateFreqHz(10);
   public LED() {
     LED.getConfigurator().apply(constLED.LED_CONFIG);
   }
