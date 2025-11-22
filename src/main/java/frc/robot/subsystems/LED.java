@@ -24,15 +24,11 @@ public class LED extends SubsystemBase {
   }
 
   public void setLED(RGBWColor color) {
-    setControl(solidColor.withColor(color));
+    LED.setControl(solidColor.withColor(color));
   }
 
   public void setLEDStrobe(RGBWColor color) {
-    setControl(strobeAnimation.withColor(color));
-  }
-
-  private void setControl(ControlRequest control) {
-    LED.setControl(control);
+    LED.setControl(strobeAnimation.withColor(color));
   }
 }
 
