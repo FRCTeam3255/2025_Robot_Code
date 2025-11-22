@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.CANdleConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.StrobeAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
@@ -21,8 +20,7 @@ public class LED extends SubsystemBase {
   private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER);
 
   public LED() {
-    var cfg = new CANdleConfiguration();
-    LED.getConfigurator().apply(cfg);
+    LED.getConfigurator().apply(constLED.LED_CONFIG);
   }
 
   public void setLED(RGBWColor color) {
