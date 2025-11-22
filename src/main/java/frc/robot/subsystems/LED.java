@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.controls.StrobeAnimation;
+import com.ctre.phoenix6.controls.EmptyAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
 import com.ctre.phoenix6.signals.RGBWColor;
@@ -40,7 +41,8 @@ public class LED extends SubsystemBase {
   }
 
   public void clearAnimations() {
-    LED.setControl(solidColor.withColor(constLED.kBlack));
+    for (int i = 0; i < 8; ++i) {
+        LED.setControl(new EmptyAnimation(i));
+    }
   }
-
 }
