@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.StrobeAnimation;
 import com.ctre.phoenix6.controls.SolidColor;
 import com.ctre.phoenix6.hardware.CANdle;
@@ -17,7 +16,7 @@ import frc.robot.RobotMap.mapLED;
 public class LED extends SubsystemBase {
   private final CANdle LED = new CANdle(mapLED.LED_CAN);
   private final SolidColor solidColor = new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER);
-  private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER);
+  private final StrobeAnimation strobeAnimation = new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withSlot(0);
 
   public LED() {
     LED.getConfigurator().apply(constLED.LED_CONFIG);
