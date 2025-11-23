@@ -24,22 +24,26 @@ public class LED extends SubsystemBase {
 
   public void setLEDSolid(RGBWColor color) {
     clearAnimations();
-    LED.setControl(new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withColor(color));
+    LED.setControl(new SolidColor(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER)
+    .withColor(color));
   }
 
   public void setLEDMatrix(RGBWColor color, int LEDStartIndex, int LEDLength) {
-    SolidColor matrixSolidColor = new SolidColor(LEDStartIndex, LEDLength).withColor(color);
+    SolidColor matrixSolidColor = new SolidColor(LEDStartIndex, LEDLength)
+    .withColor(color);
     LED.setControl(matrixSolidColor);
   }
 
   public void setLEDStrobe(RGBWColor color) {
     clearAnimations();
-    LED.setControl(new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER).withColor(color));
+    LED.setControl(new StrobeAnimation(constLED.LED_STRIP_START_INDEX, constLED.LED_NUMBER)
+    .withColor(color)
+    .withSlot(0));
   }
 
   public void clearAnimations() {
     for (int i = 0; i < 8; ++i) {
-        LED.setControl(new EmptyAnimation(i));
+        LED.setControl(new EmptyAnimation(i).withSlot(i));
     }
   }
 }
